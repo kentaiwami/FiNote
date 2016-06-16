@@ -19,6 +19,7 @@
     <preference name="DisallowOverscroll" value="true" />
     <preference name="AutoHideSplashScreen" value="true" />
     <preference name="SplashScreenDelay" value="3000" />
+    <preference name="FadeSplashScreenDuration" value="750"/>
 
     <platform name="android">
         <allow-intent href="market:*" />
