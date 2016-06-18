@@ -2,6 +2,7 @@
 /*.xmind
 /*.asta
 /*.asta.lock
+/素材
 
 #Node
 npm-debug.log
