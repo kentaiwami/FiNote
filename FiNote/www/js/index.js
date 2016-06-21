@@ -11,7 +11,7 @@ var app = {
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
         setTimeout(function() {
-            navigator.splashscreen.hide();}, 2000);
+            navigator.splashscreen.hide();}, 500);
     },
     // deviceready Event Handler
     //
