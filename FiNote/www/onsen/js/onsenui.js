@@ -24092,6 +24092,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
      document.body._gestureDetector = new ons.GestureDetector(document.body);
    }, false);
 
+  ons.disableAutoStatusBarFill();
+  
    // setup loading placeholder
    ons.ready(function () {
      ons._setupLoadingPlaceHolders();

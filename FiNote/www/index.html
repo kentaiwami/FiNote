@@ -19,16 +19,16 @@
     <body>
     <ons-navigator id="navigator">
         <ons-page id="splash">
-        <!-- <img  src="img/splash.gif" alt="" /> -->
-
-        <!--3秒間たったら画面遷移する!-->
-        <script>
-            var showpage = function(){
-                document.querySelector('#navigator').pushPage('second.html', { animation : 'fade' } );
-            } 
-    　　  setTimeout(showpage, 4000);
-        </script>
+            <img  src="img/splash.gif" alt="" / width="100%" height="100%">
         </ons-page>
     </ons-navigator>
+
+        <!--3秒間たったら画面遷移する!-->
+    <script>
+        var showpage = function(){
+            document.querySelector('#navigator').pushPage('second.html', { animation : 'fade' } );
+        } 
+        setTimeout(showpage, 4000);
+    </script>
     </body>
 </html>
