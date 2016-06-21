@@ -10,6 +10,8 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
+        setTimeout(function() {
+            navigator.splashscreen.hide();}, 2000);
     },
     // deviceready Event Handler
     //
@@ -28,7 +30,7 @@ var app = {
         receivedElement.setAttribute('style', 'display:block;');
 
         console.log('Received Event: ' + id);
-    }
+    },
 };
 
 app.initialize();

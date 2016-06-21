@@ -2,8 +2,13 @@
 <widget id="com.kenta.finote" version="1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>FiNote</name>
 
+    <feature name="StatusBar">
+        <param name="ios-package" value="CDVStatusBar" onload="true" />
+    </feature>
+   
     <preference name="StatusBarOverlaysWebView" value="false" />
-    <preference name="StatusBarBackgroundColor" value="#382212" />
+    <preference name="StatusBarBackgroundColor" value="#48301d" />
+    <preference name="StatusBarStyle" value="lightcontent" />
 
     <description>
         フィノート
@@ -13,21 +18,22 @@
     </author>
     <content src="index.html" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
-    <access origin="*" />
+    <access origin="*" />r
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="tel:*" />
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
+
     <preference name="DisallowOverscroll" value="true" />
-    <preference name="AutoHideSplashScreen" value="true" />
-    <preference name="SplashScreenDelay" value="0" />
-    <preference name="FadeSplashScreen" value="false"/>
+    <preference name="AutoHideSplashScreen" value="false" />
+     <preference name="FadeSplashScreenDuration" value="500"/>
+    <preference name="FadeSplashScreen" value="true"/>
     <preference name="ShowSplashScreenSpinner" value="false"/>
     
 
-    <platform name="android">
+    <!-- <platform name="android">
         <allow-intent href="market:*" />
         <splash src="res/screen/android/splash-land-hdpi.png" density="land-hdpi"/>
         <splash src="res/screen/android/splash-land-ldpi.png" density="land-ldpi"/>
@@ -37,7 +43,7 @@
         <splash src="res/screen/android/splash-port-ldpi.png" density="port-ldpi"/>
         <splash src="res/screen/android/splash-port-mdpi.png" density="port-mdpi"/>
         <splash src="res/screen/android/splash-port-xhdpi.png" density="port-xhdpi"/>
-    </platform>
+    </platform> -->
 
     <platform name="ios">
         <allow-intent href="itms:*" />
