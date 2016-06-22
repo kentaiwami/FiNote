@@ -23,12 +23,12 @@
         </ons-page>
     </ons-navigator>
 
-        <!--3秒間たったら画面遷移する!-->
+        <!--2秒間たったら画面遷移する!-->
     <script>
         var showpage = function(){
             document.querySelector('#navigator').pushPage('second.html', { animation : 'fade' } );
         } 
-        setTimeout(showpage, 4000);
+        setTimeout(showpage, 2000);
     </script>
     </body>
 </html>
