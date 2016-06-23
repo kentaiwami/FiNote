@@ -14,6 +14,7 @@
         <script src="js/index.js"></script>
         <script src="onsen/js/onsenui.js"></script>
         <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/ncmb.min.js" charset="utf-8"></script>
     </head>
 
     <body>
@@ -24,11 +25,11 @@
 
     <div class="formarea">
         <div class="form-row">
-          <input type="text" class="text-input--underbar width-full" placeholder="ユーザ名" value="">
+          <input type="text" id="username" class="text-input--underbar width-full" placeholder="ユーザ名" value="">
         </div>
 
         <div class="form-row">
-          <input type="password" class="text-input--underbar width-full" placeholder="パスワード" value="">
+          <input type="password" id="password" class="text-input--underbar width-full" placeholder="パスワード" value="">
         </div>
 
         <div class="lucent">
@@ -36,7 +37,7 @@
         </div>
 
         <div class="vspc form-row">
-          <ons-button modifier="large--cta">登録</ons-button>
+          <ons-button modifier="large--cta" onclick="hogehoge()">登録</ons-button>
         </div>
       </div>
       </ons-page>
