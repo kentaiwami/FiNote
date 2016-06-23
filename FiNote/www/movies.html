@@ -17,6 +17,15 @@
     </head>
 
     <body>
+        <!--ポップオーバーの設定!-->
+        <ons-popover direction="down" id="popover">
+            <div style="padding: 10px; text-align: center;">
+                <p><button class="button button--large">1列で表示</button></p>
+                <p><button class="button button--large">2列で表示</button></p>
+                <p><ons-button onclick="document.querySelector('#popover').hide()">閉じる</ons-button></p>
+            </div>
+        </ons-popover>
+
         <!--ツールバー!-->
         <ons-toolbar>
             <div class="center">映画の一覧</div>
@@ -27,13 +36,11 @@
             </div>
 
             <div class="left">
-                <ons-toolbar-button>
+                <ons-toolbar-button onclick="document.querySelector('#popover').show(this)">
                     <ons-icon icon="ion-ios-settings"></ons-icon>
                 </ons-toolbar-button>
             </div>
         </ons-toolbar>
-
-        
 
         <p style="text-align: center; opacity: 0.6; padding-top: 20px;">
           Movies.html
