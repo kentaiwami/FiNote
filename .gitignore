@@ -3,6 +3,7 @@
 /*.asta
 /*.asta.lock
 /素材
+ncmb.min.js
 
 #Node
 npm-debug.log
