@@ -34,26 +34,25 @@ var app = {
 };
 
 //会員登録で使用  
-function hogehoge(){
-     // 2. mobile backendアプリとの連携
+function singup(){
+     //mobile backendアプリとの連携
       var ncmb = new NCMB("f5f6c2e3aa823eea2c500446a62c5645c04fc2fbfd9833cb173e1d876f464f6c","605298c95c0ba9c654315f11c6817e790f21f83a0e9ff60dc2fdf626b1485899");
-
       var user = new ncmb.User();
 
-//ユーザー名・パスワードを設定
-user.set("userName", document.getElementById("username").value)
-    .set("password", document.getElementById("password").value)
+    //ユーザー名・パスワードを設定
+    user.set("userName", document.getElementById("username").value)
+        .set("password", document.getElementById("password").value)
 
-// 新規登録
-user.signUpByAccount()
-    .then(function(){
-      // 登録後処理
-      ons.notification.alert('登録が完了しました')
-    })
-    .catch(function(err){
-      // エラー処理
-      ons.notification.alert(err)
-    });
+    // 新規登録
+    user.signUpByAccount()
+        .then(function(){
+            // 登録後処理
+            ons.notification.alert('登録が完了しました')
+        })
+        .catch(function(err){
+            // エラー処理
+            ons.notification.alert(err)
+        });
 }
      
 
