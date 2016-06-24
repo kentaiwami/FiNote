@@ -18,6 +18,28 @@
     </head>
 
     <body>
+    <!--会員登録成功時のアラート設定!-->
+    <ons-alert-dialog id="signup-alert-success">
+    <div class="alert-dialog-title">登録完了</div>
+    <div class="alert-dialog-content">
+        会員情報の登録に成功しました！
+    </div>
+    <div class="alert-dialog-footer">
+        <button class="alert-dialog-button" onclick="alert_hide('signup-alert-success')">OK</button>
+    </div>
+    </ons-alert-dialog>
+
+    <!--会員登録失敗時のアラート設定!-->
+    <ons-alert-dialog id="signup-alert-error">
+    <div class="alert-dialog-title">エラー発生</div>
+    <div class="alert-dialog-content">
+        ほげほげエラー
+    </div>
+    <div class="alert-dialog-footer">
+        <button class="alert-dialog-button" onclick="alert_hide('signup-alert-error')">OK</button>
+    </div>
+    </ons-alert-dialog>
+
     <ons-page>
     <ons-toolbar>
         <div class="center">ユーザ登録</div>

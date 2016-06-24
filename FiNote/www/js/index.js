@@ -47,12 +47,16 @@ function signup(){
     user.signUpByAccount()
         .then(function(){
             // 登録後処理
-            ons.notification.alert('登録が完了しました')
+            document.getElementById('signup-alert-success').show();
         })
         .catch(function(err){
             // エラー処理
-            ons.notification.alert(err)
+            document.getElementById('signup-alert-error').show();
         });
+}
+
+function alert_hide(id){
+    document.getElementById(id).hide();
 }
      
 
