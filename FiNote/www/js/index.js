@@ -55,7 +55,10 @@ function signup(){
 
             var info = document.getElementById('error-message');
             if (err.name == "NoUserNameError") {
-                var textNode = document.createTextNode('ユーザ名またはパスワードが空です');
+                var textNode = document.createTextNode('ユーザ名を入力してください');
+                info.appendChild(textNode);
+            }else if (err.name == "NoPasswordError") {
+                var textNode = document.createTextNode('パスワードを入力してください');
                 info.appendChild(textNode);
             }
 
