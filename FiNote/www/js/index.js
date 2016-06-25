@@ -52,11 +52,25 @@ function signup(){
         .catch(function(err){
             // エラー処理
             document.getElementById('signup-alert-error').show();
+
+            var info = document.getElementById('error-message');
+            if (err.name == "NoUserNameError") {
+                var textNode = document.createTextNode('ユーザ名またはパスワードが空です');
+                info.appendChild(textNode);
+            }
+
+            console.log(err);
         });
 }
 
 function alert_hide(id){
     document.getElementById(id).hide();
+
+    if (id == "signup-alert-error") {
+        var info = document.getElementById('error-message');
+        var childNode = info.firstChild;
+        info.removeChild(childNode);
+    }
 }
      
 
