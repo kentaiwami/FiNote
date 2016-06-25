@@ -66,6 +66,7 @@ function signup(){
 function alert_hide(id){
     document.getElementById(id).hide();
 
+    //追加したエラーメッセージ(子ノード)を削除する
     if (id == "signup-alert-error") {
         var info = document.getElementById('error-message');
         var childNode = info.firstChild;
