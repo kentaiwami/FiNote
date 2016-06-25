@@ -54,15 +54,18 @@ function signup(){
             document.getElementById('signup-alert-error').show();
 
             var info = document.getElementById('error-message');
-            if (err.name == "NoUserNameError") {
-                var textNode = document.createTextNode('ユーザ名を入力してください');
-                info.appendChild(textNode);
-            }else if (err.name == "NoPasswordError") {
-                var textNode = document.createTextNode('パスワードを入力してください');
-                info.appendChild(textNode);
-            }
+            var textNode;
 
-            console.log(err);
+            if (err.name == "NoUserNameError") {
+                textNode = document.createTextNode('ユーザ名を入力してください');
+            }else if (err.name == "NoPasswordError") {
+                textNode = document.createTextNode('パスワードを入力してください');
+            }else if (err.message.indexOf("cannot POST") > -1) {
+                textNode = document.createTextNode('入力したユーザ名は既に使用されています');
+            }else if (err.message.indexOf("Request has been terminated") > -1) {
+                textNode = document.createTextNode('ネットワーク接続がオフラインのため登録ができません');
+            }
+            info.appendChild(textNode);
         });
 }
 
