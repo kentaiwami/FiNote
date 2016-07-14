@@ -14,6 +14,7 @@
         <script src="js/index.js"></script>
         <script src="onsen/js/onsenui.js"></script>
         <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/ncmb.min.js" charset="utf-8"></script>
     </head>
 
     <body>
@@ -25,24 +26,46 @@
 
         <!--2秒間たったら画面遷移する!-->
     <script>
+       //delete_localstorage();
+
         var storage = window.localStorage;
+
+        // storage.setItem('username', 'test')
+        // storage.setItem('password', 'test')
+        // storage.setItem('signup_flag', true)
+
         var signup_flag = storage.getItem('signup_flag');
 
-        
-        //ユーザ情報が登録されている場合はtabbar.htmlへ遷移
+        //ユーザ情報が登録されている場合は自動ログインを行う
         if (signup_flag == 'true') {
-            var showpage = function(){
-                document.querySelector('#navigator').pushPage('tabbar.html', { animation : 'fade' } )
-            };
-            setTimeout(showpage, 2000);
+            //自動ログイン
+            var ncmb = get_ncmb();
+            var storage = window.localStorage;
+            var username = storage.getItem('username');
+            var password = storage.getItem('password');
+
+            ncmb.User.login(username, password)
+                .then(function(data){
+                    // ログイン後処理
+                    //tabbar.htmlへ遷移
+                    var showpage = function(){
+                        document.querySelector('#navigator').pushPage('tabbar.html', { animation : 'fade' } )
+                    };
+                    setTimeout(showpage, 2000);
+
+                })
+            .catch(function(err){
+                // エラー処理
+                });
+
+        //ユーザ情報が登録されていない場合はsignupへ遷移
         }else {
+            //signup.htmlへ遷移
             var showpage = function(){
                 document.querySelector('#navigator').pushPage('signup.html', { animation : 'fade' } )
             };
             setTimeout(showpage, 2000);
         }
-
-        
     </script>
     </body>
 </html>

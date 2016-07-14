@@ -35,9 +35,9 @@ var app = {
 
 //会員登録で使用  
 function signup(){
-     //mobile backendアプリとの連携
-      var ncmb = new NCMB("f5f6c2e3aa823eea2c500446a62c5645c04fc2fbfd9833cb173e1d876f464f6c","605298c95c0ba9c654315f11c6817e790f21f83a0e9ff60dc2fdf626b1485899");
-      var user = new ncmb.User();
+    //mobile backendアプリとの連携
+    var ncmb = get_ncmb();
+    var user = new ncmb.User();
 
     //ユーザー名・パスワードを設定
     user.set("userName", document.getElementById("username").value)
@@ -51,7 +51,8 @@ function signup(){
             var username = document.getElementById("username").value;
             var password = document.getElementById("password").value;
             var storage = window.localStorage;
-            storage.setItem(username, password)
+            storage.setItem('username', username)
+            storage.setItem('password', password)
 
             //同時にこれらの情報が記録されているかを判断するフラグも保存する
             storage.setItem('signup_flag', true)
@@ -87,6 +88,20 @@ function alert_hide(id){
         var childNode = info.firstChild;
         info.removeChild(childNode);
     }
+}
+
+//ncmbを返す
+function get_ncmb(){
+    var ncmb = new NCMB("f5f6c2e3aa823eea2c500446a62c5645c04fc2fbfd9833cb173e1d876f464f6c","605298c95c0ba9c654315f11c6817e790f21f83a0e9ff60dc2fdf626b1485899");
+    return ncmb;
+}
+
+//ローカルストレージの初期化をする
+function delete_localstorage(){
+    var storage = window.localStorage;
+    storage.removeItem('username')
+    storage.removeItem('password')
+    storage.removeItem('signup_flag')
 }
      
 
