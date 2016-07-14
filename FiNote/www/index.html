@@ -25,10 +25,24 @@
 
         <!--2秒間たったら画面遷移する!-->
     <script>
-        var showpage = function(){
-            document.querySelector('#navigator').pushPage('tabbar.html', { animation : 'fade' } );
-        } 
-        setTimeout(showpage, 2000);
+        var storage = window.localStorage;
+        var signup_flag = storage.getItem('signup_flag');
+
+        
+        //ユーザ情報が登録されている場合はtabbar.htmlへ遷移
+        if (signup_flag == 'true') {
+            var showpage = function(){
+                document.querySelector('#navigator').pushPage('tabbar.html', { animation : 'fade' } )
+            };
+            setTimeout(showpage, 2000);
+        }else {
+            var showpage = function(){
+                document.querySelector('#navigator').pushPage('signup.html', { animation : 'fade' } )
+            };
+            setTimeout(showpage, 2000);
+        }
+
+        
     </script>
     </body>
 </html>
