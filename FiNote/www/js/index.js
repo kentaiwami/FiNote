@@ -46,7 +46,16 @@ function signup(){
     // 新規登録
     user.signUpByAccount()
         .then(function(){
-            // 登録後処理
+            /*登録後処理*/
+            //ローカルにユーザ名とパスワードを保存する。
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+            var storage = window.localStorage;
+            storage.setItem(username, password)
+
+            //同時にこれらの情報が記録されているかを判断するフラグも保存する
+            storage.setItem('signup_flag', true)
+
             document.getElementById('signup-alert-success').show();
         })
         .catch(function(err){
