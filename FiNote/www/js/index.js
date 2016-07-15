@@ -82,11 +82,14 @@ function signup(){
 function alert_hide(id){
     //画面遷移をするコールバックを渡す
     if (id == "signup-alert-success") {
-        var hogehoge = function(){
-        console.log('tabbar.htmlへ遷移');
-
+        var pushpage_tabbar = function(){
+            function autoLink(){
+                location.href="tabbar.html";
+            }
+         setTimeout(autoLink(),0);
         };
-        document.getElementById(id).hide(hogehoge());
+
+        document.getElementById(id).hide(pushpage_tabbar());
 
     //追加したエラーメッセージ(子ノード)を削除する
     }else if (id == "signup-alert-error") {
