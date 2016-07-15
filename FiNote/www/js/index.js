@@ -84,7 +84,7 @@ function alert_hide(id){
     if (id == "signup-alert-success") {
         var pushpage_tabbar = function(){
             function autoLink(){
-                location.href="tabbar.html";
+                location.href="index.html";
             }
          setTimeout(autoLink(),0);
         };
