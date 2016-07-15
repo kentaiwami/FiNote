@@ -80,10 +80,17 @@ function signup(){
 }
 
 function alert_hide(id){
-    document.getElementById(id).hide();
+    //画面遷移をするコールバックを渡す
+    if (id == "signup-alert-success") {
+        var hogehoge = function(){
+        console.log('tabbar.htmlへ遷移');
+
+        };
+        document.getElementById(id).hide(hogehoge());
 
     //追加したエラーメッセージ(子ノード)を削除する
-    if (id == "signup-alert-error") {
+    }else if (id == "signup-alert-error") {
+        document.getElementById(id).hide();
         var info = document.getElementById('error-message');
         var childNode = info.firstChild;
         info.removeChild(childNode);
