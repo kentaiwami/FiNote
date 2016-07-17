@@ -1,78 +1,213 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="format-detection" content="telephone=no">
-        <meta name="msapplication-tap-highlight" content="no">
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, minimum-scale=1, width=device-width" />
+    <html>
+        <head>
+            <meta charset="UTF-8">
+            <meta name="format-detection" content="telephone=no">
+            <meta name="msapplication-tap-highlight" content="no">
+            <meta name="viewport" content="user-scalable=no, initial-scale=1, minimum-scale=1, width=device-width" />
 
-        <link rel="stylesheet" href="onsen/css/onsenui.css">
-        <link rel="stylesheet" href="onsen/css/onsen-css-components.css">
-        <link rel="stylesheet" href="css/index.css">
+            <link rel="stylesheet" href="onsen/css/onsenui.css">
+            <link rel="stylesheet" href="onsen/css/onsen-css-components.css">
+            <link rel="stylesheet" href="css/index.css">
 
-        <script src="js/index.js"></script>
-        <script src="onsen/js/onsenui.js"></script>
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/ncmb.min.js" charset="utf-8"></script>
-    </head>
+            <script src="js/index.js"></script>
+            <script src="onsen/js/onsenui.js"></script>
+            <script type="text/javascript" src="cordova.js"></script>
+            <script type="text/javascript" src="js/ncmb.min.js" charset="utf-8"></script>
+        </head>
 
-    <body>
-    <ons-navigator id="navigator">
-        <ons-page id="splash">
+        <body>
+
+        <ons-navigator id="myNavigator" page="index.html"></ons-navigator>
+
+        <ons-template id="index.html">
+          <ons-page id="index">
             <script>
-                //ユーザ情報が存在する場合はローディング画面を表示する
-                var storage = window.localStorage;
-                var signup_flag = storage.getItem('signup_flag');
-                if (signup_flag == 'true') {
-                    document.write('<img  src="img/splash.gif" alt="" / width="100%" height="100%">');
-                }
+                    //ユーザ情報が存在する場合はローディング画面を表示する
+                    var storage = window.localStorage;
+                    var signup_flag = storage.getItem('signup_flag');
+                    if (signup_flag == 'true') {
+                        document.write('<img  src="img/splash.gif" alt="" / width="100%" height="100%">');
+                    }
             </script>
-        </ons-page>
-    </ons-navigator>
+          </ons-page>
+        </ons-template>
 
-        <!--2秒間たったら画面遷移する!-->
-    <script>
-       //delete_localstorage();
+    <ons-template id="page2.html">
+      <ons-page id="page2">
+        <<ons-tabbar position="bottom">
+            <ons-tab page="page3.html" label="映画の一覧" icon="fa-square" active="true"></ons-tab>
+            <ons-tab page="page4.html" label="検索" icon="fa-square"></ons-tab>
+            <ons-tab page="page5.html" label="アクション" icon="fa-square"></ons-tab>
+          </ons-tabbar>
+      </ons-page>
+    </ons-template>
 
-        var storage = window.localStorage;
+    <ons-template id="page3.html">
+      <ons-page id="page3">
+        <!--ポップオーバーの設定!-->
+            <ons-popover direction="down" id="popover">
+                <div style="padding: 10px; text-align: center;">
+                    <p><ons-button modifier="large"><i class="zmdi zmdi-view-list-alt"></i>　　リスト形式で表示</ons-button></p>
+                    <p><ons-button modifier="large"><i class="zmdi zmdi-grid"></i>　グリッド形式で表示</ons-button></p>
+                    <p><ons-button onclick="document.querySelector('#popover').hide()">閉じる</ons-button></p>
+                </div>
+            </ons-popover>
 
-        // storage.setItem('username', 'test')
-        // storage.setItem('password', 'test')
-        // storage.setItem('signup_flag', true)
+            <!--ツールバー!-->
+            <ons-toolbar>
+                <div class="center">映画の一覧</div>
+                <div class="right">
+                    <ons-toolbar-button onClick="document.querySelector('#myNavigator').pushPage('page6.html')">
+                        <ons-icon icon="ion-ios-plus-empty"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
 
-        var signup_flag = storage.getItem('signup_flag');
+                <div class="left">
+                    <ons-toolbar-button onclick="document.querySelector('#popover').show(this)">
+                        <ons-icon icon="ion-ios-settings"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+            </ons-toolbar>
 
-        //ユーザ情報が登録されている場合は自動ログインを行う
-        if (signup_flag == 'true') {
-            //自動ログイン
-            var ncmb = get_ncmb();
+            <p style="text-align: center; opacity: 0.6; padding-top: 20px;">
+              Movies.html
+            </p>
+      </ons-page>
+    </ons-template>
+
+    <ons-template id="page4.html">
+    <ons-page id="page4">
+    <!--ツールバー!-->
+            <ons-toolbar>
+                <div class="center">検索</div>
+            </ons-toolbar>
+
+            <p style="text-align: center; opacity: 0.6; padding-top: 20px;">
+              Search.html
+            </p>
+            </ons-page>
+    </ons-template>
+
+    <ons-template id="page5.html">
+    <ons-page id="page5">
+    <!--ツールバー!-->
+            <ons-toolbar>
+                <div class="center">アクション</div>
+            </ons-toolbar>
+
+            <p style="text-align: center; opacity: 0.6; padding-top: 20px;">
+              Actions.html
+            </p>
+    </ons-page>
+    </ons-template>
+
+    <ons-template id="page6.html">
+    <ons-page id="page6">
+    <!--ツールバー!-->
+            <ons-toolbar>
+                <div class="center">映画の追加</div>
+                <div class="left">
+                    <div class="left"><ons-back-button>映画の一覧</ons-back-button></div>
+                </div>
+            </ons-toolbar>
+
+            <p style="text-align: center; opacity: 0.6; padding-top: 20px;">
+              movieadd.html
+            </p>
+    </ons-page>
+    </ons-template>
+
+    <ons-template id="page7.html">
+    <ons-page id="page7">
+    <!--会員登録成功時のアラート設定!-->
+        <ons-alert-dialog id="signup-alert-success">
+        <div class="alert-dialog-title">登録完了</div>
+        <div class="alert-dialog-content">
+            会員情報の登録に成功しました！
+        </div>
+        <div class="alert-dialog-footer">
+            <button class="alert-dialog-button" onclick="alert_hide('signup-alert-success')">OK</button>
+        </div>
+        </ons-alert-dialog>
+
+        <!--会員登録失敗時のアラート設定!-->
+        <ons-alert-dialog id="signup-alert-error">
+        <div class="alert-dialog-title">エラー</div>
+        <div class="alert-dialog-content" id="error-message"></div>
+        <div class="alert-dialog-footer">
+            <button class="alert-dialog-button" onclick="alert_hide('signup-alert-error')">OK</button>
+        </div>
+        </ons-alert-dialog>
+
+        <ons-page>
+        <ons-toolbar>
+            <div class="center">ユーザ登録</div>
+        </ons-toolbar>
+
+        <div class="formarea">
+            <div class="form-row">
+              <input type="text" id="username" class="text-input--underbar width-full" placeholder="ユーザ名" value="">
+            </div>
+
+            <div class="form-row">
+              <input type="password" id="password" class="text-input--underbar width-full" placeholder="パスワード" value="">
+            </div>
+
+            <div class="lucent">
+              <p class="note">Password - 6 characters or more</p>
+            </div>
+
+            <div class="vspc form-row">
+              <ons-button modifier="large--cta" onclick="signup()">登録</ons-button>
+            </div>
+          </div>
+          </ons-page>
+    </ons-page>
+    </ons-template>
+
+            <!--2秒間たったら画面遷移する!-->
+        <script>
+           //delete_localstorage();
+
             var storage = window.localStorage;
-            var username = storage.getItem('username');
-            var password = storage.getItem('password');
 
-            ncmb.User.login(username, password)
-                .then(function(data){
-                    // ログイン後処理
-                    //tabbar.htmlへ遷移
-                    var showpage = function(){
-                        document.querySelector('#navigator').pushPage('tabbar.html', { animation : 'fade' } )
-                    };
-                    setTimeout(showpage, 2000);
+            // storage.setItem('username', 'test')
+            // storage.setItem('password', 'test')
+            // storage.setItem('signup_flag', true)
 
-                })
-            .catch(function(err){
-                // エラー処理
-                });
+            var signup_flag = storage.getItem('signup_flag');
 
-        //ユーザ情報が登録されていない場合はsignupへ遷移
-        }else {
-            //signup.htmlへ遷移
-            var showpage = function(){
-                document.querySelector('#navigator').pushPage('signup.html', { animation : 'fade' } )
-            };
-            setTimeout(showpage, 0);
-        }
-    </script>
-    </body>
-</html>
+            //ユーザ情報が登録されている場合は自動ログインを行う
+            if (signup_flag == 'true') {
+                //自動ログイン
+                var ncmb = get_ncmb();
+                var storage = window.localStorage;
+                var username = storage.getItem('username');
+                var password = storage.getItem('password');
+
+                ncmb.User.login(username, password)
+                    .then(function(data){
+                        // ログイン後処理
+                        //tabbar.htmlへ遷移
+                        var showpage = function(){
+                            document.querySelector('#myNavigator').pushPage('page2.html', { animation : 'fade' } )
+                        };
+                        setTimeout(showpage, 2000);
+                    })
+                .catch(function(err){
+                    // エラー処理
+                    });
+
+            //ユーザ情報が登録されていない場合はsignupへ遷移
+            }else {
+                //signup.htmlへ遷移
+                var showpage = function(){
+                            document.querySelector('#myNavigator').pushPage('page7.html', { animation : 'fade' } )
+                        };
+                setTimeout(showpage, 1000);
+            }
+        </script>
+        </body>
+    </html>
