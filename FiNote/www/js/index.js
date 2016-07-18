@@ -18,7 +18,18 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-        app.receivedEvent('deviceready');
+       // app.receivedEvent('deviceready');
+        var db = window.sqlitePlugin.openDatabase({name: 'my_db', location: 'default'});
+
+          db.transaction(function(tx) {
+            // console.log('Open database success');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS movie (id integer primary key, title text, tmdb_id text, genre_id text, keyword_id text, onomatopoeia_id text, thumbnail text, username text)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS Genre (id integer primary key, name text, username text)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS KeyWord (id integer primary key, name text, username text)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS Onomatopoeia (id integer primary Key, name text, joy_status text, anger_status text, sadness_status text, happiness_status text)');
+          }, function(err) {
+            console.log('Open database ERROR: ' +JSON.stringify(err) +' ' + err.message);
+          });
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
