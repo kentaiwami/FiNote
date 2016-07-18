@@ -46,17 +46,16 @@
                     .then(function(data){
                         // ログイン後処理
                         //映画情報をデータベースから取得してtab.htmlへ遷移
-                        var callback = function(){
-                            document.querySelector('#myNavigator').pushPage('tab.html', { animation : 'fade' } )
-                            //console.log(document.getElementById("test"));
-                            // storage.setItem('movies',movies)
-                            // console.log(storage.getItem('movies'))
-                        }
-
                         var db = get_database();
                         db.transaction(function(tx) {
-                            db.executeSql('SELECT COUNT(*) FROM movie', [], function(res) {
-                                console.log('Check SELECT result: ' + JSON.stringify(res.rows.item(0)));
+                            db.executeSql('SELECT COUNT(*) AS movie_count FROM movie', [], function(res) {
+                                var movie_count = res.rows.item(0).movie_count;
+                                if (movie_count == 0) {
+                                    document.querySelector('#myNavigator').pushPage('tab.html', { animation : 'fade' } )
+                                }else {
+                                    //ons-listを生成して遷移
+                                    document.querySelector('#myNavigator').pushPage('tab.html', { animation : 'fade' } )
+                                }
                             });
                         }, function(err) {
                             console.log('SELECT movie ERROR: ' +JSON.stringify(err) +' ' + err.message);
