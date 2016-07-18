@@ -53,6 +53,16 @@
                             // console.log(storage.getItem('movies'))
                         }
 
+                        var db = get_database();
+                        db.transaction(function(tx) {
+                            db.executeSql('SELECT COUNT(*) FROM movie', [], function(res) {
+                                console.log('Check SELECT result: ' + JSON.stringify(res.rows.item(0)));
+                            });
+                        }, function(err) {
+                            console.log('SELECT movie ERROR: ' +JSON.stringify(err) +' ' + err.message);
+                        });
+
+
 
 
                     })
