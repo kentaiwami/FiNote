@@ -22,12 +22,18 @@
         <script>
            //delete_localstorage();
 
+           // var callback = function(){
+           //  var storage = window.localStorage;
+
+           //  if (storage.getItem('movies') != null) {
+           //      document.getElementById("test").innerHTML = "not null"
+           //  }else{
+           //      document.getElementById("test").innerHTML = "null"
+           //  }
+           // }
+           //  check_page_init("movies",callback);
+
             var storage = window.localStorage;
-
-            // storage.setItem('username', 'test')
-            // storage.setItem('password', 'test')
-            // storage.setItem('signup_flag', true)
-
             var signup_flag = storage.getItem('signup_flag');
 
             //ユーザ情報が登録されている場合は自動ログインを行う
@@ -43,13 +49,15 @@
                         // ログイン後処理
                         //映画情報をサーバーから取得してtab.htmlへ遷移
                         var callback = function(movies){
-                        console.log(movies);
-                        document.querySelector('#myNavigator').pushPage('tab.html', { animation : 'fade' } )
+                            console.log(movies);
+                            document.querySelector('#myNavigator').pushPage('tab.html', { animation : 'fade' } )
+                            //console.log(document.getElementById("test"));
+                            // storage.setItem('movies',movies)
+                            // console.log(storage.getItem('movies'))
                         }
 
-                        var storage = window.localStorage;
-                        var username = storage.getItem('username');
                         var movies = get_movies_ncmbobject(username,callback);
+
 
                     })
                 .catch(function(err){
@@ -65,11 +73,10 @@
                 setTimeout(showpage, 1000);
             }
         </script>
-
         <ons-navigator id="myNavigator" page="index.html"></ons-navigator>
-
         <!--index.htmlの設定-->
         <ons-template id="index.html">
+
           <ons-page id="index">
             <script>
                     //ユーザ情報が存在する場合はローディング画面を表示する
@@ -120,7 +127,7 @@
                         </ons-toolbar-button>
                     </div>
                 </ons-toolbar>
-
+                
                 <p id="test" style="text-align: center; opacity: 0.6; padding-top: 20px;">
                   Movies.html
                 </p>

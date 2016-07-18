@@ -128,6 +128,17 @@ function get_movies_ncmbobject(username, callback){
         console.log(err);
     });
 }
+
+//指定したページの読み込み終了後に指定したcallbackを実行する
+function check_page_init(pageid,callback){
+    document.addEventListener("init", function(event) {
+        if (event.target.id == pageid) {
+            console.log(pageid + ' is inited')
+            console.log(document.getElementById("test"))
+            callback();
+        }
+    }, false);
+}
      
 
 app.initialize();
