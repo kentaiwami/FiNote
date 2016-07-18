@@ -18,7 +18,17 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-        app.receivedEvent('deviceready');
+       // app.receivedEvent('deviceready');
+        var db = get_database();
+
+          db.transaction(function(tx) {
+            tx.executeSql('CREATE TABLE IF NOT EXISTS movie (id integer primary key, title text unique, tmdb_id integer unique, genre_id text, keyword_id text, onomatopoeia_id text, thumbnail_path text, username text)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS genre (id integer primary key, name text unique, username text)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS keyword (id integer primary key, name text unique, username text)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS onomatopoeia (id integer primary Key, name text, joy_status integer, anger_status integer, sadness_status integer, happiness_status integer)');
+          }, function(err) {
+            console.log('Open database ERROR: ' +JSON.stringify(err) +' ' + err.message);
+          });
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -113,6 +123,64 @@ function delete_localstorage(){
     storage.removeItem('password')
     storage.removeItem('signup_flag')
 }
+
+//ログイン中のユーザ名が含まれるMovieオブジェクトを最新順で取得する
+function get_movies_ncmbobject(username, callback){
+    // var ncmb = get_ncmb();
+    // var Movie = ncmb.DataStore("Movie");
+    // Movie.equalTo("UserName", username)
+    // .order("updateDate",true)
+    // .fetchAll()
+    // .then(function(results){
+    //     insert_movie(results);
+    //     callback();
+    // })
+    // .catch(function(err){
+    //     console.log(err);
+    // });
+}
+
+//指定したページの読み込み終了後に指定したcallbackを実行する
+function check_page_init(pageid,callback){
+    // document.addEventListener("init", function(event) {
+    //     if (event.target.id == pageid) {
+    //         console.log(pageid + ' is inited')
+    //         console.log(document.getElementById("test"))
+    //         callback();
+    //     }
+    // }, false);
+}
+
+//データベースのオブジェクトを返す
+function get_database(){
+    var db = window.sqlitePlugin.openDatabase({name: 'my_db', location: 'default'});
+    return db;
+}
+
+// //ローカルのデータベースにサーバから取得したmovieを記録する
+// function insert_movie(movies){
+//     var db = this.get_database();
+    
+//     for (var i = 0; i < movies.length; i++) {
+//         console.log(movies[i]);
+
+//        db.executeSql("INSERT INTO movie(title, tmdb_id, genre_id, keyword_id, onomatopoeia_id, thumbnail_path, username) VALUES('title', 'tmdb_id', 'genre_id')");
+//         //id integer primary key, title text unique, tmdb_id integer unique, genre_id text, keyword_id text, onomatopoeia_id text, thumbnail_path text, username text
+//     }
+
+//     // db.transaction(function(tx) {
+//     //     // console.log('Open database success');
+//     //     for (var i = 0; i >= 0; i--) {
+//     //         Things[i]
+//     //     }
+//     //     tx.executeSql('CREATE TABLE IF NOT EXISTS movie (id integer primary key, title text, tmdb_id text, genre_id text, keyword_id text, onomatopoeia_id text, thumbnail text, username text)');
+//     //     tx.executeSql('CREATE TABLE IF NOT EXISTS Genre (id integer primary key, name text, username text)');
+//     //     tx.executeSql('CREATE TABLE IF NOT EXISTS KeyWord (id integer primary key, name text, username text)');
+//     //     tx.executeSql('CREATE TABLE IF NOT EXISTS Onomatopoeia (id integer primary Key, name text, joy_status text, anger_status text, sadness_status text, happiness_status text)');
+//     // }, function(err) {
+//     //     console.log('Open database ERROR: ' +JSON.stringify(err) +' ' + err.message);
+//     //     });
+// }
      
 
 app.initialize();
