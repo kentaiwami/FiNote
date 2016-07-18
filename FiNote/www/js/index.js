@@ -113,6 +113,21 @@ function delete_localstorage(){
     storage.removeItem('password')
     storage.removeItem('signup_flag')
 }
+
+//ログイン中のユーザ名が含まれるMovieオブジェクトを最新順で取得する
+function get_movies_ncmbobject(username, callback){
+    var ncmb = get_ncmb();
+    var Movie = ncmb.DataStore("Movie");
+    Movie.equalTo("UserName", username)
+    .order("updateDate",true)
+    .fetchAll()
+    .then(function(results){
+        callback(results);
+    })
+    .catch(function(err){
+        console.log(err);
+    });
+}
      
 
 app.initialize();

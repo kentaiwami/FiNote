@@ -18,6 +18,54 @@
 
         <body>
 
+        <!--2秒間たったら画面遷移する-->
+        <script>
+           //delete_localstorage();
+
+            var storage = window.localStorage;
+
+            // storage.setItem('username', 'test')
+            // storage.setItem('password', 'test')
+            // storage.setItem('signup_flag', true)
+
+            var signup_flag = storage.getItem('signup_flag');
+
+            //ユーザ情報が登録されている場合は自動ログインを行う
+            if (signup_flag == 'true') {
+                //自動ログイン
+                var ncmb = get_ncmb();
+                var storage = window.localStorage;
+                var username = storage.getItem('username');
+                var password = storage.getItem('password');
+
+                ncmb.User.login(username, password)
+                    .then(function(data){
+                        // ログイン後処理
+                        //映画情報をサーバーから取得してtab.htmlへ遷移
+                        var callback = function(movies){
+                        console.log(movies);
+                        document.querySelector('#myNavigator').pushPage('tab.html', { animation : 'fade' } )
+                        }
+
+                        var storage = window.localStorage;
+                        var username = storage.getItem('username');
+                        var movies = get_movies_ncmbobject(username,callback);
+
+                    })
+                .catch(function(err){
+                    // エラー処理
+                    });
+
+            //ユーザ情報が登録されていない場合はsignupへ遷移
+            }else {
+                //signup.htmlへ遷移
+                var showpage = function(){
+                            document.querySelector('#myNavigator').pushPage('signup.html', { animation : 'fade' } )
+                        };
+                setTimeout(showpage, 1000);
+            }
+        </script>
+
         <ons-navigator id="myNavigator" page="index.html"></ons-navigator>
 
         <!--index.htmlの設定-->
@@ -73,7 +121,7 @@
                     </div>
                 </ons-toolbar>
 
-                <p style="text-align: center; opacity: 0.6; padding-top: 20px;">
+                <p id="test" style="text-align: center; opacity: 0.6; padding-top: 20px;">
                   Movies.html
                 </p>
           </ons-page>
@@ -172,48 +220,5 @@
               </ons-page>
         </ons-page>
         </ons-template>
-
-            <!--2秒間たったら画面遷移する-->
-        <script>
-           //delete_localstorage();
-
-            var storage = window.localStorage;
-
-            // storage.setItem('username', 'test')
-            // storage.setItem('password', 'test')
-            // storage.setItem('signup_flag', true)
-
-            var signup_flag = storage.getItem('signup_flag');
-
-            //ユーザ情報が登録されている場合は自動ログインを行う
-            if (signup_flag == 'true') {
-                //自動ログイン
-                var ncmb = get_ncmb();
-                var storage = window.localStorage;
-                var username = storage.getItem('username');
-                var password = storage.getItem('password');
-
-                ncmb.User.login(username, password)
-                    .then(function(data){
-                        // ログイン後処理
-                        //tabbar.htmlへ遷移
-                        var showpage = function(){
-                            document.querySelector('#myNavigator').pushPage('tab.html', { animation : 'fade' } )
-                        };
-                        setTimeout(showpage, 2000);
-                    })
-                .catch(function(err){
-                    // エラー処理
-                    });
-
-            //ユーザ情報が登録されていない場合はsignupへ遷移
-            }else {
-                //signup.htmlへ遷移
-                var showpage = function(){
-                            document.querySelector('#myNavigator').pushPage('signup.html', { animation : 'fade' } )
-                        };
-                setTimeout(showpage, 1000);
-            }
-        </script>
         </body>
     </html>
