@@ -133,9 +133,53 @@
                     </div>
                 </ons-toolbar>
                 
-                <p id="test" style="text-align: center; opacity: 0.6; padding-top: 20px;">
-                  Movies.html
-                </p>
+                <ons-pull-hook id="pull-hook">
+                    Pull to refresh
+                </ons-pull-hook>
+
+                <script>
+                    //ブラウザで動作確認を行う際に遷移する必要があるため
+                    // window.onload = function(){
+                    //     document.querySelector('#myNavigator').pushPage('tab.html', { animation : 'fade' } )
+                    // }
+
+                    var callback = function(){
+                        var pullHook = document.getElementById('pull-hook');
+                        pullHook.addEventListener('changestate', function(event) {
+
+                            var message = '';
+                            switch (event.state){
+                                case 'initial':
+                                message = 'Pull to refresh';
+                                break;
+                                case 'preaction':
+                                message = 'Release';
+                                break;
+                                case 'action':
+                                message = 'Loading...';
+                                break;
+                            }
+
+                            pullHook.innerHTML = message;
+                        });
+
+                        pullHook.onAction = function(done) {
+                            setTimeout(done, 1000);
+                        };
+                    }
+
+                    check_page_init("movies",callback);
+                
+                </script>
+
+                <ons-list>
+                    <ons-list-item>Item 1</ons-list-item>
+                    <ons-list-item>Item 2</ons-list-item>
+                    <ons-list-item>Item 3</ons-list-item>
+                    <ons-list-item>Item 4</ons-list-item>
+                    <ons-list-item>Item 5</ons-list-item>
+                    <ons-list-item>Item 6</ons-list-item>
+                </ons-list>
           </ons-page>
         </ons-template>
 
