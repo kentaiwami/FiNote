@@ -47,16 +47,14 @@
                 ncmb.User.login(username, password)
                     .then(function(data){
                         // ログイン後処理
-                        //映画情報をサーバーから取得してtab.htmlへ遷移
-                        var callback = function(movies){
-                            console.log(movies);
+                        //映画情報をデータベースから取得してtab.htmlへ遷移
+                        var callback = function(){
                             document.querySelector('#myNavigator').pushPage('tab.html', { animation : 'fade' } )
                             //console.log(document.getElementById("test"));
                             // storage.setItem('movies',movies)
                             // console.log(storage.getItem('movies'))
                         }
 
-                        var movies = get_movies_ncmbobject(username,callback);
 
 
                     })
