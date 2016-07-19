@@ -82,17 +82,21 @@
                                 }else {
                                     callback = function(){
                                         var infiniteList = document.getElementById('infinite-list');
+
+                                        var movie_title = "タイトルがここに入るタイトルがここに入る";
+                                        var movie_thumbnail_path = "http://placekitten.com/g/40/40";
+                                        var movie_subtitle = "概要がここに入る概要がここに入る概要がここに入る概要がここに入る概要がここに入る";
                                       infiniteList.delegate = {
                                         createItemContent: function(i) {
                                           return ons._util.createElement(
-                                            '<ons-list-item>Item ' + i + '</ons-list-item>'
+                                            '<ons-list-item><div class="left"><img class="list__item__thumbnail" src="' + movie_thumbnail_path +'"></div><div class="center"><span class="list__item__title">' + movie_title +'</span><span class="list__item__subtitle">' +movie_subtitle +'</span></div></ons-list-item>'
                                           );
                                         },
                                         countItems: function() {
                                           return movie_count;
                                         },
                                         calculateItemHeight: function() {
-                                          return ons.platform.isAndroid() ? 48 : 44;
+                                          return ons.platform.isAndroid() ? 48 : 100;
                                         }
                                       };
 

@@ -4015,6 +4015,8 @@ ons-range[disabled] .range {
   -moz-box-ordinal-group: 1;
   -ms-flex-order: 0;
   order: 0;
+  width: 100px; /*※幅を指定する必要あり */
+  word-wrap: break-word;
 }
 .list__item__subtitle {
   opacity: 0.75;
@@ -4030,6 +4032,8 @@ ons-range[disabled] .range {
   -webkit-align-self: flex-start;
   -ms-flex-item-align: start;
   align-self: flex-start;
+  width: 100px; /*※幅を指定する必要あり */
+  word-wrap: break-word;
 }
 /* topdoc
   name: List Item with Thumbnail
@@ -4061,8 +4065,8 @@ ons-range[disabled] .range {
     </ul>
 */
 .list__item__thumbnail {
-  width: 40px;
-  height: 40px;
+  width: 80px;
+  height: 80px;
   -webkit-border-radius: 6px;
   border-radius: 6px;
   display: block;
