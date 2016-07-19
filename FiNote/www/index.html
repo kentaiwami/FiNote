@@ -49,45 +49,70 @@
                         var db = get_database();
                         db.transaction(function(tx) {
                             db.executeSql('SELECT COUNT(*) AS movie_count FROM movie', [], function(res) {
+
+                                //movieのレコード数を取得後
+                                document.querySelector('#myNavigator').pushPage('tab.html', { animation : 'fade' } )
+
                                 var movie_count = res.rows.item(0).movie_count;
-
-                                if (movie_count == 0) {
-                                    document.querySelector('#myNavigator').pushPage('tab.html', { animation : 'fade' } )
-
-                                    var callback = function(){
-                                        var nodata_message = document.getElementById("nodata_message");
-                                        nodata_message.innerHTML = "登録された映画はありません";
-
-                                        var pullHook = document.getElementById("pull-hook");
-                                        pullHook.thresholdHeight = 200;
-                                        pullHook.addEventListener('changestate', function(event) {
-                                            var message = '';
-                                            switch (event.state){
-                                                case 'initial':
-                                                message = 'Pull to refresh';
-                                                break;
-                                                case 'preaction':
-                                                message = 'Release';
-                                                break;
-                                                case 'action':
-                                                message = 'Loading...';
-                                                break;
-                                            }
+                                var callback = function(){};
+                                var pullhook_setting = function(message){
+                                    var pullHook = document.getElementById("pull-hook");
+                                    pullHook.thresholdHeight = 200;
+                                    pullHook.addEventListener('changestate', function(event) {
+                                        var message = '';
+                                        switch (event.state){
+                                            case 'initial':
+                                            message = 'Pull to refresh';
+                                            break;
+                                            case 'preaction':
+                                            message = 'Release';
+                                            break;
+                                            case 'action':
+                                            message = 'Loading...';
+                                            break;
+                                        }
 
                                         pullHook.innerHTML = message;
                                         });
 
                                         pullHook.onAction = function(done) {
                                             setTimeout(done, 1000);
-                                            setTimeout(function(){nodata_message.innerHTML = "登録された映画はありません"}, 1000);
+                                            setTimeout(function(){nodata_message.innerHTML = message}, 1000);
                                         };
-                                    }
+                                };
 
-                                    check_page_init("movies",callback);
+                                if (movie_count == 0) {
+
+                                    callback = function(){
+                                        var nodata_message = document.getElementById("nodata_message");
+                                        nodata_message.innerHTML = "登録された映画はありません";
+
+                                        pullhook_setting("登録された映画はありません");
+                                    }
                                 }else {
-                                    //ons-listを生成して遷移
-                                    document.querySelector('#myNavigator').pushPage('tab.html', { animation : 'fade' } )
+                                    callback = function(){
+                                        var infiniteList = document.getElementById('infinite-list');
+                                      infiniteList.delegate = {
+                                        createItemContent: function(i) {
+                                          return ons._util.createElement(
+                                            '<ons-list-item>Item ' + i + '</ons-list-item>'
+                                          );
+                                        },
+                                        countItems: function() {
+                                          return 50;
+                                        },
+                                        calculateItemHeight: function() {
+                                          return ons.platform.isAndroid() ? 48 : 44;
+                                        }
+                                      };
+
+                                      infiniteList.refresh();
+
+                                      pullhook_setting("");
+                                    }
                                 }
+
+                                check_page_init("movies",callback);
                             });
                         }, function(err) {
                             console.log('SELECT movie ERROR: ' +JSON.stringify(err) +' ' + err.message);
@@ -169,14 +194,9 @@
                     Pull to refresh
                 </ons-pull-hook>
 
-                <!-- <ons-list>
-                    <ons-list-item>Item 1</ons-list-item>
-                    <ons-list-item>Item 2</ons-list-item>
-                    <ons-list-item>Item 3</ons-list-item>
-                    <ons-list-item>Item 4</ons-list-item>
-                    <ons-list-item>Item 5</ons-list-item>
-                    <ons-list-item>Item 6</ons-list-item>
-                </ons-list> -->
+                <ons-list>
+                    <ons-lazy-repeat id="infinite-list"></ons-lazy-repeat>
+                </ons-list>
                 <p id="nodata_message" style="text-align: center; opacity: 0.6; padding-top: 20px;"></p>
           </ons-page>
         </ons-template>
