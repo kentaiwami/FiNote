@@ -106,6 +106,15 @@
                                 }
 
                                 check_page_init("movies",callback);
+
+                                //search_movie_title(検索窓)に変更があるたびに動作する関数を設定する
+                                var setting_search_movie_title = function(){
+                                    var search_movie_title = document.getElementById("search_movie_title");
+                                    search_movie_title.addEventListener('keyup', function(){
+                                        //console.log(search_movie_title.value);
+                                    });
+                                }
+                                check_page_init("movieadd",setting_search_movie_title);
                             });
                         }, function(err) {
                             console.log('SELECT movie ERROR: ' +JSON.stringify(err) +' ' + err.message);
@@ -234,8 +243,7 @@
                 </ons-toolbar>
 
                 <form>
-                <input type="search" value="" placeholder="タイトル検索" class="search-input">
-                
+                <input type="search" id="search_movie_title" value="" placeholder="タイトル検索" class="search-input">
                 </form>
         </ons-page>
         </ons-template>
