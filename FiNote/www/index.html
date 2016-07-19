@@ -233,9 +233,14 @@
                     </div>
                 </ons-toolbar>
 
-                <p style="text-align: center; opacity: 0.6; padding-top: 20px;">
-                  movieadd.html
-                </p>
+                <form>
+                <input type="search" value="" placeholder="タイトル検索" class="search-input" list="tokyo" autocorrect="on" autocapitalize="on">
+                <datalist id="tokyo">
+                    <option value="渋谷">
+                    <option value="新宿">
+                    <option value="池袋">
+                </datalist>
+                </form>
         </ons-page>
         </ons-template>
 
