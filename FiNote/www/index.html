@@ -21,6 +21,11 @@
         <script>
            //delete_localstorage();
 
+           //エラー表示用
+           window.onerror = function(msg, url, line, col, error) {  
+            console.log(msg);
+           };
+
             var storage = window.localStorage;
             var signup_flag = storage.getItem('signup_flag');
 
