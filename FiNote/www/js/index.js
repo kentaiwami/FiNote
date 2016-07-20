@@ -156,6 +156,11 @@ function get_database(){
     return db;
 }
 
+//TMDBのAPIキーを返す
+function get_tmdb_apikey(){
+    return "dcf593b3416b09594c1f13fabd1b9802";
+}
+
 // //ローカルのデータベースにサーバから取得したmovieを記録する
 // function insert_movie(movies){
 //     var db = this.get_database();
