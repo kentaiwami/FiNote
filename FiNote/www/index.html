@@ -24,7 +24,7 @@
         <script>
            //delete_localstorage();
 
-           //TMDBのAPIテスト 
+           //TMDBのAPIテスト
            var request = new XMLHttpRequest();
            var title = "天空";
            var api_key = get_tmdb_apikey();
@@ -48,12 +48,6 @@
             };
 
             request.send();
-
-
-
-
-
-
 
            //エラー表示用
            window.onerror = function(msg, url, line, col, error) {  
@@ -110,6 +104,7 @@
                                         };
                                 };
 
+                                //ローカルに保存されている映画情報の件数で表示内容を変える
                                 if (movie_count == 0) {
                                     callback = function(){
                                         var nodata_message = document.getElementById("nodata_message");
