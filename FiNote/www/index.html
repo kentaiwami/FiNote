@@ -9,11 +9,8 @@
             <link rel="stylesheet" href="onsen/css/onsenui.css">
             <link rel="stylesheet" href="onsen/css/onsen-css-components.css">
             <link rel="stylesheet" href="css/index.css">
-            <link rel="stylesheet" href="css/auto-complete.css">
 
             <script src="js/index.js"></script>
-            <script src="js/auto-complete.js"></script>
-            <script src="js/auto-complete.min.js"></script>
             <script src="onsen/js/onsenui.js"></script>
             <script src="cordova.js"></script>
             <script src="js/ncmb.min.js" charset="utf-8"></script>
@@ -119,20 +116,6 @@
                                 //search_movie_title(検索窓)に変更があるたびに動作する関数を設定する
                                 var setting_search_movie_title = function(){
                                     var search_movie_title = document.getElementById("search_movie_title");
-
-                                    //autoCompleteの設定
-                                    var my_autoComplete = new autoComplete({
-                                        selector: 'input[name="q"]',
-                                        minChars: 1,
-                                        source: function(term, suggest){
-                                            term = term.toLowerCase();
-                                            var choices = ['ActionScript', 'AppleScript', 'Asp', 'あいうえお', '映像作品', 'ActionScript', 'ActionScript', 'ActionScript', 'ActionScript', 'ActionScript', 'ActionScript', 'ActionScript', 'ActionScript', 'ActionScript', 'ActionScript', 'ActionScript'];
-                                            var matches = [];
-                                            for (i=0; i<choices.length; i++)
-                                                if (~choices[i].toLowerCase().indexOf(term)) matches.push(choices[i]);
-                                            suggest(matches);
-                                        }
-                                    });
 
                                     //search_movie_title(検索窓)に文字を入力するたびに動作
                                     search_movie_title.addEventListener('input', function(){
