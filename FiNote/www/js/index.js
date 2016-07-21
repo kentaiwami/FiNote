@@ -161,6 +161,31 @@ function get_tmdb_apikey(){
     return "dcf593b3416b09594c1f13fabd1b9802";
 }
 
+//映画をタイトルで検索するリクエストを生成して実行する
+function create_request_movie_search(movie_title, language, callback){
+    var request = new XMLHttpRequest();
+    var api_key = get_tmdb_apikey();
+    var request_url = "http://api.themoviedb.org/3/search/movie?query=" +movie_title +"&api_key=" + api_key + "&language=" +language;
+
+    console.log("url: " + request_url);
+    request.open('GET', request_url);
+
+    request.setRequestHeader('Accept', 'application/json');
+
+    request.onreadystatechange = function () {
+        if (this.readyState === 4) {
+            console.log('Status:', this.status);
+            console.log('Headers:', this.getAllResponseHeaders());
+            console.log('Body:', this.responseText);
+
+            var contact = JSON.parse(this.responseText);
+            callback(contact);
+        }
+    };
+
+    request.send();
+}
+
 // //ローカルのデータベースにサーバから取得したmovieを記録する
 // function insert_movie(movies){
 //     var db = this.get_database();
