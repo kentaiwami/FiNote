@@ -17,9 +17,6 @@
             <script src="onsen/js/onsenui.js"></script>
             <script src="cordova.js"></script>
             <script src="js/ncmb.min.js" charset="utf-8"></script>
-            <script src="js/jquery-3.1.0.js"></script>
-            <script src="js/jquery-3.1.0.min.js"></script>
-            <script src="js/jquery.xdomainajax.js"></script>
         </head>
 
         <body>
@@ -27,17 +24,11 @@
         <script>
            //delete_localstorage();
 
-           //スクレイピングのテスト
-           uri = 'https://www.themoviedb.org/movie/10515?language=ja';
-           $.get(uri, function(data){
-                console.log(data.responseText);
-           });
-
            //TMDBのAPIテスト 
            var request = new XMLHttpRequest();
-           var title = "天空の城ラピュタ";
+           var title = "天空";
            var api_key = get_tmdb_apikey();
-           var request_url = "http://api.themoviedb.org/3/search/movie?query=" +title +"&" +"api_key=" + api_key;
+           var request_url = "http://api.themoviedb.org/3/search/movie?query=" +title +"&" +"api_key=" + api_key + "&" + "language=en";
            // var request_url = "https://api.themoviedb.org/3/movie/10515?api_key=" + api_key;
 
            console.log("url: " + request_url);
@@ -50,6 +41,9 @@
                 console.log('Status:', this.status);
                 console.log('Headers:', this.getAllResponseHeaders());
                 console.log('Body:', this.responseText);
+
+                var contact = JSON.parse(this.responseText);
+                console.log('Test:', contact);
               }
             };
 
