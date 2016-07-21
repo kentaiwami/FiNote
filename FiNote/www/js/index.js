@@ -186,6 +186,13 @@ function create_request_movie_search(movie_title, language, callback){
     request.send();
 }
 
+//Searchボタン(改行)を押した際に動作
+function click_done(){
+    console.log("click_done");
+    cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+    document.getElementById("search_movie_title").blur();
+}
+
 // //ローカルのデータベースにサーバから取得したmovieを記録する
 // function insert_movie(movies){
 //     var db = this.get_database();

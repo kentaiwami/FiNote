@@ -135,7 +135,7 @@
                                     });
 
                                     //search_movie_title(検索窓)に文字を入力するたびに動作
-                                    search_movie_title.addEventListener('keyup', function(){
+                                    search_movie_title.addEventListener('input', function(){
                                         //console.log(search_movie_title.value);
 
                                         var callback = function(contact){
@@ -275,7 +275,7 @@
                     </div>
                 </ons-toolbar>
 
-                <form>
+                <form action="javascript:click_done()">
                 <input type="search" id="search_movie_title" name="q" value="" placeholder="タイトル検索" class="search-input">
                 </form>
         </ons-page>
