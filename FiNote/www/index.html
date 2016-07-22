@@ -119,15 +119,13 @@
 
                                     //search_movie_title(検索窓)に文字を入力するたびに動作
                                     search_movie_title.addEventListener('input', function(){
-                                        //console.log(search_movie_title.value);
-
                                         var callback = function(contact){
                                             console.log(contact);
                                         }
 
                                         var search_text = search_movie_title.value;
                                         console.log("value is: " + search_text);
-                                        //create_request_movie_search(search_text, "ja", callback);
+                                        create_request_movie_search(search_text, "ja", callback);
                                     });
                                 }
                                 check_page_init("movieadd",setting_search_movie_title);
@@ -135,10 +133,6 @@
                         }, function(err) {
                             console.log('SELECT movie ERROR: ' +JSON.stringify(err) +' ' + err.message);
                         });
-
-
-
-
                     })
                 .catch(function(err){
                     // エラー処理
@@ -254,7 +248,7 @@
                 <ons-toolbar>
                     <div class="center">映画の追加</div>
                     <div class="left">
-                        <div class="left"><ons-back-button>映画の一覧</ons-back-button></div>
+                        <div class="left"><ons-back-button></ons-back-button></div>
                     </div>
                 </ons-toolbar>
 
