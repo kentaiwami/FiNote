@@ -246,15 +246,14 @@
         <ons-page id="movieadd">
         <!--ツールバー-->
                 <ons-toolbar>
-                    <div class="center">映画の追加</div>
-                    <div class="left">
-                        <div class="left"><ons-back-button></ons-back-button></div>
+                    <div class="left"><ons-back-button></ons-back-button></div>
+
+                    <div class="center">
+                        <form action="javascript:click_done()">
+                            <input style="margin: 6px -60px; width: 190%;" type="search" id="search_movie_title" name="q" value="" placeholder="タイトル検索" class="search-input">
+                        </form>
                     </div>
                 </ons-toolbar>
-
-                <form action="javascript:click_done()">
-                <input type="search" id="search_movie_title" name="q" value="" placeholder="タイトル検索" class="search-input">
-                </form>
         </ons-page>
         </ons-template>
 
