@@ -193,6 +193,10 @@ function click_done(){
     document.getElementById("search_movie_title").blur();
 }
 
+function tap_cancel(){
+    document.getElementById("search_movie_title").value = "";
+}
+
 // //ローカルのデータベースにサーバから取得したmovieを記録する
 // function insert_movie(movies){
 //     var db = this.get_database();
