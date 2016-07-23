@@ -198,13 +198,15 @@ function tap_cancel(){
 }
 
 function set_animation_movieadd_search_input(event) {
-    //ボタンを消してinputを
+    //ボタンをフェードアウト、formを左に移動&幅を縮める
     if (event == "focus") {
         $('#movieadd_backbutton').addClass('animation animation_alpha');
         $('#movieadd_search_input').addClass('animation search_input_animation');
 
         $('#movieadd_backbutton').removeClass('animation_alpha_reverse');
         $('#movieadd_search_input').removeClass('search_input_animation_reversed');
+
+    //ボタンをフェードイン、formを元に戻す
     }else if(event == "blur") {
        $('#movieadd_backbutton').removeClass('animation_alpha');
        $('#movieadd_search_input').removeClass('search_input_animation');
