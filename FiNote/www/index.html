@@ -9,7 +9,7 @@
             <link rel="stylesheet" href="onsen/css/onsenui.css">
             <link rel="stylesheet" href="onsen/css/onsen-css-components.css">
             <link rel="stylesheet" href="css/index.css">
-            <link rel="stylesheet" href="css/magic.css">
+            <link rel="stylesheet" href="css/animation.css">
 
             <script src="js/index.js"></script>
             <script src="js/jquery-3.1.0.min.js"></script>
@@ -250,11 +250,11 @@
         <ons-page id="movieadd">
         <!--ツールバー-->
                 <ons-toolbar>
-                    <div class="left"><ons-back-button></ons-back-button></div>
+                    <div class="left" id="movieadd_backbutton"><ons-back-button></ons-back-button></div>
 
-                    <div class="center" id="hoge">
+                    <div class="center" id="movieadd_search_input">
                         <form action="javascript:click_done()">
-                            <input onfocus="hoge('focus')" onblur="hoge('blur')" style="margin: 6px 0px; margin-left: -50px; width: 170%;" type="search" id="search_movie_title" name="q" value="" placeholder="追加する映画のタイトルを検索" class="search-input">
+                            <input onfocus="set_animation_movieadd_search_input('focus')" onblur="set_animation_movieadd_search_input('blur')" style="margin: 6px 0px; margin-left: -50px; width: 170%;" type="search" id="search_movie_title" name="q" value="" placeholder="追加する映画のタイトルを検索" class="search-input">
                         </form>
                     </div>
 

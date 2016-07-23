@@ -1,0 +1,122 @@
+.animation {
+  -webkit-transition-property: width;
+
+  -webkit-animation-duration: 0.3s;
+  animation-duration: 0.3s;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+}
+
+.search_input_animation {
+  -webkit-animation-name: search_input_animation;
+  animation-name: search_input_animation;
+}
+
+@-webkit-keyframes search_input_animation {
+
+  100% {
+    margin-left: -40px;
+    width: 40%;
+  }
+}
+@keyframes search_input_animation {
+
+  100% {
+    margin-left: -40px;
+    width: 40%;
+  }
+}
+
+.search_input_animation_reversed {
+  -webkit-animation-name: search_input_animation_reversed;
+  animation-name: search_input_animation_reversed;
+}
+
+@-webkit-keyframes search_input_animation_reversed {
+  0% {
+    -webkit-transform-origin: 0 0;
+    -webkit-transform: translateX(-10%);
+    width: 37%;
+  }
+
+  100% {
+    -webkit-transform-origin: 0 0;
+    -webkit-transform: translateX(0%);
+  }
+}
+@keyframes search_input_animation_reversed {
+  0% {
+    transform-origin: 0 0;
+    transform: translateX(-10%);
+    width: 37%;
+  }
+
+  100% {
+    transform-origin: 0 0;
+    transform: translateX(0%);
+  }
+}
+
+.animation_alpha {
+  -webkit-animation-name: animation_alpha;
+  animation-name: animation_alpha;
+}
+
+@-webkit-keyframes animation_alpha {
+  0% {
+    opacity: 100;
+    -moz-opacity: 1.0;
+    opacity: 1.0;
+  }
+
+  100% {
+    opacity: 0;
+    -moz-opacity: 0.0;
+    opacity: 0.0;
+  }
+}
+@keyframes animation_alpha {
+  0% {
+    opacity: 100;
+    -moz-opacity: 1.0;
+    opacity: 1.0;
+  }
+
+  100% {
+    opacity: 0;
+    -moz-opacity: 0.0;
+    opacity: 0.0;
+  }
+}
+
+.animation_alpha_reverse {
+  -webkit-animation-name: animation_alpha_reverse;
+  animation-name: animation_alpha_reverse;
+}
+
+@-webkit-keyframes animation_alpha_reverse {
+    0% {
+    opacity: 0;
+    -moz-opacity: 0.0;
+    opacity: 0.0;
+  }
+
+  100% {
+    opacity: 100;
+    -moz-opacity: 1.0;
+    opacity: 1.0;
+  }
+}
+@keyframes animation_alpha_reverse {
+ 0% {
+    opacity: 0;
+    -moz-opacity: 0.0;
+    opacity: 0.0;
+  }
+
+  100% {
+    opacity: 100;
+    -moz-opacity: 1.0;
+    opacity: 1.0;
+  }
+}

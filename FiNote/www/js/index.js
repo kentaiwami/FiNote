@@ -197,11 +197,20 @@ function tap_cancel(){
     document.getElementById("search_movie_title").value = "";
 }
 
-function hoge(para) {
-    if (para == "focus") {
-        $('#hoge').addClass('magictime slideLeft');
-    }else {
-       $('#hoge').removeClass('magictime slideLeft');
+function set_animation_movieadd_search_input(event) {
+    //ボタンを消してinputを
+    if (event == "focus") {
+        $('#movieadd_backbutton').addClass('animation animation_alpha');
+        $('#movieadd_search_input').addClass('animation search_input_animation');
+
+        $('#movieadd_backbutton').removeClass('animation_alpha_reverse');
+        $('#movieadd_search_input').removeClass('search_input_animation_reversed');
+    }else if(event == "blur") {
+       $('#movieadd_backbutton').removeClass('animation_alpha');
+       $('#movieadd_search_input').removeClass('search_input_animation');
+
+       $('#movieadd_backbutton').addClass('animation animation_alpha_reverse');
+       $('#movieadd_search_input').addClass('animation search_input_animation_reversed');
     }
 }
 // //ローカルのデータベースにサーバから取得したmovieを記録する
