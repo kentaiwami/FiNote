@@ -197,6 +197,15 @@ function tap_cancel(){
     document.getElementById("search_movie_title").value = "";
 }
 
+function hoge(para) {
+    if (para == "focus") {
+        $('#hoge').addClass('magictime slideLeft');
+        $('#hoge').removeClass('magictime slideRight');
+    }else {
+       $('#hoge').removeClass('magictime slideLeft');
+        $('#hoge').addClass('magictime slideRight');
+    }
+}
 // //ローカルのデータベースにサーバから取得したmovieを記録する
 // function insert_movie(movies){
 //     var db = this.get_database();
