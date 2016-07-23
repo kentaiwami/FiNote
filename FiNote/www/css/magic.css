@@ -146,20 +146,12 @@ Copyright (c) 2014 Christian Pucci
   animation-name: slideDown;
 }
 .slideLeft {
-  -webkit-animation-duration: 0s;
-  animation-duration: 0.4s;
   -webkit-animation-name: slideLeft;
   animation-name: slideLeft;
-  transition-property: width;
-  animation-fill-mode: forwards;
 }
 .slideRight {
-  -webkit-animation-duration: 0s;
-  animation-duration: 0.4s;
   -webkit-animation-name: slideRight;
   animation-name: slideRight;
-  transition-property: width;
-  animation-fill-mode: forwards;
 }
 .slideUp {
   -webkit-animation-name: slideUp;
@@ -1020,52 +1012,46 @@ Copyright (c) 2014 Christian Pucci
 }
 @-webkit-keyframes slideLeft {
   0% {
-    -webkit-transform-origin: 0 0;
-    /*-webkit-transform: translateX(0%);*/
+    -webkit-transform-origin: 0 0;;
+    -webkit-transform: translateX(0%);
   }
 
   100% {
     -webkit-transform-origin: 0 0;
-    /*-webkit-transform: translateX(-100%);*/
-    width: 70%;
+    -webkit-transform: translateX(-100%);
   }
 }
 @keyframes slideLeft {
   0% {
-    /*transform-origin: 0 0;*/
-    /*transform: translateX(0%);*/
+    transform-origin: 0 0;
+    transform: translateX(0%);
   }
 
   100% {
-    /*transform-origin: 0 0;*/
-    /*transform: translateX(-100%);*/
-    width: 70%;
+    transform-origin: 0 0;
+    transform: translateX(-100%);
   }
 }
 @-webkit-keyframes slideRight {
   0% {
-    /*-webkit-transform-origin: 0 0;*/
-    /*-webkit-transform: translateX(0%);*/
-    width: 70%;
+    -webkit-transform-origin: 0 0;
+    -webkit-transform: translateX(0%);
   }
 
   100% {
-    /*-webkit-transform-origin: 0 0;*/
-    /*-webkit-transform: translateX(100%);*/
-    width: 100%;
+    -webkit-transform-origin: 0 0;
+    -webkit-transform: translateX(100%);
   }
 }
 @keyframes slideRight {
   0% {
     transform-origin: 0 0;
-    /*transform: translateX(0%);*/
-    width: 70%;
+    transform: translateX(0%);
   }
 
   100% {
     transform-origin: 0 0;
-    /*transform: translateX(100%);*/
-    width: 100%;
+    transform: translateX(100%);
   }
 }
 @-webkit-keyframes slideUp {
@@ -1188,7 +1174,7 @@ Copyright (c) 2014 Christian Pucci
   100% {
     opacity: 1;
     -webkit-transform-origin: 100% 100%;
-    -webkit-transform: scale(1, 1) translate(0px, 0px);
+    -webkit-transform: scale(1, 1) translate(0px, 0px);;
   }
 }
 @keyframes swap {
