@@ -34,26 +34,22 @@
 
 @-webkit-keyframes search_input_animation_reversed {
   0% {
-    -webkit-transform-origin: 0 0;
-    -webkit-transform: translateX(-10%);
-    width: 37%;
+    width: 40%;
+    margin-left: -40px;
   }
 
   100% {
-    -webkit-transform-origin: 0 0;
-    -webkit-transform: translateX(0%);
+    margin-left: 0px;
   }
 }
 @keyframes search_input_animation_reversed {
   0% {
-    transform-origin: 0 0;
-    transform: translateX(-10%);
-    width: 37%;
+    margin-left: -40px;
+    width: 40%;
   }
 
   100% {
-    transform-origin: 0 0;
-    transform: translateX(0%);
+    margin-left: 0px;
   }
 }
 
