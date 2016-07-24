@@ -200,21 +200,22 @@ function tap_cancel(){
 function set_animation_movieadd_search_input(event) {
     //ボタンをフェードアウト、formを左に移動&幅を縮める
     if (event == "focus") {
-        $('#movieadd_backbutton').addClass('animation animation_alpha');
-        $('#movieadd_search_input').addClass('animation search_input_animation');
+        document.getElementById("movieadd_backbutton").classList.add("animation", "animation_alpha");
+        document.getElementById("movieadd_search_input").classList.add("animation", "search_input_animation");
 
-        $('#movieadd_backbutton').removeClass('animation_alpha_reverse');
-        $('#movieadd_search_input').removeClass('search_input_animation_reversed');
+        document.getElementById("movieadd_backbutton").classList.remove("animation_alpha_reverse");
+        document.getElementById("movieadd_search_input").classList.remove("search_input_animation_reversed");
 
     //ボタンをフェードイン、formを元に戻す
     }else if(event == "blur") {
-       $('#movieadd_backbutton').removeClass('animation_alpha');
-       $('#movieadd_search_input').removeClass('search_input_animation');
+        document.getElementById("movieadd_backbutton").classList.remove("animation_alpha");
+        document.getElementById("movieadd_search_input").classList.remove("search_input_animation");
 
-       $('#movieadd_backbutton').addClass('animation animation_alpha_reverse');
-       $('#movieadd_search_input').addClass('animation search_input_animation_reversed');
+        document.getElementById("movieadd_backbutton").classList.add("animation", "animation_alpha_reverse");
+        document.getElementById("movieadd_search_input").classList.add("animation", "search_input_animation_reversed");
     }
 }
+
 // //ローカルのデータベースにサーバから取得したmovieを記録する
 // function insert_movie(movies){
 //     var db = this.get_database();
