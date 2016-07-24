@@ -130,8 +130,11 @@
                                         }
 
                                         var search_text = search_movie_title.value;
-                                        console.log("value is: " + search_text);
-                                        create_request_movie_search(search_text, "ja", callback);
+                                        if (search_text.length > 0) {
+                                            //バツボタンを表示させる
+                                            create_request_movie_search(search_text, "ja", callback);
+
+                                        }
                                     });
                                 }
                                 check_page_init("movieadd",setting_search_movie_title);
@@ -260,9 +263,9 @@
                         </form>
                     </div>
 
-                    <!-- <div onclick="tap_cancel()" class="right" style="margin-top: -1px; padding-left: 40px">
+                    <div onclick="tap_reset()" class="right" id="movieadd_reset" style="margin-top: -1px; padding-right: 10px;">
                       <ons-button modifier="large--quiet"><i class="ion-close-circled"></i></ons-button>
-                    </div> -->
+                    </div>
                 </ons-toolbar>
         </ons-page>
         </ons-template>

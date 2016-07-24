@@ -193,7 +193,7 @@ function click_done(){
     document.getElementById("search_movie_title").blur();
 }
 
-function tap_cancel(){
+function tap_reset(){
     document.getElementById("search_movie_title").value = "";
 }
 
