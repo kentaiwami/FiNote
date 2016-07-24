@@ -200,6 +200,11 @@ function tap_reset(){
     document.getElementById("movieadd_reset").innerHTML = "";
 }
 
+//movieaddのsearch-input横にあるキャンセルボタンをタップした際に動作
+function tap_cancel(){
+    document.getElementById("myNavigator").popPage();
+}
+
 function set_animation_movieadd_search_input(event) {
     var movieadd_backbutton = document.getElementById("movieadd_backbutton");
     var movieadd_search_input = document.getElementById("movieadd_search_input");
@@ -208,6 +213,8 @@ function set_animation_movieadd_search_input(event) {
     //ボタンをフェードアウト、formを左に移動&幅を縮める
     if (event == "focus") {
         cancel_button.innerHTML = "キャンセル";
+        cancel_button.removeAttribute("disabled");
+
         cancel_button.classList.add("animation", "animation_alpha_reverse");
         cancel_button.classList.remove("animation_alpha");
 
@@ -219,6 +226,7 @@ function set_animation_movieadd_search_input(event) {
 
     //ボタンをフェードイン、formを元に戻す
     }else if(event == "blur") {
+        cancel_button.setAttribute("disabled", "true");
         cancel_button.classList.remove("animation_alpha_reverse");
         cancel_button.classList.add("animation", "animation_alpha");
 
