@@ -122,7 +122,8 @@
                                 //search_movie_title(検索窓)に変更があるたびに動作する関数を設定する
                                 var setting_search_movie_title = function(){
                                     var search_movie_title = document.getElementById("search_movie_title");
-
+                                    var reset_button = document.getElementById("movieadd_reset");
+                                    
                                     //search_movie_title(検索窓)に文字を入力するたびに動作
                                     search_movie_title.addEventListener('input', function(){
                                         var callback = function(contact){
@@ -132,8 +133,11 @@
                                         var search_text = search_movie_title.value;
                                         if (search_text.length > 0) {
                                             //バツボタンを表示させる
+                                            reset_button.innerHTML = "<ons-button modifier='large--quiet'><i class='ion-close-circled'></i></ons-button>";
+                                            
                                             create_request_movie_search(search_text, "ja", callback);
-
+                                        }else {
+                                            reset_button.innerHTML = "";
                                         }
                                     });
                                 }
@@ -264,7 +268,6 @@
                     </div>
 
                     <div onclick="tap_reset()" class="right" id="movieadd_reset" style="margin-top: -1px; padding-right: 10px;">
-                      <ons-button modifier="large--quiet"><i class="ion-close-circled"></i></ons-button>
                     </div>
                 </ons-toolbar>
         </ons-page>

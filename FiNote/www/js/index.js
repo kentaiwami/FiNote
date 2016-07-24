@@ -193,8 +193,11 @@ function click_done(){
     document.getElementById("search_movie_title").blur();
 }
 
+//バツボタンをタップした際に動作
 function tap_reset(){
+    //formのテキストを初期化、バツボタンの削除
     document.getElementById("search_movie_title").value = "";
+    document.getElementById("movieadd_reset").innerHTML = "";
 }
 
 function set_animation_movieadd_search_input(event) {
