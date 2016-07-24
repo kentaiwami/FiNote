@@ -133,7 +133,7 @@
                                         var search_text = search_movie_title.value;
                                         if (search_text.length > 0) {
                                             //バツボタンを表示させる
-                                            reset_button.innerHTML = "<ons-button modifier='large--quiet'><i class='ion-close-circled'></i></ons-button>";
+                                            reset_button.innerHTML = "<ons-button modifier='quiet'><i class='ion-close-circled'></i></ons-button>";
                                             
                                             create_request_movie_search(search_text, "ja", callback);
                                         }else {
@@ -267,7 +267,7 @@
                         </form>
                     </div>
 
-                    <div onclick="tap_reset()" class="right" id="movieadd_reset" style="margin-top: -1px; padding-right: 10px;">
+                    <div onclick="tap_reset()" class="right" id="movieadd_reset" style="margin-top: -1px; padding-right: 40px;">
                     </div>
                 </ons-toolbar>
         </ons-page>
