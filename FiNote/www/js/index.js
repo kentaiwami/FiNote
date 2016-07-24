@@ -201,21 +201,33 @@ function tap_reset(){
 }
 
 function set_animation_movieadd_search_input(event) {
+    var movieadd_backbutton = document.getElementById("movieadd_backbutton");
+    var movieadd_search_input = document.getElementById("movieadd_search_input");
+    var cancel_button = document.getElementById("cancel_button");
+
     //ボタンをフェードアウト、formを左に移動&幅を縮める
     if (event == "focus") {
-        document.getElementById("movieadd_backbutton").classList.add("animation", "animation_alpha");
-        document.getElementById("movieadd_search_input").classList.add("animation", "search_input_animation");
+        cancel_button.innerHTML = "キャンセル";
+        cancel_button.classList.add("animation", "animation_alpha_reverse");
+        cancel_button.classList.remove("animation_alpha");
 
-        document.getElementById("movieadd_backbutton").classList.remove("animation_alpha_reverse");
-        document.getElementById("movieadd_search_input").classList.remove("search_input_animation_reversed");
+        movieadd_backbutton.classList.add("animation", "animation_alpha");
+        movieadd_search_input.classList.add("animation", "search_input_animation");
+
+        movieadd_backbutton.classList.remove("animation_alpha_reverse");
+        movieadd_search_input.classList.remove("search_input_animation_reversed");
 
     //ボタンをフェードイン、formを元に戻す
     }else if(event == "blur") {
-        document.getElementById("movieadd_backbutton").classList.remove("animation_alpha");
-        document.getElementById("movieadd_search_input").classList.remove("search_input_animation");
+        // cancel_button.innerHTML = "";
+        cancel_button.classList.remove("animation_alpha_reverse");
+        cancel_button.classList.add("animation", "animation_alpha");
 
-        document.getElementById("movieadd_backbutton").classList.add("animation", "animation_alpha_reverse");
-        document.getElementById("movieadd_search_input").classList.add("animation", "search_input_animation_reversed");
+        movieadd_backbutton.classList.remove("animation_alpha");
+        movieadd_search_input.classList.remove("search_input_animation");
+
+        movieadd_backbutton.classList.add("animation", "animation_alpha_reverse");
+        movieadd_search_input.classList.add("animation", "search_input_animation_reversed");
     }
 }
 
