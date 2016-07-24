@@ -219,7 +219,6 @@ function set_animation_movieadd_search_input(event) {
 
     //ボタンをフェードイン、formを元に戻す
     }else if(event == "blur") {
-        // cancel_button.innerHTML = "";
         cancel_button.classList.remove("animation_alpha_reverse");
         cancel_button.classList.add("animation", "animation_alpha");
 
