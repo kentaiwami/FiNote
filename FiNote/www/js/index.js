@@ -167,16 +167,16 @@ function create_request_movie_search(movie_title, language, callback){
     var api_key = get_tmdb_apikey();
     var request_url = "http://api.themoviedb.org/3/search/movie?query=" +movie_title +"&api_key=" + api_key + "&language=" +language;
 
-    console.log("url: " + request_url);
+    // console.log("url: " + request_url);
     request.open('GET', request_url);
 
     request.setRequestHeader('Accept', 'application/json');
 
     request.onreadystatechange = function () {
         if (this.readyState === 4) {
-            console.log('Status:', this.status);
-            console.log('Headers:', this.getAllResponseHeaders());
-            console.log('Body:', this.responseText);
+            // console.log('Status:', this.status);
+            // console.log('Headers:', this.getAllResponseHeaders());
+            // console.log('Body:', this.responseText);
 
             var contact = JSON.parse(this.responseText);
             callback(contact);
@@ -198,6 +198,9 @@ function tap_reset(){
     //formのテキストを初期化、バツボタンの削除
     document.getElementById("search_movie_title").value = "";
     document.getElementById("movieadd_reset").innerHTML = "";
+    document.getElementById("search_movie_title").focus();
+
+    console.log("tap reset button");
 }
 
 //movieaddのsearch-input横にあるキャンセルボタンをタップした際に動作

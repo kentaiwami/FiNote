@@ -127,13 +127,13 @@
                                     //search_movie_title(検索窓)に文字を入力するたびに動作
                                     search_movie_title.addEventListener('input', function(){
                                         var callback = function(contact){
-                                            console.log(contact);
+                                            //console.log(contact);
                                         }
 
                                         var search_text = search_movie_title.value;
                                         if (search_text.length > 0) {
                                             //バツボタンを表示させる
-                                            reset_button.innerHTML = "<ons-button modifier='quiet'><i class='ion-close-circled'></i></ons-button>";
+                                            reset_button.innerHTML = "<ons-button style='margin: 0px 0px 0px -80px;' modifier='quiet'><i class='ion-close-circled'></i></ons-button>";
 
                                             create_request_movie_search(search_text, "ja", callback);
                                         }else {
@@ -268,9 +268,10 @@
                     </div>
 
                     <div class="right">
-                        <div onclick="tap_reset()" id="movieadd_reset" style="margin-top: -1px; padding-right: 40px;"></div>
-                        <ons-toolbar-button disabled="true" onclick="tap_cancel()" id="cancel_button" style="padding-left: 70px;"></ons-toolbar-button>
+                    	<ons-toolbar-button disabled="true" onclick="tap_cancel()" id="cancel_button" style="padding-left: 70px;"></ons-toolbar-button>
                     </div>
+                    
+                    <div onclick="tap_reset()" id="movieadd_reset"></div>
                 </ons-toolbar>
         </ons-page>
         </ons-template>
