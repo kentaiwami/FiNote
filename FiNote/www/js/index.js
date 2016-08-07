@@ -195,12 +195,10 @@ function click_done(){
 
 //バツボタンをタップした際に動作
 function tap_reset(){
-    //formのテキストを初期化、バツボタンの削除
+    //formのテキストを初期化、バツボタンの削除、フォーカス外し
     document.getElementById("search_movie_title").value = "";
     document.getElementById("movieadd_reset").innerHTML = "";
-    document.getElementById("search_movie_title").focus();
-
-    console.log("tap reset button");
+    document.getElementById("search_movie_title").blur();
 }
 
 //movieaddのsearch-input横にあるキャンセルボタンをタップした際に動作
