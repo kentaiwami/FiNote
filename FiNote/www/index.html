@@ -9,7 +9,6 @@
             <link rel="stylesheet" href="onsen/css/onsenui.css">
             <link rel="stylesheet" href="onsen/css/onsen-css-components.css">
             <link rel="stylesheet" href="css/index.css">
-            <link rel="stylesheet" href="css/animation.css">
 
             <script src="js/index.js"></script>
             <script src="js/jquery-3.1.0.min.js"></script>
@@ -263,12 +262,13 @@
 
                     <div class="center" id="movieadd_search_input">
                         <form action="javascript:click_done()">
-                            <input onfocus="set_animation_movieadd_search_input('focus')" onblur="set_animation_movieadd_search_input('blur')" style="margin: 6px 0px; margin-left: -50px; width: 170%;" type="search" id="search_movie_title" name="q" value="" placeholder="追加する映画のタイトルを検索" class="search-input">
+                            <input onfocus="set_animation_movieadd_search_input('focus')" onblur="set_animation_movieadd_search_input('blur')" style="margin: 6px 0px; margin-left: -50px; width: 170%;" type="search" id="search_movie_title" value="" placeholder="追加する映画のタイトルを検索" class="search-input">
                         </form>
                     </div>
 
                     <div class="right">
-                    	<ons-toolbar-button disabled="true" onclick="tap_cancel()" id="cancel_button" style="padding-left: 70px;"></ons-toolbar-button>
+                    	<ons-toolbar-button onclick="tap_cancel()" id="cancel_button" style="margin-left: 200px; width: 10px;"></ons-toolbar-button>
+                        <!-- background-color: #E7D5E8 -->
                     </div>
                     
                     <div id="movieadd_reset"></div>

@@ -195,6 +195,8 @@ function click_done(){
 
 //バツボタンをタップした際に動作
 function tap_reset(){
+    hoge = false;
+
     //formのテキストを初期化、バツボタンの削除、フォーカス外し
     document.getElementById("search_movie_title").value = "";
     document.getElementById("movieadd_reset").innerHTML = "";
@@ -207,44 +209,42 @@ function tap_reset(){
     //テキスト入力確定後にリセットボタンを押した時
    }else {
        document.getElementById("search_movie_title").focus();
-   }    
+   }
 }
+
+var hoge = true;
 
 //movieaddのsearch-input横にあるキャンセルボタンをタップした際に動作
 function tap_cancel(){
     document.getElementById("myNavigator").popPage();
+    console.log("tap_cancel");
 }
 
-function set_animation_movieadd_search_input(event) {
-    var movieadd_backbutton = document.getElementById("movieadd_backbutton");
-    var movieadd_search_input = document.getElementById("movieadd_search_input");
-    var cancel_button = document.getElementById("cancel_button");
+function set_animation_movieadd_search_input(event_name) {
 
-    //ボタンをフェードアウト、formを左に移動&幅を縮める
-    if (event == "focus") {
-        cancel_button.innerHTML = "キャンセル";
-        cancel_button.removeAttribute("disabled");
+    //検索フィールドにフォーカスした時のアニメーション
+    if (event_name == "focus") {
+        console.log("focus");
+        $("#movieadd_backbutton").fadeTo(100,0);
+        $("#movieadd_backbutton").animate({marginLeft: "-40px"},{queue: false , duration: 200});
 
-        cancel_button.classList.add("animation", "animation_alpha_reverse");
-        cancel_button.classList.remove("animation_alpha");
+        $("#search_movie_title").animate({width: "150%"},{queue: false, duration: 200});
 
-        movieadd_backbutton.classList.add("animation", "animation_alpha");
-        movieadd_search_input.classList.add("animation", "search_input_animation");
+        $("#cancel_button").html("キャンセル");
+        $("#cancel_button").animate({marginLeft: "45px"},{queue: false, duration: 200});
+        $("#cancel_button").fadeTo(100,1);
 
-        movieadd_backbutton.classList.remove("animation_alpha_reverse");
-        movieadd_search_input.classList.remove("search_input_animation_reversed");
+    //検索フィールドのフォーカスが外れた時のアニメーション
+    } else if (event_name == "blur") {
+        console.log("blur"); 
+        $("#movieadd_backbutton").fadeTo(100,1);
+        $("#movieadd_backbutton").animate({marginLeft: "0px"},{queue: false , duration: 200});
 
-    //ボタンをフェードイン、formを元に戻す
-    }else if(event == "blur") {
-        cancel_button.setAttribute("disabled", "true");
-        cancel_button.classList.remove("animation_alpha_reverse");
-        cancel_button.classList.add("animation", "animation_alpha");
+        $("#search_movie_title").animate({width: "170%"},{queue: false, duration: 200});
 
-        movieadd_backbutton.classList.remove("animation_alpha");
-        movieadd_search_input.classList.remove("search_input_animation");
 
-        movieadd_backbutton.classList.add("animation", "animation_alpha_reverse");
-        movieadd_search_input.classList.add("animation", "search_input_animation_reversed");
+        $("#cancel_button").animate({marginLeft: "200px"},{queue: false, duration: 200});
+        $("#cancel_button").fadeTo(100,0);
     }
 }
 
