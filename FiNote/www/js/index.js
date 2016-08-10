@@ -195,8 +195,6 @@ function click_done(){
 
 //バツボタンをタップした際に動作
 function tap_reset(){
-    hoge = false;
-
     //formのテキストを初期化、バツボタンの削除、フォーカス外し
     document.getElementById("search_movie_title").value = "";
     document.getElementById("movieadd_reset").innerHTML = "";
@@ -212,8 +210,6 @@ function tap_reset(){
    }
 }
 
-var hoge = true;
-
 //movieaddのsearch-input横にあるキャンセルボタンをタップした際に動作
 function tap_cancel(){
     document.getElementById("myNavigator").popPage();
@@ -225,6 +221,10 @@ function set_animation_movieadd_search_input(event_name) {
     //検索フィールドにフォーカスした時のアニメーション
     if (event_name == "focus") {
         console.log("focus");
+
+        //検索窓の入力を監視するイベントを追加する
+        $("#search_movie_title").on("input", get_search_movie_title_val);
+
         $("#movieadd_backbutton").fadeTo(100,0);
         $("#movieadd_backbutton").animate({marginLeft: "-40px"},{queue: false , duration: 200});
 
@@ -237,6 +237,9 @@ function set_animation_movieadd_search_input(event_name) {
     //検索フィールドのフォーカスが外れた時のアニメーション
     } else if (event_name == "blur") {
         console.log("blur"); 
+
+        //検索窓の入力を監視するイベントを削除する
+        $("#search_movie_title").off("input", get_search_movie_title_val);
         $("#movieadd_backbutton").fadeTo(100,1);
         $("#movieadd_backbutton").animate({marginLeft: "0px"},{queue: false , duration: 200});
 
@@ -247,6 +250,19 @@ function set_animation_movieadd_search_input(event_name) {
         $("#cancel_button").fadeTo(100,0);
     }
 }
+
+//検索窓の文字数が1以上ならリセットボタンを表示させる関数
+function get_search_movie_title_val(){
+    var text = $("#search_movie_title").val();
+
+    if (text.length > 0) {
+        $("#movieadd_reset").html("<ons-button onclick='tap_reset()' style='margin: 0px 0px 0px -80px;' modifier='quiet'><i class='ion-close-circled'></i></ons-button>");
+    } else {
+        $("#movieadd_reset").html("");
+    }
+}
+
+
 
 // //ローカルのデータベースにサーバから取得したmovieを記録する
 // function insert_movie(movies){
