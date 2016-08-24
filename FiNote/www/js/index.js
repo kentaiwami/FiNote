@@ -306,7 +306,7 @@ function check_signup(){
         draw_movie_content();
     //ユーザ情報が登録されていない場合はsignupへ遷移
     }else {
-        pushPage('signup.html','fade',1000);
+        pushpage('signup.html','fade',1000);
     }
 }
 
@@ -318,9 +318,9 @@ function check_signup(){
  * @param  {[string]} animation_name [アニメーション名]
  * @param  {[number]} delaytime      [Timeoutの時間]
  */
-function pushPage(html_name, animation_name, delaytime) {
+function pushpage(html_name, animation_name, delaytime) {
     var showpage = function(){
-        document.querySelector('#myNavigator').pushPage(html_name, { animation : animation_name } );
+        $("#myNavigator").get(0).pushPage(html_name, { animation : animation_name } );
     };
     
     setTimeout(showpage, delaytime);
@@ -343,7 +343,7 @@ function draw_movie_content() {
         var db = get_database();
         db.transaction(function(tx) {
             db.executeSql('SELECT COUNT(*) AS movie_count FROM movie', [], function(res) {
-                pushPage('tab.html','fade',0);
+                pushpage('tab.html','fade',0);
 
                 var movie_count = res.rows.item(0).movie_count;
                 var draw_content = function(){};
