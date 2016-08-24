@@ -142,12 +142,12 @@ function delete_localstorage(){
  * @param  {Function} callback [読み込み終了後に実行したいコールバック関数]
  */
 function check_page_init(pageid,callback){
-    document.addEventListener("init", function(event) {
+    $(document).on("init", function(event) {
         if (event.target.id == pageid) {
-            console.log(pageid + ' is inited');
+            console.log(pageid + " is inited");
             callback();
         }
-    }, false);
+    });
 }
 
 
@@ -268,6 +268,7 @@ function set_animation_movieadd_search_input(event_name) {
 
         //検索窓の入力を監視するイベントを削除する
         $("#search_movie_title").off("input", get_search_movie_title_val);
+
         $("#movieadd_backbutton").fadeTo(100,1);
         $("#movieadd_backbutton").animate({marginLeft: "0px"},{queue: false , duration: 200});
 
