@@ -51,7 +51,7 @@ function signup(){
 
     //ユーザー名・パスワードを設定
     user.set("userName", document.getElementById("username").value)
-        .set("password", document.getElementById("password").value)
+        .set("password", document.getElementById("password").value);
 
     // 新規登録
     user.signUpByAccount()
@@ -61,11 +61,11 @@ function signup(){
             var username = document.getElementById("username").value;
             var password = document.getElementById("password").value;
             var storage = window.localStorage;
-            storage.setItem('username', username)
-            storage.setItem('password', password)
+            storage.setItem('username', username);
+            storage.setItem('password', password);
 
             //同時にこれらの情報が記録されているかを判断するフラグも保存する
-            storage.setItem('signup_flag', true)
+            storage.setItem('signup_flag', true);
 
             document.getElementById('signup-alert-success').show();
         })
@@ -130,9 +130,9 @@ function get_ncmb(){
  */
 function delete_localstorage(){
     var storage = window.localStorage;
-    storage.removeItem('username')
-    storage.removeItem('password')
-    storage.removeItem('signup_flag')
+    storage.removeItem('username');
+    storage.removeItem('password');
+    storage.removeItem('signup_flag');
 }
 
 
@@ -144,7 +144,7 @@ function delete_localstorage(){
 function check_page_init(pageid,callback){
     document.addEventListener("init", function(event) {
         if (event.target.id == pageid) {
-            console.log(pageid + ' is inited')
+            console.log(pageid + ' is inited');
             callback();
         }
     }, false);
@@ -349,13 +349,13 @@ function draw_movie_content() {
 
 
                 //ローカルに保存されている映画情報の件数で表示内容を変える
-                if (movie_count == 0) {
+                if (movie_count === 0) {
                     draw_content = function(){
                         var nodata_message = document.getElementById("nodata_message");
                         nodata_message.innerHTML = "登録された映画はありません";
 
                         pullhook_setting("登録された映画はありません");
-                    }
+                    };
                 }else {
                     draw_content = function(){
                         var infiniteList = document.getElementById('infinite-list');
@@ -383,7 +383,7 @@ function draw_movie_content() {
                         infiniteList.refresh();
 
                         pullhook_setting("");
-                    }
+                    };
                 }
 
                 check_page_init("movies",draw_content);
@@ -427,7 +427,9 @@ function pullhook_setting(message) {
 
     pullHook.onAction = function(done) {
         setTimeout(done, 1000);
-        setTimeout(function(){nodata_message.innerHTML = message}, 1000);
+        setTimeout(function(){
+            nodata_message.innerHTML = message;
+        }, 1000);
     };
 }
 
