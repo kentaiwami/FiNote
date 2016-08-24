@@ -215,7 +215,7 @@ function click_done(){
  * バツボタンをタップした際に動作
  */
 function tap_reset(){
-    //formのテキストを初期化、バツボタンの削除、フォーカス外し
+    //formのテキストを初期化、バツボタンの削除
     $("#search_movie_title").val("");
     $("#movieadd_reset").html("");
 
