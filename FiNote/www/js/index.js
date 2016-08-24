@@ -287,7 +287,7 @@ function get_search_movie_title_val(){
     var text = $("#search_movie_title").val();
 
     if (text.length > 0) {
-        $("#movieadd_reset").html("<ons-button onclick='tap_reset()' style='margin: 0px 0px 0px -80px;' modifier='quiet'><i class='ion-close-circled'></i></ons-button>");
+        $("#movieadd_reset").html("<ons-button onclick='tap_reset()' style='margin: 0px 0px 0px -100px;' modifier='quiet'><ons-icon icon='ion-close-circled'></ons-icon></ons-button>");
     } else {
         $("#movieadd_reset").html("");
     }
