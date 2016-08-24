@@ -207,7 +207,7 @@ function create_request_movie_search(movie_title, language, callback){
 function click_done(){
     console.log("click_done");
     cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-    document.getElementById("search_movie_title").blur();
+    $("#search_movie_title").blur();
 }
 
 
