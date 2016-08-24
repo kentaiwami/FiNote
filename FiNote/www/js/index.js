@@ -235,7 +235,7 @@ function tap_reset(){
  * movieaddのsearch-input横にあるキャンセルボタンをタップした際に前のページへ画面遷移する
  */
 function tap_cancel(){
-    document.getElementById("myNavigator").popPage();
+    $("#myNavigator").get(0).popPage();
     console.log("tap_cancel");
 }
 
