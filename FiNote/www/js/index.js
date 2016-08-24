@@ -89,8 +89,12 @@ function signup(){
         });
 }
 
+/**
+ * signup時に表示されたアラートのボタンを押した際に動作
+ * @param  {[string]} id [signup-alert-successかsignup-alert-errorを受け取る]
+ */
 function alert_hide(id){
-    //画面遷移をするコールバックを渡す
+    //成功時にはindex.htmlへ遷移
     if (id == "signup-alert-success") {
         var pushpage_tabbar = function(){
             function autoLink(){
@@ -110,13 +114,20 @@ function alert_hide(id){
     }
 }
 
-//ncmbを返す
+
+/**
+ * ncmbを生成して返す
+ * @return {[object]} [生成したncmb]
+ */
 function get_ncmb(){
     var ncmb = new NCMB("f5f6c2e3aa823eea2c500446a62c5645c04fc2fbfd9833cb173e1d876f464f6c","605298c95c0ba9c654315f11c6817e790f21f83a0e9ff60dc2fdf626b1485899");
     return ncmb;
 }
 
-//ローカルストレージの初期化をする
+
+/**
+ * ローカルストレージの初期化をする
+ */
 function delete_localstorage(){
     var storage = window.localStorage;
     storage.removeItem('username')
@@ -124,23 +135,12 @@ function delete_localstorage(){
     storage.removeItem('signup_flag')
 }
 
-//ログイン中のユーザ名が含まれるMovieオブジェクトを最新順で取得する
-function get_movies_ncmbobject(username, callback){
-    // var ncmb = get_ncmb();
-    // var Movie = ncmb.DataStore("Movie");
-    // Movie.equalTo("UserName", username)
-    // .order("updateDate",true)
-    // .fetchAll()
-    // .then(function(results){
-    //     insert_movie(results);
-    //     callback();
-    // })
-    // .catch(function(err){
-    //     console.log(err);
-    // });
-}
 
-//指定したページの読み込み終了後に指定したcallbackを実行する
+/**
+ * 指定したページの読み込み終了後に指定したcallbackを実行する
+ * @param  {[string]}   pageid   [pageのid]
+ * @param  {Function} callback [読み込み終了後に実行したいコールバック関数]
+ */
 function check_page_init(pageid,callback){
     document.addEventListener("init", function(event) {
         if (event.target.id == pageid) {
@@ -150,18 +150,33 @@ function check_page_init(pageid,callback){
     }, false);
 }
 
-//データベースのオブジェクトを返す
+
+/**
+ * データベースのオブジェクトを返す    
+ * @return {[type]} [description]
+ */
 function get_database(){
     var db = window.sqlitePlugin.openDatabase({name: 'my_db', location: 'default'});
     return db;
 }
 
-//TMDBのAPIキーを返す
+
+/**
+ * TMDBのAPIキーを返す
+ * @return {[string]} [TMDBのAPIキー]
+ */
 function get_tmdb_apikey(){
     return "dcf593b3416b09594c1f13fabd1b9802";
 }
 
-//映画をタイトルで検索するリクエストを生成して実行する
+
+/**
+ * 映画をタイトルで検索するリクエストを生成して実行する
+ * @param  {[string]}   movie_title [検索したい映画タイトル]
+ * @param  {[string]}   language    []
+ * @param  {Function} callback    [description]
+ * @return {[type]}               [description]
+ */
 function create_request_movie_search(movie_title, language, callback){
     var request = new XMLHttpRequest();
     var api_key = get_tmdb_apikey();
@@ -186,14 +201,19 @@ function create_request_movie_search(movie_title, language, callback){
     request.send();
 }
 
-//Searchボタン(改行)を押した際に動作
+/**
+ * Searchボタン(改行)を押した際に動作
+ */
 function click_done(){
     console.log("click_done");
     cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
     document.getElementById("search_movie_title").blur();
 }
 
-//バツボタンをタップした際に動作
+
+/**
+ * バツボタンをタップした際に動作
+ */
 function tap_reset(){
     //formのテキストを初期化、バツボタンの削除、フォーカス外し
     document.getElementById("search_movie_title").value = "";
@@ -210,12 +230,20 @@ function tap_reset(){
    }
 }
 
-//movieaddのsearch-input横にあるキャンセルボタンをタップした際に動作
+
+/**
+ * movieaddのsearch-input横にあるキャンセルボタンをタップした際に前のページへ画面遷移する
+ */
 function tap_cancel(){
     document.getElementById("myNavigator").popPage();
     console.log("tap_cancel");
 }
 
+
+/**
+ * 検索フォームにフォーカス時、フォーカスが外れた時のアニメーションを設定する
+ * @param {[string]} event_name [focusまたはblurを受け取る]
+ */
 function set_animation_movieadd_search_input(event_name) {
 
     //検索フィールドにフォーカスした時のアニメーション
@@ -251,7 +279,10 @@ function set_animation_movieadd_search_input(event_name) {
     }
 }
 
-//検索窓の文字数が1以上ならリセットボタンを表示させる関数
+
+/**
+ * 検索窓の文字数が1以上ならリセットボタンを表示させる
+ */
 function get_search_movie_title_val(){
     var text = $("#search_movie_title").val();
 
@@ -262,7 +293,143 @@ function get_search_movie_title_val(){
     }
 }
 
+/**
+ * サインアップしているかを確認する
+ */
+function check_signup(){
+    var storage = window.localStorage;
+    var signup_flag = storage.getItem('signup_flag');
 
+    //ユーザ情報が登録されている場合は自動ログインを行う
+    if (signup_flag == 'true') {
+        draw_movie_content();
+    //ユーザ情報が登録されていない場合はsignupへ遷移
+    }else {
+        pushPage('signup.html','fade',1000);
+    }
+}
+
+
+
+/**
+ * htmlファイル、アニメーション、delay時間を指定するとアニメーションを行って画面遷移する
+ * @param  {[string]} html_name      [画面遷移したいhtmlファイル名]
+ * @param  {[string]} animation_name [アニメーション名]
+ * @param  {[number]} delaytime      [Timeoutの時間]
+ */
+function pushPage(html_name, animation_name, delaytime) {
+    var showpage = function(){
+        document.querySelector('#myNavigator').pushPage(html_name, { animation : animation_name } );
+    };
+    
+    setTimeout(showpage, delaytime);
+}
+
+
+/**
+ * 自動ログイン後に映画一覧画面の表示を行う
+ */
+function draw_movie_content() {
+    //自動ログイン
+    var ncmb = get_ncmb();
+    var storage = window.localStorage;
+    var username = storage.getItem('username');
+    var password = storage.getItem('password');
+
+    ncmb.User.login(username, password).then(function(data){
+
+        // ログイン後に映画情報をデータベースから取得
+        var db = get_database();
+        db.transaction(function(tx) {
+            db.executeSql('SELECT COUNT(*) AS movie_count FROM movie', [], function(res) {
+                pushPage('tab.html','fade',0);
+
+                var movie_count = res.rows.item(0).movie_count;
+                var draw_content = function(){};
+
+
+                //ローカルに保存されている映画情報の件数で表示内容を変える
+                if (movie_count == 0) {
+                    draw_content = function(){
+                        var nodata_message = document.getElementById("nodata_message");
+                        nodata_message.innerHTML = "登録された映画はありません";
+
+                        pullhook_setting("登録された映画はありません");
+                    }
+                }else {
+                    draw_content = function(){
+                        var infiniteList = document.getElementById('infinite-list');
+
+                        var movie_title = "タイトルがここに入るタイトルがここに入る";
+                        var movie_thumbnail_path = "http://placekitten.com/g/40/40";
+                        var movie_subtitle = "追加日：yyyy/mm/dd";
+                        
+                        infiniteList.delegate = {
+                            createItemContent: function(i) {
+                                return ons._util.createElement(
+                                    '<ons-list-item><div class="left"><img class="list__item__thumbnail_movie" src="' + movie_thumbnail_path +'"></div><div class="center"><span class="list__item__title">' + movie_title +'</span><span class="list__item__subtitle">' +movie_subtitle +'</span></div></ons-list-item>'
+                                );
+                            },
+                                        
+                            countItems: function() {
+                                return movie_count;
+                            },
+
+                            calculateItemHeight: function() {
+                                return ons.platform.isAndroid() ? 48 : 100;
+                            }
+                        };
+
+                        infiniteList.refresh();
+
+                        pullhook_setting("");
+                    }
+                }
+
+                check_page_init("movies",draw_content);
+            });
+        }, function(err) {
+                //SELECT文のエラー処理
+                console.log('SELECT movie ERROR: ' +JSON.stringify(err) +' ' + err.message);
+            });
+    }).catch(function(err){
+            // ログインエラー処理
+        });
+}
+
+
+/**
+ * 映画一覧画面のpullhookにイベントを登録する
+ * @param  {[string]} message [pullhook後に表示させるメッセージ]
+ */
+function pullhook_setting(message) {
+    var pullHook = document.getElementById("pull-hook");
+    pullHook.thresholdHeight = 200;
+
+    pullHook.addEventListener('changestate', function(event) {
+        var pullhook_message = '';
+        switch (event.state){
+            case 'initial':
+                pullhook_message = 'Pull to refresh';
+                break;
+                            
+            case 'preaction':
+                pullhook_message = 'Release';
+                break;
+                            
+            case 'action':
+                pullhook_message = 'Loading...';
+                break;
+        }
+
+        pullHook.innerHTML = pullhook_message;
+    });
+
+    pullHook.onAction = function(done) {
+        setTimeout(done, 1000);
+        setTimeout(function(){nodata_message.innerHTML = message}, 1000);
+    };
+}
 
 // //ローカルのデータベースにサーバから取得したmovieを記録する
 // function insert_movie(movies){
@@ -287,6 +454,22 @@ function get_search_movie_title_val(){
 //     // }, function(err) {
 //     //     console.log('Open database ERROR: ' +JSON.stringify(err) +' ' + err.message);
 //     //     });
+// }
+// 
+//ログイン中のユーザ名が含まれるMovieオブジェクトを最新順で取得する
+// function get_movies_ncmbobject(username, callback){
+//     var ncmb = get_ncmb();
+//     var Movie = ncmb.DataStore("Movie");
+//     Movie.equalTo("UserName", username)
+//     .order("updateDate",true)
+//     .fetchAll()
+//     .then(function(results){
+//         insert_movie(results);
+//         callback();
+//     })
+//     .catch(function(err){
+//         console.log(err);
+//     });
 // }
      
 
