@@ -352,14 +352,12 @@ function draw_movie_content() {
                 //ローカルに保存されている映画情報の件数で表示内容を変える
                 if (movie_count === 0) {
                     draw_content = function(){
-                        var nodata_message = document.getElementById("nodata_message");
-                        nodata_message.innerHTML = "登録された映画はありません";
-
+                        $("#nodata_message").html("登録された映画はありません");
                         pullhook_setting("登録された映画はありません");
                     };
                 }else {
                     draw_content = function(){
-                        var infiniteList = document.getElementById('infinite-list');
+                        var infiniteList  = $("#infinite-list").get(0);
 
                         var movie_title = "タイトルがここに入るタイトルがここに入る";
                         var movie_thumbnail_path = "http://placekitten.com/g/40/40";
