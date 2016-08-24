@@ -216,17 +216,17 @@ function click_done(){
  */
 function tap_reset(){
     //formのテキストを初期化、バツボタンの削除、フォーカス外し
-    document.getElementById("search_movie_title").value = "";
-    document.getElementById("movieadd_reset").innerHTML = "";
+    $("#search_movie_title").val("");
+    $("#movieadd_reset").html("");
 
     //テキスト未確定入力時にリセットボタンを押した時
-   if (document.activeElement.id == "search_movie_title") {
-       document.getElementById("search_movie_title").blur();
-       document.getElementById("search_movie_title").focus();
+   if ($(':focus').attr("id") == "search_movie_title") {
+        $("#search_movie_title").blur();
+        $("#search_movie_title").focus();
 
     //テキスト入力確定後にリセットボタンを押した時
    }else {
-       document.getElementById("search_movie_title").focus();
+        $("#search_movie_title").focus();
    }
 }
 
