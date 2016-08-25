@@ -353,7 +353,7 @@ function draw_movie_content() {
                 if (movie_count === 0) {
                     draw_content = function(){
                         $("#nodata_message").html("登録された映画はありません");
-                        pullhook_setting("登録された映画はありません");
+                        pullhook_setting();
                     };
                 }else {
                     draw_content = function(){
@@ -381,7 +381,7 @@ function draw_movie_content() {
 
                         infiniteList.refresh();
 
-                        pullhook_setting("");
+                        pullhook_setting();
                     };
                 }
 
@@ -399,15 +399,18 @@ function draw_movie_content() {
 
 /**
  * 映画一覧画面のpullhookにイベントを登録する
- * @param  {[string]} message [pullhook後に表示させるメッセージ]
  */
-function pullhook_setting(message) {
-    var pullHook = document.getElementById("pull-hook");
-    pullHook.thresholdHeight = 200;
+function pullhook_setting() {
+    var pullHook = $("#pull-hook");
 
-    pullHook.addEventListener('changestate', function(event) {
+    pullHook.prop('thresholdHeight', 200);
+
+    pullHook.off('changestate');
+    pullHook.on('changestate', function() {
         var pullhook_message = '';
-        switch (event.state){
+        var event = pullHook.prop('state');
+
+        switch (event){
             case 'initial':
                 pullhook_message = 'Pull to refresh';
                 break;
@@ -421,14 +424,12 @@ function pullhook_setting(message) {
                 break;
         }
 
-        pullHook.innerHTML = pullhook_message;
+        pullHook.html(pullhook_message);
     });
 
-    pullHook.onAction = function(done) {
+    
+    pullHook.get(0).onAction = function(done) {
         setTimeout(done, 1000);
-        setTimeout(function(){
-            nodata_message.innerHTML = message;
-        }, 1000);
     };
 }
 
