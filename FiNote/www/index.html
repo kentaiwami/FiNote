@@ -70,7 +70,7 @@
                     <div style="padding: 10px; text-align: center;">
                         <p><ons-button modifier="large"><i class="zmdi zmdi-view-list-alt"></i>　　リスト形式で表示</ons-button></p>
                         <p><ons-button modifier="large"><i class="zmdi zmdi-grid"></i>　グリッド形式で表示</ons-button></p>
-                        <p><ons-button onclick="document.querySelector('#popover').hide()">閉じる</ons-button></p>
+                        <p><ons-button onclick="document.getElementById('popover').hide()">閉じる</ons-button></p>
                     </div>
                 </ons-popover>
 
@@ -78,13 +78,13 @@
                 <ons-toolbar>
                     <div class="center">映画の一覧</div>
                     <div class="right">
-                        <ons-toolbar-button onClick="document.querySelector('#myNavigator').pushPage('movieadd.html')">
+                        <ons-toolbar-button onClick="document.getElementById('myNavigator').pushPage('movieadd.html')">
                             <ons-icon icon="ion-ios-plus-empty"></ons-icon>
                         </ons-toolbar-button>
                     </div>
 
                     <div class="left">
-                        <ons-toolbar-button onclick="document.querySelector('#popover').show(this)">
+                        <ons-toolbar-button onclick="document.getElementById('popover').show(this)">
                             <ons-icon icon="ion-ios-settings"></ons-icon>
                         </ons-toolbar-button>
                     </div>
@@ -138,7 +138,7 @@
 
                     <div class="center" id="movieadd_search_input">
                         <form action="javascript:click_done()">
-                            <input onfocus="set_animation_movieadd_search_input('focus')" onblur="set_animation_movieadd_search_input('blur')" style="margin: 6px 0px; margin-left: -50px; width: 170%;" type="search" id="search_movie_title" value="" placeholder="追加する映画のタイトルを検索" class="search-input">
+                            <input onfocus="set_animation_movieadd_search_input('focus')" onblur="set_animation_movieadd_search_input('blur')" style="margin: 6px 0px; margin-left: -50px; width: 170%;" type="search" id="search_movie_title" value="" placeholder="追加したい映画のタイトルを検索" class="search-input">
                         </form>
                     </div>
 
