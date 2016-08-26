@@ -50,16 +50,16 @@ function signup(){
     var user = new ncmb.User();
 
     //ユーザー名・パスワードを設定
-    user.set("userName", document.getElementById("username").value)
-        .set("password", document.getElementById("password").value);
+    user.set('userName', document.getElementById('username').value)
+        .set('password', document.getElementById('password').value);
 
     // 新規登録
     user.signUpByAccount()
         .then(function(){
             /*登録後処理*/
             //ローカルにユーザ名とパスワードを保存する。
-            var username = document.getElementById("username").value;
-            var password = document.getElementById("password").value;
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
             var storage = window.localStorage;
             storage.setItem('username', username);
             storage.setItem('password', password);
@@ -80,9 +80,9 @@ function signup(){
                 textNode = document.createTextNode('ユーザ名を入力してください');
             }else if (err.name == "NoPasswordError") {
                 textNode = document.createTextNode('パスワードを入力してください');
-            }else if (err.message.indexOf("cannot POST") > -1) {
+            }else if (err.message.indexOf('cannot POST') > -1) {
                 textNode = document.createTextNode('入力したユーザ名は既に使用されています');
-            }else if (err.message.indexOf("Request has been terminated") > -1) {
+            }else if (err.message.indexOf('Request has been terminated') > -1) {
                 textNode = document.createTextNode('ネットワーク接続がオフラインのため登録ができません');
             }
             info.appendChild(textNode);
