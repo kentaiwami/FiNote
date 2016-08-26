@@ -95,10 +95,10 @@ function signup(){
  */
 function alert_hide(id){
     //成功時にはindex.htmlへ遷移
-    if (id == "signup-alert-success") {
+    if (id == 'signup-alert-success') {
         var pushpage_tabbar = function(){
             function autoLink(){
-                location.href="index.html";
+                location.href='index.html';
             }
          setTimeout(autoLink(),0);
         };
@@ -106,7 +106,7 @@ function alert_hide(id){
         document.getElementById(id).hide(pushpage_tabbar());
 
     //追加したエラーメッセージ(子ノード)を削除する
-    }else if (id == "signup-alert-error") {
+    }else if (id == 'signup-alert-error') {
         document.getElementById(id).hide();
         var info = document.getElementById('error-message');
         var childNode = info.firstChild;
@@ -120,7 +120,7 @@ function alert_hide(id){
  * @return {[object]} [生成したncmb]
  */
 function get_ncmb(){
-    var ncmb = new NCMB("f5f6c2e3aa823eea2c500446a62c5645c04fc2fbfd9833cb173e1d876f464f6c","605298c95c0ba9c654315f11c6817e790f21f83a0e9ff60dc2fdf626b1485899");
+    var ncmb = new NCMB('f5f6c2e3aa823eea2c500446a62c5645c04fc2fbfd9833cb173e1d876f464f6c','605298c95c0ba9c654315f11c6817e790f21f83a0e9ff60dc2fdf626b1485899');
     return ncmb;
 }
 
@@ -142,9 +142,9 @@ function delete_localstorage(){
  * @param  {Function} callback [読み込み終了後に実行したいコールバック関数]
  */
 function check_page_init(pageid,callback){
-    $(document).on("init", function(event) {
+    document.addEventListener('init', function(event) {
         if (event.target.id == pageid) {
-            console.log(pageid + " is inited");
+            console.log(pageid + ' is inited');
             callback();
         }
     });
@@ -166,7 +166,7 @@ function get_database(){
  * @return {[string]} [TMDBのAPIキー]
  */
 function get_tmdb_apikey(){
-    return "dcf593b3416b09594c1f13fabd1b9802";
+    return 'dcf593b3416b09594c1f13fabd1b9802';
 }
 
 
@@ -180,7 +180,7 @@ function get_tmdb_apikey(){
 function create_request_movie_search(movie_title, language, callback){
     var request = new XMLHttpRequest();
     var api_key = get_tmdb_apikey();
-    var request_url = "http://api.themoviedb.org/3/search/movie?query=" +movie_title +"&api_key=" + api_key + "&language=" +language;
+    var request_url = 'http://api.themoviedb.org/3/search/movie?query=' +movie_title +'&api_key=' + api_key + '&language=' +language;
 
     // console.log("url: " + request_url);
     request.open('GET', request_url);
@@ -205,9 +205,9 @@ function create_request_movie_search(movie_title, language, callback){
  * Searchボタン(改行)を押した際に動作
  */
 function click_done(){
-    console.log("click_done");
+    console.log('click_done');
     cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-    $("#search_movie_title").blur();
+    document.getElementById('search_movie_title').blur();
 }
 
 
@@ -216,17 +216,17 @@ function click_done(){
  */
 function tap_reset(){
     //formのテキストを初期化、バツボタンの削除
-    $("#search_movie_title").val("");
-    $("#movieadd_reset").html("");
+    document.getElementById("search_movie_title").value = "";
+    document.getElementById("movieadd_reset").innerHTML = "";
 
     //テキスト未確定入力時にリセットボタンを押した時
    if ($(':focus').attr("id") == "search_movie_title") {
-        $("#search_movie_title").blur();
-        $("#search_movie_title").focus();
+    document.getElementById("search_movie_title").blur();
+    document.getElementById("search_movie_title").focus();
 
     //テキスト入力確定後にリセットボタンを押した時
    }else {
-        $("#search_movie_title").focus();
+    document.getElementById("search_movie_title").focus();
    }
 }
 
@@ -235,7 +235,7 @@ function tap_reset(){
  * movieaddのsearch-input横にあるキャンセルボタンをタップした際に前のページへ画面遷移する
  */
 function tap_cancel(){
-    $("#myNavigator").get(0).popPage();
+    document.getElementById("myNavigator").popPage();
     console.log("tap_cancel");
 }
 
@@ -285,12 +285,13 @@ function set_animation_movieadd_search_input(event_name) {
  * 検索窓の文字数が1以上ならリセットボタンを表示させる
  */
 function get_search_movie_title_val(){
-    var text = $("#search_movie_title").val();
+    var text = document.getElementById('search_movie_title').value;
+    var resetbutton = document.getElementById('movieadd_reset');
 
     if (text.length > 0) {
-        $("#movieadd_reset").html("<ons-button onclick='tap_reset()' style='margin: 0px 0px 0px -100px;' modifier='quiet'><ons-icon icon='ion-close-circled'></ons-icon></ons-button>");
+        resetbutton.innerHTML = "<ons-button onclick='tap_reset()' style='margin: 0px 0px 0px -100px;' modifier='quiet'><ons-icon icon='ion-close-circled'></ons-icon></ons-button>";
     } else {
-        $("#movieadd_reset").html("");
+        resetbutton.innerHTML = '';
     }
 }
 
@@ -320,7 +321,7 @@ function check_signup(){
  */
 function pushpage(html_name, animation_name, delaytime) {
     var showpage = function(){
-        $("#myNavigator").get(0).pushPage(html_name, { animation : animation_name } );
+        document.getElementById('myNavigator').pushPage(html_name, { animation : animation_name });
     };
     
     setTimeout(showpage, delaytime);
