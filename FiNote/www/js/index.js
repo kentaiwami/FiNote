@@ -354,13 +354,11 @@ function draw_movie_content() {
                 if (movie_count === 0) {
                     draw_content = function(){
                         document.getElementById('nodata_message').innerHTML = '登録された映画はありません';
-                        // $("#nodata_message").html("登録された映画はありません");
                         pullhook_setting();
                     };
                 }else {
                     draw_content = function(){
                         var infiniteList = document.getElementById('infinite-list');
-                        // var infiniteList  = $("#infinite-list").get(0);
 
                         var movie_title = 'タイトルがここに入るタイトルがここに入る';
                         var movie_thumbnail_path = 'http://placekitten.com/g/40/40';
@@ -404,16 +402,14 @@ function draw_movie_content() {
  * 映画一覧画面のpullhookにイベントを登録する
  */
 function pullhook_setting() {
-    var pullHook = $("#pull-hook");
+    var pullHook = document.getElementById('pull-hook');
 
-    pullHook.prop('thresholdHeight', 200);
+    pullHook.thresholdHeight = 150;
 
-    pullHook.off('changestate');
-    pullHook.on('changestate', function() {
+    pullHook.addEventListener('changestate', function(event) {
         var pullhook_message = '';
-        var event = pullHook.prop('state');
 
-        switch (event){
+        switch (event.state){
             case 'initial':
                 pullhook_message = 'Pull to refresh';
                 break;
@@ -427,11 +423,10 @@ function pullhook_setting() {
                 break;
         }
 
-        pullHook.html(pullhook_message);
+        pullHook.innerHTML = pullhook_message;
     });
 
-    
-    pullHook.get(0).onAction = function(done) {
+    pullHook.onAction = function(done) {
         setTimeout(done, 1000);
     };
 }
