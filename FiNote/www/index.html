@@ -32,7 +32,7 @@
            };
 
            //サインアップしているかどうかをチェックする
-           check_signup();
+           index.check_signup();
            
         </script>
         <ons-navigator id="myNavigator" page="index.html"></ons-navigator>
@@ -137,13 +137,13 @@
                     <div class="left" id="movieadd_backbutton"><ons-back-button></ons-back-button></div>
 
                     <div class="center" id="movieadd_search_input">
-                        <form action="javascript:click_done()">
-                            <input onfocus="set_animation_movieadd_search_input('focus')" onblur="set_animation_movieadd_search_input('blur')" style="margin: 6px 0px; margin-left: -50px; width: 170%;" type="search" id="search_movie_title" value="" placeholder="追加したい映画のタイトルを検索" class="search-input">
+                        <form action="javascript:movieadd.click_done()">
+                            <input onfocus="movieadd.set_animation_movieadd_search_input('focus')" onblur="movieadd.set_animation_movieadd_search_input('blur')" style="margin: 6px 0px; margin-left: -50px; width: 170%;" type="search" id="search_movie_title" value="" placeholder="追加したい映画のタイトルを検索" class="search-input">
                         </form>
                     </div>
 
                     <div class="right">
-                    	<ons-toolbar-button onclick="tap_cancel()" id="cancel_button" style="margin-left: 200px; width: 10px;"></ons-toolbar-button>
+                    	<ons-toolbar-button onclick="movieadd.tap_cancel()" id="cancel_button" style="margin-left: 200px; width: 10px;"></ons-toolbar-button>
                     </div>
                     
                     <div id="movieadd_reset"></div>
@@ -161,7 +161,7 @@
                 会員情報の登録に成功しました！
             </div>
             <div class="alert-dialog-footer">
-                <button class="alert-dialog-button" onclick="alert_hide('signup-alert-success')">OK</button>
+                <button class="alert-dialog-button" onclick="Signup.alert_hide('signup-alert-success')">OK</button>
             </div>
             </ons-alert-dialog>
 
@@ -170,7 +170,7 @@
             <div class="alert-dialog-title">エラー</div>
             <div class="alert-dialog-content" id="error-message"></div>
             <div class="alert-dialog-footer">
-                <button class="alert-dialog-button" onclick="alert_hide('signup-alert-error')">OK</button>
+                <button class="alert-dialog-button" onclick="Signup.alert_hide('signup-alert-error')">OK</button>
             </div>
             </ons-alert-dialog>
 
@@ -193,7 +193,7 @@
                 </div>
 
                 <div class="vspc form-row">
-                  <ons-button modifier="large--cta" onclick="signup()">登録</ons-button>
+                  <ons-button modifier="large--cta" onclick="Signup.usersignup()">登録</ons-button>
                 </div>
               </div>
               </ons-page>
