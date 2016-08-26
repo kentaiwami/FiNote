@@ -289,7 +289,7 @@ function get_search_movie_title_val(){
     var resetbutton = document.getElementById('movieadd_reset');
 
     if (text.length > 0) {
-        resetbutton.innerHTML = "<ons-button onclick='tap_reset()' style='margin: 0px 0px 0px -100px;' modifier='quiet'><ons-icon icon='ion-close-circled'></ons-icon></ons-button>";
+        resetbutton.innerHTML = '<ons-button onclick="tap_reset()" style="margin: 0px 0px 0px -100px;" modifier="quiet"><ons-icon icon="ion-close-circled"></ons-icon></ons-button>';
     } else {
         resetbutton.innerHTML = '';
     }
@@ -353,16 +353,18 @@ function draw_movie_content() {
                 //ローカルに保存されている映画情報の件数で表示内容を変える
                 if (movie_count === 0) {
                     draw_content = function(){
-                        $("#nodata_message").html("登録された映画はありません");
+                        document.getElementById('nodata_message').innerHTML = '登録された映画はありません';
+                        // $("#nodata_message").html("登録された映画はありません");
                         pullhook_setting();
                     };
                 }else {
                     draw_content = function(){
-                        var infiniteList  = $("#infinite-list").get(0);
+                        var infiniteList = document.getElementById('infinite-list');
+                        // var infiniteList  = $("#infinite-list").get(0);
 
-                        var movie_title = "タイトルがここに入るタイトルがここに入る";
-                        var movie_thumbnail_path = "http://placekitten.com/g/40/40";
-                        var movie_subtitle = "追加日：yyyy/mm/dd";
+                        var movie_title = 'タイトルがここに入るタイトルがここに入る';
+                        var movie_thumbnail_path = 'http://placekitten.com/g/40/40';
+                        var movie_subtitle = '追加日：yyyy/mm/dd';
                         
                         infiniteList.delegate = {
                             createItemContent: function(i) {
@@ -386,7 +388,7 @@ function draw_movie_content() {
                     };
                 }
 
-                check_page_init("movies",draw_content);
+                check_page_init('movies',draw_content);
             });
         }, function(err) {
                 //SELECT文のエラー処理
