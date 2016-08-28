@@ -272,7 +272,7 @@ var movieadd = {
      * Searchボタン(改行)を押した際に動作
      */
     click_done: function(){
-        console.log('click_done');
+        //console.log('click_done');
         cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
         document.getElementById('search_movie_title').blur();
     },
@@ -303,7 +303,7 @@ var movieadd = {
      */
     tap_cancel: function(){
         document.getElementById("myNavigator").popPage();
-        console.log("tap_cancel");
+        //console.log("tap_cancel");
     },
 
 
@@ -315,7 +315,7 @@ var movieadd = {
 
         //検索フィールドにフォーカスした時のアニメーション
         if (event_name == "focus") {
-            console.log("focus");
+            //console.log("focus");
 
             //検索窓の入力を監視するイベントを追加する
             $("#search_movie_title").on("input", movieadd.get_search_movie_title_val);
@@ -329,9 +329,11 @@ var movieadd = {
             $("#cancel_button").animate({marginLeft: "45px"},{queue: false, duration: 200});
             $("#cancel_button").fadeTo(100,1);
 
+            $("#movieadd_reset_button").animate({margin: "0px 0px 0px -100px"},{queue: false, duration: 200});
+
         //検索フィールドのフォーカスが外れた時のアニメーション
         } else if (event_name == "blur") {
-            console.log("blur"); 
+            //console.log("blur"); 
 
             //検索窓の入力を監視するイベントを削除する
             $("#search_movie_title").off("input", movieadd.get_search_movie_title_val);
@@ -341,9 +343,10 @@ var movieadd = {
 
             $("#search_movie_title").animate({width: "170%"},{queue: false, duration: 200});
 
-
             $("#cancel_button").animate({marginLeft: "200px"},{queue: false, duration: 200});
             $("#cancel_button").fadeTo(100,0);
+
+            $('#movieadd_reset_button').animate({margin: "0px 0px 0px -60px"},{queue: false, duration: 200});
         }
     },
 
@@ -356,7 +359,7 @@ var movieadd = {
         var resetbutton = document.getElementById('movieadd_reset');
 
         if (text.length > 0) {
-            resetbutton.innerHTML = '<ons-button onclick="movieadd.tap_reset()" style="margin: 0px 0px 0px -100px;" modifier="quiet"><ons-icon icon="ion-close-circled"></ons-icon></ons-button>';
+            resetbutton.innerHTML = '<ons-button id="movieadd_reset_button" onclick="movieadd.tap_reset()" style="margin: 0px 0px 0px -100px;" modifier="quiet"><ons-icon icon="ion-close-circled"></ons-icon></ons-button>';
         } else {
             resetbutton.innerHTML = '';
         }
