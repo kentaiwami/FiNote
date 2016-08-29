@@ -240,11 +240,10 @@ var movieadd = {
     /**
      * 映画をタイトルで検索するリクエストを生成して実行する
      * @param  {[string]}   movie_title [検索したい映画タイトル]
-     * @param  {[string]}   language    []
+     * @param  {[string]}   language    [jaで日本語情報、enで英語情報]
      * @param  {Function} callback    [description]
-     * @return {[type]}               [description]
      */
-    create_request_movie_search: function(movie_title, language, callback){
+    create_request_movie_search: function(movie_title, language){
         var request = new XMLHttpRequest();
         var api_key = utility.get_tmdb_apikey();
         var request_url = 'http://api.themoviedb.org/3/search/movie?query=' +movie_title +'&api_key=' + api_key + '&language=' +language;
@@ -318,7 +317,7 @@ var movieadd = {
             //console.log("focus");
 
             //検索窓の入力を監視するイベントを追加する
-            $("#search_movie_title").on("input", movieadd.get_search_movie_title_val);
+            $("#search_movie_title").on("keyup", movieadd.get_search_movie_title_val);
 
             $("#movieadd_backbutton").fadeTo(100,0);
             $("#movieadd_backbutton").animate({marginLeft: "-40px"},{queue: false , duration: 200});
@@ -336,7 +335,7 @@ var movieadd = {
             //console.log("blur"); 
 
             //検索窓の入力を監視するイベントを削除する
-            $("#search_movie_title").off("input", movieadd.get_search_movie_title_val);
+            $("#search_movie_title").off("keyup", movieadd.get_search_movie_title_val);
 
             $("#movieadd_backbutton").fadeTo(100,1);
             $("#movieadd_backbutton").animate({marginLeft: "0px"},{queue: false , duration: 200});
@@ -352,6 +351,7 @@ var movieadd = {
 
 
     /**
+     * 検索窓にテキストを入力するたびに入力したテキストを取得する
      * 検索窓の文字数が1以上ならリセットボタンを表示させる
      */
     get_search_movie_title_val: function(){
@@ -360,10 +360,21 @@ var movieadd = {
 
         if (text.length > 0) {
             resetbutton.innerHTML = '<ons-button id="movieadd_reset_button" onclick="movieadd.tap_reset()" style="margin: 0px 0px 0px -100px;" modifier="quiet"><ons-icon icon="ion-close-circled"></ons-icon></ons-button>';
+
+
+            //promise_jaとpromise_enを生成
+            //非同期処理を行う
+            //結果を付き合わせる
+
         } else {
             resetbutton.innerHTML = '';
         }
     },
+        /*****メモ*****/
+        //overviewが""でないarrayオブジェクトをresultsviewに入れる
+        //overviewが""のarrayオブジェクトが存在したらenでリクエスト問い合わせを行う
+        //enで問い合わせた結果をjaarrayオブジェクト内のidをもとに存在していなかったらresultsviewに入れる
+        //resultsviewを返す
 };
 
 
