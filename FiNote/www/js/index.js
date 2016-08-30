@@ -238,36 +238,6 @@ var movie = {
 
 var movieadd = {
     /**
-     * 映画をタイトルで検索するリクエストを生成して実行する
-     * @param  {[string]}   movie_title [検索したい映画タイトル]
-     * @param  {[string]}   language    [jaで日本語情報、enで英語情報]
-     * @param  {Function} callback    [description]
-     */
-    create_request_movie_search: function(movie_title, language){
-        var request = new XMLHttpRequest();
-        var api_key = utility.get_tmdb_apikey();
-        var request_url = 'http://api.themoviedb.org/3/search/movie?query=' +movie_title +'&api_key=' + api_key + '&language=' +language;
-
-        // console.log("url: " + request_url);
-        request.open('GET', request_url);
-
-        request.setRequestHeader('Accept', 'application/json');
-
-        request.onreadystatechange = function () {
-            if (this.readyState === 4) {
-                // console.log('Status:', this.status);
-                // console.log('Headers:', this.getAllResponseHeaders());
-                // console.log('Body:', this.responseText);
-
-                var contact = JSON.parse(this.responseText);
-                callback(contact);
-            }
-        };
-
-        request.send();
-    },
-
-    /**
      * Searchボタン(改行)を押した際に動作
      */
     click_done: function(){
@@ -365,6 +335,13 @@ var movieadd = {
             //promise_jaとpromise_enを生成
             //非同期処理を行う
             //結果を付き合わせる
+            var obj = {
+              'query': text,
+              'language': 'ja',
+            };
+            
+
+            theMovieDb.search.getMovie(obj, successCB, errorCB);
 
         } else {
             resetbutton.innerHTML = '';
@@ -377,6 +354,14 @@ var movieadd = {
         //resultsviewを返す
 };
 
+function successCB(data) {
+    var json = JSON.parse(data);
+    console.log(json);
+}
+
+function errorCB(data) {
+    console.log("Error callback: " + data);
+}
 
 
 /**
