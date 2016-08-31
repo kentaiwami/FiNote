@@ -329,19 +329,31 @@ var movieadd = {
         var resetbutton = document.getElementById('movieadd_reset');
 
         if (text.length > 0) {
+            //[0]にlanguage=jaのリクエスト結果，[1]にはlanguage=enのリクエスト結果をそれぞれ記録する
+            var array = [];
+
             resetbutton.innerHTML = '<ons-button id="movieadd_reset_button" onclick="movieadd.tap_reset()" style="margin: 0px 0px 0px -100px;" modifier="quiet"><ons-icon icon="ion-close-circled"></ons-icon></ons-button>';
 
 
-            //promise_jaとpromise_enを生成
-            //非同期処理を行う
             //結果を付き合わせる
-            var obj = {
-              'query': text,
-              'language': 'ja',
-            };
-            
 
-            theMovieDb.search.getMovie(obj, successCB, errorCB);
+            //リクエスト成功時のコールバック
+            var successCB = function(data){
+                //console.log(data);
+                var json = JSON.parse(data);
+                array.push(json);
+            };
+            //リクエスト失敗時のコールバック
+            var errorCB = function(data){
+                console.log("Error callback: " + data);
+            };
+
+            //日本語と英語のリクエストを行う
+            Promise.all([search_movie(text,'ja',successCB,errorCB),search_movie(text,'en',successCB,errorCB)]).then(function() { 
+              console.log(array);
+            }, function(reason) {
+              console.log(reason);
+            });
 
         } else {
             resetbutton.innerHTML = '';
@@ -354,13 +366,23 @@ var movieadd = {
         //resultsviewを返す
 };
 
-function successCB(data) {
-    var json = JSON.parse(data);
-    console.log(json);
-}
+/**
+ * 映画のタイトルを検索して結果を取得する
+ * @param  {[type]} text      [検索する映画のタイトル]
+ * @param  {[type]} language  [jaなら日本語，enなら英語で結果を取得]
+ * @param  {[type]} successCB [データ取得成功時のコールバック関数]
+ * @param  {[type]} errorCB   [データ取得失敗時のコールバック関数]
+ */
+function search_movie(text,language,successCB,errorCB) {
+    return new Promise(function(resolve, reject) {
+        var obj = {
+            'query': text,
+            'language': language,
+        };
 
-function errorCB(data) {
-    console.log("Error callback: " + data);
+        theMovieDb.search.getMovie(obj, successCB, errorCB);
+        resolve();
+    });
 }
 
 
