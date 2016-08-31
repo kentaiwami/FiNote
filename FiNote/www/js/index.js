@@ -375,12 +375,12 @@ var movieadd = {
  */
 function search_movie(text,language,successCB,errorCB) {
     return new Promise(function(resolve, reject) {
-        var obj = {
+        var query_obj = {
             'query': text,
             'language': language,
         };
 
-        theMovieDb.search.getMovie(obj, successCB, errorCB);
+        theMovieDb.search.getMovie(query_obj, successCB, errorCB);
         resolve();
     });
 }
