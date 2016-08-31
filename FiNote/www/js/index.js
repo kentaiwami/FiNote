@@ -349,8 +349,10 @@ var movieadd = {
             };
 
             //日本語と英語のリクエストを行う
-            Promise.all([search_movie(text,'ja',successCB,errorCB),search_movie(text,'en',successCB,errorCB)]).then(function() { 
-              console.log(array);
+            Promise.all([movieadd.search_movie(text,'ja',successCB,errorCB),movieadd.search_movie(text,'en',successCB,errorCB)]).then(function() {
+                //両方のリクエストが成功した後
+                var list_data = movieadd.create_list_data(array);
+
             }, function(reason) {
               console.log(reason);
             });
@@ -359,31 +361,65 @@ var movieadd = {
             resetbutton.innerHTML = '';
         }
     },
-        /*****メモ*****/
-        //overviewが""でないarrayオブジェクトをresultsviewに入れる
-        //overviewが""のarrayオブジェクトが存在したらenでリクエスト問い合わせを行う
-        //enで問い合わせた結果をjaarrayオブジェクト内のidをもとに存在していなかったらresultsviewに入れる
-        //resultsviewを返す
+
+
+    /**
+     * 映画のタイトルを検索して結果を取得する
+     * @param  {[type]} text      [検索する映画のタイトル]
+     * @param  {[type]} language  [jaなら日本語，enなら英語で結果を取得]
+     * @param  {[type]} successCB [データ取得成功時のコールバック関数]
+     * @param  {[type]} errorCB   [データ取得失敗時のコールバック関数]
+     */
+    search_movie: function(text,language,successCB,errorCB){
+        return new Promise(function(resolve, reject) {
+            var query_obj = {
+                'query': text,
+                'language': language,
+            };
+
+            theMovieDb.search.getMovie(query_obj, successCB, errorCB);
+            resolve();
+        });
+    },
+
+    create_list_data: function(array){
+        if (array.length === 0) {
+            //console.log('not match');
+            return 0;
+        }else{
+            var list_data = [];                     //overviewが空文字でないオブジェクトを格納する
+            var overview_nodata = [];               //overviewが空文字のオブジェクトのidプロパティを格納する
+
+            var ja_results = array[0].results;
+            var en_results = array[1].results;
+
+            /*ja_resutlsの中でoverviewが空文字でないオブジェクトをlist_dataに格納する
+            overviewが空文字のオブジェクトidをoverview_nodataに格納する*/
+            for(var i = 0; i < ja_results.length; i++){
+                var ja_overview_text = ja_results[i].overview;
+                if (ja_overview_text.length !== 0) {
+                    list_data.push(ja_results[i]);
+                }else{
+                    overview_nodata.push(ja_results[i].id);
+                }
+            }
+
+            //en_resultsの中からoverview_nodataに格納されているidと一致したオブジェクトをlist_dataに格納する
+            for(var j = 0; j < overview_nodata.length; j++){
+                for(var k = 0; k < en_results.length; k++){
+                    var nodata_id = overview_nodata[j];
+                    var en_id = en_results[k].id;
+
+                    if (nodata_id == en_id) {
+                        list_data.push(en_results[k]);
+                    }
+                }
+            }
+
+            return list_data;
+        }
+    },
 };
-
-/**
- * 映画のタイトルを検索して結果を取得する
- * @param  {[type]} text      [検索する映画のタイトル]
- * @param  {[type]} language  [jaなら日本語，enなら英語で結果を取得]
- * @param  {[type]} successCB [データ取得成功時のコールバック関数]
- * @param  {[type]} errorCB   [データ取得失敗時のコールバック関数]
- */
-function search_movie(text,language,successCB,errorCB) {
-    return new Promise(function(resolve, reject) {
-        var query_obj = {
-            'query': text,
-            'language': language,
-        };
-
-        theMovieDb.search.getMovie(query_obj, successCB, errorCB);
-        resolve();
-    });
-}
 
 
 /**
