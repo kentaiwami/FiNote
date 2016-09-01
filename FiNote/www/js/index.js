@@ -497,6 +497,14 @@ var utility = {
     
         setTimeout(showpage, delaytime);
     },
+
+    getScreenSize: function() {
+        var w = window.parent.screen.width;
+        var h = window.parent.screen.height;
+        
+        var obj = {w:w,h:h};
+        return obj;
+    },
 };
 
 // //ローカルのデータベースにサーバから取得したmovieを記録する
