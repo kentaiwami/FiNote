@@ -353,6 +353,9 @@ var movieadd = {
                 
                 //検索結果として表示するデータを生成する
                 var list_data = movieadd.create_list_data(array);
+                if (list_data.length === 0) {
+                    
+                }
 
             }, function(reason) {
               console.log(reason);
@@ -385,8 +388,7 @@ var movieadd = {
 
     create_list_data: function(array){
         if (array.length === 0) {
-            //console.log('not match');
-            return 0;
+            return [];
         }else{
             var list_data = [];                     //overviewが空文字でないオブジェクトを格納する
             var overview_nodata = [];               //overviewが空文字のオブジェクトのidプロパティを格納する
