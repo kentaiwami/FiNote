@@ -350,7 +350,8 @@ var movieadd = {
 
             //日本語と英語のリクエストを行う
             Promise.all([movieadd.search_movie(text,'ja',successCB,errorCB),movieadd.search_movie(text,'en',successCB,errorCB)]).then(function() {
-                //両方のリクエストが成功した後
+                
+                //検索結果として表示するデータを生成する
                 var list_data = movieadd.create_list_data(array);
 
             }, function(reason) {
