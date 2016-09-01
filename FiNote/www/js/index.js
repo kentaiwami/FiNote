@@ -251,9 +251,10 @@ var movieadd = {
      * バツボタンをタップした際に動作
      */
     tap_reset: function(){
-        //formのテキストを初期化、バツボタンの削除
+        //formのテキストを初期化、バツボタンの削除、ローディングの削除
         document.getElementById("search_movie_title").value = "";
         document.getElementById("movieadd_reset").innerHTML = "";
+        document.getElementById("movieadd_loading").innerHTML = "";
 
         //テキスト未確定入力時にリセットボタンを押した時
        if ($(':focus').attr("id") == "search_movie_title") {
@@ -287,7 +288,7 @@ var movieadd = {
             //console.log("focus");
 
             //検索窓の入力を監視するイベントを追加する
-            $("#search_movie_title").on("keyup", movieadd.get_search_movie_title_val);
+            $("#search_movie_title").on("input", movieadd.get_search_movie_title_val);
 
             $("#movieadd_backbutton").fadeTo(100,0);
             $("#movieadd_backbutton").animate({marginLeft: "-40px"},{queue: false , duration: 200});
@@ -305,7 +306,7 @@ var movieadd = {
             //console.log("blur"); 
 
             //検索窓の入力を監視するイベントを削除する
-            $("#search_movie_title").off("keyup", movieadd.get_search_movie_title_val);
+            $("#search_movie_title").off("input", movieadd.get_search_movie_title_val);
 
             $("#movieadd_backbutton").fadeTo(100,1);
             $("#movieadd_backbutton").animate({marginLeft: "0px"},{queue: false , duration: 200});
@@ -327,12 +328,14 @@ var movieadd = {
     get_search_movie_title_val: function(){
         var text = document.getElementById('search_movie_title').value;
         var resetbutton = document.getElementById('movieadd_reset');
+        var loading = document.getElementById('movieadd_loading');
 
         if (text.length > 0) {
             //[0]にlanguage=jaのリクエスト結果，[1]にはlanguage=enのリクエスト結果をそれぞれ記録する
             var array = [];
 
             resetbutton.innerHTML = '<ons-button id="movieadd_reset_button" onclick="movieadd.tap_reset()" style="margin: 0px 0px 0px -100px;" modifier="quiet"><ons-icon icon="ion-close-circled"></ons-icon></ons-button>';
+            loading.innerHTML = '<i class="zmdi zmdi-spinner zmdi-hc-3x zmdi-hc-spin"></i>';
 
 
             //結果を付き合わせる
@@ -353,10 +356,15 @@ var movieadd = {
                 
                 //検索結果として表示するデータを生成する
                 var list_data = movieadd.create_list_data(array);
-                if (list_data.length === 0) {
 
+                //データによって表示するコンテンツを動的に変える
+                if (list_data.length === 0) {
+                    loading.innerHTML = '検索結果なし';
                 }else{
-                    
+                    //TODO: サムネイルを取得する
+                    var list_data_images = movieadd.get_images(list_data);
+
+                    //TODO: サムネイル取得後にリストを表示する
                 }
 
             }, function(reason) {
@@ -365,6 +373,7 @@ var movieadd = {
 
         } else {
             resetbutton.innerHTML = '';
+            loading.innerHTML = '';
         }
     },
 
@@ -388,6 +397,11 @@ var movieadd = {
         });
     },
 
+    /**
+     * jaとenの検索結果を1つの配列にまとめる
+     * @param  {[array]} array [[0]にjaリクエストの配列、[1]にenリクエストの配列]
+     * @return {[array]}       [jaとen検索結果をまとめた配列]
+     */
     create_list_data: function(array){
         if (array.length === 0) {
             return [];
@@ -423,6 +437,10 @@ var movieadd = {
 
             return list_data;
         }
+    },
+
+    get_images: function(list_data){
+        console.log(list_data);
     },
 };
 
