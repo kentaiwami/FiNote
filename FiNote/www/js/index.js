@@ -516,6 +516,10 @@ var utility = {
         setTimeout(showpage, delaytime);
     },
 
+    /**
+     * 画面のwidth,heightを取得する
+     * @return {[object]} [widthとheightが格納されたオブジェクト]
+     */
     getScreenSize: function() {
         var w = window.parent.screen.width;
         var h = window.parent.screen.height;
