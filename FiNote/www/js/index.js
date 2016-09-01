@@ -354,6 +354,8 @@ var movieadd = {
                 //検索結果として表示するデータを生成する
                 var list_data = movieadd.create_list_data(array);
                 if (list_data.length === 0) {
+
+                }else{
                     
                 }
 
