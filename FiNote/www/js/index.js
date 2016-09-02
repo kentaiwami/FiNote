@@ -130,19 +130,23 @@ var Signup = {
     birthday_pickerview: function(){
         cordova.plugins.Keyboard.close();
 
+        //今年から100年前までの年テキストをオブジェクトとして生成する
+        var time = new Date();
+        var year = time.getFullYear();
+        var items_array = [];
+
+        for (var i = year; i >= year-100; i--) {
+            var obj = {text: String(i), value: String(i)};
+            items_array.push(obj);
+        }
+
         var config = {
-            title: "Select a Fruit", 
-            items: [
-                { text: "Orange", value: "orange" },
-                { text: "Apple", value: "apple" },
-                { text: "Watermelon", value: "watermelon" },
-                { text: "Papaya", value: "papaya" },
-                { text: "Banana", value: "banana" },
-                { text: "Pear", value: "pear" }         
-            ],
-            selectedValue: "papaya",
-            doneButtonLabel: "Done",
-            cancelButtonLabel: "Cancel"
+            title: '', 
+            items: items_array,
+
+            selectedValue: String(year),
+            doneButtonLabel: 'Done',
+            cancelButtonLabel: 'Cancel'
         };
 
         window.plugins.listpicker.showPicker(config, 
