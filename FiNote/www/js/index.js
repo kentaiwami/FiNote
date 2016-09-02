@@ -361,8 +361,12 @@ var movieadd = {
                 if (list_data.length === 0) {
                     loading.innerHTML = '検索結果なし';
                 }else{
+                    successCB = function(data){
+                        console.log(data);
+                    };
+
                     //TODO: サムネイルを取得する
-                    var list_data_images = movieadd.get_images(list_data);
+                    var list_data_images = movieadd.get_images(list_data,successCB,errorCB);
 
                     //TODO: サムネイル取得後にリストを表示する
                 }
@@ -439,8 +443,11 @@ var movieadd = {
         }
     },
 
-    get_images: function(list_data){
-        console.log(list_data);
+    get_images: function(list_data,successCB,errorCB){
+        
+        var hoge = theMovieDb.movies.getImages({"id":10515 }, successCB, errorCB);
+        // console.log(list_data);
+
     },
 };
 

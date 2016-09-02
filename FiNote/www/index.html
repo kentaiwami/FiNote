@@ -46,7 +46,7 @@
                     var storage = window.localStorage;
                     var signup_flag = storage.getItem('signup_flag');
                     if (signup_flag == 'true') {
-                        document.write('<img  src="img/splash.gif" alt="" / width="100%" height="100%">');
+                        document.getElementById('index').innerHTML = '<img  src="img/splash.gif" alt="" / width="100%" height="100%">';
 
                         //api_keyをセットする
                         theMovieDb.common.api_key = utility.get_tmdb_apikey();
