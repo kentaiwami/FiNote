@@ -467,7 +467,7 @@ var movieadd = {
                 image.src = url;
                 image_array.push(image);
             }else{
-                url = 'img/logo.png';
+                url = 'img/noimage.png';
                 image.src = url;
                 image_array.push(image);
             }
