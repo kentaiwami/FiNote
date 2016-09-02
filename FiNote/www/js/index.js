@@ -255,6 +255,7 @@ var movieadd = {
         document.getElementById("search_movie_title").value = "";
         document.getElementById("movieadd_reset").innerHTML = "";
         document.getElementById("movieadd_loading").innerHTML = "";
+        movieadd.not_show_list();
 
         //テキスト未確定入力時にリセットボタンを押した時
        if ($(':focus').attr("id") == "search_movie_title") {
@@ -337,9 +338,6 @@ var movieadd = {
             resetbutton.innerHTML = '<ons-button id="movieadd_reset_button" onclick="movieadd.tap_reset()" style="margin: 0px 0px 0px -100px;" modifier="quiet"><ons-icon icon="ion-close-circled"></ons-icon></ons-button>';
             loading.innerHTML = '<i class="zmdi zmdi-spinner zmdi-hc-3x zmdi-hc-spin"></i>';
 
-
-            //結果を付き合わせる
-
             //リクエスト成功時のコールバック
             var successCB = function(data){
                 //console.log(data);
@@ -360,11 +358,38 @@ var movieadd = {
                 //データによって表示するコンテンツを動的に変える
                 if (list_data.length === 0) {
                     loading.innerHTML = '検索結果なし';
+                    movieadd.not_show_list();
                 }else{
-                    //TODO: サムネイルを取得する
+                    loading.innerHTML = '';
+                                                                                                                                      
                     var list_data_poster = movieadd.get_poster(list_data);
 
-                    //TODO: サムネイル取得後にリストを表示する
+                    //サムネイル取得後にリストを表示する
+                    var infiniteList = document.getElementById('movieadd_list');
+                    var movie_subtitle = '公開日：';
+                            
+                    infiniteList.delegate = {
+                        createItemContent: function(i) {
+
+                            var date = list_data[i].release_date;
+                            if (date.length === 0) {
+                                list_data[i].release_date = '情報なし';
+                            }
+
+                            return ons._util.createElement(
+                                '<ons-list-item><div class="left"><img class="list__item__thumbnail_movie" src="' + list_data_poster[i] +'"></div><div class="center"><span class="list__item__title">' + list_data[i].original_title +'</span><span class="list__item__subtitle">' +movie_subtitle+list_data[i].release_date +'</span></div></ons-list-item>'
+                            );
+                        },
+                                            
+                        countItems: function() {
+                            return list_data.length;
+                        },
+
+                        calculateItemHeight: function() {
+                            return ons.platform.isAndroid() ? 48 : 100;
+                        }
+                    };
+                    
                 }
 
             }, function(reason) {
@@ -374,6 +399,7 @@ var movieadd = {
         } else {
             resetbutton.innerHTML = '';
             loading.innerHTML = '';
+            movieadd.not_show_list();
         }
     },
 
@@ -445,34 +471,42 @@ var movieadd = {
      * @return {[string]}           [画像のパス]
      */
     get_poster: function(list_data){
-        var image_array = [];
-
-        var successCB = function(data){
-            console.log(data);
-            image_array.push(data);
-        };
-
-        var errorCB = function(data){
-            console.log("Error callback: " + data);
-        };
+        var image_url_array = [];
 
         //画像を配列に格納する
         for(var i = 0; i < list_data.length; i++){
             var poster_path = list_data[i].poster_path;
             var url = '';
-            var image = new Image();
 
             if (poster_path !== null) {
                 url = 'https://image.tmdb.org/t/p/w300_and_h450_bestv2' + poster_path;
-                image.src = url;
-                image_array.push(image);
+                image_url_array.push(url);
             }else{
                 url = 'img/noimage.png';
-                image.src = url;
-                image_array.push(image);
+                image_url_array.push(url);
             }
         }
-        return image_array;
+        return image_url_array;
+    },
+
+    /**
+     * リストのコンテンツを非表示にする
+     */
+    not_show_list: function(){
+        var infiniteList = document.getElementById('movieadd_list');
+        infiniteList.delegate = {
+            createItemContent: function(i) {
+                return ons._util.createElement();
+            },
+                                            
+            countItems: function() {
+                return 0;
+            },
+
+            calculateItemHeight: function() {
+                return ons.platform.isAndroid() ? 48 : 100;
+            }
+        };
     },
 };
 
