@@ -472,6 +472,7 @@ var movieadd = {
                 image_array.push(image);
             }
         }
+        return image_array;
     },
 };
 
