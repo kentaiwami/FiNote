@@ -252,19 +252,19 @@ var movieadd = {
      */
     tap_reset: function(){
         //formのテキストを初期化、バツボタンの削除、ローディングの削除
-        document.getElementById("search_movie_title").value = "";
-        document.getElementById("movieadd_reset").innerHTML = "";
-        document.getElementById("movieadd_loading").innerHTML = "";
+        document.getElementById('search_movie_title').value = '';
+        document.getElementById('movieadd_reset').innerHTML = '';
+        document.getElementById('movieadd_loading').innerHTML = '';
         movieadd.not_show_list();
 
         //テキスト未確定入力時にリセットボタンを押した時
-       if ($(':focus').attr("id") == "search_movie_title") {
-        document.getElementById("search_movie_title").blur();
-        document.getElementById("search_movie_title").focus();
+       if ($(':focus').attr('id') == 'search_movie_title') {
+        document.getElementById('search_movie_title').blur();
+        document.getElementById('search_movie_title').focus();
 
         //テキスト入力確定後にリセットボタンを押した時
        }else {
-        document.getElementById("search_movie_title").focus();
+        document.getElementById('search_movie_title').focus();
        }
     },
 
@@ -273,7 +273,7 @@ var movieadd = {
      * movieaddのsearch-input横にあるキャンセルボタンをタップした際に前のページへ画面遷移する
      */
     tap_cancel: function(){
-        document.getElementById("myNavigator").popPage();
+        document.getElementById('myNavigator').popPage();
         //console.log("tap_cancel");
     },
 
@@ -285,39 +285,39 @@ var movieadd = {
     set_animation_movieadd_search_input: function(event_name) {
 
         //検索フィールドにフォーカスした時のアニメーション
-        if (event_name == "focus") {
+        if (event_name == 'focus') {
             //console.log("focus");
 
             //検索窓の入力を監視するイベントを追加する
-            $("#search_movie_title").on("input", movieadd.get_search_movie_title_val);
+            $('#search_movie_title').on('input', movieadd.get_search_movie_title_val);
 
-            $("#movieadd_backbutton").fadeTo(100,0);
-            $("#movieadd_backbutton").animate({marginLeft: "-40px"},{queue: false , duration: 200});
+            $('#movieadd_backbutton').fadeTo(100,0);
+            $('#movieadd_backbutton').animate({marginLeft: '-40px'},{queue: false , duration: 200});
 
-            $("#search_movie_title").animate({width: "150%"},{queue: false, duration: 200});
+            $('#search_movie_title').animate({width: '150%'},{queue: false, duration: 200});
 
-            $("#cancel_button").html("キャンセル");
-            $("#cancel_button").animate({marginLeft: "45px"},{queue: false, duration: 200});
-            $("#cancel_button").fadeTo(100,1);
+            $('#cancel_button').html('キャンセル');
+            $('#cancel_button').animate({marginLeft: '45px'},{queue: false, duration: 200});
+            $('#cancel_button').fadeTo(100,1);
 
-            $("#movieadd_reset_button").animate({margin: "0px 0px 0px -100px"},{queue: false, duration: 200});
+            $('#movieadd_reset_button').animate({margin: '0px 0px 0px -100px'},{queue: false, duration: 200});
 
         //検索フィールドのフォーカスが外れた時のアニメーション
-        } else if (event_name == "blur") {
+        } else if (event_name == 'blur') {
             //console.log("blur"); 
 
             //検索窓の入力を監視するイベントを削除する
-            $("#search_movie_title").off("input", movieadd.get_search_movie_title_val);
+            $('#search_movie_title').off('input', movieadd.get_search_movie_title_val);
 
-            $("#movieadd_backbutton").fadeTo(100,1);
-            $("#movieadd_backbutton").animate({marginLeft: "0px"},{queue: false , duration: 200});
+            $('#movieadd_backbutton').fadeTo(100,1);
+            $('#movieadd_backbutton').animate({marginLeft: '0px'},{queue: false , duration: 200});
 
-            $("#search_movie_title").animate({width: "170%"},{queue: false, duration: 200});
+            $('#search_movie_title').animate({width: '170%'},{queue: false, duration: 200});
 
-            $("#cancel_button").animate({marginLeft: "200px"},{queue: false, duration: 200});
-            $("#cancel_button").fadeTo(100,0);
+            $('#cancel_button').animate({marginLeft: '200px'},{queue: false, duration: 200});
+            $('#cancel_button').fadeTo(100,0);
 
-            $('#movieadd_reset_button').animate({margin: "0px 0px 0px -60px"},{queue: false, duration: 200});
+            $('#movieadd_reset_button').animate({margin: '0px 0px 0px -60px'},{queue: false, duration: 200});
         }
     },
 
@@ -346,7 +346,7 @@ var movieadd = {
             };
             //リクエスト失敗時のコールバック
             var errorCB = function(data){
-                console.log("Error callback: " + data);
+                console.log('Error callback: ' + data);
             };
 
             //日本語と英語のリクエストを行う
