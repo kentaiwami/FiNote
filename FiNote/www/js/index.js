@@ -131,9 +131,18 @@ var Signup = {
         cordova.plugins.Keyboard.close();
 
         //今年から100年前までの年テキストをオブジェクトとして生成する
+        var birthday = document.getElementById('birthday');
         var time = new Date();
         var year = time.getFullYear();
         var items_array = [];
+
+        //フォーカスした際にpickerviewデフォルド選択の値を決める
+        var fastvalue = '';
+        if (birthday.value.length === 0) {
+            fastvalue = String(year);
+        }else{
+            fastvalue = birthday.value;
+        }
 
         for (var i = year; i >= year-100; i--) {
             var obj = {text: String(i), value: String(i)};
@@ -144,14 +153,14 @@ var Signup = {
             title: '', 
             items: items_array,
 
-            selectedValue: String(year),
+            selectedValue: fastvalue,
             doneButtonLabel: 'Done',
             cancelButtonLabel: 'Cancel'
         };
 
         window.plugins.listpicker.showPicker(config, 
         function(item) { 
-            console.log("You have selected " + item);
+            birthday.value = item;
         },
         function() { 
             console.log("You have cancelled");
