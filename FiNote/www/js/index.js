@@ -361,12 +361,8 @@ var movieadd = {
                 if (list_data.length === 0) {
                     loading.innerHTML = '検索結果なし';
                 }else{
-                    successCB = function(data){
-                        console.log(data);
-                    };
-
                     //TODO: サムネイルを取得する
-                    var list_data_images = movieadd.get_images(list_data,successCB,errorCB);
+                    var list_data_poster = movieadd.get_poster(list_data);
 
                     //TODO: サムネイル取得後にリストを表示する
                 }
@@ -443,11 +439,39 @@ var movieadd = {
         }
     },
 
-    get_images: function(list_data,successCB,errorCB){
-        
-        var hoge = theMovieDb.movies.getImages({"id":10515 }, successCB, errorCB);
-        // console.log(list_data);
+    /**
+     * サムネイルとして表示する画像を取得する
+     * @param  {[array]} list_data [映画オブジェクトの配列]
+     * @return {[string]}           [画像のパス]
+     */
+    get_poster: function(list_data){
+        var image_array = [];
 
+        var successCB = function(data){
+            console.log(data);
+            image_array.push(data);
+        };
+
+        var errorCB = function(data){
+            console.log("Error callback: " + data);
+        };
+
+        //画像を配列に格納する
+        for(var i = 0; i < list_data.length; i++){
+            var poster_path = list_data[i].poster_path;
+            var url = '';
+            var image = new Image();
+
+            if (poster_path !== null) {
+                url = 'https://image.tmdb.org/t/p/w300_and_h450_bestv2' + poster_path;
+                image.src = url;
+                image_array.push(image);
+            }else{
+                url = 'img/logo.png';
+                image.src = url;
+                image_array.push(image);
+            }
+        }
     },
 };
 
