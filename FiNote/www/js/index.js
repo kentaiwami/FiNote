@@ -123,6 +123,36 @@ var Signup = {
             info.removeChild(childNode);
         }
     },
+
+    /**
+     * 生年月日を選択させるフォーム
+     */
+    birthday_pickerview: function(){
+        cordova.plugins.Keyboard.close();
+
+        var config = {
+            title: "Select a Fruit", 
+            items: [
+                { text: "Orange", value: "orange" },
+                { text: "Apple", value: "apple" },
+                { text: "Watermelon", value: "watermelon" },
+                { text: "Papaya", value: "papaya" },
+                { text: "Banana", value: "banana" },
+                { text: "Pear", value: "pear" }         
+            ],
+            selectedValue: "papaya",
+            doneButtonLabel: "Done",
+            cancelButtonLabel: "Cancel"
+        };
+
+        window.plugins.listpicker.showPicker(config, 
+        function(item) { 
+            console.log("You have selected " + item);
+        },
+        function() { 
+            console.log("You have cancelled");
+        });
+    },
 };
 
 
@@ -598,6 +628,7 @@ var utility = {
         return obj;
     },
 };
+
 
 // //ローカルのデータベースにサーバから取得したmovieを記録する
 // function insert_movie(movies){
