@@ -381,7 +381,7 @@ var movieadd = {
                             }
 
                             return ons._util.createElement(
-                                '<ons-list-item><div class="left"><img class="list__item__thumbnail_movie" src="' + list_data_poster[i] +'"></div><div class="center"><span class="list__item__title">' + list_data[i].original_title +'</span><span class="list__item__subtitle">' +movie_subtitle+list_data[i].release_date +'</span></div></ons-list-item>'
+                                '<ons-list-item><div class="left"><img class="list__item__thumbnail_movie" src="' + list_data_poster[i] +'"></div><div class="center"><span class="list__item__title">' + list_data[i].title +'</span><span class="list__item__subtitle">' +movie_subtitle+list_data[i].release_date +'</span></div></ons-list-item>'
                             );
                         },
                                             
