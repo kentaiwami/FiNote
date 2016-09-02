@@ -191,6 +191,7 @@
                         </div>
                     </ons-alert-dialog>
 
+                    <!--index.htmlのページの中身-->
                     <ons-page>
                         <ons-toolbar>
                             <div class="center">ユーザ登録</div>
@@ -209,12 +210,30 @@
                               <p class="note">Password - 6 characters or more</p>
                             </div>
 
+                            <!--性別を選択させる領域-->
+                            <ons-list>
+                                <ons-list-header>性別</ons-list-header>
+                                <ons-list-item tappable>
+                                    <label class="left">
+                                        <ons-input name="color" type="radio" input-id="radio-1" checked></ons-input>
+                                    </label>
+                                    <label for="radio-1" class="center">男性</label>
+                                </ons-list-item>
+
+                                <ons-list-item tappable>
+                                    <label class="left">
+                                        <ons-input name="color" type="radio" input-id="radio-2"></ons-input>
+                                    </label>
+                                    <label for="radio-2" class="center">女性</label>
+                                </ons-list-item>
+                            </ons-list>
+
                             <div class="vspc form-row">
-                              <ons-button modifier="large--cta" onclick="Signup.usersignup()">登録</ons-button>
+                                <ons-button modifier="large--cta" onclick="Signup.usersignup()">登録</ons-button>
                             </div>
                         </div>
                     </ons-page>
-            </ons-page>
+                </ons-page>
             </ons-template>
         </body>
     </html>
