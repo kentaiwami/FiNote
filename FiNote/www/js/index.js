@@ -103,7 +103,7 @@ var Signup = {
             });
         },
 
-    alert_hide: function() {
+    alert_hide: function(id) {
         //成功時にはindex.htmlへ遷移
         if (id == 'signup-alert-success') {
             var pushpage_tabbar = function(){
