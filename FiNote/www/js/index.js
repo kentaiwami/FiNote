@@ -243,7 +243,10 @@ var movieadd = {
     click_done: function(){
         //console.log('click_done');
         cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+
         document.getElementById('search_movie_title').blur();
+        
+        movieadd.get_search_movie_title_val();
     },
 
 
@@ -304,7 +307,8 @@ var movieadd = {
 
         //検索フィールドのフォーカスが外れた時のアニメーション
         } else if (event_name == 'blur') {
-            //console.log("blur"); 
+            //console.log("blur");
+            movieadd.get_search_movie_title_val();
 
             //検索窓の入力を監視するイベントを削除する
             $('#search_movie_title').off('input', movieadd.get_search_movie_title_val);
