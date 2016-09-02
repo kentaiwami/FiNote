@@ -35,6 +35,8 @@ var app = {
  * @type {Object}
  */
 var index = {
+    formcheck: [false,false],                 //[0]はユーザ名とパスワード、[1]は生年月日に対応している
+    
     /**
      * サインアップしているかを確認する
      */
@@ -48,8 +50,42 @@ var index = {
         //ユーザ情報が登録されていない場合はsignupへ遷移
         }else {
             utility.pushpage('signup.html','fade',1000);
+            
+            //イベント登録
+            var addevent = function(){
+                document.getElementById('username').addEventListener('keyup',index.check_usernameAndpassword_form);
+                document.getElementById('password').addEventListener('keyup',index.check_usernameAndpassword_form);
+            };
+            utility.check_page_init('signup',addevent);
         }
     },
+
+    /**
+     * ユーザ名とパスワード入力フォームのkeyupイベントが起きるたびに入力文字数を確認する
+     */
+    check_usernameAndpassword_form: function(){
+        var username = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
+
+        if (username.length === 0 || password.length < 6) {
+            index.formcheck[0] = false;
+        }else{
+            index.formcheck[0] = true;
+        }
+        
+        index.change_abled_signup_button();
+    },
+
+    /**
+     * formcheck配列を確認して全てtrueならボタンをabledに、そうでなければdisabledにする
+     */
+    change_abled_signup_button: function(){
+        if (index.formcheck[0] === true && index.formcheck[1] === true) {
+            document.getElementById('signup_button').removeAttribute('disabled');
+        }else{
+            document.getElementById('signup_button').setAttribute('disabled');
+        }
+    }
 };
 
 
@@ -161,6 +197,8 @@ var Signup = {
         window.plugins.listpicker.showPicker(config, 
         function(item) { 
             birthday.value = item;
+            index.formcheck[1] = true;
+            index.change_abled_signup_button();
         },
         function() { 
             console.log("You have cancelled");
