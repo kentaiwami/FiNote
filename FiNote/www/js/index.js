@@ -99,9 +99,14 @@ var Signup = {
         var ncmb = utility.get_ncmb();
         var user = new ncmb.User();
 
+        //性別のチェック状態を確認
+        var sex = Signup.get_sex();
+
         //ユーザー名・パスワードを設定
         user.set('userName', document.getElementById('username').value)
-            .set('password', document.getElementById('password').value);
+            .set('password', document.getElementById('password').value)
+            .set('birthday', Number(document.getElementById('birthday').value))
+            .set('sex', sex);
 
         // 新規登録
         user.signUpByAccount()
@@ -110,9 +115,14 @@ var Signup = {
                 //ローカルにユーザ名とパスワードを保存する。
                 var username = document.getElementById('username').value;
                 var password = document.getElementById('password').value;
+                var birthday = Number(document.getElementById('birthday').value);
+                var sex = Signup.get_sex();
+
                 var storage = window.localStorage;
                 storage.setItem('username', username);
                 storage.setItem('password', password);
+                storage.setItem('birthday', birthday);
+                storage.setItem('sex', sex);
 
                 //同時にこれらの情報が記録されているかを判断するフラグも保存する
                 storage.setItem('signup_flag', true);
@@ -204,6 +214,19 @@ var Signup = {
             console.log("You have cancelled");
         });
     },
+
+    /**
+     * 性別を選択するチェックボックスの状態から性別の識別子を返す
+     * @return {[string]} [M or F]
+     */
+    get_sex: function(){
+        var M = document.getElementById('radio-1').checked;
+        if (M === true) {
+            return 'M';
+        }else{
+            return 'F';
+        }
+    }
 };
 
 
@@ -278,6 +301,7 @@ var movie = {
                 });
         }).catch(function(err){
                 // ログインエラー処理
+                console.log(err);
             });
     },
 
@@ -617,7 +641,23 @@ var utility = {
         var storage = window.localStorage;
         storage.removeItem('username');
         storage.removeItem('password');
+        storage.removeItem('birthday');
+        storage.removeItem('sex');
         storage.removeItem('signup_flag');
+    },
+
+    /**
+     * ローカルストレージの状態を表示する
+     */
+    show_localstorage: function(){
+        var storage = window.localStorage;
+        var username = storage.getItem('username');
+        var password = storage.getItem('password');
+        var birthday = storage.getItem('birthday');
+        var sex = storage.getItem('sex');
+        var signup_flag = storage.getItem('signup_flag');
+        var obj = {'username':username, 'password':password, 'birthday':birthday, 'sex':sex, 'signup_flag':signup_flag};
+        console.log(obj);
     },
 
 
