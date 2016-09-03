@@ -718,6 +718,29 @@ var utility = {
         var obj = {w:w,h:h};
         return obj;
     },
+
+    /**
+     * ブラウザで強制的にログインするための関数
+     * @return {[type]} [description]
+     */
+    browser_signup: function(){
+        var callback = function(){
+            document.getElementById('username').value = 'ブラウザユーザ';
+            document.getElementById('password').value = 'password';
+            document.getElementById('birthday').value = '1994';
+
+            index.formcheck[0] = true;
+            index.formcheck[1] = true;
+
+            var storage = window.localStorage;
+            storage.setItem('username', document.getElementById('username').value);
+            storage.setItem('password', document.getElementById('password').value);
+            storage.setItem('birthday', Number(document.getElementById('birthday').value));
+            storage.setItem('sex', 'M');
+            storage.setItem('signup_flag', true);
+        };
+        utility.check_page_init('signup',callback);
+    }
 };
 
 
