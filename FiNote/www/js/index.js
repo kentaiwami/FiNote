@@ -430,6 +430,8 @@ var movieadd = {
         }
     },
 
+    show_list_data: [],     //listに表示中のデータを格納する
+
 
     /**
      * 検索窓にテキストを入力するたびに入力したテキストを取得する
@@ -463,6 +465,7 @@ var movieadd = {
                 
                 //検索結果として表示するデータを生成する
                 var list_data = movieadd.create_list_data(array);
+                movieadd.show_list_data = list_data;
 
                 //データによって表示するコンテンツを動的に変える
                 if (list_data.length === 0) {
@@ -486,7 +489,7 @@ var movieadd = {
                             }
 
                             return ons._util.createElement(
-                                '<ons-list-item><div class="left"><img style="background:url(img/loading.gif) no-repeat center" class="list__item__thumbnail_movie" src="' + list_data_poster[i] +'"></div><div class="center"><span class="list__item__title">' + list_data[i].title +'</span><span class="list__item__subtitle">' +movie_subtitle+list_data[i].release_date +'</span></div></ons-list-item>'
+                                '<ons-list-item id="' + i + '" onclick="movieadd.tap_list(this)" modifier="chevron" tappable><div class="left"><img style="background:url(img/loading.gif) no-repeat center" class="list__item__thumbnail_movie" src="' + list_data_poster[i] +'"></div><div class="center"><span class="list__item__title">' + list_data[i].title +'</span><span class="list__item__subtitle">' +movie_subtitle+list_data[i].release_date +'</span></div></ons-list-item>'
                             );
                         },
                                             
@@ -616,6 +619,12 @@ var movieadd = {
                 return ons.platform.isAndroid() ? 48 : 100;
             }
         };
+    },
+
+    tap_list: function(obj){
+        var list_data = movieadd.show_list_data;
+        var tap_id = obj.id;
+
     },
 };
 
