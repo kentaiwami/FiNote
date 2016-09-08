@@ -404,9 +404,9 @@ var movieadd = {
 
             $('#search_movie_title').animate({width: '150%'},{queue: false, duration: 200});
 
-            $('#cancel_button').html('キャンセル');
-            $('#cancel_button').animate({marginLeft: '45px'},{queue: false, duration: 200});
-            $('#cancel_button').fadeTo(100,1);
+            $('#movieadd_search_cancel_button').html('キャンセル');
+            $('#movieadd_search_cancel_button').animate({marginLeft: '45px'},{queue: false, duration: 200});
+            $('#movieadd_search_cancel_button').fadeTo(100,1);
 
             $('#movieadd_reset_button').animate({margin: '0px 0px 0px -100px'},{queue: false, duration: 200});
 
@@ -423,8 +423,8 @@ var movieadd = {
 
             $('#search_movie_title').animate({width: '170%'},{queue: false, duration: 200});
 
-            $('#cancel_button').animate({marginLeft: '200px'},{queue: false, duration: 200});
-            $('#cancel_button').fadeTo(100,0);
+            $('#movieadd_search_cancel_button').animate({marginLeft: '200px'},{queue: false, duration: 200});
+            $('#movieadd_search_cancel_button').fadeTo(100,0);
 
             $('#movieadd_reset_button').animate({margin: '0px 0px 0px -60px'},{queue: false, duration: 200});
         }
