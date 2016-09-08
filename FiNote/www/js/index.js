@@ -624,9 +624,18 @@ var movieadd = {
         };
     },
 
+
+    /**
+     * リストをタップした際に動作する
+     * @param  {[object]} obj [タップしたオブジェクト]
+     */
     tap_list: function(obj){
         var list_data = movieadd.show_list_data;
         var tap_id = obj.id;
+
+        console.log(list_data[tap_id].title);
+
+        //データを渡して画面遷移
 
     },
 };
