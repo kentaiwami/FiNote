@@ -361,8 +361,8 @@ var movieadd = {
     tap_reset: function(){
         //formのテキストを初期化、バツボタンの削除、ローディングの削除
         document.getElementById('search_movie_title').value = '';
-        document.getElementById('movieadd_reset').innerHTML = '';
-        document.getElementById('movieadd_loading').innerHTML = '';
+        document.getElementById('movieadd_search_reset').innerHTML = '';
+        document.getElementById('movieadd_search_loading').innerHTML = '';
         movieadd.not_show_list();
 
         //テキスト未確定入力時にリセットボタンを押した時
@@ -439,8 +439,8 @@ var movieadd = {
      */
     get_search_movie_title_val: function(){
         var text = document.getElementById('search_movie_title').value;
-        var resetbutton = document.getElementById('movieadd_reset');
-        var loading = document.getElementById('movieadd_loading');
+        var resetbutton = document.getElementById('movieadd_search_reset');
+        var loading = document.getElementById('movieadd_search_loading');
 
         if (text.length > 0) {
             //[0]にlanguage=jaのリクエスト結果，[1]にはlanguage=enのリクエスト結果をそれぞれ記録する
@@ -477,7 +477,7 @@ var movieadd = {
                     var list_data_poster = movieadd.get_poster(list_data);
 
                     //サムネイル取得後にリストを表示する
-                    var infiniteList = document.getElementById('movieadd_list');
+                    var infiniteList = document.getElementById('movieadd_search_list');
                     var movie_subtitle = '公開日：';
                             
                     infiniteList.delegate = {
@@ -608,7 +608,7 @@ var movieadd = {
      * リストのコンテンツを非表示にする
      */
     not_show_list: function(){
-        var infiniteList = document.getElementById('movieadd_list');
+        var infiniteList = document.getElementById('movieadd_search_list');
         infiniteList.delegate = {
             createItemContent: function(i) {
                 return ons._util.createElement();
