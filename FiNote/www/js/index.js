@@ -488,8 +488,11 @@ var movieadd = {
                                 list_data[i].release_date = '情報なし';
                             }
 
+                            var thumbnail_div = '<div class="left"><img style="background:url(img/loading.gif) no-repeat center" class="list__item__thumbnail_movie" src="' + list_data_poster[i] +'"></div>';
+                            var titles_div = '<div class="center"><span class="list__item__title">' + list_data[i].title +'</span><span class="list__item__subtitle">' +movie_subtitle+list_data[i].release_date +'</span></div>';
+
                             return ons._util.createElement(
-                                '<ons-list-item id="' + i + '" onclick="movieadd.tap_list(this)" modifier="chevron" tappable><div class="left"><img style="background:url(img/loading.gif) no-repeat center" class="list__item__thumbnail_movie" src="' + list_data_poster[i] +'"></div><div class="center"><span class="list__item__title">' + list_data[i].title +'</span><span class="list__item__subtitle">' +movie_subtitle+list_data[i].release_date +'</span></div></ons-list-item>'
+                                '<ons-list-item id="' + i + '" onclick="movieadd.tap_list(this)" modifier="chevron" tappable>'+thumbnail_div +titles_div+'</ons-list-item>'
                             );
                         },
                                             
