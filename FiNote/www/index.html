@@ -144,13 +144,13 @@
                         <div class="left" id="movieadd_search_backbutton"><ons-back-button></ons-back-button></div>
 
                         <div class="center" id="movieadd_search_input">
-                            <form action="javascript:movieadd.click_done()">
-                                <input onfocus="movieadd.set_animation_movieadd_search_input('focus')" onblur="movieadd.set_animation_movieadd_search_input('blur')" style="margin: 6px 0px; margin-left: -50px; width: 170%;" type="search" id="search_movie_title" value="" placeholder="追加したい映画のタイトルを検索" class="search-input">
+                            <form action="javascript:movieadd_search.click_done()">
+                                <input onfocus="movieadd_search.set_animation_movieadd_search_input('focus')" onblur="movieadd_search.set_animation_movieadd_search_input('blur')" style="margin: 6px 0px; margin-left: -50px; width: 170%;" type="search" id="search_movie_title" value="" placeholder="追加したい映画のタイトルを検索" class="search-input">
                             </form>
                         </div>
 
                         <div class="right">
-                        	<ons-toolbar-button onclick="movieadd.tap_cancel()" id="movieadd_search_cancel_button" style="margin-left: 200px; width: 10px;"></ons-toolbar-button>
+                        	<ons-toolbar-button onclick="movieadd_search.tap_cancel()" id="movieadd_search_cancel_button" style="margin-left: 200px; width: 10px;"></ons-toolbar-button>
                         </div>
                         
                         <div id="movieadd_search_reset"></div>

@@ -341,7 +341,7 @@ var movie = {
 };
 
 
-var movieadd = {
+var movieadd_search = {
     /**
      * Searchボタン(改行)を押した際に動作
      */
@@ -351,7 +351,7 @@ var movieadd = {
 
         document.getElementById('search_movie_title').blur();
         
-        movieadd.get_search_movie_title_val();
+        movieadd_search.get_search_movie_title_val();
     },
 
 
@@ -363,7 +363,7 @@ var movieadd = {
         document.getElementById('search_movie_title').value = '';
         document.getElementById('movieadd_search_reset').innerHTML = '';
         document.getElementById('movieadd_search_loading').innerHTML = '';
-        movieadd.not_show_list();
+        movieadd_search.not_show_list();
 
         //テキスト未確定入力時にリセットボタンを押した時
        if ($(':focus').attr('id') == 'search_movie_title') {
@@ -397,7 +397,7 @@ var movieadd = {
             //console.log("focus");
 
             //検索窓の入力を監視するイベントを追加する
-            $('#search_movie_title').on('input', movieadd.get_search_movie_title_val);
+            $('#search_movie_title').on('input', movieadd_search.get_search_movie_title_val);
 
             $('#movieadd_search_backbutton').fadeTo(100,0);
             $('#movieadd_search_backbutton').animate({marginLeft: '-40px'},{queue: false , duration: 200});
@@ -413,10 +413,10 @@ var movieadd = {
         //検索フィールドのフォーカスが外れた時のアニメーション
         } else if (event_name == 'blur') {
             //console.log("blur");
-            movieadd.get_search_movie_title_val();
+            movieadd_search.get_search_movie_title_val();
 
             //検索窓の入力を監視するイベントを削除する
-            $('#search_movie_title').off('input', movieadd.get_search_movie_title_val);
+            $('#search_movie_title').off('input', movieadd_search.get_search_movie_title_val);
 
             $('#movieadd_search_backbutton').fadeTo(100,1);
             $('#movieadd_search_backbutton').animate({marginLeft: '0px'},{queue: false , duration: 200});
@@ -446,7 +446,7 @@ var movieadd = {
             //[0]にlanguage=jaのリクエスト結果，[1]にはlanguage=enのリクエスト結果をそれぞれ記録する
             var array = [];
 
-            resetbutton.innerHTML = '<ons-button id="movieadd_reset_button" onclick="movieadd.tap_reset()" style="margin: 0px 0px 0px -100px;" modifier="quiet"><ons-icon icon="ion-close-circled"></ons-icon></ons-button>';
+            resetbutton.innerHTML = '<ons-button id="movieadd_reset_button" onclick="movieadd_search.tap_reset()" style="margin: 0px 0px 0px -100px;" modifier="quiet"><ons-icon icon="ion-close-circled"></ons-icon></ons-button>';
             loading.innerHTML = '<i class="zmdi zmdi-spinner zmdi-hc-3x zmdi-hc-spin"></i>';
 
             //リクエスト成功時のコールバック
@@ -461,20 +461,20 @@ var movieadd = {
             };
 
             //日本語と英語のリクエストを行う
-            Promise.all([movieadd.search_movie(text,'ja',successCB,errorCB),movieadd.search_movie(text,'en',successCB,errorCB)]).then(function() {
+            Promise.all([movieadd_search.search_movie(text,'ja',successCB,errorCB),movieadd_search.search_movie(text,'en',successCB,errorCB)]).then(function() {
                 
                 //検索結果として表示するデータを生成する
-                var list_data = movieadd.create_list_data(array);
-                movieadd.show_list_data = list_data;
+                var list_data = movieadd_search.create_list_data(array);
+                movieadd_search.show_list_data = list_data;
 
                 //データによって表示するコンテンツを動的に変える
                 if (list_data.length === 0) {
                     loading.innerHTML = '検索結果なし';
-                    movieadd.not_show_list();
+                    movieadd_search.not_show_list();
                 }else{
                     loading.innerHTML = '';
                                                                                                                                       
-                    var list_data_poster = movieadd.get_poster(list_data);
+                    var list_data_poster = movieadd_search.get_poster(list_data);
 
                     //サムネイル取得後にリストを表示する
                     var infiniteList = document.getElementById('movieadd_search_list');
@@ -492,7 +492,7 @@ var movieadd = {
                             var titles_div = '<div class="center"><span class="list__item__title">' + list_data[i].title +'</span><span class="list__item__subtitle">' +movie_subtitle+list_data[i].release_date +'</span></div>';
 
                             return ons._util.createElement(
-                                '<ons-list-item id="' + i + '" onclick="movieadd.tap_list(this)" modifier="chevron" tappable>'+thumbnail_div +titles_div+'</ons-list-item>'
+                                '<ons-list-item id="' + i + '" onclick="movieadd_search.tap_list(this)" modifier="chevron" tappable>'+thumbnail_div +titles_div+'</ons-list-item>'
                             );
                         },
                                             
@@ -514,7 +514,7 @@ var movieadd = {
         } else {
             resetbutton.innerHTML = '';
             loading.innerHTML = '';
-            movieadd.not_show_list();
+            movieadd_search.not_show_list();
         }
     },
 
@@ -630,7 +630,7 @@ var movieadd = {
      * @param  {[object]} obj [タップしたオブジェクト]
      */
     tap_list: function(obj){
-        var list_data = movieadd.show_list_data;
+        var list_data = movieadd_search.show_list_data;
         var tap_id = obj.id;
 
         console.log(list_data[tap_id].title);
