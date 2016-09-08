@@ -24,7 +24,7 @@
                //delete_localstorage();
 
                //ブラウザでの確認のため強制的に遷移させるテストコード
-               // utility.check_page_init("index",function(){document.querySelector('#myNavigator').pushPage('movieadd.html');});
+               // utility.check_page_init("index",function(){document.querySelector('#myNavigator').pushPage('movieadd_search.html');});
 
 
                //エラー表示用
@@ -83,7 +83,7 @@
                     <ons-toolbar>
                         <div class="center">映画の一覧</div>
                         <div class="right">
-                            <ons-toolbar-button onClick="document.getElementById('myNavigator').pushPage('movieadd.html')">
+                            <ons-toolbar-button onClick="document.getElementById('myNavigator').pushPage('movieadd_search.html')">
                                 <ons-icon icon="ion-ios-plus-empty"></ons-icon>
                             </ons-toolbar-button>
                         </div>
@@ -136,9 +136,9 @@
                 </ons-page>
             </ons-template>
 
-            <!--movieadd.htmlの設定-->
-            <ons-template id="movieadd.html">
-                <ons-page id="movieadd">
+            <!--movieadd_search.htmlの設定-->
+            <ons-template id="movieadd_search.html">
+                <ons-page id="movieadd_search">
                     <!--ツールバー-->
                     <ons-toolbar>
                         <div class="left" id="movieadd_backbutton"><ons-back-button></ons-back-button></div>
