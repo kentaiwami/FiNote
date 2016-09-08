@@ -67,108 +67,6 @@
               </ons-page>
             </ons-template>
 
-            <!--movies.htmlの設定-->
-            <ons-template id="movies.html">
-              <ons-page id="movies">
-                    <!--ポップオーバーの設定-->
-                    <ons-popover direction="down" id="popover">
-                        <div style="padding: 10px; text-align: center;">
-                            <p><ons-button modifier="large"><i class="zmdi zmdi-view-list-alt"></i>　　リスト形式で表示</ons-button></p>
-                            <p><ons-button modifier="large"><i class="zmdi zmdi-grid"></i>　グリッド形式で表示</ons-button></p>
-                            <p><ons-button onclick="document.getElementById('popover').hide()">閉じる</ons-button></p>
-                        </div>
-                    </ons-popover>
-
-                    <!--ツールバー-->
-                    <ons-toolbar>
-                        <div class="center">映画の一覧</div>
-                        <div class="right">
-                            <ons-toolbar-button onClick="document.getElementById('myNavigator').pushPage('movieadd_search.html')">
-                                <ons-icon icon="ion-ios-plus-empty"></ons-icon>
-                            </ons-toolbar-button>
-                        </div>
-
-                        <div class="left">
-                            <ons-toolbar-button onclick="document.getElementById('popover').show(this)">
-                                <ons-icon icon="ion-ios-settings"></ons-icon>
-                            </ons-toolbar-button>
-                        </div>
-                    </ons-toolbar>
-                    
-                    <!--プルホック-->
-                    <ons-pull-hook id="pull-hook">
-                        Pull to refresh
-                    </ons-pull-hook>
-
-                    <!--リスト-->
-                    <ons-list>
-                        <ons-lazy-repeat id="infinite-list"></ons-lazy-repeat>
-                    </ons-list>
-                    <p id="nodata_message" style="text-align: center; opacity: 0.6; padding-top: 20px;"></p>
-              </ons-page>
-            </ons-template>
-
-            <!--search.htmlの設定-->
-            <ons-template id="search.html">
-                <ons-page id="search">
-                    <!--ツールバー-->
-                    <ons-toolbar>
-                        <div class="center">検索</div>
-                    </ons-toolbar>
-
-                    <p style="text-align: center; opacity: 0.6; padding-top: 20px;">
-                      Search.html
-                    </p>
-                </ons-page>
-            </ons-template>
-
-            <!--action.htmlの設定-->
-            <ons-template id="action.html">
-                <ons-page id="action">
-                    <!--ツールバー-->
-                    <ons-toolbar>
-                        <div class="center">アクション</div>
-                    </ons-toolbar>
-
-                    <p style="text-align: center; opacity: 0.6; padding-top: 20px;">
-                      Actions.html
-                    </p>
-                </ons-page>
-            </ons-template>
-
-            <!--movieadd_search.htmlの設定-->
-            <ons-template id="movieadd_search.html">
-                <ons-page id="movieadd_search">
-                    <!--ツールバー-->
-                    <ons-toolbar>
-                        <div class="left" id="movieadd_search_backbutton"><ons-back-button></ons-back-button></div>
-
-                        <div class="center" id="movieadd_search_input">
-                            <form action="javascript:movieadd_search.click_done()">
-                                <input onfocus="movieadd_search.set_animation_movieadd_search_input('focus')" onblur="movieadd_search.set_animation_movieadd_search_input('blur')" style="margin: 6px 0px; margin-left: -50px; width: 170%;" type="search" id="search_movie_title" value="" placeholder="追加したい映画のタイトルを検索" class="search-input">
-                            </form>
-                        </div>
-
-                        <div class="right">
-                        	<ons-toolbar-button onclick="movieadd_search.tap_cancel()" id="movieadd_search_cancel_button" style="margin-left: 200px; width: 10px;"></ons-toolbar-button>
-                        </div>
-                        
-                        <div id="movieadd_search_reset"></div>
-                    </ons-toolbar>
-
-                    <!--ローディング表示用-->
-                    <div align="center" id="movieadd_search_loading" style="margin: 20px 0px 0px;"></div>
-
-                    <!--リスト-->
-                    <ons-list>
-                        <ons-lazy-repeat id="movieadd_search_list"></ons-lazy-repeat>
-                    </ons-list>
-
-
-
-                </ons-page>
-            </ons-template>
-
             <!--signup.htmlの設定-->
             <ons-template id="signup.html">
                 <ons-page id="signup">
@@ -242,6 +140,110 @@
                             </div>
                         </div>
                     </ons-page>
+                </ons-page>
+            </ons-template>
+
+
+            <!--movies.htmlの設定-->
+            <ons-template id="movies.html">
+              <ons-page id="movies">
+                    <!--ポップオーバーの設定-->
+                    <ons-popover direction="down" id="popover">
+                        <div style="padding: 10px; text-align: center;">
+                            <p><ons-button modifier="large"><i class="zmdi zmdi-view-list-alt"></i>　　リスト形式で表示</ons-button></p>
+                            <p><ons-button modifier="large"><i class="zmdi zmdi-grid"></i>　グリッド形式で表示</ons-button></p>
+                            <p><ons-button onclick="document.getElementById('popover').hide()">閉じる</ons-button></p>
+                        </div>
+                    </ons-popover>
+
+                    <!--ツールバー-->
+                    <ons-toolbar>
+                        <div class="center">映画の一覧</div>
+                        <div class="right">
+                            <ons-toolbar-button onClick="document.getElementById('myNavigator').pushPage('movieadd_search.html')">
+                                <ons-icon icon="ion-ios-plus-empty"></ons-icon>
+                            </ons-toolbar-button>
+                        </div>
+
+                        <div class="left">
+                            <ons-toolbar-button onclick="document.getElementById('popover').show(this)">
+                                <ons-icon icon="ion-ios-settings"></ons-icon>
+                            </ons-toolbar-button>
+                        </div>
+                    </ons-toolbar>
+                    
+                    <!--プルホック-->
+                    <ons-pull-hook id="pull-hook">
+                        Pull to refresh
+                    </ons-pull-hook>
+
+                    <!--リスト-->
+                    <ons-list>
+                        <ons-lazy-repeat id="infinite-list"></ons-lazy-repeat>
+                    </ons-list>
+                    <p id="nodata_message" style="text-align: center; opacity: 0.6; padding-top: 20px;"></p>
+              </ons-page>
+            </ons-template>
+
+
+            <!--movieadd_search.htmlの設定-->
+            <ons-template id="movieadd_search.html">
+                <ons-page id="movieadd_search">
+                    <!--ツールバー-->
+                    <ons-toolbar>
+                        <div class="left" id="movieadd_search_backbutton"><ons-back-button></ons-back-button></div>
+
+                        <div class="center" id="movieadd_search_input">
+                            <form action="javascript:movieadd_search.click_done()">
+                                <input onfocus="movieadd_search.set_animation_movieadd_search_input('focus')" onblur="movieadd_search.set_animation_movieadd_search_input('blur')" style="margin: 6px 0px; margin-left: -50px; width: 170%;" type="search" id="search_movie_title" value="" placeholder="追加したい映画のタイトルを検索" class="search-input">
+                            </form>
+                        </div>
+
+                        <div class="right">
+                            <ons-toolbar-button onclick="movieadd_search.tap_cancel()" id="movieadd_search_cancel_button" style="margin-left: 200px; width: 10px;"></ons-toolbar-button>
+                        </div>
+                        
+                        <div id="movieadd_search_reset"></div>
+                    </ons-toolbar>
+
+                    <!--ローディング表示用-->
+                    <div align="center" id="movieadd_search_loading" style="margin: 20px 0px 0px;"></div>
+
+                    <!--リスト-->
+                    <ons-list>
+                        <ons-lazy-repeat id="movieadd_search_list"></ons-lazy-repeat>
+                    </ons-list>
+                    
+                </ons-page>
+            </ons-template>
+
+
+            <!--search.htmlの設定-->
+            <ons-template id="search.html">
+                <ons-page id="search">
+                    <!--ツールバー-->
+                    <ons-toolbar>
+                        <div class="center">検索</div>
+                    </ons-toolbar>
+
+                    <p style="text-align: center; opacity: 0.6; padding-top: 20px;">
+                      Search.html
+                    </p>
+                </ons-page>
+            </ons-template>
+            
+
+            <!--action.htmlの設定-->
+            <ons-template id="action.html">
+                <ons-page id="action">
+                    <!--ツールバー-->
+                    <ons-toolbar>
+                        <div class="center">アクション</div>
+                    </ons-toolbar>
+
+                    <p style="text-align: center; opacity: 0.6; padding-top: 20px;">
+                      Actions.html
+                    </p>
                 </ons-page>
             </ons-template>
         </body>
