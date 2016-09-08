@@ -399,8 +399,8 @@ var movieadd = {
             //検索窓の入力を監視するイベントを追加する
             $('#search_movie_title').on('input', movieadd.get_search_movie_title_val);
 
-            $('#movieadd_backbutton').fadeTo(100,0);
-            $('#movieadd_backbutton').animate({marginLeft: '-40px'},{queue: false , duration: 200});
+            $('#movieadd_search_backbutton').fadeTo(100,0);
+            $('#movieadd_search_backbutton').animate({marginLeft: '-40px'},{queue: false , duration: 200});
 
             $('#search_movie_title').animate({width: '150%'},{queue: false, duration: 200});
 
@@ -418,8 +418,8 @@ var movieadd = {
             //検索窓の入力を監視するイベントを削除する
             $('#search_movie_title').off('input', movieadd.get_search_movie_title_val);
 
-            $('#movieadd_backbutton').fadeTo(100,1);
-            $('#movieadd_backbutton').animate({marginLeft: '0px'},{queue: false , duration: 200});
+            $('#movieadd_search_backbutton').fadeTo(100,1);
+            $('#movieadd_search_backbutton').animate({marginLeft: '0px'},{queue: false , duration: 200});
 
             $('#search_movie_title').animate({width: '170%'},{queue: false, duration: 200});
 
