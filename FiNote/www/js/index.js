@@ -378,7 +378,7 @@ var movieadd_search = {
 
 
     /**
-     * movieaddのsearch-input横にあるキャンセルボタンをタップした際に前のページへ画面遷移する
+     * movieadd_searchのsearch-input横にあるキャンセルボタンをタップした際に前のページへ画面遷移する
      */
     tap_cancel: function(){
         document.getElementById('myNavigator').popPage();
