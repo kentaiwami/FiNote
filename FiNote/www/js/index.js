@@ -643,12 +643,16 @@ var movieadd_search = {
 
 
 var movieadd = {
+
+    taped: false,       //falseなら映画の情報が表示されていない、trueは表示済み(表示中)
+
     /**
      * [映画追加画面のコンテンツを表示する]
      * @param  {[array]} list_data [検索結果の映画オブジェクトが格納された配列]
      * @param  {[number]} tap_id    [映画検索画面のリストのうちタップされたリスト番号]
      */
     show_contents: function(list_data,tap_id){
+        //card部分に表示する画像を取得して表示
         var card = document.getElementById('movieadd_card');
         var tap_list_obj = document.getElementById(tap_id);
         var img_url = tap_list_obj.children[0].children[0].getAttribute('src');
@@ -657,6 +661,12 @@ var movieadd = {
         card.style.backgroundRepeat = 'no-repeat';
         card.style.height = '87%';
         card.style.width = 'auto';
+
+        //card部分や吹き出しタップ時に表示する情報の取得と追加
+        var title = list_data[tap_id].title;
+        var overview = list_data[tap_id].overview;
+        var release_date = list_data[tap_id].release_date;
+        card.innerHTML = '<div class="modal" id="movie_detail_info" style="height: 87%; opacity: 0.0;"><div class="modal__content"><p>'+ title +'</p><p>'+ overview +'</p><p>'+ release_date +'</p></div></div>';
     },
 
     /**
@@ -664,6 +674,20 @@ var movieadd = {
      */
     tap_backbutton: function(){
         document.getElementById('myNavigator').popPage();
+    },
+
+
+    /**
+     * card部分や吹き出しタップ時にアニメーション表示を行う
+     */
+    fadeTo_detail_info: function(){
+        if (movieadd.taped === false) {
+            $('#movie_detail_info').fadeTo(300,1);
+            movieadd.taped = true;
+        }else {
+            $('#movie_detail_info').fadeTo(300,0);
+            movieadd.taped = false;
+        }  
     },
 };
 
