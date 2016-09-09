@@ -15,7 +15,6 @@
             <script src="onsen/js/onsenui.js"></script>
             <script src="cordova.js"></script>
             <script src="js/ncmb.min.js" charset="utf-8"></script>
-            <script src="js/themoviedb.min.js"></script>
         </head>
 
         <body>
@@ -48,9 +47,6 @@
                     var signup_flag = storage.getItem('signup_flag');
                     if (signup_flag == 'true') {
                         document.getElementById('index').innerHTML = '<img  src="img/splash.gif" alt="" / width="100%" height="100%">';
-
-                        //api_keyをセットする
-                        theMovieDb.common.api_key = utility.get_tmdb_apikey();
                     }
                 </script>
               </ons-page>
@@ -231,7 +227,7 @@
                     </p>
                 </ons-page>
             </ons-template>
-            
+
 
             <!--action.htmlの設定-->
             <ons-template id="action.html">

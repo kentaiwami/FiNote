@@ -443,28 +443,15 @@ var movieadd_search = {
         var loading = document.getElementById('movieadd_search_loading');
 
         if (text.length > 0) {
-            //[0]にlanguage=jaのリクエスト結果，[1]にはlanguage=enのリクエスト結果をそれぞれ記録する
-            var array = [];
-
             resetbutton.innerHTML = '<ons-button id="movieadd_reset_button" onclick="movieadd_search.tap_reset()" style="margin: 0px 0px 0px -100px;" modifier="quiet"><ons-icon icon="ion-close-circled"></ons-icon></ons-button>';
             loading.innerHTML = '<i class="zmdi zmdi-spinner zmdi-hc-3x zmdi-hc-spin"></i>';
 
-            //リクエスト成功時のコールバック
-            var successCB = function(data){
-                //console.log(data);
-                var json = JSON.parse(data);
-                array.push(json);
-            };
-            //リクエスト失敗時のコールバック
-            var errorCB = function(data){
-                console.log('Error callback: ' + data);
-            };
-
             //日本語と英語のリクエストを行う
-            Promise.all([movieadd_search.search_movie(text,'ja',successCB,errorCB),movieadd_search.search_movie(text,'en',successCB,errorCB)]).then(function() {
-                
+            var hoge = [movieadd_search.create_request_movie_search(text,'ja'),movieadd_search.create_request_movie_search(text,'en')];
+
+            Promise.all(hoge).then(function(results) {
                 //検索結果として表示するデータを生成する
-                var list_data = movieadd_search.create_list_data(array);
+                var list_data = movieadd_search.create_list_data(results);
                 movieadd_search.show_list_data = list_data;
 
                 //データによって表示するコンテンツを動的に変える
@@ -518,23 +505,31 @@ var movieadd_search = {
         }
     },
 
-
+    
     /**
-     * 映画のタイトルを検索して結果を取得する
-     * @param  {[type]} text      [検索する映画のタイトル]
-     * @param  {[type]} language  [jaなら日本語，enなら英語で結果を取得]
-     * @param  {[type]} successCB [データ取得成功時のコールバック関数]
-     * @param  {[type]} errorCB   [データ取得失敗時のコールバック関数]
+     * 映画をタイトルで検索するリクエストを生成して実行する
+     * @param  {[string]} movie_title [検索したい映画タイトル]
+     * @param  {[string]} language    [jaで日本語情報、enで英語情報]
+     * @return {[json]}             [検索結果をjsonに変換したもの]
      */
-    search_movie: function(text,language,successCB,errorCB){
+    create_request_movie_search: function(movie_title, language){
         return new Promise(function(resolve, reject) {
-            var query_obj = {
-                'query': text,
-                'language': language,
+            var request = new XMLHttpRequest();
+            var api_key = utility.get_tmdb_apikey();
+            var request_url = 'http://api.themoviedb.org/3/search/movie?query=' +movie_title +'&api_key=' + api_key + '&language=' +language;
+
+            request.open('GET', request_url);
+
+            request.setRequestHeader('Accept', 'application/json');
+
+            request.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    var contact = JSON.parse(this.responseText);
+                    resolve(contact);
+                }
             };
 
-            theMovieDb.search.getMovie(query_obj, successCB, errorCB);
-            resolve();
+            request.send();
         });
     },
 
