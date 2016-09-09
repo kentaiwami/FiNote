@@ -627,11 +627,43 @@ var movieadd_search = {
     tap_list: function(obj){
         var list_data = movieadd_search.show_list_data;
         var tap_id = obj.id;
+        var myNavigator = document.getElementById('myNavigator');
 
-        console.log(list_data[tap_id].title);
+        //movieaddの画面初期化後に動作する関数を定義
+        var callback = function(){
+            movieadd.show_contents(list_data,tap_id);
+        };
+        utility.check_page_init('movieadd',callback);
 
-        //データを渡して画面遷移
+        //映画追加画面へ遷移
+        myNavigator.pushPage('movieadd.html', {});
+    },
+};
 
+
+
+var movieadd = {
+    /**
+     * [映画追加画面のコンテンツを表示する]
+     * @param  {[array]} list_data [検索結果の映画オブジェクトが格納された配列]
+     * @param  {[number]} tap_id    [映画検索画面のリストのうちタップされたリスト番号]
+     */
+    show_contents: function(list_data,tap_id){
+        var card = document.getElementById('movieadd_card');
+        var tap_list_obj = document.getElementById(tap_id);
+        var img_url = tap_list_obj.children[0].children[0].getAttribute('src');
+
+        card.style.backgroundImage = 'url('+img_url+')';
+        card.style.backgroundRepeat = 'no-repeat';
+        card.style.height = '87%';
+        card.style.width = 'auto';
+    },
+
+    /**
+     * 映画追加画面上部のツールバーにあるバックボタンをタップした際にpopPageを行う
+     */
+    tap_backbutton: function(){
+        document.getElementById('myNavigator').popPage();
     },
 };
 
