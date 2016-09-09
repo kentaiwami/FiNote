@@ -447,9 +447,9 @@ var movieadd_search = {
             loading.innerHTML = '<i class="zmdi zmdi-spinner zmdi-hc-3x zmdi-hc-spin"></i>';
 
             //日本語と英語のリクエストを行う
-            var hoge = [movieadd_search.create_request_movie_search(text,'ja'),movieadd_search.create_request_movie_search(text,'en')];
+            var promises = [movieadd_search.create_request_movie_search(text,'ja'),movieadd_search.create_request_movie_search(text,'en')];
 
-            Promise.all(hoge).then(function(results) {
+            Promise.all(promises).then(function(results) {
                 //検索結果として表示するデータを生成する
                 var list_data = movieadd_search.create_list_data(results);
                 movieadd_search.show_list_data = list_data;
