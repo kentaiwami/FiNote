@@ -244,7 +244,7 @@
                     </ons-col>
 
                     <ons-col class="action-col">
-                      <div class="action-icon"><ons-icon icon="ion-edit"></ons-icon></div>
+                      <div class="action-icon"><ons-icon onClick="movieadd.tap_add_feeling()" icon="ion-edit"></ons-icon></div>
                       <div class="action-label">気分を記述</div>
                     </ons-col>
 
@@ -256,6 +256,30 @@
                   </ons-row>
                 </ons-list-item></ons-list>
               </ons-page>
+            </ons-template>
+
+            <!--movieadd_feeling.htmlの設定-->
+            <ons-template id="movieadd_feeling.html">
+                <ons-page id="movieadd_feeling">
+                    <!--ツールバー-->
+                    <ons-toolbar>
+                        <div class="center">気分を記述</div>
+                    </ons-toolbar>
+
+                    <!--オノマトペタグ配置エリア-->
+                    <div id="tag_area" class="block" style="height: 45%;"></div>
+
+                    <ons-list-header>入力欄(5文字以内)</ons-list-header>
+                    <ul class="list">
+                        <li class="list__item">
+                            <input type="text" class="text-input text-input--transparent" style="width:100%; margin-top:4px;" placeholder="例) ワクワク、ドキドキなど" maxlength='5'>
+                        </li>
+                    </ul>
+
+                    <ons-button style="width:70px; margin: 80px; text-align: center;">閉じる</ons-button>
+                    <ons-button style="width:70px; text-align: center;">追 加</ons-button>
+
+                </ons-page>
             </ons-template>
 
 

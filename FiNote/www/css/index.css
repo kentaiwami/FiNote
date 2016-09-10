@@ -207,3 +207,29 @@ input[type=password] {
 }
 /*映画追加画面で使用する設定の終了*/
 
+
+/*オノマトペ記述画面で使用*/
+.block {
+    position: relative;
+    padding: 20px;
+    color: #fff;
+    background: #d2b48c;
+    overflow: hidden;
+}
+ 
+.block:before {
+    content: " ";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-width: 16px 16px 0 0;
+    border-style: solid;
+    border-color: #fff;
+    border-top-color: #998366;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.4);
+    -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.4);
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.4);
+}
+/*オノマトペ記述画面で使用*/

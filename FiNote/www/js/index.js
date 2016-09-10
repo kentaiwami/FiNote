@@ -761,6 +761,12 @@ var movieadd = {
         //アラート表示
         //検索画面に遷移
     },
+
+    tap_add_feeling: function(){
+        utility.pushpage('movieadd_feeling.html', 'lift', 0);
+        
+        //テキストエリアを監視してボタンの有効無効を切り替える
+    },
 };
 
 
