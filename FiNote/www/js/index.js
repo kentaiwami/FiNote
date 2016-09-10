@@ -754,8 +754,12 @@ var movieadd = {
         rating_num.innerHTML = innerHTML_string;
     },
 
-    tap_add: function(oya){
-        
+    tap_add: function(){
+        //スピナー表示        
+        //クラウドとローカルに保存(promiseall)
+        //スピナー非表示
+        //アラート表示
+        //検索画面に遷移
     },
 };
 
