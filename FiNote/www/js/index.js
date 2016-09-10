@@ -667,6 +667,8 @@ var movieadd = {
         var overview = list_data[tap_id].overview;
         var release_date = list_data[tap_id].release_date;
         card.innerHTML = '<div class="modal" id="movie_detail_info" style="height: 87%; opacity: 0.0;"><div class="modal__content"><p>'+ title +'</p><p>'+ overview +'</p><p>'+ release_date +'</p></div></div>';
+
+        movieadd.show_vote_average(list_data[tap_id].vote_average);
     },
 
     /**
@@ -688,6 +690,66 @@ var movieadd = {
             $('#movie_detail_info').fadeTo(300,0);
             movieadd.taped = false;
         }  
+    },
+
+
+    /**
+     * 映画のレーティングを最大評価5に合うように計算して表示する
+     * @param  {[number]} vote_average [最大評価10.0の評価値]
+     */
+    show_vote_average: function(vote_average){
+        //検索結果のvote_averageはMAX10なので半分にする
+        var ave = vote_average / 2.0;
+
+        //小数点第2位で四捨五入をする
+        var pow = Math.pow(10,1);
+        ave = Math.round(ave*pow) / pow;
+
+        //整数部分に0.5を足してx.5という形にする
+        var pivot = Math.floor(ave) + 0.5;
+
+        //x.5より大きいか小さいかで(x.5〜x.5+0.5)か(x.0〜x.5)の上限と下限を決定する
+        var under_limit = 0.0;
+        var over_limit = 0.0;
+        
+        if (ave < pivot) {
+            under_limit = pivot - 0.5;
+            over_limit = pivot;
+        }else {
+            under_limit = pivot;
+            over_limit = pivot + 0.5;
+        }
+
+        //上限と下限に近い方の値をvote_averageとする
+        var result = 0.0;
+        if (Math.abs(ave-under_limit) < Math.abs(ave-over_limit)) {
+            result = under_limit;
+        }else {
+            result = over_limit;
+        }
+
+        //整数部と少数部を取得
+        var integer = Math.floor(result);
+        var few = String(result).split(".")[1];
+
+        //星と数値を書き込む
+        var rating_num = document.getElementById('movieadd_rating');
+        var innerHTML_string = '';
+        var few_write = false;
+        for(var i = 0; i < 5; i++){
+            if (i < integer) {
+                innerHTML_string += '<ons-icon icon="ion-ios-star" fixed-width="false"></ons-icon>';
+            }else if (few == 5 && few_write === false) {
+                innerHTML_string += '<ons-icon icon="ion-ios-star-half" fixed-width="false"></ons-icon>';
+                few_write = true;
+            }else{
+                innerHTML_string += '<ons-icon icon="ion-ios-star-outline" fixed-width="false"></ons-icon>';
+            }
+        }
+
+        innerHTML_string += result;
+
+        rating_num.innerHTML = innerHTML_string;
     },
 };
 
