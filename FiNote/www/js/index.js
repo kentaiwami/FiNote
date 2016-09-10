@@ -764,8 +764,30 @@ var movieadd = {
 
     tap_add_feeling: function(){
         utility.pushpage('movieadd_feeling.html', 'lift', 0);
-        
-        //テキストエリアを監視してボタンの有効無効を切り替える
+
+        //入力欄を監視するイベント登録
+        var addevent = function(){
+            document.getElementById('movieadd_feeling_text').addEventListener('keyup',movieadd_feeling.change_feeling_addbutton);
+        };
+        utility.check_page_init('movieadd_feeling',addevent);
+    },
+};
+
+var movieadd_feeling = {
+
+    /**
+     * 入力文字数が1文字以上なら追加ボタンを有効にする。0文字なら無効にする。
+     */
+    change_feeling_addbutton: function(){
+        var feeling_textarea = document.getElementById('movieadd_feeling_text');
+        var feeling_addbutton = document.getElementById('movieadd_feeling_add_button');
+        var feeling_text = feeling_textarea.value;
+
+        if (feeling_text.length > 0) {
+            feeling_addbutton.removeAttribute('disabled');
+        }else{
+            feeling_addbutton.setAttribute('disabled');
+        }
     },
 };
 
@@ -925,7 +947,6 @@ var utility = {
         //スピナーオブジェクト
         var spinner = new Spinner(opts);
         utility.spinner = spinner;
-        console.log(utility.spinner);
         //スピナー描画
         spinner.spin(spin_target);
     },
