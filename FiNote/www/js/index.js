@@ -359,10 +359,10 @@ var movieadd_search = {
      * バツボタンをタップした際に動作
      */
     tap_reset: function(){
-        //formのテキストを初期化、バツボタンの削除、ローディングの削除
+        //formのテキストを初期化、バツボタンの削除、検索結果なしメッセージの削除
         document.getElementById('search_movie_title').value = '';
         document.getElementById('movieadd_search_reset').innerHTML = '';
-        document.getElementById('movieadd_search_loading').innerHTML = '';
+        document.getElementById('movieadd_no_match_message').innerHTML = '';
         movieadd_search.not_show_list();
 
         //テキスト未確定入力時にリセットボタンを押した時
@@ -440,26 +440,28 @@ var movieadd_search = {
     get_search_movie_title_val: function(){
         var text = document.getElementById('search_movie_title').value;
         var resetbutton = document.getElementById('movieadd_search_reset');
-        var loading = document.getElementById('movieadd_search_loading');
+        var no_match_message = document.getElementById('movieadd_no_match_message');
 
         if (text.length > 0) {
+            //テキストエリアのリセットボタン表示、スピナー表示
             resetbutton.innerHTML = '<ons-button id="movieadd_reset_button" onclick="movieadd_search.tap_reset()" style="margin: 0px 0px 0px -100px;" modifier="quiet"><ons-icon icon="ion-close-circled"></ons-icon></ons-button>';
-            loading.innerHTML = '<i class="zmdi zmdi-spinner zmdi-hc-3x zmdi-hc-spin"></i>';
+            utility.show_spinner('movieadd_no_match_message');
 
             //日本語と英語のリクエストを行う
             var promises = [movieadd_search.create_request_movie_search(text,'ja'),movieadd_search.create_request_movie_search(text,'en')];
 
             Promise.all(promises).then(function(results) {
+                utility.stop_spinner();
                 //検索結果として表示するデータを生成する
                 var list_data = movieadd_search.create_list_data(results);
                 movieadd_search.show_list_data = list_data;
 
                 //データによって表示するコンテンツを動的に変える
                 if (list_data.length === 0) {
-                    loading.innerHTML = '検索結果なし';
+                    no_match_message.innerHTML = '検索結果なし';
                     movieadd_search.not_show_list();
                 }else{
-                    loading.innerHTML = '';
+                    no_match_message.innerHTML = '';
                                                                                                                                       
                     var list_data_poster = movieadd_search.get_poster(list_data);
 
@@ -500,7 +502,7 @@ var movieadd_search = {
 
         } else {
             resetbutton.innerHTML = '';
-            loading.innerHTML = '';
+            no_match_message.innerHTML = '';
             movieadd_search.not_show_list();
         }
     },
@@ -751,6 +753,10 @@ var movieadd = {
 
         rating_num.innerHTML = innerHTML_string;
     },
+
+    tap_add: function(oya){
+        
+    },
 };
 
 
@@ -874,7 +880,52 @@ var utility = {
             storage.setItem('signup_flag', true);
         };
         utility.check_page_init('signup',callback);
-    }
+    },
+
+
+    spinner: {},        //spinnerオブジェクト格納用
+
+    /**
+     * 指定した親要素にスピナーを表示する
+     * @param  {[string]} parent [親要素のid]
+     */
+    show_spinner: function(parent){
+        var opts = {
+          lines: 13, //線の数
+          length: 8, //線の長さ
+          width: 3, //線の幅
+          radius: 16, //スピナーの内側の広さ
+          corners: 1, //角の丸み
+          rotate: 74, //向き(あんまり意味が無い・・)
+          direction: 1, //1：時計回り -1：反時計回り
+          color: '#000', // 色
+          speed: 2.0, // 一秒間に回転する回数
+          trail: 71, //残像の長さ
+          shadow: true, // 影
+          hwaccel: true, // ？
+          className: 'spinner', // クラス名
+          zIndex: 2e9, // Z-index
+          top: '50%', // relative TOP
+          left: '50%', // relative LEFT
+          opacity: 0.25, //透明度
+          fps: 40 //fps
+        };
+        //描画先の親要素
+        var spin_target = document.getElementById(parent);
+        //スピナーオブジェクト
+        var spinner = new Spinner(opts);
+        utility.spinner = spinner;
+        console.log(utility.spinner);
+        //スピナー描画
+        spinner.spin(spin_target);
+    },
+
+    /**
+     * [スピナーの表示を止める]
+     */
+    stop_spinner: function(){
+        utility.spinner.spin();
+    },
 };
 
 
