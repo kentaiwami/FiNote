@@ -158,7 +158,7 @@
                         <div class="center">映画の一覧</div>
                         <div class="right">
                             <ons-toolbar-button onClick="document.getElementById('myNavigator').pushPage('movieadd_search.html')">
-                                <ons-icon icon="ion-ios-plus-empty"></ons-icon>
+                                <ons-icon icon="ion-plus-round"></ons-icon>
                             </ons-toolbar-button>
                         </div>
 
@@ -245,7 +245,7 @@
 
                     <ons-col class="action-col">
                       <div class="action-icon"><ons-icon onClick="movieadd.tap_add_feeling()" icon="ion-edit"></ons-icon></div>
-                      <div class="action-label">気分を記述</div>
+                      <div class="action-label">気分リスト</div>
                     </ons-col>
 
                     <ons-col class="action-col">
@@ -263,21 +263,20 @@
                 <ons-page id="movieadd_feeling">
                     <!--ツールバー-->
                     <ons-toolbar>
-                        <div class="center">気分を記述</div>
+                        <div class="center">気分リスト</div>
+                        <div class="right">
+      						<ons-toolbar-button>
+					        	<ons-icon icon="ion-plus-round"></ons-icon>
+					      	</ons-toolbar-button>
+					    </div>
                     </ons-toolbar>
 
-                    <!--オノマトペタグ配置エリア-->
-                    <div id="tag_area" class="block" style="height: 45%;"></div>
-
-                    <ons-list-header>入力欄(5文字以内)</ons-list-header>
-                    <ul class="list">
-                        <li class="list__item">
-                            <input type="text" id="movieadd_feeling_text" class="text-input text-input--transparent" style="width:100%; margin-top:4px;" placeholder="例) ワクワク、ドキドキなど" maxlength='5'>
-                        </li>
-                    </ul>
-
-                    <ons-button style="width:70px; margin: 80px; text-align: center;">閉じる</ons-button>
-                    <ons-button id="movieadd_feeling_add_button" style="width:70px; text-align: center;" disabled>追 加</ons-button>
+                    <ons-row>
+					  <!-- <ons-col width="35%" style="margin: 25px;">
+					  	<img src="img/film.png" width="100%">
+					  	<div style="position:absolute; top:65px; left:35px; font-size: 30px;">ドキドキ</div>
+					  </ons-col> -->
+					</ons-row>
 
                 </ons-page>
             </ons-template>
