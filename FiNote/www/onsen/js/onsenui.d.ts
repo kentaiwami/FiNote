@@ -3,88 +3,294 @@
 // Definitions by: Fran Dios <https://github.com/frankdiox/>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
-// https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/es6-promise/es6-promise.d.ts
-interface Thenable<T> {
-  then<U>(onFulfilled?: (value: T) => U | Thenable<U>, onRejected?: (error: any) => U | Thenable<U>): Thenable<U>;
-  then<U>(onFulfilled?: (value: T) => U | Thenable<U>, onRejected?: (error: any) => void): Thenable<U>;
-  catch<U>(onRejected?: (error: any) => U | Thenable<U>): Thenable<U>;
+// module declaration
+declare module 'onsenui' { 
+  export = ons;
 }
 
-declare class Promise<T> implements Thenable<T> {
+interface onsOptions {
+  parentScope?: Object;
+}
+
+interface alertOptions {
+  message?: string;
+  messageHTML?: string;
+  buttonLabel?: string;
+  buttonLabels?: [string];
+  primaryButtonIndex?: number;
+  cancelable?: boolean;
+  animation?: string;
+  title?: string;
+  modifier?: string;
+  callback?: any;
+  id?: string;
+}
+
+interface onsPlatform {
   /**
-   * If you call resolve in the body of the callback passed to the constructor,
-   * your promise is fulfilled with result object passed to resolve.
-   * If you call reject your promise is rejected with the object passed to reject.
-   * For consistency and debugging (eg stack traces), obj should be an instanceof Error.
-   * Any errors thrown in the constructor callback will be implicitly passed to reject().
+   * @param  {string} platform Name of the platform. Possible values are: "opera", "firefox", "safari", "chrome", "ie", "android", "blackberry", "ios" or "wp".
+   * @description Sets the platform used to render the elements. Useful for testing.
    */
-  constructor(callback: (resolve : (value?: T | Thenable<T>) => void, reject: (error?: any) => void) => void);
+  select(platform: string): void;
+  /**
+   * @description Returns whether app is running in Cordova
+   * @return {Boolean}
+   */
+  isWebView(): boolean;
 
   /**
-   * onFulfilled is called when/if "promise" resolves. onRejected is called when/if "promise" rejects.
-   * Both are optional, if either/both are omitted the next onFulfilled/onRejected in the chain is called.
-   * Both callbacks have a single parameter , the fulfillment value or rejection reason.
-   * "then" returns a new promise equivalent to the value you return from onFulfilled/onRejected after being passed through Promise.resolve.
-   * If an error is thrown in the callback, the returned promise rejects with that error.
+   * @description Returns whether the OS is iOS
+   * @return {Boolean}
+   */
+  isIOS(): boolean;
+
+  /**
+   * @description Returns whether the OS is Android
+   * @return {Boolean}
+   */
+  isAndroid(): boolean;
+
+  /**
+   * @description Returns whether the device is iPhone
+   * @return {Boolean}
+   */
+  isIPhone(): boolean;
+
+  /**
+   * @description Returns whether the device is iPad
+   * @return {Boolean}
+   */
+  isIPad(): boolean;
+
+  /**
+   * @description Returns whether the device is BlackBerry
+   * @return {Boolean}
+   */
+  isBlackBerry(): boolean;
+
+  /**
+   * @description Returns whether the browser is Opera
+   * @return {Boolean}
+   */
+  isOpera(): boolean;
+
+  /**
+   * @description Returns whether the browser is Firefox
+   * @return {Boolean}
+   */
+  isFirefox(): boolean;
+
+  /**
+   * @description Returns whether the browser is Safari
+   * @return {Boolean}
+   */
+  isSafari(): boolean;
+
+  /**
+   * @description Returns whether the browser is Chrome
+   * @return {Boolean}
+   */
+  isChrome(): boolean;
+
+  /**
+   * @description Returns whether the browser is Internet Explorer
+   * @return {Boolean}
+   */
+  isIE(): boolean;
+
+  /**
+   * @description Returns whether the iOS version is 7 or above
+   * @return {Boolean}
+   */
+  isIOS7above(): boolean;
+  /**
    *
-   * @param onFulfilled called when/if "promise" resolves
-   * @param onRejected called when/if "promise" rejects
    */
-  then<U>(onFulfilled?: (value: T) => U | Thenable<U>, onRejected?: (error: any) => U | Thenable<U>): Promise<U>;
-  then<U>(onFulfilled?: (value: T) => U | Thenable<U>, onRejected?: (error: any) => void): Promise<U>;
-
-  /**
-   * Sugar for promise.then(undefined, onRejected)
-   *
-   * @param onRejected called when/if "promise" rejects
-   */
-  catch<U>(onRejected?: (error: any) => U | Thenable<U>): Promise<U>;
+  isEdge(): boolean;
 }
 
-declare namespace Promise {
+interface onsOrientation {
   /**
-   * Make a new promise from the thenable.
-   * A thenable is promise-like in as far as it has a "then" method.
+   * @description Add an event listener.
    */
-  function resolve<T>(value?: T | Thenable<T>): Promise<T>;
-
+  on(eventName: string, listener: Function): void;
   /**
-   * Make a promise that rejects to obj. For consistency and debugging (eg stack traces), obj should be an instanceof Error
+   * @description Add an event listener that's only triggered once.
    */
-  function reject(error: any): Promise<any>;
-  function reject<T>(error: T): Promise<T>;
-
+  once(eventName: string, listener: Function): void;
   /**
-   * Make a promise that fulfills when every item in the array fulfills, and rejects if (and when) any item rejects.
-   * the array passed to all can be a mixture of promise-like objects and other objects.
-   * The fulfillment value is an array (in order) of fulfillment values. The rejection value is the first rejection value.
+   * @description Remove an event listener. If the listener is not specified all listeners for the event type will be removed.
    */
-  function all<T>(promises: (T | Thenable<T>)[]): Promise<T[]>;
-
+  off(eventName: string, listener?: Function): void;
   /**
-   * Make a Promise that fulfills when any item fulfills, and rejects if any item rejects.
+   * @return {Boolean} Will be true if the current orientation is portrait mode
+   * @description Returns whether the current screen orientation is portrait or not
    */
-  function race<T>(promises: (T | Thenable<T>)[]): Promise<T>;
+  isPortrait(): boolean;
+  /**
+   * @return {Boolean} Will be true if the current orientation is landscape mode
+   * @description Returns whether the current screen orientation is landscape or not
+   */
+  isLandscape(): boolean;
 }
 
-declare module 'es6-promise' {
-  var foo: typeof Promise; // Temp variable to reference Promise in local context
-  namespace rsvp {
-    export var Promise: typeof foo;
+interface onsNotification {
+  /**
+   * @param {Object} options Parameter object
+   * @param {String} [options.message] Alert message
+   * @param {String} [options.messageHTML] Alert message in HTML
+   * @param {String} [options.buttonLabel] Label for confirmation button. Default is "OK"
+   * @param {String} [options.animation] Animation name. Available animations are "none", "fade" and "slide"
+   * @param {String} [options.title] Dialog title. Default is "Alert"
+   * @param {String} [options.modifier] Modifier for the dialog
+   * @param {String} [options.id] The `<ons-alert-dialog>` element's ID.
+   * @param {Function} [options.callback] Function that executes after dialog has been closed
+   * @description
+   *   Display an alert dialog to show the user a message
+   *   The content of the message can be either simple text or HTML
+   *   Must specify either message or messageHTML
+   */
+  alert(message: string | alertOptions, options?: alertOptions): Promise<HTMLElement>;
+  /**
+   * @param {Object} options Parameter object
+   * @param {String} [options.message] Confirmation question
+   * @param {String} [options.messageHTML] Dialog content in HTML
+   * @param {Array} [options.buttonLabels] Labels for the buttons. Default is ["Cancel", "OK"]
+   * @param {Number} [options.primaryButtonIndex] Index of primary button. Default is 1
+   * @param {Boolean} [options.cancelable] Whether the dialog is cancelable or not. Default is false
+   * @param {String} [options.animation] Animation name. Available animations are "none", "fade" and "slide"
+   * @param {String} [options.title] Dialog title. Default is "Confirm"
+   * @param {String} [options.modifier] Modifier for the dialog
+   * @param {String} [options.id] The `<ons-alert-dialog>` element's ID.
+   * @param {Function} [options.callback]
+   *   Function that executes after the dialog has been closed
+   *   Argument for the function is the index of the button that was pressed or -1 if the dialog was canceled
+   * @description
+   *   Display a dialog to ask the user for confirmation
+   *   The default button labels are "Cancel" and "OK" but they can be customized
+   *   Must specify either message or messageHTML
+   */
+  confirm(message: string | alertOptions, options?: alertOptions): Promise<HTMLElement>;
+  /**
+   * @param {Object} options Parameter object
+   * @param {String} [options.message] Prompt question
+   * @param {String} [options.messageHTML] Dialog content in HTML
+   * @param {String} [options.buttonLabel] Label for confirmation button. Default is "OK"
+   * @param {Number} [options.primaryButtonIndex] Index of primary button. Default is 1
+   * @param {Boolean} [options.cancelable] Whether the dialog is cancelable or not. Default is false
+   * @param {String} [options.animation] Animation name. Available animations are "none", "fade" and "slide"
+   * @param {String} [options.title] Dialog title. Default is "Alert"
+   * @param {String} [options.modifier] Modifier for the dialog
+   * @param {String} [options.id] The `<ons-alert-dialog>` element's ID.
+   * @param {Function} [options.callback]
+   *   Function that executes after the dialog has been closed
+   *   Argument for the function is the value of the input field or null if the dialog was canceled
+   * @description
+   *   Display a dialog with a prompt to ask the user a question
+   *   Must specify either message or messageHTML
+   */
+  prompt(message: string | alertOptions, options?: alertOptions): Promise<HTMLElement>;
+}
+
+
+/**
+ * @description A global object that's used in Onsen UI. This object can be reached from the AngularJS scope
+ */
+declare namespace ons {
+
+  /**
+   * @return {Boolean} Will be true if Onsen UI is initialized
+   * @description Returns true if Onsen UI is initialized
+   */
+  function isReady(): boolean;
+  /**
+   * @return {Boolean} Will be true if the app is running in Cordova
+   * @description Returns true if running inside Cordova
+   */
+  function isWebView(): boolean;
+  /**
+   * @description Method used to wait for app initialization. The callback will not be executed until Onsen UI has been completely initialized
+   * @param {Function} callback Function that executes after Onsen UI has been initialized
+   */
+  function ready(callback: any): void;
+  /**
+   * @param {Function} listener Function that executes when device back button is pressed
+   * @description Set default handler for device back button
+   */
+  function setDefaultDeviceBackButtonListener(listener: (eventObject: any) => any): void;
+  /**
+   * @description Disable device back button event handler
+   */
+  function disableDeviceBackButtonHandler(): void;
+  /**
+   * @description Enable device back button event handler
+   */
+  function enableDeviceBackButtonHandler(): void;
+  /**
+   * @description Enable status bar fill feature on iOS7 and above
+   */
+  function enableAutoStatusBarFill(): void;
+  /**
+   * @description Disable status bar fill feature on iOS7 and above
+   */
+  function disableAutoStatusBarFill(): void;
+  /**
+   * @description Disable all animations. Could be handy for testing and older devices.
+   */
+  function disableAnimations(): void;
+  /**
+   * @description Enable animations (default).
+   */
+  function enableAnimations(): void;
+  /**
+   * @description Refresh styling for the given platform.
+   */
+  function forcePlatformStyling(platform: string): void;
+  /**
+   * @description Create a popover instance from a template.
+   * @return Promise object that resolves to the popover component object.
+   */
+  function createPopover(page: string, options?: onsOptions): Promise<HTMLElement>;
+  /**
+   * @description Create a dialog instance from a template.
+   * @return Promise object that resolves to the dialog component object.
+   */
+  function createDialog(page: string, options?: onsOptions): Promise<HTMLElement>;
+  /**
+   * @description Create a alert dialog instance from a template.
+   * @return Promise object that resolves to the alert dialog component object.
+   */
+  function createAlertDialog(page: string, options?: onsOptions): Promise<HTMLElement>;
+  /**
+   * @description If no page is defined for the `ons-loading-placeholder` attribute it will wait for this method being called before loading the page.
+   */
+  function resolveLoadingPlaceholder(page: string): void;
+  /**
+   * @description Utility methods to create different kinds of alert dialogs. There are three methods available: alert, confirm and prompt
+   */
+  var notification: onsNotification;
+  /**
+   * @description Utility methods for orientation detection
+   */
+  var orientation: onsOrientation;
+  /**
+   * @description Utility methods to detect current platform
+   */
+  var platform: onsPlatform;
+
+  /**
+   * @description Default page loader that load page template
+   */
+  var defaultPageLoader: PageLoader;
+
+  /**
+   * @description PageLoader class constructor
+   */
+  class PageLoader {
+    internalLoader: Function;
+    load(options: {page: any, parent: Element, params?: Object}, done: Function);
   }
-  export = rsvp;
 }
-
-
-// Some useful types
-interface stringArray {
-  [index: number]: string;
-}
-
-interface objectArray {
-  [index: number]: any;
-}
-
 
 /**
  * @description Should be used as root component of each page. The content inside page component is scrollable
@@ -402,40 +608,41 @@ interface OnsNavigatorElement {
    */
   popPage(options?: navigatorOptions): Promise<HTMLElement>;
   /**
-   * @param {String} pageUrl Page URL. Can be either a HTML document or a <code>&lt;ons-template&gt;</code>
+   * @param {*} page Page URL. Can be either a HTML document or a <code>&lt;ons-template&gt;</code>
    * @param {Object} [options] Parameter object
    * @param {String} [options.animation] Animation name. Available animations are "slide", "simpleslide", "lift", "fade" and "none"
    * @param {Function} [options.onTransitionEnd] Function that is called when the transition has ended
    * @return Promise which resolves to the pushed page.
    * @description Pushes the specified pageUrl into the page stack.
    */
-  pushPage(pageUrl: string, options?: PushPageOptions): Promise<HTMLElement>;
+  pushPage(page: any, options?: PushPageOptions): Promise<HTMLElement>;
   /**
    * @return Promise which resolves to the inserted page
    * @description Replaces the current page with the specified one. Extends pushPage parameters.
    */
-  replacePage(pageUrl: string, options?: ReplacePageOptions): Promise<HTMLElement>;
+  replacePage(page: any, options?: ReplacePageOptions): Promise<HTMLElement>;
   /**
    * @param {Number} index The index where it should be inserted
-   * @param {String} pageUrl Page URL. Can be either a HTML document or a <code>&lt;ons-template&gt;</code>
+   * @param {*} page Page URL. Can be either a HTML document or a <code>&lt;ons-template&gt;</code>
    * @param {Object} [options] Parameter object
    * @param {String} [options.animation] Animation name. Available animations are "slide", "simpleslide", "lift", "fade" and "none"
-   * @description Insert the specified pageUrl into the page stack with specified index
+   * @description Insert the specified page into the page stack with specified index
    */
-  insertPage(index: number, pageUrl: string, options?: navigatorOptions): Promise<HTMLElement>;
+  insertPage(index: number, page: any, options?: navigatorOptions): Promise<HTMLElement>;
   /**
-   * @param {String} pageUrl Page URL. Can be either a HTML document or an <code>&lt;ons-template&gt;</code>
+   * @param {*} page Page URL. Can be either a HTML document or an <code>&lt;ons-template&gt;</code>
    * @param {Object} [options] Parameter object
    * @param {String} [options.animation] Animation name. Available animations are "slide", "simpleslide", "lift", "fade" and "none"
    * @param {Function} [options.onTransitionEnd] Function that is called when the transition has ended
    * @description Clears page stack and adds the specified pageUrl to the page stack
    */
-  resetToPage(pageUrl: string, options?: navigatorOptions): Promise<HTMLElement>;
+  resetToPage(page: any, options?: navigatorOptions): Promise<HTMLElement>;
   /**
-   * @param {String} || {Number}
+   * @param {any} item
+   * @param {Object} [options]
    * @description Page URL or index of an existing page in navigator's stack.
    */
-  bringPageTop({item: String,item: Number}, options?: Object): Promise<HTMLElement>;
+  bringPageTop(item: any, options?: Object): Promise<HTMLElement>;
 
   /**
    * @return {HTMLElement}
@@ -477,11 +684,11 @@ interface tabbarOptions {
  */
 interface OnsTabbarElement {
   /**
-   * @param {String} url Page URL. Can be either an HTML document or an <code>&lt;ons-template&gt;</code>
+   * @param {*} url Page URL. Can be either an HTML document or an <code>&lt;ons-template&gt;</code>
    * @return Resolves to the new page element.
    * @description Displays a new page without changing the active index
    */
-  loadPage(url: string, options?: tabbarOptions): Promise<HTMLElement>;
+  loadPage(page: any, options?: tabbarOptions): Promise<HTMLElement>;
   /**
    * @param {Number} index Tab index
    * @param {Object} [options] Parameter object
@@ -581,11 +788,11 @@ interface OnsSplitterSideElement {
   toggle(options?: SplitterSideOptions): Promise<HTMLElement | boolean>;
   /**
    * @description Show the page specified in pageUrl in the right section
-   * @param {String} page Page URL. Can be either an HTML document or an <ons-template>.
+   * @param {*} page Page URL. Can be either an HTML document or an <ons-template>.
    * @param {Object} [option]
    * @return Resolves to the new page element
    */
-  load(page: string, options?: SplitterSideOptions): Promise<HTMLElement>;
+  load(page: any, options?: SplitterSideOptions): Promise<HTMLElement>;
 }
 
 interface LazyRepeatOptions {
@@ -694,16 +901,19 @@ interface SplitterContentOptions {
   callback?: Function;
 }
 
-interface OnsSplitterContentElement{
+interface OnsSplitterContentElement {
   /**
    * @description Page element loaded in the splitter content.
    */
   page: string;
+
   /**
    * @description Show the page specified in pageUrl in the right section. Returns: Resolves to the new page element
-   * @return {Function}
+   * @param {*} page
+   * @param {Object} [options]
+   * @return {Promise}
    */
-  load(page: string, options?: SplitterContentOptions): Promise<HTMLElement>;
+  load(page: any, options?: SplitterContentOptions): Promise<HTMLElement>;
 }
 
 interface OnsSplitterElement {
@@ -781,172 +991,12 @@ interface OnsProgressCircularElement {
   indeterminate: boolean;
 }
 
-//# Onsen Objects
-
-interface onsOptions {
-  parentScope?: Object;
+interface PageLoader {
+  load(page: any, parent: Element, done: Function): void;
+  internalLoader: Function;
 }
 
-/**
- * @description A global object that's used in Onsen UI. This object can be reached from the AngularJS scope
- */
-interface onsStatic {
-  /**
-   * @return {Boolean} Will be true if Onsen UI is initialized
-   * @description Returns true if Onsen UI is initialized
-   */
-  isReady(): boolean;
-  /**
-   * @return {Boolean} Will be true if the app is running in Cordova
-   * @description Returns true if running inside Cordova
-   */
-  isWebView(): boolean;
-  /**
-   * @description Method used to wait for app initialization. The callback will not be executed until Onsen UI has been completely initialized
-   * @param {Function} callback Function that executes after Onsen UI has been initialized
-   */
-  ready(callback: any): void;
-  /**
-   * @param {Function} listener Function that executes when device back button is pressed
-   * @description Set default handler for device back button
-   */
-  setDefaultDeviceBackButtonListener(listener: (eventObject: any) => any): void;
-  /**
-   * @description Disable device back button event handler
-   */
-  disableDeviceBackButtonHandler(): void;
-  /**
-   * @description Enable device back button event handler
-   */
-  enableDeviceBackButtonHandler(): void;
-  /**
-   * @description Enable status bar fill feature on iOS7 and above
-   */
-  enableAutoStatusBarFill(): void;
-  /**
-   * @description Disable status bar fill feature on iOS7 and above
-   */
-  disableAutoStatusBarFill(): void;
-  /**
-   * @description Disable all animations. Could be handy for testing and older devices.
-   */
-  disableAnimations(): void;
-  /**
-   * @description Enable animations (default).
-   */
-  enableAnimations(): void;
-  /**
-   * @description Refresh styling for the given platform.
-   */
-  forcePlatformStyling(platform: string): void;
-  /**
-   * @description Create a popover instance from a template.
-   * @return Promise object that resolves to the popover component object.
-   */
-  createPopover(page: string, options?: onsOptions): Promise<HTMLElement>;
-  /**
-   * @description Create a dialog instance from a template.
-   * @return Promise object that resolves to the dialog component object.
-   */
-  createDialog(page: string, options?: onsOptions): Promise<HTMLElement>;
-  /**
-   * @description Create a alert dialog instance from a template.
-   * @return Promise object that resolves to the alert dialog component object.
-   */
-  createAlertDialog(page: string, options?: onsOptions): Promise<HTMLElement>;
-  /**
-   * @description If no page is defined for the `ons-loading-placeholder` attribute it will wait for this method being called before loading the page.
-   */
-  resolveLoadingPlaceholder(page: string): void;
-  /**
-   * @description Utility methods to create different kinds of alert dialogs. There are three methods available: alert, confirm and prompt
-   */
-  notification: onsNotification;
-  /**
-   * @description Utility methods for orientation detection
-   */
-  orientation: onsOrientation;
-  /**
-   * @description Utility methods to detect current platform
-   */
-  platform: onsPlatform;
-
-}
-declare var ons: onsStatic;
-
-interface alertOptions {
-  message?: string;
-  messageHTML?: string;
-  buttonLabel?: string;
-  buttonLabels?: stringArray;
-  primaryButtonIndex?: number;
-  cancelable?: boolean;
-  animation?: string;
-  title?: string;
-  modifier?: string;
-  callback?: any;
-  id?: string;
-}
-
-interface onsNotification {
-  /**
-   * @param {Object} options Parameter object
-   * @param {String} [options.message] Alert message
-   * @param {String} [options.messageHTML] Alert message in HTML
-   * @param {String} [options.buttonLabel] Label for confirmation button. Default is "OK"
-   * @param {String} [options.animation] Animation name. Available animations are "none", "fade" and "slide"
-   * @param {String} [options.title] Dialog title. Default is "Alert"
-   * @param {String} [options.modifier] Modifier for the dialog
-   * @param {String} [options.id] The `<ons-alert-dialog>` element's ID.
-   * @param {Function} [options.callback] Function that executes after dialog has been closed
-   * @description
-   *   Display an alert dialog to show the user a message
-   *   The content of the message can be either simple text or HTML
-   *   Must specify either message or messageHTML
-   */
-  alert(message: string | alertOptions, options?: alertOptions): Promise<HTMLElement>;
-  /**
-   * @param {Object} options Parameter object
-   * @param {String} [options.message] Confirmation question
-   * @param {String} [options.messageHTML] Dialog content in HTML
-   * @param {Array} [options.buttonLabels] Labels for the buttons. Default is ["Cancel", "OK"]
-   * @param {Number} [options.primaryButtonIndex] Index of primary button. Default is 1
-   * @param {Boolean} [options.cancelable] Whether the dialog is cancelable or not. Default is false
-   * @param {String} [options.animation] Animation name. Available animations are "none", "fade" and "slide"
-   * @param {String} [options.title] Dialog title. Default is "Confirm"
-   * @param {String} [options.modifier] Modifier for the dialog
-   * @param {String} [options.id] The `<ons-alert-dialog>` element's ID.
-   * @param {Function} [options.callback]
-   *   Function that executes after the dialog has been closed
-   *   Argument for the function is the index of the button that was pressed or -1 if the dialog was canceled
-   * @description
-   *   Display a dialog to ask the user for confirmation
-   *   The default button labels are "Cancel" and "OK" but they can be customized
-   *   Must specify either message or messageHTML
-   */
-  confirm(message: string | alertOptions, options?: alertOptions): Promise<HTMLElement>;
-  /**
-   * @param {Object} options Parameter object
-   * @param {String} [options.message] Prompt question
-   * @param {String} [options.messageHTML] Dialog content in HTML
-   * @param {String} [options.buttonLabel] Label for confirmation button. Default is "OK"
-   * @param {Number} [options.primaryButtonIndex] Index of primary button. Default is 1
-   * @param {Boolean} [options.cancelable] Whether the dialog is cancelable or not. Default is false
-   * @param {String} [options.animation] Animation name. Available animations are "none", "fade" and "slide"
-   * @param {String} [options.title] Dialog title. Default is "Alert"
-   * @param {String} [options.modifier] Modifier for the dialog
-   * @param {String} [options.id] The `<ons-alert-dialog>` element's ID.
-   * @param {Function} [options.callback]
-   *   Function that executes after the dialog has been closed
-   *   Argument for the function is the value of the input field or null if the dialog was canceled
-   * @description
-   *   Display a dialog with a prompt to ask the user a question
-   *   Must specify either message or messageHTML
-   */
-  prompt(message: string | alertOptions, options?: alertOptions): Promise<HTMLElement>;
-}
-
-interface OnsSpeedDialElement{
+interface OnsSpeedDialElement {
   /**
    * @description Show the speed dial.
    */
@@ -985,110 +1035,3 @@ interface OnsSpeedDialElement{
   visible: boolean;
 }
 
-interface onsOrientation {
-  /**
-   * @description Add an event listener.
-   */
-  on(eventName: string, listener: Function): void;
-  /**
-   * @description Add an event listener that's only triggered once.
-   */
-  once(eventName: string, listener: Function): void;
-  /**
-   * @description Remove an event listener. If the listener is not specified all listeners for the event type will be removed.
-   */
-  off(eventName: string, listener?: Function): void;
-  /**
-   * @return {Boolean} Will be true if the current orientation is portrait mode
-   * @description Returns whether the current screen orientation is portrait or not
-   */
-  isPortrait(): boolean;
-  /**
-   * @return {Boolean} Will be true if the current orientation is landscape mode
-   * @description Returns whether the current screen orientation is landscape or not
-   */
-  isLandscape(): boolean;
-}
-
-interface onsPlatform {
-  /**
-   * @param  {string} platform Name of the platform. Possible values are: "opera", "firefox", "safari", "chrome", "ie", "android", "blackberry", "ios" or "wp".
-   * @description Sets the platform used to render the elements. Useful for testing.
-   */
-  select(platform: string): void;
-  /**
-   * @description Returns whether app is running in Cordova
-   * @return {Boolean}
-   */
-  isWebView(): boolean;
-
-  /**
-   * @description Returns whether the OS is iOS
-   * @return {Boolean}
-   */
-  isIOS(): boolean;
-
-  /**
-   * @description Returns whether the OS is Android
-   * @return {Boolean}
-   */
-  isAndroid(): boolean;
-
-  /**
-   * @description Returns whether the device is iPhone
-   * @return {Boolean}
-   */
-  isIPhone(): boolean;
-
-  /**
-   * @description Returns whether the device is iPad
-   * @return {Boolean}
-   */
-  isIPad(): boolean;
-
-  /**
-   * @description Returns whether the device is BlackBerry
-   * @return {Boolean}
-   */
-  isBlackBerry(): boolean;
-
-  /**
-   * @description Returns whether the browser is Opera
-   * @return {Boolean}
-   */
-  isOpera(): boolean;
-
-  /**
-   * @description Returns whether the browser is Firefox
-   * @return {Boolean}
-   */
-  isFirefox(): boolean;
-
-  /**
-   * @description Returns whether the browser is Safari
-   * @return {Boolean}
-   */
-  isSafari(): boolean;
-
-  /**
-   * @description Returns whether the browser is Chrome
-   * @return {Boolean}
-   */
-  isChrome(): boolean;
-
-  /**
-   * @description Returns whether the browser is Internet Explorer
-   * @return {Boolean}
-   */
-  isIE(): boolean;
-
-  /**
-   * @description Returns whether the iOS version is 7 or above
-   * @return {Boolean}
-   */
-  isIOS7above(): boolean;
-  /**
-   *
-   */
-  isEdge(): boolean;
-}

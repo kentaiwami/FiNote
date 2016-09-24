@@ -208,28 +208,34 @@ input[type=password] {
 /*映画追加画面で使用する設定の終了*/
 
 
-/*オノマトペ記述画面で使用*/
-.block {
-    position: relative;
-    padding: 20px;
-    color: #fff;
-    background: #d2b48c;
-    overflow: hidden;
+/*追加する映画の検索結果で使用する設定の開始*/
+.list-item-container {
+  line-height: 1;
+  padding: 15px 0px 15px 15px;
 }
- 
-.block:before {
-    content: " ";
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 0;
-    height: 0;
-    border-width: 16px 16px 0 0;
-    border-style: solid;
-    border-color: #fff;
-    border-top-color: #998366;
-    box-shadow: 0 1px 1px rgba(0,0,0,0.4);
-    -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.4);
-    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.4);
+
+.thumbnail {
+  width: 80px;
+  height: 80px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
 }
-/*オノマトペ記述画面で使用*/
+
+.name {
+  font-weight: 500;
+  line-height: 16px;
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+
+.location {
+  font-size: 14px;
+  opacity: 0.4;
+  margin-bottom: 6px;
+}
+
+.desc {
+  line-height: 1.2;
+  font-size: 13px;
+}
+/*追加する映画の検索結果で使用する設定の終了*/

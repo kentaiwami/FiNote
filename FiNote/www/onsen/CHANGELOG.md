@@ -2,6 +2,69 @@
 CHANGELOG
 ====
 
+v2.0.0
+----
+ * ons-splitter-side: Fix attribute watchers.
+ * ons-range: Fix [#1554](https://github.com/OnsenUI/OnsenUI/issues/1554).
+ * ons-page: Fixed dependency problem between ons-page and ons-toolbar.
+ * ons-ripple: Fix timing issue on older Android WebViews.
+ * core: Replace Promise polyfill to avoid Webpack warning.
+
+v2.0.0-rc.18
+----
+ * ons-navigator: Fixed a bug that caused missing .page__content on Safari.
+ * angular1: Use the `$templateCache` service.
+ * ons-splitter: Fix [#1537](https://github.com/OnsenUI/OnsenUI/issues/1537).
+ * core: Update to Custom Elements v1.
+ * ons-navigator: Provides animators and allows to extend them.
+
+v2.0.0-rc.17
+----
+ * core: Update Typescript definitions.
+
+v2.0.0-rc.16
+----
+ * angular2-binding: Removed `OnsPage`, `OnsAlertDialog` and `OnsPopover` directives.
+ * angular2-binding: Renamed `PageParams` to `Params`.
+ * angular2-binding: Added Angular2 API for `ons-alert-dialog`, `ons-popover`, `ons-dialog` and `ons-modal` components.
+ * ons-splitter-side, ons-splitter-content: Added "page" and "pageLoader" property. Changed to use page-loader instead of `ons._internal.getPageHTMLAsync()`.
+ * ons-navigator: Added "page" and "pageLoader" property. Changed to use page-loader instead of `ons._internal.getPageHTMLAsync()`.
+ * ons-tabbar, ons-tab: Added "page" and "pageLoader" property. Changed to use page-loader instead of `ons._internal.getPageHTMLAsync()`.
+ * core: Added ons.defaultPageLoader and ons.PageLoader.
+ * ons-page: Changed to accept ".content" and ".background" elements as child contents.
+ * ons-modal: Fix [#1433](https://github.com/OnsenUI/OnsenUI/issues/1433).
+ * ons-navigator: Improved iOS slide animation (again).
+ * ons-icon: Fix [#1352](https://github.com/OnsenUI/OnsenUI/issues/1352).
+ * ons-pull-hook, ons-carousel: Fix [#1004](https://github.com/OnsenUI/OnsenUI/issues/1004).
+ * ons-fab: Fix [#1496](https://github.com/OnsenUI/OnsenUI/issues/1496).
+ * ons-list-item: Fix [#1499](https://github.com/OnsenUI/OnsenUI/issues/1499)
+ * ons-tabbar: Fix [#1501](https://github.com/OnsenUI/OnsenUI/issues/1501)
+ * ons-navigator: Fix [#1512](https://github.com/OnsenUI/OnsenUI/issues/1512). This changes `pages` property from an `HTMLCollection` to an `Array`.
+ * ons-page, ons-toolbar, ons-bottom-toolbar, ons-modal, ons-speed-dial: Improved location logic
+ * ons-fab: Now stays outside of `.page__content` when it has a `position` attribute.
+ * ons-modal: Fix [#1511](https://github.com/OnsenUI/OnsenUI/issues/1511).
+ * ons-lazy-repeat: Expose `refresh()` method to user through delegate object.
+ * ons-pull-hook: Remove DOM mutations to make it easier to integrate with frameworks and libs.
+ * ons-tab: Fix [#1528](https://github.com/OnsenUI/OnsenUI/issues/1528).
+ * ons-navigator: `data` object for `popPage`.
+
+v2.0.0-rc.15
+----
+ * ons-navigator: Improved iOS slide animation. Fix [#1457](https://github.com/OnsenUI/OnsenUI/issues/1457).
+ * ons.platform: Fix [#1482](https://github.com/OnsenUI/OnsenUI/issues/1482).
+ * ons-modal: Support showing on init.
+ * ons-speed-dial: Add bindings for AngularJS 1.x.
+ * ons-fab: Add bindings for AngularJS 1.x.
+ * ons-pull-hook: Fix flickering on iOS.
+
+v2.0.0-rc.14
+----
+ * core: Update TypeScript definitions.
+
+v2.0.0-rc.13
+----
+ * ons-dialog: Fix Chrome issue with invalid event name.
+
 v2.0.0-rc.12
 ----
  * core: Added type definitions.
@@ -337,6 +400,14 @@ v2.0.0-beta
  * core: Add support for Browserify.
  * ons.platform: uses cordova-plugin-device if installed.
  * ons-back-button: automatically hides if navigator has only 1 page.
+
+v1.3.17
+----
+* ons-tabbar: Remove previous page when using `loadPage()`.
+
+v1.3.16
+----
+* ons-pull-hook: Fix flickering in iOS.
 
 v1.3.14
 ----

@@ -55,7 +55,8 @@ h6 {
   left: 0px;
   right: 0px;
   bottom: 0px;
-  overflow: visible;
+  overflow-x: visible;
+  overflow-y: hidden;
   font-size: 17px;
   color: #1f1f21;
   -ms-overflow-style: none;
@@ -2688,12 +2689,12 @@ ons-range[disabled] .range {
   display: inline-block;
   height: 100%;
   vertical-align: top;
-  margin-left: 12px;
 }
 .back-button__icon {
   display: inline-block;
   height: 100%;
   vertical-align: top;
+  margin-right: 6px;
 }
 .back-button__icon:before {
   font-family: 'Ionicons';
@@ -4015,8 +4016,6 @@ ons-range[disabled] .range {
   -moz-box-ordinal-group: 1;
   -ms-flex-order: 0;
   order: 0;
-  width: 100px; /*※幅を指定する必要あり */
-  word-wrap: break-word;
 }
 .list__item__subtitle {
   opacity: 0.75;
@@ -4032,8 +4031,6 @@ ons-range[disabled] .range {
   -webkit-align-self: flex-start;
   -ms-flex-item-align: start;
   align-self: flex-start;
-  width: 100px; /*※幅を指定する必要あり */
-  word-wrap: break-word;
 }
 /* topdoc
   name: List Item with Thumbnail
@@ -4067,15 +4064,6 @@ ons-range[disabled] .range {
 .list__item__thumbnail {
   width: 40px;
   height: 40px;
-  -webkit-border-radius: 6px;
-  border-radius: 6px;
-  display: block;
-  margin: 0;
-}
-
-.list__item__thumbnail_movie {
-  width: 80px;
-  height: 80px;
   -webkit-border-radius: 6px;
   border-radius: 6px;
   display: block;
@@ -4467,7 +4455,7 @@ input[type="search"].search-input::-webkit-search-cancel-button {
   color: inherit;
   background: transparent;
   border: none;
-  line-height: 1.7;
+  line-height: normal;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -4475,6 +4463,7 @@ input[type="search"].search-input::-webkit-search-cancel-button {
   background-clip: padding-box;
   vertical-align: top;
   outline: none;
+  line-height: 1;
   font-family: -apple-system, 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -4491,7 +4480,7 @@ input[type="search"].search-input::-webkit-search-cancel-button {
   -webkit-box-shadow: none;
   box-shadow: none;
   color: #1f1f21;
-  padding: 3px 0 3px 28px;
+  padding: 4px 0 0 28px;
   -webkit-border-radius: 4px;
   border-radius: 4px;
   background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nNDFweCcgaGVpZ2h0PSc0MHB4JyB2aWV3Qm94PScwIDAgNDEgNDAnIHZlcnNpb249JzEuMScgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB4bWxuczp4bGluaz0naHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluaycgeG1sbnM6c2tldGNoPSdodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2gvbnMnPjx0aXRsZT5TbGljZSAxPC90aXRsZT48ZGVzY3JpcHRpb24+Q3JlYXRlZCB3aXRoIFNrZXRjaCAoaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoKTwvZGVzY3JpcHRpb24+PGRlZnM+PC9kZWZzPjxnIGlkPSdQYWdlIDEnIHN0cm9rZT0nbm9uZScgc3Ryb2tlLXdpZHRoPScxJyBmaWxsPSdub25lJyBmaWxsLXJ1bGU9J2V2ZW5vZGQnPjxnIGlkPSdzZWFyY2gnIGZpbGw9JyNDNkM4QzgnPjxwYXRoIGQ9J00wLjUwNCwxNi4zMzggQzAuNTA0LDI1LjA4NSA3LjYzNSwzMi4xNjUgMTYuNDQ0LDMyLjE2NSBDMjUuMjQsMzIuMTY1IDMyLjM4MiwyNS4wODUgMzIuMzgyLDE2LjMzOCBDMzIuMzgyLDcuNTkxIDI1LjI0LDAuNSAxNi40NDQsMC41IEM3LjYzNSwwLjUgMC41MDQsNy41OTEgMC41MDQsMTYuMzM4IEwwLjUwNCwxNi4zMzggWiBNNS41NTUsMTYuMzM4IEM1LjU1NSwxMC4zNTkgMTAuNDIzLDUuNTIxIDE2LjQ0NSw1LjUyMSBDMjIuNDU1LDUuNTIxIDI3LjMzMywxMC4zNiAyNy4zMzMsMTYuMzM4IEMyNy4zMzMsMjIuMzE3IDIyLjQ1NSwyNy4xNTYgMTYuNDQ1LDI3LjE1NiBDMTAuNDIzLDI3LjE1NiA1LjU1NSwyMi4zMTYgNS41NTUsMTYuMzM4IEw1LjU1NSwxNi4zMzggWiBNMjcuNjY2LDMwLjg2MSBMMzQuNTIxLDM4LjY3IEMzNS42MjUsMzkuNzcyIDM2LjMzOCwzOS43ODEgMzcuNDYsMzguNjcgTDM5LjY2MSwzNi40ODkgQzQwLjc0MywzNS40MDggNDAuODExLDM0LjcxMSAzOS42NjEsMzMuNTY4IEwzMS43NjUsMjYuNzkzIEwyNy42NjYsMzAuODYxIEwyNy42NjYsMzAuODYxIFogTTI3LjY2NiwzMC44NjEnIGlkPSdTaGFwZSc+PC9wYXRoPjwvZz48L2c+PC9zdmc+");
@@ -4777,7 +4766,31 @@ input[type="search"].search-input::-webkit-search-cancel-button {
   -webkit-transform: translate3d(0, 0, 0);
 }
 .text-input--material__label {
+  color: #afafaf;
+  position: absolute;
+  left: 0px;
+  top: 2px;
+  font-size: 16px;
+  font-weight: 400;
+  font-family: 'Roboto', 'Noto', sans-serif;
+  pointer-events: none;
+}
+.text-input--material__label--active {
   color: #009688;
+  -webkit-transform: translate(0, -75%) scale(0.75);
+  -moz-transform: translate(0, -75%) scale(0.75);
+  -ms-transform: translate(0, -75%) scale(0.75);
+  -o-transform: translate(0, -75%) scale(0.75);
+  transform: translate(0, -75%) scale(0.75);
+  -webkit-transform-origin: left top;
+  -moz-transform-origin: left top;
+  -ms-transform-origin: left top;
+  -o-transform-origin: left top;
+  transform-origin: left top;
+  -webkit-transition: -webkit-transform 0.1s ease-in, color 0.1s ease-in;
+  -moz-transition: -moz-transform 0.1s ease-in, color 0.1s ease-in;
+  -o-transition: -o-transform 0.1s ease-in, color 0.1s ease-in;
+  transition: transform 0.1s ease-in, color 0.1s ease-in;
 }
 .text-input--material:focus {
   background-image: -webkit-gradient(linear, left top, left bottom, from(#009688), to(#009688)), -webkit-gradient(linear, left bottom, left top, color-stop(1px, transparent), color-stop(1px, #afafaf));

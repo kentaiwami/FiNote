@@ -477,11 +477,15 @@ var movieadd_search = {
                                 list_data[i].release_date = '情報なし';
                             }
 
-                            var thumbnail_div = '<div class="left"><img style="background:url(img/loading.gif) no-repeat center" class="list__item__thumbnail_movie" src="' + list_data_poster[i] +'"></div>';
-                            var titles_div = '<div class="center"><span class="list__item__title">' + list_data[i].title +'</span><span class="list__item__subtitle">' +movie_subtitle+list_data[i].release_date +'</span></div>';
+                            var thumbnail_div = '<div class="left"><img style="background:url(img/loading.gif) no-repeat center" class="thumbnail" src="' + list_data_poster[i] +'"></div>';
+                            var titles_div = '<div class="center"><span class="name">' + list_data[i].title +'</span><span class="list__item__subtitle">' +movie_subtitle+list_data[i].release_date +'</span></div>';
+
+                            // return ons._util.createElement(
+                            //     '<ons-list-item id="' + i + '" onclick="movieadd_search.tap_list(this)" modifier="chevron" tappable>'+thumbnail_div +titles_div+'</ons-list-item>'
+                            // );
 
                             return ons._util.createElement(
-                                '<ons-list-item id="' + i + '" onclick="movieadd_search.tap_list(this)" modifier="chevron" tappable>'+thumbnail_div +titles_div+'</ons-list-item>'
+                                '<ons-list-item id="' + i + '" onclick="movieadd_search.tap_list(this)" modifier="chevron" class="list-item-container"><ons-row><ons-col width="95px"><img style="background:url(img/loading.gif) no-repeat center" class="thumbnail" src="' + list_data_poster[i] +'"></ons-col><ons-col><div class="name">' + list_data[i].title +'</div><div class="desc">' +movie_subtitle+list_data[i].release_date +'</div></ons-col><ons-col width="40px"></ons-col></ons-row></ons-list-item>'
                             );
                         },
                                             
@@ -657,7 +661,7 @@ var movieadd = {
         //card部分に表示する画像を取得して表示
         var card = document.getElementById('movieadd_card');
         var tap_list_obj = document.getElementById(tap_id);
-        var img_url = tap_list_obj.children[0].children[0].getAttribute('src');
+        var img_url = tap_list_obj.children[0].children[0].children[0].children[0].getAttribute('src');
 
         card.style.backgroundImage = 'url('+img_url+')';
         card.style.backgroundRepeat = 'no-repeat';
