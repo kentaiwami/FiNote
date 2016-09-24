@@ -762,33 +762,29 @@ var movieadd = {
         //検索画面に遷移
     },
 
+    /**
+     * 映画の詳細を表示している画面の気分リストをタップした際に画面遷移する
+     */
     tap_add_feeling: function(){
         utility.pushpage('movieadd_feeling.html', 'lift', 0);
-
-        //入力欄を監視するイベント登録
-        var addevent = function(){
-            document.getElementById('movieadd_feeling_text').addEventListener('keyup',movieadd_feeling.change_feeling_addbutton);
-        };
-        utility.check_page_init('movieadd_feeling',addevent);
     },
 };
 
 var movieadd_feeling = {
 
-    /**
-     * 入力文字数が1文字以上なら追加ボタンを有効にする。0文字なら無効にする。
-     */
-    change_feeling_addbutton: function(){
-        var feeling_textarea = document.getElementById('movieadd_feeling_text');
-        var feeling_addbutton = document.getElementById('movieadd_feeling_add_button');
-        var feeling_text = feeling_textarea.value;
-
-        if (feeling_text.length > 0) {
-            feeling_addbutton.removeAttribute('disabled');
-        }else{
-            feeling_addbutton.setAttribute('disabled');
-        }
+    add_list: function(feeling_name){
+        console.log('feeling_name');
     },
+
+    tap_add: function(){
+        ons.notification.prompt({title: '気分を入力',
+                                 message: '映画を観た気分を5文字以内で入力',
+                                 placeholder: '例) ドキドキ、ワクワク、ハラハラなど',
+                                 buttonLabel: '追加',
+                                 callback: movieadd_feeling.add_list(inputElement.value)});
+    },
+
+    
 };
 
 
