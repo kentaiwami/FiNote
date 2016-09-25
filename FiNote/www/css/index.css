@@ -234,7 +234,7 @@ input[type=password] {
 /*movieadd_search.htmlのリスト*/
 
 /*movieadd_search.html内のmovieadd_no_match_message*/
-.center_no_match_message {
+.center_message {
   display: flex;
 justify-content: center;
 align-items: center;
