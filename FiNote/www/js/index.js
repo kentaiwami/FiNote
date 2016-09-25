@@ -459,10 +459,14 @@ var movieadd_search = {
                 //データによって表示するコンテンツを動的に変える
                 if (list_data.length === 0) {
                     no_match_message.innerHTML = '検索結果なし';
+                    
+                     $('#movieadd_no_match_message').css('height', '100%');
                     movieadd_search.not_show_list();
                 }else{
                     no_match_message.innerHTML = '';
-                                                                                                                                      
+
+                     $('#movieadd_no_match_message').css('height', '0%');
+                                       
                     var list_data_poster = movieadd_search.get_poster(list_data);
 
                     //サムネイル取得後にリストを表示する

@@ -63,7 +63,7 @@
     -webkit-animation:fade 3000ms infinite;
 }
 
-/*singup.htmlで使用する設定の開始*/
+/*singup.htmlの画面表示*/
 .form-row {
   margin: 4px;
 }
@@ -100,10 +100,9 @@ input[type=password] {
   padding-top: 10px;
   padding-bottom: 10px;
 }
-/*signupで使用する設定の終了*/
+/*singup.htmlの画面表示*/
 
-
-/*映画追加画面で使用する設定の開始*/
+/*movieadd.htmlの画面表示*/
 .page--shop-details__content {
   position: absolute;
   left: 0px;
@@ -205,10 +204,10 @@ input[type=password] {
   vertical-align: -0px;
   opacity: 0.5;
 }
-/*映画追加画面で使用する設定の終了*/
+/*movieadd.htmlの画面表示*/
 
 
-/*追加する映画の検索結果で使用する設定の開始*/
+/*movieadd_search.htmlのリスト*/
 .list-item-container {
   line-height: 1;
   padding: 15px 0px 15px 15px;
@@ -228,14 +227,17 @@ input[type=password] {
   margin-bottom: 6px;
 }
 
-.location {
-  font-size: 14px;
-  opacity: 0.4;
-  margin-bottom: 6px;
-}
-
 .desc {
   line-height: 1.2;
   font-size: 13px;
 }
-/*追加する映画の検索結果で使用する設定の終了*/
+/*movieadd_search.htmlのリスト*/
+
+/*movieadd_search.html内のmovieadd_no_match_message*/
+.center_no_match_message {
+  display: flex;
+justify-content: center;
+align-items: center;
+height: 0%;
+}
+/*movieadd_search.html内のmovieadd_no_match_message*/
