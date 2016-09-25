@@ -752,7 +752,9 @@ var movieadd = {
         rating_num.innerHTML = innerHTML_string;
     },
 
-    tap_add: function(){
+    //映画追加ボタンを押したら動作
+    add_movie: function(){
+        console.log('add_movie');
         //スピナー表示        
         //クラウドとローカルに保存(promiseall)
         //スピナー非表示
@@ -770,18 +772,27 @@ var movieadd = {
 
 var movieadd_feeling = {
 
+    /**
+     * 気分を入力するアラートを表示してデータをcallback関数に渡す
+     */
+    show_input_alert: function(){
+        ons.notification.prompt(
+            {
+                title: '気分を入力',
+                message: '映画を観た気分を5文字以内で入力',
+                placeholder: '例) ドキドキ、ワクワク、ハラハラなど',
+                buttonLabel: '追加',
+                callback: function(feeling_name){
+                    movieadd_feeling.add_list(feeling_name);
+                }
+            }
+        );
+    },
+
+    //引き数で渡された気分の文字列をリストに表示する
     add_list: function(feeling_name){
-        console.log('feeling_name');
+        console.log(feeling_name);
     },
-
-    tap_add: function(){
-        ons.notification.prompt({title: '気分を入力',
-                                 message: '映画を観た気分を5文字以内で入力',
-                                 placeholder: '例) ドキドキ、ワクワク、ハラハラなど',
-                                 buttonLabel: '追加',
-                                 callback: movieadd_feeling.add_list(inputElement.value)});
-    },
-
     
 };
 
