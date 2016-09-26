@@ -661,10 +661,14 @@ var movieadd = {
         var tap_list_obj = document.getElementById(tap_id);
         var img_url = tap_list_obj.children[0].children[0].children[0].children[0].getAttribute('src');
 
-        card.style.backgroundImage = 'url('+img_url+')';
-        card.style.backgroundRepeat = 'no-repeat';
-        card.style.height = '87%';
-        card.style.width = 'auto';
+        $('#movieadd_card').css('backgroundImage' ,'url('+img_url+')');
+
+        //noimageとサムネイルでサイズ設定を変える
+        if (img_url.indexOf('noimage.png') != -1) {
+            $('#movieadd_card').css('backgroundSize' ,'contain');
+        }else {
+            $('#movieadd_card').css('backgroundSize' ,'cover');
+        }
 
         //card部分や吹き出しタップ時に表示する情報の取得と追加
         var title = list_data[tap_id].title;
