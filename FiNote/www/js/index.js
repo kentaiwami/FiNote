@@ -220,7 +220,7 @@ var Signup = {
      * @return {[string]} [M or F]
      */
     get_sex: function(){
-        var M = document.getElementById('radio-1').checked;
+        var M = document.getElementById('radio_m').checked;
         if (M === true) {
             return 'M';
         }else{
@@ -773,8 +773,12 @@ var movieadd = {
     /**
      * 映画の詳細を表示している画面の気分リストをタップした際に画面遷移する
      */
-    tap_add_feeling: function(){
+    pushpage_feeling: function(){
         utility.pushpage('movieadd_feeling.html', 'lift', 0);
+    },
+
+    pushpage_dvd: function(){
+        utility.pushpage('movieadd_dvd.html', 'lift', 0);
     },
 };
 
@@ -801,6 +805,11 @@ var movieadd_feeling = {
     add_list: function(feeling_name){
         console.log(feeling_name);
     },
+};
+
+
+var movieadd_dvd = {
+
     
 };
 
@@ -890,6 +899,13 @@ var utility = {
         };
     
         setTimeout(showpage, delaytime);
+    },
+
+    /**
+     * onsen uiのpopPageを実行する関数
+     */
+    popPage: function(){
+        document.getElementById('myNavigator').popPage();
     },
 
     /**

@@ -112,16 +112,16 @@
                                 <ons-list-header>性別</ons-list-header>
                                 <ons-list-item tappable>
                                     <label class="left">
-                                        <ons-input name="color" type="radio" input-id="radio-1" checked></ons-input>
+                                        <ons-input name="color" type="radio" input-id="radio_m" checked></ons-input>
                                     </label>
-                                    <label for="radio-1" class="center">男性</label>
+                                    <label for="radio_m" class="center">男性</label>
                                 </ons-list-item>
 
                                 <ons-list-item tappable>
                                     <label class="left">
-                                        <ons-input name="color" type="radio" input-id="radio-2"></ons-input>
+                                        <ons-input name="color" type="radio" input-id="radio_f"></ons-input>
                                     </label>
-                                    <label for="radio-2" class="center">女性</label>
+                                    <label for="radio_f" class="center">女性</label>
                                 </ons-list-item>
                             </ons-list>
 
@@ -246,8 +246,13 @@
                     </ons-col>
 
                     <ons-col class="action-col">
-                      <div class="action-icon"><ons-icon onClick="movieadd.tap_add_feeling()" icon="ion-edit"></ons-icon></div>
+                      <div class="action-icon"><ons-icon onClick="movieadd.pushpage_feeling()" icon="ion-edit"></ons-icon></div>
                       <div class="action-label">気分リスト</div>
+                    </ons-col>
+
+                    <ons-col class="action-col">
+                      <div class="action-icon"><ons-icon onClick="movieadd.pushpage_dvd()" icon="ion-disc"></ons-icon></div>
+                      <div class="action-label">DVD</div>
                     </ons-col>
 
                     <ons-col class="action-col">
@@ -271,6 +276,11 @@
 					        	<ons-icon icon="ion-plus-round"></ons-icon>
 					      	</ons-toolbar-button>
 					    </div>
+					    <div class="left">
+      						<ons-toolbar-button onClick="utility.popPage()">
+					        	<ons-icon icon="ion-close-round"></ons-icon>
+					      	</ons-toolbar-button>
+					    </div>
                     </ons-toolbar>
 
                     <ons-row>
@@ -282,6 +292,45 @@
 
                 </ons-page>
             </ons-template>
+
+
+            <!--movieadd_dvd.htmlの設定-->
+            <ons-template id="movieadd_dvd.html">
+            	<ons-page id="movieadd_dvd">
+            		<!--ツールバー-->
+            		<ons-toolbar>
+            			<div class="center">DVD所持の登録</div>
+            			<div class="left">
+      						<ons-toolbar-button onClick="utility.popPage()">
+					        	<ons-icon icon="ion-close-round"></ons-icon>
+					      	</ons-toolbar-button>
+					    </div>
+            		</ons-toolbar>
+
+            		<!--ラジオボタン-->
+            		<ons-list>
+            			<ons-list-header>DVDを所持していますか？</ons-list-header>
+
+            			<ons-list-item tappable>
+            				<label class="left">
+					        	<ons-input name="color" type="radio" input-id="radio_dvd_yes"></ons-input>
+					      	</label>
+					      	<label for="radio_dvd_yes" class="center">はい</label>
+					    </ons-list-item>
+
+					    <ons-list-item tappable>
+					    	<label class="left">
+					        	<ons-input name="color" type="radio" input-id="radio_dvd_no" checked></ons-input>
+					      	</label>
+					      	<label for="radio_dvd_no" class="center">いいえ</label>
+					    </ons-list-item>
+
+					</ons-list>
+
+					<div style="opacity: 0.5; font-size: 15px;">初期状態は「いいえ」で登録されます。</div>
+
+				</ons-page>
+			</ons-template>
 
 
             <!--search.htmlの設定-->

@@ -246,7 +246,7 @@ input[type=password] {
 
 /*movieadd.htmlのポスター表示部分*/
 .card_back_image {
-  background-image: url('img/noimage.png');
+  background-image: url('../img/noimage.png');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
