@@ -648,6 +648,8 @@ var movieadd_search = {
 
 var movieadd = {
 
+    userdata: {feeling_name_list: [], dvd: false},
+
     taped: false,       //falseなら映画の情報が表示されていない、trueは表示済み(表示中)
 
     /**
@@ -656,6 +658,11 @@ var movieadd = {
      * @param  {[number]} tap_id    [映画検索画面のリストのうちタップされたリスト番号]
      */
     show_contents: function(list_data,tap_id){
+
+        //映画のユーザデータを初期化する
+        movieadd.userdata.feeling_name_list = [];
+        movieadd.userdata.dvd = false;
+
         //card部分に表示する画像を取得して表示
         var card = document.getElementById('movieadd_card');
         var tap_list_obj = document.getElementById(tap_id);
@@ -777,7 +784,16 @@ var movieadd = {
         utility.pushpage('movieadd_feeling.html', 'lift', 0);
     },
 
+
+    /**
+     * 映画の詳細を表示している画面のDVDをタップした際に画面遷移する
+     */
     pushpage_dvd: function(){
+        var callback = function(){
+            movieadd_dvd.show_contents();
+        };
+
+        utility.check_page_init('movieadd_dvd', callback);
         utility.pushpage('movieadd_dvd.html', 'lift', 0);
     },
 };
@@ -810,7 +826,36 @@ var movieadd_feeling = {
 
 var movieadd_dvd = {
 
-    
+    /**
+     * 保存しているラジオボタンの状態をもとにチェックをつける
+     */
+    show_contents: function(){
+        var dvd_check = movieadd.userdata.dvd;
+        var radio_dvd_yes = document.getElementById('radio_dvd_yes');
+
+        if (dvd_check === true) {
+            radio_dvd_yes.checked = true;
+        }else {
+            radio_dvd_yes.checked = false;
+        }
+    },
+
+
+    /**
+     * movieadd_dvd.html(DVDの所持確認画面)を閉じる時の関数
+     */
+    close_movieadd_dvd: function(){
+        //チェックボタンの状態を保存する
+        var yes = document.getElementById('radio_dvd_yes').checked;
+
+        if (yes === true) {
+            movieadd.userdata.dvd = true;
+        }else {
+            movieadd.userdata.dvd = false;
+        }
+
+        utility.popPage();
+    },
 };
 
 

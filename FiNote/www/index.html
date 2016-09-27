@@ -300,11 +300,6 @@
             		<!--ツールバー-->
             		<ons-toolbar>
             			<div class="center">DVD所持の登録</div>
-            			<div class="left">
-      						<ons-toolbar-button onClick="utility.popPage()">
-					        	<ons-icon icon="ion-close-round"></ons-icon>
-					      	</ons-toolbar-button>
-					    </div>
             		</ons-toolbar>
 
             		<!--ラジオボタン-->
@@ -328,6 +323,10 @@
 					</ons-list>
 
 					<div style="opacity: 0.5; font-size: 15px;">初期状態は「いいえ」で登録されます。</div>
+
+					<div style="padding: 10px 9px">
+			        	<ons-button onClick="movieadd_dvd.close_movieadd_dvd()" modifier="large" style="margin: 0 auto;">保存</ons-button>
+			      	</div>
 
 				</ons-page>
 			</ons-template>
