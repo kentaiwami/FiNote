@@ -820,7 +820,7 @@ var movieadd_feeling = {
             var feeling_list = document.getElementById('feeling_list');
             feeling_list.innerHTML = '';
             for(var i = 0; i < length; i++) {
-                feeling_list.innerHTML += '<ons-col width="35%" style="margin: 25px;"><img src="img/film.png" width="100%"><div style="position:absolute; top:65px; left:35px; font-size: 30px;">ドキドキ</div></ons-col>';
+                feeling_list.innerHTML += '<h3 class="feeling_film">' + movieadd.userdata.feeling_name_list[i] + '</h3>';
             }
         }
     },

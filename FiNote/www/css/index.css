@@ -255,3 +255,24 @@ input[type=password] {
 }
 /*movieadd.htmlのポスター表示部分*/
 
+/*気分リストをフィルム風にする*/
+.feeling_film {
+  -webkit-transform: rotate(-3deg);
+  -moz-transform: rotate(-3deg);
+  transform: rotate(-3deg);
+  -o-transform:rotate(-3deg);
+  -ms-transform:rotate(-3deg);
+  background:#554738;
+  color:#fff;
+  font-size:19pt;
+  width:25%;
+  border-top:13px dashed #fff;
+  border-bottom:13px dashed #fff;
+  box-shadow: 0 0 3px 8px #554738;
+  text-shadow: 0 0 5px;
+  padding:20px;
+  margin-left: 35px;
+  margin-bottom:40px;
+  display: inline-block;
+}
+/*気分リストをフィルム風にする*/
