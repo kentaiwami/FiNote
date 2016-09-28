@@ -770,6 +770,7 @@ var movieadd = {
     //映画追加ボタンを押したら動作
     add_movie: function(){
         console.log('add_movie');
+        console.log(movieadd.userdata);
         //スピナー表示        
         //クラウドとローカルに保存(promiseall)
         //スピナー非表示
@@ -781,6 +782,11 @@ var movieadd = {
      * 映画の詳細を表示している画面の気分リストをタップした際に画面遷移する
      */
     pushpage_feeling: function(){
+        var callback = function(){
+            movieadd_feeling.show_contents();
+        };
+
+        utility.check_page_init('movieadd_feeling', callback);
         utility.pushpage('movieadd_feeling.html', 'lift', 0);
     },
 
@@ -799,6 +805,25 @@ var movieadd = {
 };
 
 var movieadd_feeling = {
+
+    show_contents: function(){
+        var nodata_message = document.getElementById('movieadd_feeling_nodata_message');
+        var length = movieadd.userdata.feeling_name_list.length;
+        if (length === 0) {
+            $('#movieadd_feeling_nodata_message').css('height', '100%');
+            nodata_message.innerHTML = '感情を1件以上登録してください';
+        }else {
+            $('#movieadd_feeling_nodata_message').css('height', '0%');
+            nodata_message.innerHTML = '';
+
+            //リスト表示
+            var feeling_list = document.getElementById('feeling_list');
+            feeling_list.innerHTML = '';
+            for(var i = 0; i < length; i++) {
+                feeling_list.innerHTML += '<ons-col width="35%" style="margin: 25px;"><img src="img/film.png" width="100%"><div style="position:absolute; top:65px; left:35px; font-size: 30px;">ドキドキ</div></ons-col>';
+            }
+        }
+    },
 
     /**
      * 気分を入力するアラートを表示してデータをcallback関数に渡す
@@ -819,7 +844,8 @@ var movieadd_feeling = {
 
     //引き数で渡された気分の文字列をリストに表示する
     add_list: function(feeling_name){
-        console.log(feeling_name);
+        movieadd.userdata.feeling_name_list.push(feeling_name);
+        movieadd_feeling.show_contents();
     },
 };
 
