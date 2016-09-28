@@ -832,7 +832,7 @@ var movieadd_feeling = {
         ons.notification.prompt(
             {
                 title: '気分を入力',
-                message: '映画を観た気分を5文字以内で入力',
+                message: '映画を観た気分を6文字以内で入力',
                 placeholder: '例) ドキドキ、ワクワク、ハラハラなど',
                 buttonLabel: '追加',
                 callback: function(feeling_name){
