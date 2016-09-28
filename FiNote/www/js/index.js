@@ -807,6 +807,9 @@ var movieadd = {
 var movieadd_feeling = {
 
     show_contents: function(){
+        //アラート表示後に自動フォーカスするためのイベントを登録する
+        movieadd_feeling.feeling_input_name_addEvent();
+
         var nodata_message = document.getElementById('movieadd_feeling_nodata_message');
         var length = movieadd.userdata.feeling_name_list.length;
         if (length === 0) {
@@ -826,23 +829,63 @@ var movieadd_feeling = {
     },
 
     /**
-     * 気分を入力するアラートを表示してデータをcallback関数に渡す
+     * アラート表示後にフォーカスを当てる処理を行う
      */
-    show_input_alert: function(){
-        ons.notification.prompt(
-            {
-                title: '気分を入力',
-                message: '映画を観た気分を6文字以内で入力',
-                placeholder: '例) ドキドキ、ワクワク、ハラハラなど',
-                buttonLabel: '追加',
-                callback: function(feeling_name){
-                    movieadd_feeling.add_list(feeling_name);
-                }
+    feeling_input_name_addEvent: function(){
+        document.addEventListener('postshow', function(event) {
+            if (event.target.id == 'feeling_add_dialog') {
+            document.getElementById('feeling_input_name').focus();
             }
-        );
+        });
     },
 
-    //引き数で渡された気分の文字列をリストに表示する
+    /**
+     * 気分を入力するアラートを表示してinputのvalueを初期化する
+     */
+    show_input_alert: function(){
+        document.getElementById('feeling_add_dialog').show();
+
+        var input_form = document.getElementById('feeling_input_name');
+        input_form.value = '';
+        input_form.addEventListener('keyup', movieadd_feeling.check_input_form);
+    },
+
+    /**
+     * フォームの値を監視して登録ボタンの有効・無効を設定する関数
+     * @return {[type]} [description]
+     */
+    check_input_form: function(){
+        var value = document.getElementById('feeling_input_name').value;
+        var add_button = document.getElementById('feeling_add_button');
+
+        if (value !== '') {
+            add_button.removeAttribute('disabled');
+        }else {
+            add_button.setAttribute('disabled');
+        }
+    },
+
+    /**
+     * アラートを閉じるor閉じてリストへ追加する関数
+     * @param  {[string]} id [cancelかadd]
+     */
+    hide_input_alert: function(id){
+        if (id == 'cancel') {
+            document.getElementById('feeling_add_dialog').hide();
+        }else {
+            //リストへ登録して気分を表示する
+            var feeling_name = document.getElementById('feeling_input_name').value;
+            movieadd_feeling.add_list(feeling_name);
+
+            document.getElementById('feeling_add_dialog').hide();
+        }
+
+    },
+
+    /**
+     * 引き数で渡された気分の文字列をリストに表示する
+     * @param {[string]} feeling_name [ユーザが入力した気分]
+     */
     add_list: function(feeling_name){
         movieadd.userdata.feeling_name_list.push(feeling_name);
         movieadd_feeling.show_contents();

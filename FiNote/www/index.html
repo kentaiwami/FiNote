@@ -295,6 +295,18 @@
                     <!-- 気分の登録件数が0件の場合に表示するメッセージ -->
 					<div id="movieadd_feeling_nodata_message" class="center_message"></div>
 
+                    <!-- 気分を入力するためのアラート -->
+                    <ons-dialog id="feeling_add_dialog">
+                        <div style="text-align: center; padding: 10px;">
+                            <p>映画を観た気分を6文字以内で入力</p>
+                            <ons-input input-id="feeling_input_name" placeholder="例) ドキドキ、ワクワクなど" modifier="underbar" maxlength="6" float></ons-input>
+                            <p>
+                                <ons-button onclick="movieadd_feeling.hide_input_alert('cancel')">キャンセル</ons-button>
+                                <ons-button id="feeling_add_button" onclick="movieadd_feeling.hide_input_alert('add')" disabled>登  　　録</ons-button>
+                            </p>
+                        </div>
+                    </ons-dialog>
+
                 </ons-page>
             </ons-template>
             <!-- ●ここまでmovieadd_feeling.html -->
