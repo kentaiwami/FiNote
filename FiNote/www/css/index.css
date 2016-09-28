@@ -266,7 +266,7 @@ input[type=password] {
   background:#554738;
   color:#fff;
   font-size:19pt;
-  width:25%;
+  width:auto;
   border-top:13px dashed #fff;
   border-bottom:13px dashed #fff;
   box-shadow: 0 0 3px 8px #554738;
