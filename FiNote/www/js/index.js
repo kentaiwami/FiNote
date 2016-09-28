@@ -85,7 +85,7 @@ var index = {
         }else{
             document.getElementById('signup_button').setAttribute('disabled');
         }
-    }
+    },
 };
 
 
@@ -226,7 +226,7 @@ var Signup = {
         }else{
             return 'F';
         }
-    }
+    },
 };
 
 
