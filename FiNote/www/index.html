@@ -37,11 +37,14 @@
                // utility.browser_signup();
                
             </script>
-            <ons-navigator id="myNavigator" page="index.html"></ons-navigator>
-            <!--index.htmlの設定-->
-            <ons-template id="index.html">
 
+            <!-- ページ管理をするnavigatorを設置 -->
+            <ons-navigator id="myNavigator" page="index.html"></ons-navigator>
+
+            <!-- ●ここからindex.html -->
+            <ons-template id="index.html">
               <ons-page id="index">
+
                 <script>
                     //ユーザ情報が存在する場合はローディング画面を表示する
                     var storage = window.localStorage;
@@ -50,10 +53,13 @@
                         document.getElementById('index').innerHTML = '<img  src="img/splash.gif" alt="" / width="100%" height="100%">';
                     }
                 </script>
+
               </ons-page>
             </ons-template>
+            <!-- ●ここまでindex.html -->
 
-            <!--tab.htmlの設定-->
+
+            <!-- ●ここからtab.html -->
             <ons-template id="tab.html">
               <ons-page id="tab">
                 <ons-tabbar position="bottom">
@@ -63,11 +69,12 @@
                   </ons-tabbar>
               </ons-page>
             </ons-template>
+            <!-- ●ここまでtab.html -->
 
-            <!--signup.htmlの設定-->
+            <!-- ●ここからsignup.html -->
             <ons-template id="signup.html">
                 <ons-page id="signup">
-                    <!--会員登録成功時のアラート設定-->
+                    <!-- 会員登録成功時のアラート -->
                     <ons-alert-dialog id="signup-alert-success">
                         <div class="alert-dialog-title">登録完了</div>
                         <div class="alert-dialog-content">
@@ -78,7 +85,7 @@
                         </div>
                     </ons-alert-dialog>
 
-                    <!--会員登録失敗時のアラート設定-->
+                    <!-- 会員登録失敗時のアラート -->
                     <ons-alert-dialog id="signup-alert-error">
                         <div class="alert-dialog-title">エラー</div>
                         <div class="alert-dialog-content" id="error-message"></div>
@@ -87,14 +94,14 @@
                         </div>
                     </ons-alert-dialog>
 
-                    <!--index.htmlのページの中身-->
+                    <!-- signup.htmlのページの中身 -->
                     <ons-page>
                         <ons-toolbar>
                             <div class="center">ユーザ登録</div>
                         </ons-toolbar>
 
                         <div class="formarea">
-                            <!--ユーザ名とパスワードのフォーム-->
+                            <!-- ユーザ名とパスワードのフォーム -->
                             <div class="form-row">
                               <input type="text" id="username" class="text-input--underbar width-full" placeholder="ユーザ名" value="">
                             </div>
@@ -107,7 +114,7 @@
                               <p class="note">Password - 6 characters or more</p>
                             </div>
 
-                            <!--性別を選択させる領域-->
+                            <!-- 性別を選択させるラジオボタン -->
                             <ons-list>
                                 <ons-list-header>性別</ons-list-header>
                                 <ons-list-item tappable>
@@ -125,13 +132,13 @@
                                 </ons-list-item>
                             </ons-list>
 
-                            <!--生年月日選択のフォーム-->
+                            <!-- 生年月日選択のフォーム -->
                             <ons-list-header>生年月日</ons-list-header>
                             <div class="form-row">
                                 <input onfocus="Signup.birthday_pickerview()" type="text" id="birthday" class="text-input--underbar width-full" placeholder="生年月日を選択する" value="">
                             </div>
                              
-                            <!--登録ボタン-->
+                            <!-- 登録ボタン -->
                             <div class="vspc form-row">
                                 <ons-button disabled modifier="large--cta" id="signup_button" onclick="Signup.usersignup()">登録</ons-button>
                             </div>
@@ -139,12 +146,13 @@
                     </ons-page>
                 </ons-page>
             </ons-template>
+            <!-- ●ここまでsignup.html -->
 
 
-            <!--movies.htmlの設定-->
+            <!-- ●ここからmovies.html -->
             <ons-template id="movies.html">
               <ons-page id="movies">
-                    <!--ポップオーバーの設定-->
+                    <!-- ポップオーバーの設定 -->
                     <ons-popover direction="down" id="popover">
                         <div style="padding: 10px; text-align: center;">
                             <p><ons-button modifier="large"><i class="zmdi zmdi-view-list-alt"></i>　　リスト形式で表示</ons-button></p>
@@ -153,7 +161,7 @@
                         </div>
                     </ons-popover>
 
-                    <!--ツールバー-->
+                    <!-- ツールバー -->
                     <ons-toolbar>
                         <div class="center">映画の一覧</div>
                         <div class="right">
@@ -169,24 +177,22 @@
                         </div>
                     </ons-toolbar>
                     
-                    <!--プルホック-->
-                    <ons-pull-hook id="pull-hook">
-                        Pull to refresh
-                    </ons-pull-hook>
+                    <!-- プルホック -->
+                    <ons-pull-hook id="pull-hook">Pull to refresh</ons-pull-hook>
 
-                    <!--リスト-->
-                    <ons-list>
-                        <ons-lazy-repeat id="infinite-list"></ons-lazy-repeat>
-                    </ons-list>
+                    <!-- 登録済み映画を表示するリスト -->
+                    <ons-list><ons-lazy-repeat id="infinite-list"></ons-lazy-repeat></ons-list>
+
                     <p id="nodata_message" style="text-align: center; opacity: 0.6; padding-top: 20px;"></p>
               </ons-page>
             </ons-template>
+            <!-- ●ここまでmovies.html -->
 
 
-            <!--movieadd_search.htmlの設定-->
+            <!-- ●ここからmovieadd_search.html -->
             <ons-template id="movieadd_search.html">
                 <ons-page id="movieadd_search">
-                    <!--ツールバー-->
+                    <!-- ツールバー -->
                     <ons-toolbar>
                         <div class="left" id="movieadd_search_backbutton"><ons-back-button></ons-back-button></div>
 
@@ -203,22 +209,22 @@
                         <div id="movieadd_search_reset"></div>
                     </ons-toolbar>
 
-                    <!--ローディング表示、検索結果なしメッセージ用-->
+                    <!-- ローディング表示、検索結果なしメッセージ用 -->
                     <div id="movieadd_no_match_message" class="center_message"></div>
 
-                    <!--リスト-->
-                    <ons-list>
-                        <ons-lazy-repeat id="movieadd_search_list"></ons-lazy-repeat>
-                    </ons-list>
+                    <!-- 検索結果を表示するリスト -->
+                    <ons-list><ons-lazy-repeat id="movieadd_search_list"></ons-lazy-repeat></ons-list>
                     
                 </ons-page>
             </ons-template>
+            <!-- ●ここまでmovieadd_search.html -->
 
-            <!--movieadd.htmlの設定-->
+
+            <!-- ●ここからmovieadd.html -->
             <ons-template id="movieadd.html">
               <ons-page modifier="shop-details" id="movieadd">
 
-              	<!--ツールバー-->
+              	<!-- ツールバー -->
                 <ons-toolbar modifier="transparent" style="background-color: black; opacity: 0.7;">
                   <div class="right">
                     <ons-toolbar-button><ons-icon onClick="movieadd.fadeTo_detail_info()" icon="ion-ios-chatboxes" style="color: white;"></ons-icon></ons-toolbar-button>
@@ -228,15 +234,15 @@
                   </div>
                 </ons-toolbar>
 
-                <!--画面上部のカード部分-->
+                <!-- 画面上部のポスター表示部分 -->
                 <div class="card card_back_image" id="movieadd_card" onclick="movieadd.fadeTo_detail_info()"></div>
 
-                <!--レーティング-->
+                <!-- レーティング -->
                 <div class="rating">
                     <div class="rating-num" id="movieadd_rating"></div>
                 </div>
 
-                <!--ユーザアクション部分-->
+                <!-- ユーザアクション部分 -->
                 <ons-list style="border-top: none"><ons-list-item style="line-height: 1; padding: 0;">
                   <ons-row class="action">
 
@@ -264,11 +270,13 @@
                 </ons-list-item></ons-list>
               </ons-page>
             </ons-template>
+            <!-- ●ここまでmovieadd.html -->
 
-            <!--movieadd_feeling.htmlの設定-->
+
+            <!-- ●ここからmovieadd_feeling.html -->
             <ons-template id="movieadd_feeling.html">
                 <ons-page id="movieadd_feeling">
-                    <!--ツールバー-->
+                    <!-- ツールバー -->
                     <ons-toolbar>
                         <div class="center">気分リスト</div>
                         <div class="right">
@@ -289,17 +297,18 @@
 
                 </ons-page>
             </ons-template>
+            <!-- ●ここまでmovieadd_feeling.html -->
 
 
-            <!--movieadd_dvd.htmlの設定-->
+            <!-- ●ここからmovieadd_dvd.html -->
             <ons-template id="movieadd_dvd.html">
             	<ons-page id="movieadd_dvd">
-            		<!--ツールバー-->
+            		<!-- ツールバー -->
             		<ons-toolbar>
             			<div class="center">DVD所持の登録</div>
             		</ons-toolbar>
 
-            		<!--ラジオボタン-->
+            		<!-- ラジオボタン -->
             		<ons-list>
             			<ons-list-header>DVDを所持していますか？</ons-list-header>
 
@@ -316,7 +325,6 @@
 					      	</label>
 					      	<label for="radio_dvd_no" class="center">いいえ</label>
 					    </ons-list-item>
-
 					</ons-list>
 
 					<div style="opacity: 0.5; font-size: 15px;">初期状態は「いいえ」で登録されます。</div>
@@ -327,9 +335,10 @@
 
 				</ons-page>
 			</ons-template>
+            <!-- ●ここまでmovieadd_dvd.html -->
 
 
-            <!--search.htmlの設定-->
+            <!-- ●ここからsearch.html -->
             <ons-template id="search.html">
                 <ons-page id="search">
                     <!--ツールバー-->
@@ -342,9 +351,10 @@
                     </p>
                 </ons-page>
             </ons-template>
+            <!-- ●ここまでsearch.html -->
 
 
-            <!--action.htmlの設定-->
+            <!-- ●ここからaction.html -->
             <ons-template id="action.html">
                 <ons-page id="action">
                     <!--ツールバー-->
@@ -357,5 +367,6 @@
                     </p>
                 </ons-page>
             </ons-template>
+            <!-- ●ここまでaction.html -->
         </body>
     </html>
