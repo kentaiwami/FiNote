@@ -802,6 +802,27 @@ var movieadd = {
         utility.check_page_init('movieadd_dvd', callback);
         utility.pushpage('movieadd_dvd.html', 'lift', 0);
     },
+
+    /**
+     * 登録されたリストの件数とDVD所持情報をもとにラベルを更新する関数
+     */
+    show_feelingAnddvd_label: function(){
+        var list_length = movieadd.userdata.feeling_name_list.length;
+        var dvd_flag = movieadd.userdata.dvd;
+        var dvd = 'No';
+
+        if (dvd_flag) {
+            dvd = 'Yes';
+        }else {
+            dvd = 'No';
+        }
+
+        var list_number = document.getElementById('list_number');
+        var have_dvd = document.getElementById('have_dvd');
+
+        list_number.innerHTML = list_length + '件';
+        have_dvd.innerHTML = dvd;
+    },
 };
 
 var movieadd_feeling = {
@@ -887,8 +908,12 @@ var movieadd_feeling = {
      * @param {[string]} feeling_name [ユーザが入力した気分]
      */
     add_list: function(feeling_name){
+        //リスト表示
         movieadd.userdata.feeling_name_list.push(feeling_name);
         movieadd_feeling.show_contents();
+
+        //ラベルの更新
+        movieadd.show_feelingAnddvd_label();
     },
 };
 
@@ -923,6 +948,9 @@ var movieadd_dvd = {
             movieadd.userdata.dvd = false;
         }
 
+        //ラベルの更新
+        movieadd.show_feelingAnddvd_label();
+        
         utility.popPage();
     },
 };
