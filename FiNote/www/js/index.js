@@ -423,7 +423,7 @@ var movieadd_search = {
 
             $('#search_movie_title').animate({width: '170%'},{queue: false, duration: 200});
 
-            $('#movieadd_search_cancel_button').animate({marginLeft: '200px'},{queue: false, duration: 200});
+            $('#movieadd_search_cancel_button').animate({marginLeft: '500px'},{queue: false, duration: 200});
             $('#movieadd_search_cancel_button').fadeTo(100,0);
 
             $('#movieadd_reset_button').animate({margin: '0px 0px 0px -60px'},{queue: false, duration: 200});
