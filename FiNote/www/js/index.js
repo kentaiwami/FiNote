@@ -769,13 +769,21 @@ var movieadd = {
 
     //映画追加ボタンを押したら動作
     add_movie: function(){
-        console.log('add_movie');
-        console.log(movieadd.userdata);
-        //スピナー表示        
-        //クラウドとローカルに保存(promiseall)
-        //スピナー非表示
-        //アラート表示
-        //検索画面に遷移
+
+        var userdata = movieadd.userdata;
+
+        if (userdata.feeling_name_list.length === 0) {
+            ons.notification.alert({
+                title: '映画追加エラー',
+                message: '気分リストに気分が追加されていません',
+                buttonLabel: 'OK'});
+        }else {
+            //スピナー表示        
+            //クラウドとローカルに保存(promiseall)
+            //スピナー非表示
+            //アラート表示
+            //検索画面に遷移
+        }
     },
 
     /**
