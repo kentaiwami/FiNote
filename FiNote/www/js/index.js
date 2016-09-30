@@ -638,6 +638,8 @@ var movieadd_search = {
         };
         utility.check_page_init('movieadd',callback);
 
+        movieadd.current_movie = list_data[tap_id];
+
         //映画追加画面へ遷移
         myNavigator.pushPage('movieadd.html', {});
     },
@@ -648,6 +650,7 @@ var movieadd_search = {
 var movieadd = {
 
     userdata: {feeling_name_list: [], dvd: false},
+    current_movie: {},
 
     taped: false,       //falseなら映画の情報が表示されていない、trueは表示済み(表示中)
 
@@ -780,7 +783,10 @@ var movieadd = {
             //utility.show_spinner('movieadd_card');
 
             //オノマトペをuserdataから取得
+            var onomatopoeia = movieadd.userdata.feeling_name_list;
+
             //表示中の映画オブジェクトを取得
+            var movie = movieadd.current_movie;
             
             //ローカル保存(promise1)
             /*
