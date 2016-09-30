@@ -778,11 +778,18 @@ var movieadd = {
                 message: '気分リストに気分が追加されていません',
                 buttonLabel: 'OK'});
         }else {
-            //スピナー表示        
-            //クラウドとローカルに保存(promiseall)
+            //utility.show_spinner('movieadd_card');
+
+            //promise1
+            //クラウド保存
+
+            //promise2
+            //ローカル保存
+
+            //promise1,2がresolveしたら
             //スピナー非表示
             //アラート表示
-            //検索画面に遷移
+            //OKタップ後、検索画面に遷移
         }
     },
 
