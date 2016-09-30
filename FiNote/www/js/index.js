@@ -19,10 +19,9 @@ var app = {
         var db = utility.get_database();
 
           db.transaction(function(tx) {
-            tx.executeSql('CREATE TABLE IF NOT EXISTS movie (id integer primary key, title text unique, tmdb_id integer unique, genre_id text, keyword_id text, onomatopoeia_id text, thumbnail_path text, username text)');
-            tx.executeSql('CREATE TABLE IF NOT EXISTS genre (id integer primary key, name text unique, username text)');
-            tx.executeSql('CREATE TABLE IF NOT EXISTS keyword (id integer primary key, name text unique, username text)');
-            tx.executeSql('CREATE TABLE IF NOT EXISTS onomatopoeia (id integer primary Key, name text, joy_status integer, anger_status integer, sadness_status integer, happiness_status integer)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS movie (id integer primary key, title text unique, tmdb_id integer unique, genre_id text, onomatopoeia_id text, poster blob)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS genre (id integer primary key, name text unique)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS onomatopoeia (id integer primary Key, name text)');
           }, function(err) {
             console.log('Open database ERROR: ' +JSON.stringify(err) +' ' + err.message);
           });
@@ -780,11 +779,24 @@ var movieadd = {
         }else {
             //utility.show_spinner('movieadd_card');
 
-            //promise1
-            //クラウド保存
+            //オノマトペをuserdataから取得
+            //表示中の映画オブジェクトを取得
+            
+            //ローカル保存(promise1)
+            /*
+            ・movieに映画の情報を保存
+            ・genreに保存
+            ・onomatopoeiaに保存
+             */
 
-            //promise2
-            //ローカル保存
+            //クラウド保存(promise2)
+            /*
+            ・Movieに保存
+            ・Genreに保存
+            ・Onomatopoeiaに保存
+             */
+
+
 
             //promise1,2がresolveしたら
             //スピナー非表示
