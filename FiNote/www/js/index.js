@@ -790,6 +790,19 @@ var movieadd = {
 
 
             //映画オブジェクトからジャンルIDを取り出す
+            var genre_id_list = movie.genre_ids;
+
+            //ncmbからジャンルリストとオノマトペリストを取得
+            var promises = [movieadd.get_ncmb_genres(),movieadd.get_ncmb_onomatopoeia()];
+            Promise.all(promises).then(function(results) {
+                var genre_list = results[0];
+                var onomatopoeia_list = results[1];
+                
+                
+            });
+            
+
+            // console.log(hoge);
             //ジャンルIDをncmbへ問い合わせる
                 /*
                 ・結果があったらIDとジャンル名をセットで格納する
@@ -845,6 +858,30 @@ var movieadd = {
             //アラート表示
             //OKタップ後、検索画面に遷移
         }
+    },
+
+    get_ncmb_genres: function(){
+        return new Promise(function(resolve,reject) {
+            var ncmb = utility.get_ncmb();
+            var Genre = ncmb.DataStore('Genre');
+            Genre.fetchAll().then(function(results){
+                resolve(results);
+            }).catch(function(err){
+                console.log(err);
+            });
+        });
+    },
+
+    get_ncmb_onomatopoeia: function(){
+        return new Promise(function(resolve,reject) {
+            var ncmb = utility.get_ncmb();
+            var Onomatopoeia = ncmb.DataStore('Onomatopoeia');
+            Onomatopoeia.fetchAll().then(function(results){
+                resolve(results);
+            }).catch(function(err){
+                console.log(err);
+            });
+        });
     },
 
     /**
