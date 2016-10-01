@@ -883,6 +883,10 @@ var movieadd = {
         }
     },
 
+    /**
+     * NCMBのGenreデータクラス全体を取得する
+     * @return {[object]} [Genreレコードオブジェクトが格納された1次元配列]
+     */
     get_ncmb_genres: function(){
         return new Promise(function(resolve,reject) {
             var ncmb = utility.get_ncmb();
@@ -895,6 +899,10 @@ var movieadd = {
         });
     },
 
+    /**
+     * NCMBのOnomatopoeiaデータクラス全体を取得する
+     * @return {[object]} [Onomatopoeiaレコードオブジェクトが格納された1次元配列]
+     */
     get_ncmb_onomatopoeia: function(){
         return new Promise(function(resolve,reject) {
             var ncmb = utility.get_ncmb();
