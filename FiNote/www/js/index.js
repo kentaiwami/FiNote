@@ -792,14 +792,37 @@ var movieadd = {
             //映画オブジェクトからジャンルIDを取り出す
             var genre_id_list = movie.genre_ids;
 
-            //ncmbからジャンルリストとオノマトペリストを取得
+            //NCMBからジャンルリストとオノマトペリストを取得
             var promises = [movieadd.get_ncmb_genres(),movieadd.get_ncmb_onomatopoeia()];
             Promise.all(promises).then(function(results) {
-                var genre_list = results[0];
+                var ncmb_genre_list = results[0];
                 var onomatopoeia_list = results[1];
                 
-                
+                //映画オブジェクトのジャンルIDを名前とセットにする
+                var genre_obj_list = [];
+                for(var i = genre_id_list.length - 1; i >= 0; i--) {
+                    for(var j = 0; j < ncmb_genre_list.length; j++) {
+                        if (genre_id_list[i] == ncmb_genre_list[j].ID) {
+                            var genre_obj = {};
+                            genre_obj.id = ncmb_genre_list[j].ID;
+                            genre_obj.name = ncmb_genre_list[j].Name;
+                            genre_obj_list.push(genre_obj);
+
+                            genre_id_list.splice(i,1);
+                        }
+                    }
+                }
+
+                //NCMBに登録されていないジャンルIDが存在する場合
+                if (genre_id_list.length !== 0) {
+                    //tmdbからジャンルリストを取得
+                    //tmdbジャンルリスト内にあったらIDとジャンル名をセットで格納する
+                    //IDとジャンル名を新規追加(NCMB DB Write)
+                    //tmdbジャンルリスト内になかったら該当IDを削除する
+                }
+
             });
+            
             
 
             // console.log(hoge);
