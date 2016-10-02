@@ -868,9 +868,18 @@ var movieadd = {
                                 movieadd.set_genre_ncmb(id,name);
                             }
                         }
+
+                    }).catch(function(err){
+                        utility.show_tmdb_error(err);
                     });
                 }
 
+            }).catch(function(err){
+                if (err == 'NCMB_Genre_Error') {
+                    utility.show_error_alert('NCMB Genre Error','再度やり直してください','OK');
+                } else if (err == 'NCMB_Onomatopoeia_Error') {
+                    utility.show_error_alert('NCMB Onomatopoeia Error','再度やり直してください','OK');
+                }
             });
             
             
@@ -944,7 +953,7 @@ var movieadd = {
             Genre.fetchAll().then(function(results){
                 resolve(results);
             }).catch(function(err){
-                console.log(err);
+                reject('NCMB_Genre_Error');
             });
         });
     },
@@ -960,7 +969,7 @@ var movieadd = {
             Onomatopoeia.fetchAll().then(function(results){
                 resolve(results);
             }).catch(function(err){
-                console.log(err);
+                reject('NCMB_Onomatopoeia_Error');
             });
         });
     },
@@ -982,8 +991,16 @@ var movieadd = {
 
             request.onreadystatechange = function () {
                 if (this.readyState === 4) {
-                    var contact = JSON.parse(this.responseText);
-                    resolve(contact);
+                    if (this.status === 0) {
+                        reject(0);
+                    }else {
+                        if (this.status === 200) {
+                            var contact = JSON.parse(this.responseText);
+                            resolve(contact);
+                        }else {
+                            reject(this.status);
+                        }
+                    }
                 }
             };
 
@@ -1004,12 +1021,11 @@ var movieadd = {
             genre.set('ID', id)
                  .set('Name', name)
                  .save()
-                 .then(function(gameScore){
-                     // 保存後の処理
-                     resolve();
+                 .then(function(){
+                     reject();
                  })
                  .catch(function(err){
-                     // エラー処理
+                     reject(err);
                  });
             });
     },
@@ -1370,6 +1386,40 @@ var utility = {
      */
     stop_spinner: function(){
         utility.spinner.spin();
+    },
+
+    /**
+     * エラーのアラートを表示する
+     * @param  {[string]} title       [タイトル]
+     * @param  {[string]} message     [メッセージ]
+     * @param  {[string]} buttonLabel [ボタンのラベル]
+     */
+    show_error_alert: function(title,message,buttonLabel) {
+        ons.notification.alert({
+            title: title,
+            message: message,
+            buttonLabel: buttonLabel});
+    },
+
+    /**
+     * TMDBに関するエラーアラートを表示する
+     * @param  {[number]} err_status [エラーのHTTPstatus]
+     */
+    show_tmdb_error: function(err_status) {
+        switch(err_status) {
+            case 0:
+                utility.show_error_alert('通信エラー','ネットワーク接続を確認して下さい','OK');
+                break;
+            case 401:
+                utility.show_error_alert('APIエラー','有効なAPIキーを設定して下さい','OK');
+                break;
+            case 404:
+                utility.show_error_alert('Not found','リソースが見つかりませんでした','OK');
+                break;
+            default:
+                utility.show_error_alert('不明なエラー','不明なエラーが発生しました','OK');
+                break;
+        }
     },
 };
 
