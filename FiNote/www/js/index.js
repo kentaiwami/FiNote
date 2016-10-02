@@ -798,16 +798,10 @@ var movieadd = {
                 var ncmb_genre_list = results[0];
                 var onomatopoeia_list = results[1];
                 
-                //映画オブジェクトのジャンルIDを名前とセットにする
-                var genre_obj_list = [];
+                //映画オブジェクトのジャンルIDがNCMBに存在していたら削除する
                 for(var i = genre_id_list.length - 1; i >= 0; i--) {
                     for(var j = 0; j < ncmb_genre_list.length; j++) {
                         if (genre_id_list[i] == ncmb_genre_list[j].ID) {
-                            var genre_obj = {};
-                            genre_obj.id = ncmb_genre_list[j].ID;
-                            genre_obj.name = ncmb_genre_list[j].Name;
-                            genre_obj_list.push(genre_obj);
-
                             genre_id_list.splice(i,1);
                         }
                     }
@@ -892,8 +886,6 @@ var movieadd = {
             });
             
             
-
-            // console.log(hoge);
             //ジャンルIDをncmbへ問い合わせる
                 /*
                 ・結果があったらIDとジャンル名をセットで格納する
