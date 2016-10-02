@@ -795,14 +795,31 @@ var movieadd = {
                 console.log(results);
             })
             .catch(function(err){
-                if (err === 'NCMB_Get_Genre_Error') {
-                    utility.show_error_alert('NCMB GetGenre Error','再度やり直してください','OK');
-                }else if (err === 'NCMB_Get_Onomatopoeia_Error') {
-                    utility.show_error_alert('NCMB GetOnomatopoeia Error','再度やり直してください','OK');
-                }else if (err === 'NCMB_Set_Genre_Error') {
-                    utility.show_error_alert('NCMB SetGenre Error','再度やり直してください','OK');
-                }else {
-                    utility.show_tmdb_error(err);
+
+                switch(err) {
+                    case 'NCMB_Get_Genre_Error':
+                        utility.show_error_alert('NCMB GetGenre Error','再度やり直してください','OK');
+                        break;
+
+                    case 'NCMB_Get_Onomatopoeia_Error':
+                        utility.show_error_alert('NCMB GetOnomatopoeia Error','再度やり直してください','OK');
+                        break;
+
+                    case 'NCMB_Set_Genre_Error':
+                        utility.show_error_alert('NCMB SetGenre Error','再度やり直してください','OK');
+                        break;
+
+                    case 'NCMB_Get_Onomatopoeia_Error': 
+                        utility.show_error_alert('NCMB GetOnomatopoeia Error','再度やり直して下さい','OK');
+                        break;
+
+                    case 'NCMB_Set_Onomatopoeia_Error':
+                        utility.show_error_alert('NCMB SetOnomatopoeia Error','再度やり直して下さい','OK');
+                        break;
+
+                    default:
+                        utility.show_tmdb_error(err);
+                        break;
                 }
             });
             
@@ -997,10 +1014,12 @@ var movieadd = {
                 })
                 .catch(function(err){
                     console.log(err);
+                    reject(err);
                 });
             })
             .catch(function(err){
                 console.log(err);
+                reject(err);
             });
         });
 
