@@ -859,15 +859,24 @@ var movieadd = {
                         // console.log(results.genres);
 
                         //tmdbジャンルリスト内にあったらidと名前をncmbへ新規追加する
+                        var promises = [];
                         for(var j = 0; j < genre_id_list.length; j++) {
                             var tmdb_index = tmdb_genre_id_list.indexOf(genre_id_list[j]);
 
                             if (tmdb_index != -1) {
                                 var id = results.genres[tmdb_index].id;
                                 var name = results.genres[tmdb_index].name;
-                                movieadd.set_genre_ncmb(id,name);
+                                                        
+                                promises.push(movieadd.set_genre_ncmb(id,name));
                             }
                         }
+
+                        Promise.all(promises).then(function(set_results) {
+                            
+                        }).catch(function(set_reject){
+                            utility.show_error_alert('NCMB SetGenre Error','保存時にエラーが発生しました','OK');
+                        });
+
 
                     }).catch(function(err){
                         utility.show_tmdb_error(err);
@@ -875,10 +884,10 @@ var movieadd = {
                 }
 
             }).catch(function(err){
-                if (err == 'NCMB_Genre_Error') {
-                    utility.show_error_alert('NCMB Genre Error','再度やり直してください','OK');
-                } else if (err == 'NCMB_Onomatopoeia_Error') {
-                    utility.show_error_alert('NCMB Onomatopoeia Error','再度やり直してください','OK');
+                if (err == 'NCMB_Get_Genre_Error') {
+                    utility.show_error_alert('NCMB GetGenre Error','再度やり直してください','OK');
+                } else if (err == 'NCMB_Get_Onomatopoeia_Error') {
+                    utility.show_error_alert('NCMB GetOnomatopoeia Error','再度やり直してください','OK');
                 }
             });
             
@@ -953,7 +962,7 @@ var movieadd = {
             Genre.fetchAll().then(function(results){
                 resolve(results);
             }).catch(function(err){
-                reject('NCMB_Genre_Error');
+                reject('NCMB_Get_Genre_Error');
             });
         });
     },
@@ -969,7 +978,7 @@ var movieadd = {
             Onomatopoeia.fetchAll().then(function(results){
                 resolve(results);
             }).catch(function(err){
-                reject('NCMB_Onomatopoeia_Error');
+                reject('NCMB_Get_Onomatopoeia_Error');
             });
         });
     },
@@ -1022,7 +1031,7 @@ var movieadd = {
                  .set('Name', name)
                  .save()
                  .then(function(){
-                     resolve();
+                     resolve('OK');
                  })
                  .catch(function(err){
                      reject(err);
