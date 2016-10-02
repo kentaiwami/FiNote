@@ -954,6 +954,7 @@ var movieadd = {
 
     onomatopoeia: function(onomatopoeia_list) {
         return new Promise(function(resolve,reject) {
+            var onomatopoeia_obj_list = [];
 
             //クラウドからオノマトペリストを取得
             movieadd.get_ncmb_onomatopoeia()
@@ -964,14 +965,43 @@ var movieadd = {
                     onomatopoeia_name_list.push(ncmb_onomatopoeia_list[i].Name);
                 }
 
-                resolve(onomatopoeia_name_list);
+                var promises = [];
+                var id_count = ncmb_onomatopoeia_list.length;
+                for(var j = 0; j < onomatopoeia_list.length; j++) {
+                    var index = onomatopoeia_name_list.indexOf(onomatopoeia_list[j]);
+
+                    //NCMBのオノマトペリスト内になかったらNCMBへ新規追加
+                    if (index == -1) {
+                        var new_id = String(id_count);
+                        var new_name = onomatopoeia_list[j];
+
+                        onomatopoeia_obj_list.push({id:new_id, name:new_name});
+                        promises.push(movieadd.set_onomatopoeia_ncmb(new_id,new_name));
+
+                        id_count += 1;
+
+                    //存在したらNCMBからIDと名前を取得
+                    }else {
+                        var old_id = String(ncmb_onomatopoeia_list[index].ID);
+                        var old_name = ncmb_onomatopoeia_list[index].Name;
+
+                        onomatopoeia_obj_list.push({id:old_id,name:old_name});
+                    }
+                }
+
+                return promises;
+            })
+            .then(function(promises) {
+                Promise.all(promises).then(function(results) {
+                    resolve(onomatopoeia_obj_list);
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
+            })
+            .catch(function(err){
+                console.log(err);
             });
-
-                /*
-                ・取得したリスト内になかったら新規追加(NCMB DB Write)
-                 */
-                
-
         });
 
     },
@@ -1062,7 +1092,24 @@ var movieadd = {
                  .catch(function(err){
                      reject('NCMB_Set_Genre_Error');
                  });
-            });
+        });
+    },
+
+    set_onomatopoeia_ncmb: function(id,name) {
+        return new Promise(function(resolve,reject) {
+            var ncmb = utility.get_ncmb();
+            var Onomatopoeia = ncmb.DataStore('Onomatopoeia');
+            var onomatopoeia = new Onomatopoeia();
+            onomatopoeia.set('ID', id)
+                 .set('Name', name)
+                 .save()
+                 .then(function(){
+                     resolve('OK');
+                 })
+                 .catch(function(err){
+                     reject('NCMB_Set_Onomatopoeia_Error');
+                 });
+        });
     },
 
     /**
