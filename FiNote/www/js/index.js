@@ -813,12 +813,62 @@ var movieadd = {
                     }
                 }
 
+                /*テストコード*/
+                // genre_id_list.push(99999);
+                // genre_id_list.push(12345);
+                // genre_id_list.push(88888);
+                // genre_id_list.push(77777);
+                
                 //NCMBに登録されていないジャンルIDが存在する場合
                 if (genre_id_list.length !== 0) {
                     //tmdbからジャンルリストを取得
-                    //tmdbジャンルリスト内にあったらIDとジャンル名をセットで格納する
-                    //IDとジャンル名を新規追加(NCMB DB Write)
-                    //tmdbジャンルリスト内になかったら該当IDを削除する
+                    movieadd.get_tmdb_genre_list().then(function(results) {
+                        //idだけの配列を作成
+                        var tmdb_genre_id_list = [];
+                        for(var i = 0; i < results.genres.length; i++) {
+                            tmdb_genre_id_list.push(results.genres[i].id);
+                        }
+
+                        /*テストコード*/
+                        // tmdb_genre_id_list.push(99999);
+                        // tmdb_genre_id_list.push(88888);
+                        // tmdb_genre_id_list.push(77777);
+
+                        // var test_obj1 = {};
+                        // test_obj1.id = 99999;
+                        // test_obj1.name = 'hoge1';
+                        // results.genres.push(test_obj1);
+
+                        // var test_obj2 = {};
+                        // test_obj2.id = 88888;
+                        // test_obj2.name = 'hoge2';
+                        // results.genres.push(test_obj2);
+
+                        // var test_obj5 = {};
+                        // test_obj5.id = 12345;
+                        // test_obj5.name = 'test_obj5';
+                        // results.genres.push(test_obj5);
+
+                        // var test_obj3 = {};
+                        // test_obj3.id = 77777;
+                        // test_obj3.name = 'hoge3';
+                        // results.genres.push(test_obj3);
+
+                        // console.log(genre_id_list);
+                        // console.log(tmdb_genre_id_list);
+                        // console.log(results.genres);
+
+                        //tmdbジャンルリスト内にあったらidと名前をncmbへ新規追加する
+                        for(var j = 0; j < genre_id_list.length; j++) {
+                            var tmdb_index = tmdb_genre_id_list.indexOf(genre_id_list[j]);
+
+                            if (tmdb_index != -1) {
+                                var id = results.genres[tmdb_index].id;
+                                var name = results.genres[tmdb_index].name;
+                                movieadd.set_genre_ncmb(id,name);
+                            }
+                        }
+                    });
                 }
 
             });
@@ -913,6 +963,55 @@ var movieadd = {
                 console.log(err);
             });
         });
+    },
+
+    /**
+     * TMDBのジャンルリストを取得する
+     * @return {[array]} [idとnameが格納されたオブジェクトArray]
+     */
+    get_tmdb_genre_list: function(){
+        return new Promise(function(resolve, reject) {
+            var request = new XMLHttpRequest();
+            var api_key = utility.get_tmdb_apikey();
+
+            var request_url = 'http://api.themoviedb.org/3/genre/movie/list?api_key=' + api_key + '&language=ja';
+
+            request.open('GET', request_url);
+
+            request.setRequestHeader('Accept', 'application/json');
+
+            request.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    var contact = JSON.parse(this.responseText);
+                    resolve(contact);
+                }
+            };
+
+            request.send();
+        });
+    },
+
+    /**
+     * NCMBのGenreデータクラスへ指定されたidとnameを新規追加する
+     * @param {[number]} id   [ジャンルを識別するid(TMDBと同一)]
+     * @param {[string]} name [日本語で表記されたジャンル名]
+     */
+    set_genre_ncmb: function(id,name) {
+        return new Promise(function(resolve,reject) {
+            var ncmb = utility.get_ncmb();
+            var Genre = ncmb.DataStore('Genre');
+            var genre = new Genre();
+            genre.set('ID', id)
+                 .set('Name', name)
+                 .save()
+                 .then(function(gameScore){
+                     // 保存後の処理
+                     resolve();
+                 })
+                 .catch(function(err){
+                     // エラー処理
+                 });
+            });
     },
 
     /**
