@@ -859,7 +859,8 @@ var movieadd = {
     /**
      * ジャンル関係の処理を行う
      * @param  {[array]} genre_id_list [ユーザが追加しようとしている映画に付与済みのジャンルIDArray]
-     * @return {[promise]}               [成功時：LocalDBに記録するジャンルオブジェクト配列,失敗時：エラーステータス]
+     * @return {[promise]} [成功時：LocalDBに記録するジャンルオブジェクト配列
+                            失敗時：エラーステータス]
      */
     genre: function(genre_id_list){
         return new Promise(function(resolve,reject) {
@@ -965,6 +966,13 @@ var movieadd = {
         });
     },
 
+
+    /**
+     * オノマトペ関係の処理を行う
+     * @param  {[array]} onomatopoeia_list [ユーザ追加したオノマトペを格納した配列]
+     * @return {[promise]} [成功時：LocalDBに記録するオノマトペオブジェクト配列
+                            失敗時：エラーステータス]
+     */
     onomatopoeia: function(onomatopoeia_list) {
         return new Promise(function(resolve,reject) {
             var onomatopoeia_obj_list = [];
@@ -1110,6 +1118,11 @@ var movieadd = {
         });
     },
 
+    /**
+     * NCMBのOnomatopoeiaデータクラスへ指定されたidとnameを新規追加する
+     * @param {[string]} id   [オノマトペを識別するid]
+     * @param {[string]} name [オノマトペ名]
+     */
     set_onomatopoeia_ncmb: function(id,name) {
         return new Promise(function(resolve,reject) {
             var ncmb = utility.get_ncmb();
