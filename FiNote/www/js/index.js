@@ -789,8 +789,8 @@ var movieadd = {
             var movie = movieadd.current_movie;
 
             //ジャンル関係の処理を実行
-            movieadd.genre(movie.genre_ids).then(function(results) {
-                console.log(results);
+            movieadd.genre(movie.genre_ids).then(function(genre_obj_list) {
+                console.log(genre_obj_list);
             })
             .catch(function(err){
                 if (err === 'NCMB_Get_Genre_Error') {
@@ -851,7 +851,8 @@ var movieadd = {
      */
     genre: function(genre_id_list){
         return new Promise(function(resolve,reject) {
-            var genre_id_list_bridge = {};
+            var genre_id_list_bridge = {};  //ジャンルIDをまたいで使用するために格納する
+            var genre_obj_list = [];        //LocalDBに記録する用のジャンルオブジェクト
 
             //NCMBからジャンルリストを取得
             movieadd.get_ncmb_genres()
@@ -862,6 +863,9 @@ var movieadd = {
                     for(var j = 0; j < ncmb_genre_list.length; j++) {
                         if (genre_id_list[i] == ncmb_genre_list[j].ID) {
                             genre_id_list.splice(i,1);
+
+
+                            genre_obj_list.push({id:ncmb_genre_list[j].ID, name: ncmb_genre_list[j].Name});
                         }
                     }
                 }
@@ -924,6 +928,8 @@ var movieadd = {
                     if (tmdb_index != -1) {
                         var id = tmdb_genre_list[tmdb_index].id;
                         var name = tmdb_genre_list[tmdb_index].name;
+
+                        genre_obj_list.push({id:id, name: name});
                                                 
                         promises.push(movieadd.set_genre_ncmb(id,name));
                     }
@@ -932,14 +938,16 @@ var movieadd = {
                 return promises;
             })
             .then(function(promises){
-                Promise.all(promises).then(function(){
-                    resolve('OK');
+                Promise.all(promises).then(function(results){
+                    resolve(genre_obj_list);
                 })
                 .catch(function(err){
+                    console.log(err);
                     reject(err);
                 });
             })
             .catch(function(err){
+                console.log(err);
                 reject(err);
             });
         });
