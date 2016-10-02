@@ -791,8 +791,8 @@ var movieadd = {
             var promises = [movieadd.genre(movie.genre_ids)];
 
             //ジャンル関係とオノマトペ関係の処理を実行
-            Promise.all(promises).then(function(genre_obj_list) {
-                console.log(genre_obj_list);
+            Promise.all(promises).then(function(results) {
+                console.log(results);
             })
             .catch(function(err){
                 if (err === 'NCMB_Get_Genre_Error') {
