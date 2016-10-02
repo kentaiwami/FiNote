@@ -847,7 +847,7 @@ var movieadd = {
     /**
      * ジャンル関係の処理を行う
      * @param  {[array]} genre_id_list [ユーザが追加しようとしている映画に付与済みのジャンルIDArray]
-     * @return {[promise]}               [処理に成功したらresolve,失敗]
+     * @return {[promise]}               [成功時：LocalDBに記録するジャンルオブジェクト配列,失敗時：エラーステータス]
      */
     genre: function(genre_id_list){
         return new Promise(function(resolve,reject) {
