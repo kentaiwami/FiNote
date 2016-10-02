@@ -1022,7 +1022,7 @@ var movieadd = {
                  .set('Name', name)
                  .save()
                  .then(function(){
-                     reject();
+                     resolve();
                  })
                  .catch(function(err){
                      reject(err);
