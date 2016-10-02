@@ -783,12 +783,12 @@ var movieadd = {
             //utility.show_spinner('movieadd_card');
 
             //オノマトペをuserdataから取得
-            var onomatopoeia = movieadd.userdata.feeling_name_list;
+            var onomatopoeia_list = movieadd.userdata.feeling_name_list;
 
             //表示中の映画オブジェクトを取得
             var movie = movieadd.current_movie;
 
-            var promises = [movieadd.genre(movie.genre_ids)];
+            var promises = [movieadd.genre(movie.genre_ids),movieadd.onomatopoeia(onomatopoeia_list)];
 
             //ジャンル関係とオノマトペ関係の処理を実行
             Promise.all(promises).then(function(results) {
@@ -816,10 +816,7 @@ var movieadd = {
                 /*
                 ・取得したリスト内と同じオノマトペが含まれていなかったら新規追加(Local DB Write)
                  */
-            //クラウドからオノマトペリストを取得
-                /*
-                ・取得したリスト内になかったら新規追加(NCMB DB Write)
-                 */
+            
             
 
             //NCMBから映画リストを取得する
@@ -953,6 +950,30 @@ var movieadd = {
                 reject(err);
             });
         });
+    },
+
+    onomatopoeia: function(onomatopoeia_list) {
+        return new Promise(function(resolve,reject) {
+
+            //クラウドからオノマトペリストを取得
+            movieadd.get_ncmb_onomatopoeia()
+            .then(function(ncmb_onomatopoeia_list) {
+                //オノマトペ名だけの配列を作成
+                var onomatopoeia_name_list = [];
+                for(var i = 0; i < ncmb_onomatopoeia_list.length; i++) {
+                    onomatopoeia_name_list.push(ncmb_onomatopoeia_list[i].Name);
+                }
+
+                resolve(onomatopoeia_name_list);
+            });
+
+                /*
+                ・取得したリスト内になかったら新規追加(NCMB DB Write)
+                 */
+                
+
+        });
+
     },
 
 
