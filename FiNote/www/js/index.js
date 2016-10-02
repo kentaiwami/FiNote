@@ -788,8 +788,10 @@ var movieadd = {
             //表示中の映画オブジェクトを取得
             var movie = movieadd.current_movie;
 
-            //ジャンル関係の処理を実行
-            movieadd.genre(movie.genre_ids).then(function(genre_obj_list) {
+            var promises = [movieadd.genre(movie.genre_ids)];
+
+            //ジャンル関係とオノマトペ関係の処理を実行
+            Promise.all(promises).then(function(genre_obj_list) {
                 console.log(genre_obj_list);
             })
             .catch(function(err){
