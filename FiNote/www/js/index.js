@@ -798,23 +798,19 @@ var movieadd = {
 
                 switch(err) {
                     case 'NCMB_Get_Genre_Error':
-                        utility.show_error_alert('NCMB GetGenre Error','再度やり直してください','OK');
+                        utility.show_error_alert('ジャンル取得エラー','サーバからのジャンル取得に失敗しました','OK');
                         break;
 
                     case 'NCMB_Get_Onomatopoeia_Error':
-                        utility.show_error_alert('NCMB GetOnomatopoeia Error','再度やり直してください','OK');
+                        utility.show_error_alert('気分取得エラー','サーバからの気分の取得に失敗しました','OK');
                         break;
 
                     case 'NCMB_Set_Genre_Error':
-                        utility.show_error_alert('NCMB SetGenre Error','再度やり直してください','OK');
-                        break;
-
-                    case 'NCMB_Get_Onomatopoeia_Error': 
-                        utility.show_error_alert('NCMB GetOnomatopoeia Error','再度やり直して下さい','OK');
+                        utility.show_error_alert('ジャンル登録エラー','サーバへのジャンル登録に失敗しました','OK');
                         break;
 
                     case 'NCMB_Set_Onomatopoeia_Error':
-                        utility.show_error_alert('NCMB SetOnomatopoeia Error','再度やり直して下さい','OK');
+                        utility.show_error_alert('気分登録エラー','サーバへの気分登録に失敗しました','OK');
                         break;
 
                     default:
