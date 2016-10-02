@@ -788,11 +788,11 @@ var movieadd = {
             //表示中の映画オブジェクトを取得
             var movie = movieadd.current_movie;
 
-            var promises = [movieadd.genre(movie.genre_ids),movieadd.onomatopoeia(onomatopoeia_list)];
+            var promises = [movieadd.genre_nmcb(movie.genre_ids),movieadd.onomatopoeia_ncmb(onomatopoeia_list)];
 
             //ジャンル関係とオノマトペ関係の処理を実行
-            Promise.all(promises).then(function(results) {
-                console.log(results);
+            Promise.all(promises).then(function(genre_onomatopoeia_results) {
+                console.log(genre_onomatopoeia_results);
             })
             .catch(function(err){
 
@@ -862,7 +862,7 @@ var movieadd = {
      * @return {[promise]} [成功時：LocalDBに記録するジャンルオブジェクト配列
                             失敗時：エラーステータス]
      */
-    genre: function(genre_id_list){
+    genre_ncmb: function(genre_id_list){
         return new Promise(function(resolve,reject) {
             var genre_id_list_bridge = {};  //ジャンルIDをまたいで使用するために格納する
             var genre_obj_list = [];        //LocalDBに記録する用のジャンルオブジェクト
@@ -973,7 +973,7 @@ var movieadd = {
      * @return {[promise]} [成功時：LocalDBに記録するオノマトペオブジェクト配列
                             失敗時：エラーステータス]
      */
-    onomatopoeia: function(onomatopoeia_list) {
+    onomatopoeia_ncmb: function(onomatopoeia_list) {
         return new Promise(function(resolve,reject) {
             var onomatopoeia_obj_list = [];
 
