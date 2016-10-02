@@ -788,118 +788,22 @@ var movieadd = {
             //表示中の映画オブジェクトを取得
             var movie = movieadd.current_movie;
 
-
-            //映画オブジェクトからジャンルIDを取り出す
-            var genre_id_list = movie.genre_ids;
-
-            //NCMBからジャンルリストとオノマトペリストを取得
-            var promises = [movieadd.get_ncmb_genres(),movieadd.get_ncmb_onomatopoeia()];
-            Promise.all(promises).then(function(results) {
-                var ncmb_genre_list = results[0];
-                var onomatopoeia_list = results[1];
-                
-                //映画オブジェクトのジャンルIDがNCMBに存在していたら削除する
-                for(var i = genre_id_list.length - 1; i >= 0; i--) {
-                    for(var j = 0; j < ncmb_genre_list.length; j++) {
-                        if (genre_id_list[i] == ncmb_genre_list[j].ID) {
-                            genre_id_list.splice(i,1);
-                        }
-                    }
-                }
-
-                /*テストコード*/
-                // genre_id_list.push(99999);
-                // genre_id_list.push(12345);
-                // genre_id_list.push(88888);
-                // genre_id_list.push(77777);
-                
-                //NCMBに登録されていないジャンルIDが存在する場合
-                if (genre_id_list.length !== 0) {
-                    //tmdbからジャンルリストを取得
-                    movieadd.get_tmdb_genre_list().then(function(results) {
-                        //idだけの配列を作成
-                        var tmdb_genre_id_list = [];
-                        for(var i = 0; i < results.genres.length; i++) {
-                            tmdb_genre_id_list.push(results.genres[i].id);
-                        }
-
-                        /*テストコード*/
-                        // tmdb_genre_id_list.push(99999);
-                        // tmdb_genre_id_list.push(88888);
-                        // tmdb_genre_id_list.push(77777);
-
-                        // var test_obj1 = {};
-                        // test_obj1.id = 99999;
-                        // test_obj1.name = 'hoge1';
-                        // results.genres.push(test_obj1);
-
-                        // var test_obj2 = {};
-                        // test_obj2.id = 88888;
-                        // test_obj2.name = 'hoge2';
-                        // results.genres.push(test_obj2);
-
-                        // var test_obj5 = {};
-                        // test_obj5.id = 12345;
-                        // test_obj5.name = 'test_obj5';
-                        // results.genres.push(test_obj5);
-
-                        // var test_obj3 = {};
-                        // test_obj3.id = 77777;
-                        // test_obj3.name = 'hoge3';
-                        // results.genres.push(test_obj3);
-
-                        // console.log(genre_id_list);
-                        // console.log(tmdb_genre_id_list);
-                        // console.log(results.genres);
-
-                        //tmdbジャンルリスト内にあったらidと名前をncmbへ新規追加する
-                        var promises = [];
-                        for(var j = 0; j < genre_id_list.length; j++) {
-                            var tmdb_index = tmdb_genre_id_list.indexOf(genre_id_list[j]);
-
-                            if (tmdb_index != -1) {
-                                var id = results.genres[tmdb_index].id;
-                                var name = results.genres[tmdb_index].name;
-                                                        
-                                promises.push(movieadd.set_genre_ncmb(id,name));
-                            }
-                        }
-
-                        Promise.all(promises).then(function(set_results) {
-                            
-                        }).catch(function(set_reject){
-                            utility.show_error_alert('NCMB SetGenre Error','保存時にエラーが発生しました','OK');
-                        });
-
-
-                    }).catch(function(err){
-                        utility.show_tmdb_error(err);
-                    });
-                }
-
-            }).catch(function(err){
-                if (err == 'NCMB_Get_Genre_Error') {
+            //ジャンル関係の処理を実行
+            movieadd.genre(movie.genre_ids).then(function(results) {
+                console.log(results);
+            })
+            .catch(function(err){
+                if (err === 'NCMB_Get_Genre_Error') {
                     utility.show_error_alert('NCMB GetGenre Error','再度やり直してください','OK');
-                } else if (err == 'NCMB_Get_Onomatopoeia_Error') {
+                }else if (err === 'NCMB_Get_Onomatopoeia_Error') {
                     utility.show_error_alert('NCMB GetOnomatopoeia Error','再度やり直してください','OK');
+                }else if (err === 'NCMB_Set_Genre_Error') {
+                    utility.show_error_alert('NCMB SetGenre Error','再度やり直してください','OK');
+                }else {
+                    utility.show_tmdb_error(err);
                 }
             });
             
-            
-            //ジャンルIDをncmbへ問い合わせる
-                /*
-                ・結果があったらIDとジャンル名をセットで格納する DONE
-                 */
-                /*
-                ・結果がなかったらtmdbからジャンルリストを取得 DONE
-                ・取得したジャンルリストと照合する DONE
-                 */
-                    /*
-                    ・tmdbジャンルリスト内にあったらIDとジャンル名をセットで格納する DONE
-                    ・IDとジャンル名を新規追加(NCMB DB Write) DONE
-                     */
-            
-            //ジャンルIDとジャンル名をセットで格納終了後
             //ローカルのジャンル内リストを取得する
                 /*
                 ・取得したリスト内になかったらIDとジャンル名を新規追加(Local DB Write)
@@ -939,6 +843,108 @@ var movieadd = {
             //OKタップ後、検索画面に遷移
         }
     },
+
+    /**
+     * ジャンル関係の処理を行う
+     * @param  {[array]} genre_id_list [ユーザが追加しようとしている映画に付与済みのジャンルIDArray]
+     * @return {[promise]}               [処理に成功したらresolve,失敗]
+     */
+    genre: function(genre_id_list){
+        return new Promise(function(resolve,reject) {
+            var genre_id_list_bridge = {};
+
+            //NCMBからジャンルリストを取得
+            movieadd.get_ncmb_genres()
+            .then(function(ncmb_genre_list) {
+
+                //映画オブジェクトのジャンルIDがNCMBに存在していたら削除する
+                for(var i = genre_id_list.length - 1; i >= 0; i--) {
+                    for(var j = 0; j < ncmb_genre_list.length; j++) {
+                        if (genre_id_list[i] == ncmb_genre_list[j].ID) {
+                            genre_id_list.splice(i,1);
+                        }
+                    }
+                }
+                /*テストコード*/
+                // genre_id_list.push(99999);
+                // genre_id_list.push(12345);
+                // genre_id_list.push(88888);
+                // genre_id_list.push(77777);
+
+                return genre_id_list;
+            })
+            .then(function(genre_id_list){
+                //NCMBに登録されていないジャンルIDが存在する場合
+                if (genre_id_list.length !== 0) {
+                    genre_id_list_bridge = genre_id_list;
+                    return movieadd.get_tmdb_genre_list();
+                }else {
+                    return {genres: []};
+                }
+            })
+            .then(function(tmdb_genre_obj){
+                var tmdb_genre_list = tmdb_genre_obj.genres;
+
+                //idだけの配列を作成
+                var tmdb_genre_id_list = [];
+                for(var i = 0; i < tmdb_genre_list.length; i++) {
+                    tmdb_genre_id_list.push(tmdb_genre_list[i].id);
+                }
+
+                /*テストコード*/
+                // tmdb_genre_id_list.push(99999);
+                // tmdb_genre_id_list.push(88888);
+                // tmdb_genre_id_list.push(77777);
+
+                // var test_obj1 = {};
+                // test_obj1.id = 99999;
+                // test_obj1.name = 'hoge1';
+                // tmdb_genre_list.push(test_obj1);
+
+                // var test_obj2 = {};
+                // test_obj2.id = 88888;
+                // test_obj2.name = 'hoge2';
+                // tmdb_genre_list.push(test_obj2);
+
+                // var test_obj5 = {};
+                // test_obj5.id = 12345;
+                // test_obj5.name = 'test_obj5';
+                // tmdb_genre_list.push(test_obj5);
+
+                // var test_obj3 = {};
+                // test_obj3.id = 77777;
+                // test_obj3.name = 'hoge3';
+                // tmdb_genre_list.push(test_obj3);
+
+                //tmdbジャンルリスト内にあったらidと名前をncmbへ新規追加する
+                var promises = [];
+                for(var j = 0; j < genre_id_list_bridge.length; j++) {
+                    var tmdb_index = tmdb_genre_id_list.indexOf(genre_id_list_bridge[j]);
+
+                    if (tmdb_index != -1) {
+                        var id = tmdb_genre_list[tmdb_index].id;
+                        var name = tmdb_genre_list[tmdb_index].name;
+                                                
+                        promises.push(movieadd.set_genre_ncmb(id,name));
+                    }
+                }
+
+                return promises;
+            })
+            .then(function(promises){
+                Promise.all(promises).then(function(){
+                    resolve('OK');
+                })
+                .catch(function(err){
+                    reject(err);
+                });
+            })
+            .catch(function(err){
+                reject(err);
+            });
+        });
+    },
+
 
     /**
      * NCMBのGenreデータクラス全体を取得する
@@ -1023,7 +1029,7 @@ var movieadd = {
                      resolve('OK');
                  })
                  .catch(function(err){
-                     reject(err);
+                     reject('NCMB_Set_Genre_Error');
                  });
             });
     },
