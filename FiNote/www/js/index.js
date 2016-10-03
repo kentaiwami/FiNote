@@ -780,7 +780,7 @@ var movieadd = {
                 message: '気分リストに気分が追加されていません',
                 buttonLabel: 'OK'});
         }else {
-            //utility.show_spinner('movieadd_card');
+            utility.show_spinner('movieadd_card');
 
             //オノマトペをuserdataから取得
             var user_onomatopoeia_list = movieadd.userdata.feeling_name_list;
@@ -862,10 +862,13 @@ var movieadd = {
             })
             .then(function(results) {
                 console.log(results);
+                utility.stop_spinner();
             })
             .catch(function(err){
                 console.log(err);
 
+                utility.stop_spinner();
+                
                 switch(err) {
                     case 'NCMB_Get_Genre_Error':
                         utility.show_error_alert('ジャンル取得エラー','サーバからのジャンル取得に失敗しました','OK');
