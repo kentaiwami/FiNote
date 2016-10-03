@@ -19,10 +19,9 @@ var app = {
         var db = utility.get_database();
 
           db.transaction(function(tx) {
-            tx.executeSql('CREATE TABLE IF NOT EXISTS movie (id integer primary key, title text unique, tmdb_id integer unique, genre_id text, keyword_id text, onomatopoeia_id text, thumbnail_path text, username text)');
-            tx.executeSql('CREATE TABLE IF NOT EXISTS genre (id integer primary key, name text unique, username text)');
-            tx.executeSql('CREATE TABLE IF NOT EXISTS keyword (id integer primary key, name text unique, username text)');
-            tx.executeSql('CREATE TABLE IF NOT EXISTS onomatopoeia (id integer primary Key, name text, joy_status integer, anger_status integer, sadness_status integer, happiness_status integer)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS movie (id integer primary key, title text unique, tmdb_id integer unique, genre_id text, onomatopoeia_id text, poster blob)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS genre (id integer primary key, name text unique)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS onomatopoeia (id integer primary Key, name text)');
           }, function(err) {
             console.log('Open database ERROR: ' +JSON.stringify(err) +' ' + err.message);
           });
@@ -639,6 +638,8 @@ var movieadd_search = {
         };
         utility.check_page_init('movieadd',callback);
 
+        movieadd.current_movie = list_data[tap_id];
+
         //映画追加画面へ遷移
         myNavigator.pushPage('movieadd.html', {});
     },
@@ -649,6 +650,7 @@ var movieadd_search = {
 var movieadd = {
 
     userdata: {feeling_name_list: [], dvd: false},
+    current_movie: {},
 
     taped: false,       //falseなら映画の情報が表示されていない、trueは表示済み(表示中)
 
@@ -778,12 +780,461 @@ var movieadd = {
                 message: '気分リストに気分が追加されていません',
                 buttonLabel: 'OK'});
         }else {
-            //スピナー表示        
-            //クラウドとローカルに保存(promiseall)
+            //utility.show_spinner('movieadd_card');
+
+            //オノマトペをuserdataから取得
+            var user_onomatopoeia_list = movieadd.userdata.feeling_name_list;
+
+            //表示中の映画オブジェクトを取得
+            var movie = movieadd.current_movie;
+
+            var promises = [movieadd.genre_ncmb(movie.genre_ids),movieadd.onomatopoeia_ncmb(user_onomatopoeia_list)];
+
+            //ジャンル関係とオノマトペ関係の処理を実行
+            var genre_obj_list = [];
+            var onomatopoeia_obj_list = [];
+            Promise.all(promises).then(function(genre_onomatopoeia_results) {
+
+                genre_obj_list = genre_onomatopoeia_results[0];
+                onomatopoeia_obj_list = genre_onomatopoeia_results[1];
+
+                return movieadd.get_same_movie(movie.id);
+            })
+            .then(function(same_movie_results) {
+                // console.log(same_movie_results);
+                // console.log(genre_obj_list);
+                // console.log(onomatopoeia_obj_list);
+                // console.log(movie);
+
+                var ncmb = utility.get_ncmb();
+                var currentUser = ncmb.User.getCurrentUser();
+
+                if (same_movie_results.length === 0) {
+                    var Movie = ncmb.DataStore('Movie');
+                    var movie_datastore = new Movie();
+
+                    movie_datastore.set('Title', movie.title)
+                            .set('TMDB_ID', movie.id)
+                            .set('Genre_ID', genre_id_list)
+                            .set('Onomatopoeia_ID',[{'id':4, 'count':1}])
+                            .set('UserName',[currentUser.userName])
+                             .save()
+                             .then(function(movie_datastore){
+                              // 保存後の処理
+                             })
+                             .catch(function(err){
+                               // エラー処理
+                               console.log(err);
+                             });
+                }else {
+                    var search_result = same_movie_results[0];
+                    var ncmb_onomatopoeia_list = search_result.Onomatopoeia_ID;
+
+                    var username_list = search_result.UserName;
+                    username_list.push(currentUser.userName);
+
+                    //MovieのOnomatopoeia_ID内のidのみを取り出したリストを作成する
+                    var ncmb_onomatopoeia_id_list = [];
+                    for(var i = 0; i < ncmb_onomatopoeia_list.length; i++) {
+                        ncmb_onomatopoeia_id_list.push(ncmb_onomatopoeia_list[i].id);
+                    }
+
+                    //ユーザが追加したオノマトペオブジェクトリストのidのみを取り出した配列を作成
+                    var onomatopoeia_id_list = [];
+                    for(var j = 0; j < onomatopoeia_obj_list.length; j++) {
+                        onomatopoeia_id_list.push(onomatopoeia_obj_list[j].id);
+                    }
+
+                    //ユーザが追加したオノマトペの数だけNCMBから取得したオノマトペリストへの新規追加or更新を行う
+                    for(var k = 0; k < onomatopoeia_id_list.length; k++) {
+                        var index = ncmb_onomatopoeia_id_list.indexOf(onomatopoeia_id_list[k]);
+
+                        if (index == -1) {
+                            ncmb_onomatopoeia_list.push({'id':onomatopoeia_id_list[k], 'count': 1});
+                        }else {
+                            ncmb_onomatopoeia_list[index].count += 1;
+                        }
+                    }
+
+                    // console.log(ncmb_onomatopoeia_list);
+                    return movieadd.set_movie(search_result.TMDB_ID,ncmb_onomatopoeia_list,username_list);
+                }
+            })
+            .then(function(results) {
+                console.log(results);
+            })
+            .catch(function(err){
+                console.log(err);
+
+                switch(err) {
+                    case 'NCMB_Get_Genre_Error':
+                        utility.show_error_alert('ジャンル取得エラー','サーバからのジャンル取得に失敗しました','OK');
+                        break;
+
+                    case 'NCMB_Get_Onomatopoeia_Error':
+                        utility.show_error_alert('気分取得エラー','サーバからの気分の取得に失敗しました','OK');
+                        break;
+
+                    case 'NCMB_Set_Genre_Error':
+                        utility.show_error_alert('ジャンル登録エラー','サーバへのジャンル登録に失敗しました','OK');
+                        break;
+
+                    case 'NCMB_Set_Onomatopoeia_Error':
+                        utility.show_error_alert('気分登録エラー','サーバへの気分登録に失敗しました','OK');
+                        break;
+
+                    default:
+                        utility.show_tmdb_error(err);
+                        break;
+                }
+            });
+            
+            //ローカルのジャンル内リストを取得する
+                /*
+                ・取得したリスト内になかったらIDとジャンル名を新規追加(Local DB Write)
+                 */
+                
+
+            //ローカルのオノマトペリストを取得する
+                /*
+                ・取得したリスト内と同じオノマトペが含まれていなかったら新規追加(Local DB Write)
+                 */
+            
             //スピナー非表示
             //アラート表示
-            //検索画面に遷移
+            //OKタップ後、検索画面に遷移
         }
+    },
+
+    /**
+     * ジャンル関係の処理を行う
+     * @param  {[array]} genre_id_list [ユーザが追加しようとしている映画に付与済みのジャンルIDArray]
+     * @return {[promise]} [成功時：LocalDBに記録するジャンルオブジェクト配列
+                            失敗時：エラーステータス]
+     */
+    genre_ncmb: function(genre_id_list){
+        return new Promise(function(resolve,reject) {
+            var genre_id_list_bridge = {};  //ジャンルIDをまたいで使用するために格納する
+            var genre_obj_list = [];        //LocalDBに記録する用のジャンルオブジェクト
+
+            //NCMBからジャンルリストを取得
+            movieadd.get_ncmb_genres()
+            .then(function(ncmb_genre_list) {
+
+                //映画オブジェクトのジャンルIDがNCMBに存在していたら削除する
+                for(var i = genre_id_list.length - 1; i >= 0; i--) {
+                    for(var j = 0; j < ncmb_genre_list.length; j++) {
+                        if (genre_id_list[i] == ncmb_genre_list[j].ID) {
+                            genre_id_list.splice(i,1);
+
+
+                            genre_obj_list.push({id:ncmb_genre_list[j].ID, name: ncmb_genre_list[j].Name});
+                        }
+                    }
+                }
+                /*テストコード*/
+                // genre_id_list.push(99999);
+                // genre_id_list.push(12345);
+                // genre_id_list.push(88888);
+                // genre_id_list.push(77777);
+
+                return genre_id_list;
+            })
+            .then(function(genre_id_list){
+                //NCMBに登録されていないジャンルIDが存在する場合
+                if (genre_id_list.length !== 0) {
+                    genre_id_list_bridge = genre_id_list;
+                    return movieadd.get_tmdb_genre_list();
+                }else {
+                    return {genres: []};
+                }
+            })
+            .then(function(tmdb_genre_obj){
+                var tmdb_genre_list = tmdb_genre_obj.genres;
+
+                //idだけの配列を作成
+                var tmdb_genre_id_list = [];
+                for(var i = 0; i < tmdb_genre_list.length; i++) {
+                    tmdb_genre_id_list.push(tmdb_genre_list[i].id);
+                }
+
+                /*テストコード*/
+                // tmdb_genre_id_list.push(99999);
+                // tmdb_genre_id_list.push(88888);
+                // tmdb_genre_id_list.push(77777);
+
+                // var test_obj1 = {};
+                // test_obj1.id = 99999;
+                // test_obj1.name = 'hoge1';
+                // tmdb_genre_list.push(test_obj1);
+
+                // var test_obj2 = {};
+                // test_obj2.id = 88888;
+                // test_obj2.name = 'hoge2';
+                // tmdb_genre_list.push(test_obj2);
+
+                // var test_obj5 = {};
+                // test_obj5.id = 12345;
+                // test_obj5.name = 'test_obj5';
+                // tmdb_genre_list.push(test_obj5);
+
+                // var test_obj3 = {};
+                // test_obj3.id = 77777;
+                // test_obj3.name = 'hoge3';
+                // tmdb_genre_list.push(test_obj3);
+
+                //tmdbジャンルリスト内にあったらidと名前をncmbへ新規追加する
+                var promises = [];
+                for(var j = 0; j < genre_id_list_bridge.length; j++) {
+                    var tmdb_index = tmdb_genre_id_list.indexOf(genre_id_list_bridge[j]);
+
+                    if (tmdb_index != -1) {
+                        var id = tmdb_genre_list[tmdb_index].id;
+                        var name = tmdb_genre_list[tmdb_index].name;
+
+                        genre_obj_list.push({id:id, name: name});
+                                                
+                        promises.push(movieadd.set_genre_ncmb(id,name));
+                    }
+                }
+
+                return promises;
+            })
+            .then(function(promises){
+                Promise.all(promises).then(function(results){
+                    resolve(genre_obj_list);
+                })
+                .catch(function(err){
+                    console.log(err);
+                    reject(err);
+                });
+            })
+            .catch(function(err){
+                console.log(err);
+                reject(err);
+            });
+        });
+    },
+
+
+    /**
+     * オノマトペ関係の処理を行う
+     * @param  {[array]} onomatopoeia_list [ユーザ追加したオノマトペを格納した配列]
+     * @return {[promise]} [成功時：LocalDBに記録するオノマトペオブジェクト配列
+                            失敗時：エラーステータス]
+     */
+    onomatopoeia_ncmb: function(onomatopoeia_list) {
+        return new Promise(function(resolve,reject) {
+            var onomatopoeia_obj_list = [];
+
+            //クラウドからオノマトペリストを取得
+            movieadd.get_ncmb_onomatopoeia()
+            .then(function(ncmb_onomatopoeia_list) {
+                //オノマトペ名だけの配列を作成
+                var onomatopoeia_name_list = [];
+                for(var i = 0; i < ncmb_onomatopoeia_list.length; i++) {
+                    onomatopoeia_name_list.push(ncmb_onomatopoeia_list[i].Name);
+                }
+
+                var promises = [];
+                var id_count = ncmb_onomatopoeia_list.length;
+                for(var j = 0; j < onomatopoeia_list.length; j++) {
+                    var index = onomatopoeia_name_list.indexOf(onomatopoeia_list[j]);
+
+                    //NCMBのオノマトペリスト内になかったらNCMBへ新規追加
+                    if (index == -1) {
+                        var new_id = id_count;
+                        var new_name = onomatopoeia_list[j];
+
+                        onomatopoeia_obj_list.push({id:new_id, name:new_name});
+                        promises.push(movieadd.set_onomatopoeia_ncmb(new_id,new_name));
+
+                        id_count += 1;
+
+                    //存在したらNCMBからIDと名前を取得
+                    }else {
+                        var old_id = ncmb_onomatopoeia_list[index].ID;
+                        var old_name = ncmb_onomatopoeia_list[index].Name;
+
+                        onomatopoeia_obj_list.push({id:old_id,name:old_name});
+                    }
+                }
+
+                return promises;
+            })
+            .then(function(promises) {
+                Promise.all(promises).then(function(results) {
+                    resolve(onomatopoeia_obj_list);
+                })
+                .catch(function(err){
+                    console.log(err);
+                    reject(err);
+                });
+            })
+            .catch(function(err){
+                console.log(err);
+                reject(err);
+            });
+        });
+
+    },
+
+
+    /**
+     * 指定したmovie_idを持つレコードを検索して結果を返す
+     * @param  {[number]} movie_id [映画オブジェクトのid]
+     * @return {[array]}          [検索結果]
+     */
+    get_same_movie: function(movie_id) {
+        return new Promise(function(resolve,reject) {
+            var ncmb = utility.get_ncmb();
+            var Movie = ncmb.DataStore('Movie');
+            Movie.equalTo('TMDB_ID', movie_id)
+            .fetchAll()
+            .then(function(results){
+                resolve(results);
+            }).catch(function(err){
+                reject('Error');
+            });
+        });
+    },
+
+    /**
+     * 対象となるMovieレコードのオノマトペリストとユーザリストを変更する
+     * @param {[number]} movie_id          [更新するレコードを特定するためのTMDB_ID]
+     * @param {[array]} onomatopoeia_list [更新後のオノマトペオブジェクトが格納されたArray]
+     * @param {[array]} username_list     [更新後のユーザ名が格納されたArray]
+     */
+    set_movie: function(movie_id, onomatopoeia_list, username_list) {
+        return new Promise(function(resolve,reject) {
+            var ncmb = utility.get_ncmb();
+            var Movie = ncmb.DataStore('Movie');
+            Movie.equalTo('TMDB_ID', movie_id)
+            .fetchAll()
+            .then(function(search_result){
+                search_result[0].set('Onomatopoeia_ID',onomatopoeia_list);
+                search_result[0].set('UserName',username_list);
+                return search_result[0].update();
+            })
+            .then(function(aaa){
+                resolve(aaa);
+
+            })
+            .catch(function(err){
+                reject('Error');
+            });
+        });
+    },
+
+
+    /**
+     * NCMBのGenreデータクラス全体を取得する
+     * @return {[object]} [Genreレコードオブジェクトが格納された1次元配列]
+     */
+    get_ncmb_genres: function(){
+        return new Promise(function(resolve,reject) {
+            var ncmb = utility.get_ncmb();
+            var Genre = ncmb.DataStore('Genre');
+            Genre.fetchAll().then(function(results){
+                resolve(results);
+            }).catch(function(err){
+                reject('NCMB_Get_Genre_Error');
+            });
+        });
+    },
+
+    /**
+     * NCMBのOnomatopoeiaデータクラス全体を取得する
+     * @return {[object]} [Onomatopoeiaレコードオブジェクトが格納された1次元配列]
+     */
+    get_ncmb_onomatopoeia: function(){
+        return new Promise(function(resolve,reject) {
+            var ncmb = utility.get_ncmb();
+            var Onomatopoeia = ncmb.DataStore('Onomatopoeia');
+            Onomatopoeia.fetchAll().then(function(results){
+                resolve(results);
+            }).catch(function(err){
+                reject('NCMB_Get_Onomatopoeia_Error');
+            });
+        });
+    },
+
+    /**
+     * TMDBのジャンルリストを取得する
+     * @return {[array]} [idとnameが格納されたオブジェクトArray]
+     */
+    get_tmdb_genre_list: function(){
+        return new Promise(function(resolve, reject) {
+            var request = new XMLHttpRequest();
+            var api_key = utility.get_tmdb_apikey();
+
+            var request_url = 'http://api.themoviedb.org/3/genre/movie/list?api_key=' + api_key + '&language=ja';
+
+            request.open('GET', request_url);
+
+            request.setRequestHeader('Accept', 'application/json');
+
+            request.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    if (this.status === 0) {
+                        reject(0);
+                    }else {
+                        if (this.status === 200) {
+                            var contact = JSON.parse(this.responseText);
+                            resolve(contact);
+                        }else {
+                            reject(this.status);
+                        }
+                    }
+                }
+            };
+
+            request.send();
+        });
+    },
+
+    /**
+     * NCMBのGenreデータクラスへ指定されたidとnameを新規追加する
+     * @param {[number]} id   [ジャンルを識別するid(TMDBと同一)]
+     * @param {[string]} name [日本語で表記されたジャンル名]
+     */
+    set_genre_ncmb: function(id,name) {
+        return new Promise(function(resolve,reject) {
+            var ncmb = utility.get_ncmb();
+            var Genre = ncmb.DataStore('Genre');
+            var genre = new Genre();
+            genre.set('ID', id)
+                 .set('Name', name)
+                 .save()
+                 .then(function(){
+                     resolve('OK');
+                 })
+                 .catch(function(err){
+                     reject('NCMB_Set_Genre_Error');
+                 });
+        });
+    },
+
+    /**
+     * NCMBのOnomatopoeiaデータクラスへ指定されたidとnameを新規追加する
+     * @param {[string]} id   [オノマトペを識別するid]
+     * @param {[string]} name [オノマトペ名]
+     */
+    set_onomatopoeia_ncmb: function(id,name) {
+        return new Promise(function(resolve,reject) {
+            var ncmb = utility.get_ncmb();
+            var Onomatopoeia = ncmb.DataStore('Onomatopoeia');
+            var onomatopoeia = new Onomatopoeia();
+            onomatopoeia.set('ID', id)
+                 .set('Name', name)
+                 .save()
+                 .then(function(){
+                     resolve('OK');
+                 })
+                 .catch(function(err){
+                     reject('NCMB_Set_Onomatopoeia_Error');
+                 });
+        });
     },
 
     /**
@@ -1142,6 +1593,40 @@ var utility = {
      */
     stop_spinner: function(){
         utility.spinner.spin();
+    },
+
+    /**
+     * エラーのアラートを表示する
+     * @param  {[string]} title       [タイトル]
+     * @param  {[string]} message     [メッセージ]
+     * @param  {[string]} buttonLabel [ボタンのラベル]
+     */
+    show_error_alert: function(title,message,buttonLabel) {
+        ons.notification.alert({
+            title: title,
+            message: message,
+            buttonLabel: buttonLabel});
+    },
+
+    /**
+     * TMDBに関するエラーアラートを表示する
+     * @param  {[number]} err_status [エラーのHTTPstatus]
+     */
+    show_tmdb_error: function(err_status) {
+        switch(err_status) {
+            case 0:
+                utility.show_error_alert('通信エラー','ネットワーク接続を確認して下さい','OK');
+                break;
+            case 401:
+                utility.show_error_alert('APIエラー','有効なAPIキーを設定して下さい','OK');
+                break;
+            case 404:
+                utility.show_error_alert('Not found','リソースが見つかりませんでした','OK');
+                break;
+            default:
+                utility.show_error_alert('不明なエラー','不明なエラーが発生しました','OK');
+                break;
+        }
     },
 };
 
