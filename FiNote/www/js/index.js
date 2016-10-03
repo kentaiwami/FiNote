@@ -813,25 +813,26 @@ var movieadd = {
                 // console.log(movie);
 
                 if (same_movie_results.length === 0) {
-                var ncmb = utility.get_ncmb();
-                var currentUser = ncmb.User.getCurrentUser();
-                var Movie = ncmb.DataStore('Movie');
-                var movie_datastore = new Movie();
+                    var ncmb = utility.get_ncmb();
+                    var currentUser = ncmb.User.getCurrentUser();
+                    var Movie = ncmb.DataStore('Movie');
+                    var movie_datastore = new Movie();
 
-                movie_datastore.set('Title', movie.title)
-                        .set('TMDB_ID', movie.id)
-                        .set('Genre_ID', genre_id_list)
-                        .set('Onomatopoeia_ID',[{'id':4, 'count':1}])
-                        .set('UserName',[currentUser.userName])
-                         .save()
-                         .then(function(movie_datastore){
-                          // 保存後の処理
-                         })
-                         .catch(function(err){
-                           // エラー処理
-                           console.log(err);
-                         });
+                    movie_datastore.set('Title', movie.title)
+                            .set('TMDB_ID', movie.id)
+                            .set('Genre_ID', genre_id_list)
+                            .set('Onomatopoeia_ID',[{'id':4, 'count':1}])
+                            .set('UserName',[currentUser.userName])
+                             .save()
+                             .then(function(movie_datastore){
+                              // 保存後の処理
+                             })
+                             .catch(function(err){
+                               // エラー処理
+                               console.log(err);
+                             });
                 }else {
+
                 /*
                 ・該当レコードを取得
                 ・オノマトペリストを取得
