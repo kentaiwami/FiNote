@@ -813,7 +813,7 @@ var movieadd = {
                 if (same_movie_results.length === 0) {
                     var Movie = ncmb.DataStore('Movie');
                     var movie_datastore = new Movie();
-
+                    //TODO: オノマトペのID
                     movie_datastore.set('Title', movie.title)
                             .set('TMDB_ID', movie.id)
                             .set('Genre_ID', genre_id_list)
@@ -865,10 +865,12 @@ var movieadd = {
             })
             .then(function(results) {
                 //ローカル保存処理を開始
-                console.log(genre_obj_list);
-                console.log(onomatopoeia_obj_list);
+                console.log(genre_obj_list);        //ローカルに保存
+                console.log(onomatopoeia_obj_list); //ローカルに保存
 
-                //
+                //Movieオブジェクト取得
+                //(id integer primary key, title text unique, tmdb_id integer unique, genre_id text, onomatopoeia_id text, poster blob)
+                console.log(results);
 
                 utility.stop_spinner();
             })
