@@ -1155,7 +1155,7 @@ var movieadd = {
             .set('Title', title)
             .set('TMDB_ID', tmdb_id)
             .set('Genre_ID', genre_id_list)
-            .set('Onomatopoeia_ID',[onomatopoeia_id_count_list])
+            .set('Onomatopoeia_ID',onomatopoeia_id_count_list)
             .set('UserName',[currentUser.userName])
              .save()
              .then(function(movie_datastore){
