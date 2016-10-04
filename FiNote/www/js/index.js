@@ -1348,7 +1348,7 @@ var movieadd_feeling = {
         var value = document.getElementById('feeling_input_name').value;
         var add_button = document.getElementById('feeling_add_button');
 
-        if (value !== '') {
+        if (value.replace(/\s+/g, '') !== '') {
             add_button.removeAttribute('disabled');
         }else {
             add_button.setAttribute('disabled');
