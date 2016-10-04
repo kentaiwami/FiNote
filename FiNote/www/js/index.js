@@ -809,6 +809,7 @@ var movieadd = {
                 var ncmb = utility.get_ncmb();
                 var currentUser = ncmb.User.getCurrentUser();
 
+                //同じ映画がNCMBに追加されていなかったら
                 if (same_movie_results.length === 0) {
                     var Movie = ncmb.DataStore('Movie');
                     var movie_datastore = new Movie();
@@ -826,6 +827,8 @@ var movieadd = {
                                // エラー処理
                                console.log(err);
                              });
+
+                //既に映画がNCMBに追加してあったら
                 }else {
                     var search_result = same_movie_results[0];
                     var ncmb_onomatopoeia_list = search_result.Onomatopoeia_ID;
@@ -861,7 +864,12 @@ var movieadd = {
                 }
             })
             .then(function(results) {
-                console.log(results);
+                //ローカル保存処理を開始
+                console.log(genre_obj_list);
+                console.log(onomatopoeia_obj_list);
+
+                //
+
                 utility.stop_spinner();
             })
             .catch(function(err){
@@ -1119,8 +1127,8 @@ var movieadd = {
                 search_result[0].set('UserName',username_list);
                 return search_result[0].update();
             })
-            .then(function(aaa){
-                resolve(aaa);
+            .then(function(update_result){
+                resolve(update_result);
 
             })
             .catch(function(err){
