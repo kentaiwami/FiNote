@@ -1365,14 +1365,12 @@ var movieadd_feeling = {
         }else {
             var feeling_name = document.getElementById('feeling_input_name').value;
 
-            //登録しとうとしているオノマトペが既に登録されていなかった場合
+            //既出でない場合
             if (movieadd.userdata.feeling_name_list.indexOf(feeling_name) == -1) {
-            //リストへ登録して気分を表示する
             movieadd_feeling.add_list(feeling_name);
-
             document.getElementById('feeling_add_dialog').hide();
 
-            //既に登録されているオノマトペを登録しようとした場合
+            //既出の場合
             }else {
                 document.getElementById('feeling_add_dialog').hide();
                 utility.show_error_alert('登録エラー','既に登録済みです','OK');
