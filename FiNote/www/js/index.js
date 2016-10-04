@@ -805,31 +805,28 @@ var movieadd = {
                 // console.log(genre_obj_list);
                 // console.log(onomatopoeia_obj_list);
                 // console.log(movie);
+                
+                //オノマトペオブジェクトリストからIDとcount1を格納した配列を作成
+                var onomatopoeia_id_count_list = [];
+                for(var i = 0; i < onomatopoeia_obj_list.length; i++) {
+                    onomatopoeia_id_count_list.push({'id':onomatopoeia_obj_list[i].id, 'count':1});
+                }
 
-                var ncmb = utility.get_ncmb();
-                var currentUser = ncmb.User.getCurrentUser();
+                //ジャンルオブジェクトリストからIDを取り出した配列を作成
+                var genre_id_list = [];
+                for(var j = 0; j < genre_obj_list.length; j++) {
+                    genre_id_list.push(genre_obj_list[j].id);
+                }
 
                 //同じ映画がNCMBに追加されていなかったら
                 if (same_movie_results.length === 0) {
-                    var Movie = ncmb.DataStore('Movie');
-                    var movie_datastore = new Movie();
-                    //TODO: オノマトペのID
-                    movie_datastore.set('Title', movie.title)
-                            .set('TMDB_ID', movie.id)
-                            .set('Genre_ID', genre_id_list)
-                            .set('Onomatopoeia_ID',[{'id':4, 'count':1}])
-                            .set('UserName',[currentUser.userName])
-                             .save()
-                             .then(function(movie_datastore){
-                              // 保存後の処理
-                             })
-                             .catch(function(err){
-                               // エラー処理
-                               console.log(err);
-                             });
+                    return movieadd.set_movie(movie.title,movie.id,genre_id_list,onomatopoeia_id_count_list);
 
                 //既に映画がNCMBに追加してあったら
                 }else {
+                    var ncmb = utility.get_ncmb();
+                    var currentUser = ncmb.User.getCurrentUser();
+
                     var search_result = same_movie_results[0];
                     var ncmb_onomatopoeia_list = search_result.Onomatopoeia_ID;
 
@@ -860,7 +857,7 @@ var movieadd = {
                     }
 
                     // console.log(ncmb_onomatopoeia_list);
-                    return movieadd.set_movie(search_result.TMDB_ID,ncmb_onomatopoeia_list,username_list);
+                    return movieadd.update_movie(search_result.TMDB_ID,ncmb_onomatopoeia_list,username_list);
                 }
             })
             .then(function(results) {
@@ -1118,7 +1115,7 @@ var movieadd = {
      * @param {[array]} onomatopoeia_list [更新後のオノマトペオブジェクトが格納されたArray]
      * @param {[array]} username_list     [更新後のユーザ名が格納されたArray]
      */
-    set_movie: function(movie_id, onomatopoeia_list, username_list) {
+    update_movie: function(movie_id, onomatopoeia_list, username_list) {
         return new Promise(function(resolve,reject) {
             var ncmb = utility.get_ncmb();
             var Movie = ncmb.DataStore('Movie');
@@ -1136,6 +1133,39 @@ var movieadd = {
             .catch(function(err){
                 reject('Error');
             });
+        });
+    },
+
+    /**
+     * Movieデータクラスにレコードを新規追加する
+     * @param {[string]} title                      [映画のタイトル]
+     * @param {[number]} tmdb_id                    [映画に付与されているTMDBのID]
+     * @param {[array]} genre_id_list              [映画に付与されているジャンルIDの配列]
+     * @param {[array]} onomatopoeia_id_count_list [オノマトペのIDとcountを格納したオブジェクト配列]
+     */
+    set_movie: function(title,tmdb_id,genre_id_list,onomatopoeia_id_count_list) {
+        return new Promise(function(resolve,reject) {
+            var ncmb = utility.get_ncmb();
+            var currentUser = ncmb.User.getCurrentUser();
+
+            var Movie = ncmb.DataStore('Movie');
+            var movie_datastore = new Movie();
+
+            movie_datastore
+            .set('Title', title)
+            .set('TMDB_ID', tmdb_id)
+            .set('Genre_ID', genre_id_list)
+            .set('Onomatopoeia_ID',[onomatopoeia_id_count_list])
+            .set('UserName',[currentUser.userName])
+             .save()
+             .then(function(movie_datastore){
+              resolve(movie_datastore);
+             })
+             .catch(function(err){
+               console.log(err);
+               reject(err);
+             });
+
         });
     },
 
