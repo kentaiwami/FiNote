@@ -1364,6 +1364,7 @@ var movieadd_feeling = {
             document.getElementById('feeling_add_dialog').hide();
         }else {
             var feeling_name = document.getElementById('feeling_input_name').value;
+            feeling_name = feeling_name.replace(/\s+/g, '');
 
             //既出でない場合
             if (movieadd.userdata.feeling_name_list.indexOf(feeling_name) == -1) {
