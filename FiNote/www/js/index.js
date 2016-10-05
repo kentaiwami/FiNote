@@ -860,14 +860,31 @@ var movieadd = {
                     return movieadd.update_movie(search_result.TMDB_ID,ncmb_onomatopoeia_list,username_list);
                 }
             })
-            .then(function(results) {
+            .then(function(movie_result) {
                 //ローカル保存処理を開始
                 console.log(genre_obj_list);        //ローカルに保存
                 console.log(onomatopoeia_obj_list); //ローカルに保存
 
-                //Movieオブジェクト取得
                 //(id integer primary key, title text unique, tmdb_id integer unique, genre_id text, onomatopoeia_id text, poster blob)
-                console.log(results);
+                console.log(movie_result);
+
+                /*
+                ・localのmovieテーブルのレコード数を取得
+                ・id => レコード数
+                ・title => movie_result.Title
+                ・tmdb_id => movie_result.TMDB_ID
+                ・genre_id => *************
+                ・onomatopoeia_id => ****************
+                ・poster => ****************
+                */
+               
+               /*
+               ・ジャンルとオノマトペの記録を1つの非同期トランザクションでやる(promise1)
+               ・movieのレコード取得(promise2)
+               ・poster取得(promise3)
+               (promise1〜3終了後)
+               ・IDだけの配列を作成後にmovieレコードを追加
+                */
 
                 utility.stop_spinner();
             })
