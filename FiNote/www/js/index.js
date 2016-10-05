@@ -798,7 +798,7 @@ var movieadd = {
                 genre_obj_list = genre_onomatopoeia_results[0];
                 onomatopoeia_obj_list = genre_onomatopoeia_results[1];
 
-                return movieadd.get_same_movie(movie.id);
+                return movieadd.get_ncmb_same_movie(movie.id);
             })
             .then(function(same_movie_results) {
                 // console.log(same_movie_results);
@@ -820,7 +820,7 @@ var movieadd = {
 
                 //同じ映画がNCMBに追加されていなかったら
                 if (same_movie_results.length === 0) {
-                    return movieadd.set_movie(movie.title,movie.id,genre_id_list,onomatopoeia_id_count_list);
+                    return movieadd.set_ncmb_movie(movie.title,movie.id,genre_id_list,onomatopoeia_id_count_list);
 
                 //既に映画がNCMBに追加してあったら
                 }else {
@@ -857,7 +857,7 @@ var movieadd = {
                     }
 
                     // console.log(ncmb_onomatopoeia_list);
-                    return movieadd.update_movie(search_result.TMDB_ID,ncmb_onomatopoeia_list,username_list);
+                    return movieadd.update_ncmb_movie(search_result.TMDB_ID,ncmb_onomatopoeia_list,username_list);
                 }
             })
             .then(function(movie_result) {
@@ -1097,7 +1097,7 @@ var movieadd = {
      * @param  {[number]} movie_id [映画オブジェクトのid]
      * @return {[array]}          [検索結果]
      */
-    get_same_movie: function(movie_id) {
+    get_ncmb_same_movie: function(movie_id) {
         return new Promise(function(resolve,reject) {
             var ncmb = utility.get_ncmb();
             var Movie = ncmb.DataStore('Movie');
@@ -1117,7 +1117,7 @@ var movieadd = {
      * @param {[array]} onomatopoeia_list [更新後のオノマトペオブジェクトが格納されたArray]
      * @param {[array]} username_list     [更新後のユーザ名が格納されたArray]
      */
-    update_movie: function(movie_id, onomatopoeia_list, username_list) {
+    update_ncmb_movie: function(movie_id, onomatopoeia_list, username_list) {
         return new Promise(function(resolve,reject) {
             var ncmb = utility.get_ncmb();
             var Movie = ncmb.DataStore('Movie');
@@ -1145,7 +1145,7 @@ var movieadd = {
      * @param {[array]} genre_id_list              [映画に付与されているジャンルIDの配列]
      * @param {[array]} onomatopoeia_id_count_list [オノマトペのIDとcountを格納したオブジェクト配列]
      */
-    set_movie: function(title,tmdb_id,genre_id_list,onomatopoeia_id_count_list) {
+    set_ncmb_movie: function(title,tmdb_id,genre_id_list,onomatopoeia_id_count_list) {
         return new Promise(function(resolve,reject) {
             var ncmb = utility.get_ncmb();
             var currentUser = ncmb.User.getCurrentUser();
