@@ -22,6 +22,8 @@ var app = {
             tx.executeSql('CREATE TABLE IF NOT EXISTS movie (id integer primary key, title text unique, tmdb_id integer unique, genre_id text, onomatopoeia_id text, poster blob)');
             tx.executeSql('CREATE TABLE IF NOT EXISTS genre (id integer primary key, name text unique)');
             tx.executeSql('CREATE TABLE IF NOT EXISTS onomatopoeia (id integer primary Key, name text)');
+
+           tx.executeSql("DELETE FROM movie WHERE id = 1");
           }, function(err) {
             console.log('Open database ERROR: ' +JSON.stringify(err) +' ' + err.message);
           });
@@ -868,6 +870,15 @@ var movieadd = {
                 //(id integer primary key, title text unique, tmdb_id integer unique, genre_id text, onomatopoeia_id text, poster blob)
                 console.log(movie_result);
 
+                var promises = [db_method.count_record('movie')];
+
+                Promise.all(promises).then(function(resutls) {
+                    console.log(results);
+                })
+                .catch(function(err) {
+                    console.log(err);
+                });
+
                 /*
                 ・localのmovieテーブルのレコード数を取得
                 ・id => レコード数
@@ -1683,6 +1694,34 @@ var utility = {
     },
 };
 
+
+/*
+    データベース関連のメソッドをまとめたオブジェクト
+ */
+var db_method = {
+
+    /**
+     * 指定したテーブルのレコード件数を返す
+     * @param  {[string]} table_name [レコード件数を取得したいテーブル名]
+     * @return {[promise]}            [成功時：レコード件数、失敗時：エラーメッセージ]
+     */
+    count_record: function(table_name) {
+        return new Promise(function(resolve,reject) {
+            var db = utility.get_database();
+            var query = 'SELECT COUNT(*) AS count FROM ' + table_name;
+            db.executeSql(query, [], function (resultSet) {
+                resolve(JSON.stringify(resultSet.rows.item(0).count));
+            }, function(error) {
+                console.log('SELECT error: ' + error.message);
+                reject(error.message);
+            });
+        });
+    },
+};
+
+
+//SQLメモ
+//"INSERT INTO movie(id,title, tmdb_id, genre_id, onomatopoeia_id, poster) VALUES(1,'test', 10, 'genre_id_hogehoge','onomatopoeia_id_hogehoge','poster_hogehoge')
 
 // //ローカルのデータベースにサーバから取得したmovieを記録する
 // function insert_movie(movies){
