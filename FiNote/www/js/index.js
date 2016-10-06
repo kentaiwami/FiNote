@@ -22,8 +22,6 @@ var app = {
             tx.executeSql('CREATE TABLE IF NOT EXISTS movie (id integer primary key, title text unique, tmdb_id integer unique, genre_id text, onomatopoeia_id text, poster blob)');
             tx.executeSql('CREATE TABLE IF NOT EXISTS genre (id integer primary key, name text unique)');
             tx.executeSql('CREATE TABLE IF NOT EXISTS onomatopoeia (id integer primary Key, name text)');
-
-           tx.executeSql("DELETE FROM movie WHERE id = 1");
           }, function(err) {
             console.log('Open database ERROR: ' +JSON.stringify(err) +' ' + err.message);
           });
@@ -864,13 +862,17 @@ var movieadd = {
             })
             .then(function(movie_result) {
                 //ローカル保存処理を開始
-                console.log(genre_obj_list);
-                console.log(onomatopoeia_obj_list); //ローカルに保存
+                // console.log(genre_obj_list);
+                // console.log(onomatopoeia_obj_list);
 
                 //(id integer primary key, title text unique, tmdb_id integer unique, genre_id text, onomatopoeia_id text, poster blob)
-                console.log(movie_result);
+                // console.log(movie_result);
 
-                var promises = [db_method.count_record('movie'),movieadd.set_genre_local(genre_obj_list)];
+                var base_url = 'https://image.tmdb.org/t/p/w300_and_h450_bestv2';
+                var image = new Image();
+                image.src = base_url + movie.poster_path;
+                
+                var promises = [db_method.count_record('movie'),movieadd.set_genre_local(genre_obj_list),utility.image_to_base64(image, 'image/jpeg')];
 
                 Promise.all(promises).then(function(resutls) {
                     console.log(results);
@@ -1285,7 +1287,6 @@ var movieadd = {
                 var genre_obj = genre_obj_list[i];
 
                 db.executeSql('INSERT INTO genre(id,name) VALUES(?,?)',[genre_obj.id, genre_obj.name], function(resultSet) {
-                    console.log(resultSet);
                     resolve(resultSet);
 
                 },function(error) {
@@ -1718,6 +1719,40 @@ var utility = {
                 break;
         }
     },
+
+
+    /**
+     * 画像をbase64エンコードする
+     * @param  {[image]} image_src [img要素]
+     * @param  {[string]} mine_type [データ型]
+     * @return {[promise]}           [成功時：画像をbase64エンコードした文字列]
+     */
+    image_to_base64: function(image_src, mine_type) {
+        return new Promise(function(resolve,reject) {
+            var canvas = document.createElement('canvas');
+            canvas.width  = image_src.width;
+            canvas.height = image_src.height;
+
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(image_src, 0, 0);
+
+            resolve(canvas.toDataURL(mine_type));
+            });
+    },
+
+    /**
+     * base64をデコードする
+     * @param  {[string]}   base64img [base64の文字列]
+     * @param  {Function} callback  [変換後のコールバック]
+     */
+    base64_to_image: function(base64img, callback) {
+        var img = new Image();
+        img.onload = function() {
+            callback(img);
+        };
+        img.src = base64img;
+    },
+
 };
 
 
@@ -1742,6 +1777,21 @@ var db_method = {
                 reject(error.message);
             });
         });
+    },
+
+    /**
+     * データベースのレコードを全削除する
+     */
+    delete_all_record: function() {
+        var db = utility.get_database();
+
+        db.transaction(function(tx) {
+            tx.executeSql('DELETE FROM movie');
+            tx.executeSql('DELETE FROM genre');
+            tx.executeSql('DELETE FROM onomatopoeia');
+          }, function(err) {
+            console.log('DELETE ALL RECORD ERROR: ' +JSON.stringify(err) +' ' + err.message);
+          });
     },
 };
 
