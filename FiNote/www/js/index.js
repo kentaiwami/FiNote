@@ -864,13 +864,13 @@ var movieadd = {
             })
             .then(function(movie_result) {
                 //ローカル保存処理を開始
-                console.log(genre_obj_list);        //ローカルに保存
+                console.log(genre_obj_list);
                 console.log(onomatopoeia_obj_list); //ローカルに保存
 
                 //(id integer primary key, title text unique, tmdb_id integer unique, genre_id text, onomatopoeia_id text, poster blob)
                 console.log(movie_result);
 
-                var promises = [db_method.count_record('movie')];
+                var promises = [db_method.count_record('movie'),movieadd.set_genre_local(genre_obj_list)];
 
                 Promise.all(promises).then(function(resutls) {
                     console.log(results);
@@ -889,10 +889,11 @@ var movieadd = {
                 */
                
                /*
-               ・ジャンル+テキスト生成とオノマトペ+テキスト生成の記録を1つの非同期トランザクションでやる(promise1)
+               ・ジャンルの保存(promise1) DONE
+               ・オノマトペの保存(promise2) DONE
                ・movieのレコード取得(promise2) DONE
-               ・poster取得(promise3)
-               (promise1〜3終了後)
+               ・poster取得(promise4)
+               (promise1〜4終了後)
                ・IDだけの配列を作成後にmovieレコードを追加
                 */
 
@@ -1267,6 +1268,32 @@ var movieadd = {
                  .catch(function(err){
                      reject('NCMB_Set_Genre_Error');
                  });
+        });
+    },
+
+
+    /**
+     * ローカルDBのgenreテーブルに引数で渡されたgenreオブジェクトリストを格納する
+     * @param {[array]} genre_obj_list [ユーザが追加した映画に付与されているジャンルIDにジャンル名をつけたオブジェクト配列]
+     */
+    set_genre_local: function(genre_obj_list) {
+        return new Promise(function(resolve,reject) {
+
+            var db = utility.get_database();
+
+            for(var i = 0; i < genre_obj_list.length; i++) {
+                var genre_obj = genre_obj_list[i];
+
+                db.executeSql('INSERT INTO genre(id,name) VALUES(?,?)',[genre_obj.id, genre_obj.name], function(resultSet) {
+                    console.log(resultSet);
+                    resolve(resultSet);
+
+                },function(error) {
+                    console.log(error.message);
+                    reject(error.message);
+                });
+
+            }
         });
     },
 
