@@ -863,8 +863,6 @@ var movieadd = {
             })
             .then(function(movie_result) {
                 //ローカル保存処理を開始
-                // console.log(genre_obj_list);
-                // console.log(onomatopoeia_obj_list);
 
                 //(id integer primary key, title text unique, tmdb_id integer unique, genre_id text, onomatopoeia_id text, poster blob)
                 // console.log(movie_result);
@@ -873,11 +871,14 @@ var movieadd = {
                 var image = new Image();
                 image.src = base_url + movie.poster_path;
 
-                var promises = [db_method.count_record('movie'),movieadd.set_genre_local(genre_obj_list),utility.image_to_base64(image, 'image/jpeg')];
+                var promises = [db_method.count_record('movie'),movieadd.set_genre_local(genre_obj_list),movieadd.set_onomatopoeia_local(onomatopoeia_obj_list),utility.image_to_base64(image, 'image/jpeg')];
 
 
                 Promise.all(promises).then(function(resutls) {
-                    console.log(resutls[0].length);
+                    // console.log(resutls[0]);
+                    console.log(resutls[1]);
+                    // console.log(resutls[2]);
+                    // console.log(resutls[3]);
 
                     // var db = utility.get_database();
                     // db.executeSql('INSERT INTO movie(id,title, tmdb_id, genre_id, onomatopoeia_id, poster) VALUES(?,?,?,?,?,?)', [1,'title','tmdb_id','genre_id','onomatopoeia_id',resutls[0]], function (resultSet) {
@@ -1327,6 +1328,30 @@ var movieadd = {
                  .catch(function(err){
                      reject('NCMB_Set_Onomatopoeia_Error');
                  });
+        });
+    },
+
+    /**
+     * ローカルDBのonomatopoeiaテーブルに引数で渡されたonomatopoeiaオブジェクトリストを格納する
+     * @param {[array]} onomatopoeia_obj_list [ユーザが追加したオノマトペオブジェクトリスト]
+     */
+    set_onomatopoeia_local: function(onomatopoeia_obj_list) {
+        return new Promise(function(resolve,reject) {
+
+            var db = utility.get_database();
+
+            for(var i = 0; i < onomatopoeia_obj_list.length; i++) {
+                var onomatopoeia_obj = onomatopoeia_obj_list[i];
+
+                db.executeSql('INSERT INTO onomatopoeia(id,name) VALUES(?,?)',[onomatopoeia_obj.id, onomatopoeia_obj.name], function(resultSet) {
+                    resolve(resultSet);
+
+                },function(error) {
+                    console.log(error.message);
+                    reject(error.message);
+                });
+
+            }
         });
     },
 
