@@ -1840,7 +1840,7 @@ var db_method = {
      * @param  {[array]} data_list [クエリー内に埋め込む値を格納した配列]
      * @return {[promise]}           [成功時：クエリーの実行結果，失敗時：エラーメッセージ]
      */
-    single_statement_Execute: function(query,data_list) {
+    single_statement_execute: function(query,data_list) {
         return new Promise(function(resolve,reject) {
             var db = utility.get_database();
 
