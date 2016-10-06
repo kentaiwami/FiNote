@@ -19,12 +19,13 @@ var app = {
         var db = utility.get_database();
 
           db.transaction(function(tx) {
-            tx.executeSql('CREATE TABLE IF NOT EXISTS movie (id integer primary key, title text unique, tmdb_id integer unique, genre_id text, onomatopoeia_id text, poster blob)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS movie (id integer primary key, title text unique, tmdb_id integer unique, genre_id text, onomatopoeia_id text, poster text)');
             tx.executeSql('CREATE TABLE IF NOT EXISTS genre (id integer primary key, name text unique)');
             tx.executeSql('CREATE TABLE IF NOT EXISTS onomatopoeia (id integer primary Key, name text)');
           }, function(err) {
             console.log('Open database ERROR: ' +JSON.stringify(err) +' ' + err.message);
           });
+          // db_method.delete_all_record();
     },
 };
 
@@ -871,11 +872,20 @@ var movieadd = {
                 var base_url = 'https://image.tmdb.org/t/p/w300_and_h450_bestv2';
                 var image = new Image();
                 image.src = base_url + movie.poster_path;
-                
+
                 var promises = [db_method.count_record('movie'),movieadd.set_genre_local(genre_obj_list),utility.image_to_base64(image, 'image/jpeg')];
 
+
                 Promise.all(promises).then(function(resutls) {
-                    console.log(results);
+                    console.log(resutls[0].length);
+
+                    // var db = utility.get_database();
+                    // db.executeSql('INSERT INTO movie(id,title, tmdb_id, genre_id, onomatopoeia_id, poster) VALUES(?,?,?,?,?,?)', [1,'title','tmdb_id','genre_id','onomatopoeia_id',resutls[0]], function (resultSet) {
+                    //     console.log(resultSet);
+                    // }, function(error) {
+                    //     console.log('test error: ' + error.message);
+                    // });
+
                 })
                 .catch(function(err) {
                     console.log(err);
@@ -892,9 +902,9 @@ var movieadd = {
                
                /*
                ・ジャンルの保存(promise1) DONE
-               ・オノマトペの保存(promise2) DONE
+               ・オノマトペの保存(promise2)
                ・movieのレコード取得(promise2) DONE
-               ・poster取得(promise4)
+               ・poster取得(promise4) DONE
                (promise1〜4終了後)
                ・IDだけの配列を作成後にmovieレコードを追加
                 */
@@ -1773,7 +1783,7 @@ var db_method = {
             db.executeSql(query, [], function (resultSet) {
                 resolve(JSON.stringify(resultSet.rows.item(0).count));
             }, function(error) {
-                console.log('SELECT error: ' + error.message);
+                console.log('COUNT RECORD ERROR: ' + error.message);
                 reject(error.message);
             });
         });
