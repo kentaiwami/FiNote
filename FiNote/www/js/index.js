@@ -1294,18 +1294,22 @@ var movieadd = {
 
             var db = utility.get_database();
 
-            for(var i = 0; i < genre_obj_list.length; i++) {
-                var genre_obj = genre_obj_list[i];
+            //ローカルからジャンルリストを取得
 
-                db.executeSql('INSERT INTO genre(id,name) VALUES(?,?)',[genre_obj.id, genre_obj.name], function(resultSet) {
-                    resolve(resultSet);
 
-                },function(error) {
-                    console.log(error.message);
-                    reject(error.message);
-                });
 
-            }
+            // for(var i = 0; i < genre_obj_list.length; i++) {
+            //     var genre_obj = genre_obj_list[i];
+
+            //     db.executeSql('INSERT INTO genre(id,name) VALUES(?,?)',[genre_obj.id, genre_obj.name], function(resultSet) {
+            //         resolve(resultSet);
+
+            //     },function(error) {
+            //         console.log(error.message);
+            //         reject(error.message);
+            //     });
+
+            // }
         });
     },
 
@@ -1827,6 +1831,27 @@ var db_method = {
           }, function(err) {
             console.log('DELETE ALL RECORD ERROR: ' +JSON.stringify(err) +' ' + err.message);
           });
+    },
+
+
+    /**
+     * シングルSQLを実行する関数
+     * @param  {[string]} query     [クエリー文]
+     * @param  {[array]} data_list [クエリー内に埋め込む値を格納した配列]
+     * @return {[promise]}           [成功時：クエリーの実行結果，失敗時：エラーメッセージ]
+     */
+    single_statement_Execute: function(query,data_list) {
+        return new Promise(function(resolve,reject) {
+            var db = utility.get_database();
+
+            db.executeSql(query, data_list, function(resultSet) {
+                resolve(resultSet);
+            }, function(error) {
+                console.log(error.message);
+                reject(error.message);
+            });
+        });
+        
     },
 };
 
