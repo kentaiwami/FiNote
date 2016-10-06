@@ -880,7 +880,6 @@ var movieadd = {
                 });
 
                 /*
-                ・localのmovieテーブルのレコード数を取得
                 ・id => レコード数
                 ・title => movie_result.Title
                 ・tmdb_id => movie_result.TMDB_ID
@@ -891,7 +890,7 @@ var movieadd = {
                
                /*
                ・ジャンル+テキスト生成とオノマトペ+テキスト生成の記録を1つの非同期トランザクションでやる(promise1)
-               ・movieのレコード取得(promise2)
+               ・movieのレコード取得(promise2) DONE
                ・poster取得(promise3)
                (promise1〜3終了後)
                ・IDだけの配列を作成後にmovieレコードを追加
