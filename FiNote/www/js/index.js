@@ -873,13 +873,13 @@ var movieadd = {
                 ・id => レコード数
                 ・title => movie_result.Title
                 ・tmdb_id => movie_result.TMDB_ID
-                ・genre_id => *************
-                ・onomatopoeia_id => ****************
+                ・genre_id => 1,2,3
+                ・onomatopoeia_id => 1,2,3,4,7,9
                 ・poster => ****************
                 */
                
                /*
-               ・ジャンルとオノマトペの記録を1つの非同期トランザクションでやる(promise1)
+               ・ジャンル+テキスト生成とオノマトペ+テキスト生成の記録を1つの非同期トランザクションでやる(promise1)
                ・movieのレコード取得(promise2)
                ・poster取得(promise3)
                (promise1〜3終了後)
