@@ -901,11 +901,6 @@ var movieadd = {
                 */
                
                /*
-               ・ジャンルの保存(promise1) DONE
-               ・オノマトペの保存(promise2)
-               ・movieのレコード取得(promise2) DONE
-               ・poster取得(promise4) DONE
-               (promise1〜4終了後)
                ・IDだけの配列を作成後にmovieレコードを追加
                 */
 
