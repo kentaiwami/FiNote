@@ -871,12 +871,12 @@ var movieadd = {
                 var image = new Image();
                 image.src = base_url + movie.poster_path;
 
-                var promises = [db_method.count_record('movie'),movieadd.set_genre_local(genre_obj_list),movieadd.set_onomatopoeia_local(onomatopoeia_obj_list),utility.image_to_base64(image, 'image/jpeg')];
-
+                var promises = [db_method.count_record('movie'),movieadd.set_genre_local(genre_obj_list),utility.image_to_base64(image, 'image/jpeg')];
+                //movieadd.set_onomatopoeia_local(onomatopoeia_obj_list)
 
                 Promise.all(promises).then(function(resutls) {
                     // console.log(resutls[0]);
-                    console.log(resutls[1]);
+                    // console.log(resutls[1].rows.item(0));
                     // console.log(resutls[2]);
                     // console.log(resutls[3]);
 
@@ -1292,24 +1292,53 @@ var movieadd = {
     set_genre_local: function(genre_obj_list) {
         return new Promise(function(resolve,reject) {
 
-            var db = utility.get_database();
+            //テストコード
+            // genre_obj_list.push({'id': 666, 'name': 'hoge4'});
+            // genre_obj_list.push({'id': 555, 'name': 'hoge5'});
+            // genre_obj_list.push({'id': 444, 'name': 'hoge6'});
 
             //ローカルからジャンルリストを取得
+            db_method.single_statement_execute('SELECT id FROM genre',[]).then(function(results) {
+                //ジャンルID(ユーザ登録)だけの配列を作成
+                var genre_id_list = [];
+                for(var i = 0; i < genre_obj_list.length; i++ ){
+                    genre_id_list.push(genre_obj_list[i].id);
+                }
 
+                //ジャンルID(ローカル)だけの配列を作成
+                var genre_id_list_local = [];
+                for(i = 0; i < results.rows.length; i++) {
+                    genre_id_list_local.push(results.rows.item(i).id);
+                }
 
+                //ローカルから取得したリストにジャンルID(ユーザ登録)が含まれていなければpromiseに登録する
+                var promises = [];
+                for(i = 0; i < genre_id_list.length; i++) {
+                    if (genre_id_list_local.indexOf(genre_id_list[i]) == -1) {
+                        var index = genre_id_list.indexOf(genre_id_list[i]);
+                        var name = genre_obj_list[index].name;
 
-            // for(var i = 0; i < genre_obj_list.length; i++) {
-            //     var genre_obj = genre_obj_list[i];
+                        var query = 'INSERT INTO genre(id,name) VALUES(?,?)';
+                        var data = [genre_id_list[i], name];
+                        promises.push(db_method.single_statement_execute(query,data));
+                    }
+                }
 
-            //     db.executeSql('INSERT INTO genre(id,name) VALUES(?,?)',[genre_obj.id, genre_obj.name], function(resultSet) {
-            //         resolve(resultSet);
-
-            //     },function(error) {
-            //         console.log(error.message);
-            //         reject(error.message);
-            //     });
-
-            // }
+                return promises;
+            })
+            .then(function(promises) {
+                Promise.all(promises).then(function(results) {
+                    resolve(results);
+                })
+                .catch(function(error) {
+                    console.log(error);
+                    reject(error);
+                });
+            })
+            .catch(function(error) {
+                console.log(error);
+                reject(error);
+            });
         });
     },
 
