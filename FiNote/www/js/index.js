@@ -870,41 +870,61 @@ var movieadd = {
                 var base_url = 'https://image.tmdb.org/t/p/w300_and_h450_bestv2';
                 var image = new Image();
                 image.src = base_url + movie.poster_path;
+                var image_b64 = '';
+                var movie_record_count = 0;
 
                 var promises = [db_method.count_record('movie'),movieadd.set_genre_local(genre_obj_list),movieadd.set_onomatopoeia_local(onomatopoeia_obj_list),utility.image_to_base64(image, 'image/jpeg')];
 
-                Promise.all(promises).then(function(resutls) {
-                    // console.log(resutls[0]);
-                    // console.log(resutls[1].rows.item(0));
-                    // console.log(resutls[2]);
-                    // console.log(resutls[3]);
+                Promise.all(promises).then(function(results) {
+                    image_b64 = results[3];
+                    movie_record_count = results[0];
+                    
+                    //ローカルDBにユーザが追加したオノマトペオブジェクトを問い合わせるpromisesを作成
+                    var promises = [];
+                    for(var i = 0; i < user_onomatopoeia_list.length; i++) {
+                        var query = 'SELECT id FROM onomatopoeia WHERE name = ?';
+                        var data = [user_onomatopoeia_list[i]];
+                        promises.push(db_method.single_statement_execute(query,data));
+                    }
 
-                    // var db = utility.get_database();
-                    // db.executeSql('INSERT INTO movie(id,title, tmdb_id, genre_id, onomatopoeia_id, poster) VALUES(?,?,?,?,?,?)', [1,'title','tmdb_id','genre_id','onomatopoeia_id',resutls[0]], function (resultSet) {
-                    //     console.log(resultSet);
-                    // }, function(error) {
-                    //     console.log('test error: ' + error.message);
-                    // });
+                    return promises;
+                })
+                .then(function(promises) {
+                    Promise.all(promises).then(function(results) {
+                        var genre_csv = '';
+                        var onomatopoeia_csv = '';
 
+                        //オノマトペIDのcsvを作成
+                        for(var i = 0; i < results.length; i++) {
+                            onomatopoeia_csv += results[i].rows.item(0).id + ',';
+                        }
+                        onomatopoeia_csv = onomatopoeia_csv.substr(0, onomatopoeia_csv.length-1);
+
+                        //ジャンルIDのcsvを作成
+                        for(i = 0; i < movie_result.Genre_ID.length; i++) {
+                            genre_csv += movie_result.Genre_ID[i] + ',';
+                        }
+                        genre_csv = genre_csv.substr(0, genre_csv.length-1);
+
+
+
+                        var query = 'INSERT INTO movie(id,title,tmdb_id,genre_id,onomatopoeia_id,poster) VALUES(?,?,?,?,?,?)';
+                        var data = [movie_record_count,movie_result.Title, movie_result.TMDB_ID, genre_csv, onomatopoeia_csv, image_b64];
+                        return db_method.single_statement_execute(query, data);
+                    })
+                    .then(function(result) {
+                        console.log(result);
+                        utility.stop_spinner();
+                    })
+                    .catch(function(err) {
+                        console.log(err);
+                        utility.stop_spinner();
+                    });
                 })
                 .catch(function(err) {
                     console.log(err);
+                    utility.stop_spinner();
                 });
-
-                /*
-                ・id => レコード数
-                ・title => movie_result.Title
-                ・tmdb_id => movie_result.TMDB_ID
-                ・genre_id => 1,2,3
-                ・onomatopoeia_id => 1,2,3,4,7,9
-                ・poster => ****************
-                */
-               
-               /*
-               ・IDだけの配列を作成後にmovieレコードを追加
-                */
-
-                utility.stop_spinner();
             })
             .catch(function(err){
                 console.log(err);
