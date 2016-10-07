@@ -915,7 +915,7 @@ var movieadd = {
                     .then(function(result) {
                         console.log(result);
                         utility.stop_spinner();
-                        utility.show_error_alert('追加完了','映画を追加しました','OK');
+                        document.getElementById('success_movieadd_alert').show();
                     })
                     .catch(function(err) {
                         console.log(err);
@@ -1478,6 +1478,17 @@ var movieadd = {
 
         list_number.innerHTML = list_length + '件';
         have_dvd.innerHTML = dvd;
+    },
+
+
+    /**
+     * 映画追加が完了した後に表示するアラートのOKボタンをタップして動作
+     */
+    success_movieadd_alert_hide: function() {
+        document.getElementById('success_movieadd_alert').hide().then(function(){
+            utility.popPage();
+        });
+
     },
 };
 
