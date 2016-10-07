@@ -915,15 +915,18 @@ var movieadd = {
                     .then(function(result) {
                         console.log(result);
                         utility.stop_spinner();
+                        utility.show_error_alert('追加完了','映画を追加しました','OK');
                     })
                     .catch(function(err) {
                         console.log(err);
                         utility.stop_spinner();
+                        utility.show_error_alert('映画追加エラー','映画追加時にエラーが発生しました','OK');
                     });
                 })
                 .catch(function(err) {
                     console.log(err);
                     utility.stop_spinner();
+                    utility.show_error_alert('映画追加前処理エラー','映画追加の前処理でエラーが発生しました','OK');
                 });
             })
             .catch(function(err){
