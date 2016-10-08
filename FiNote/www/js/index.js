@@ -836,22 +836,22 @@ var movieadd = {
 
                     //MovieのOnomatopoeia_ID内のidのみを取り出したリストを作成する
                     var ncmb_onomatopoeia_id_list = [];
-                    for(var i = 0; i < ncmb_onomatopoeia_list.length; i++) {
+                    for(i = 0; i < ncmb_onomatopoeia_list.length; i++) {
                         ncmb_onomatopoeia_id_list.push(ncmb_onomatopoeia_list[i].id);
                     }
 
                     //ユーザが追加したオノマトペオブジェクトリストのidのみを取り出した配列を作成
                     var onomatopoeia_id_list = [];
-                    for(var j = 0; j < onomatopoeia_obj_list.length; j++) {
-                        onomatopoeia_id_list.push(onomatopoeia_obj_list[j].id);
+                    for(i = 0; i < onomatopoeia_obj_list.length; i++) {
+                        onomatopoeia_id_list.push(onomatopoeia_obj_list[i].id);
                     }
 
                     //ユーザが追加したオノマトペの数だけNCMBから取得したオノマトペリストへの新規追加or更新を行う
-                    for(var k = 0; k < onomatopoeia_id_list.length; k++) {
-                        var index = ncmb_onomatopoeia_id_list.indexOf(onomatopoeia_id_list[k]);
+                    for(i = 0; i < onomatopoeia_id_list.length; i++) {
+                        var index = ncmb_onomatopoeia_id_list.indexOf(onomatopoeia_id_list[i]);
 
                         if (index == -1) {
-                            ncmb_onomatopoeia_list.push({'id':onomatopoeia_id_list[k], 'count': 1});
+                            ncmb_onomatopoeia_list.push({'id':onomatopoeia_id_list[i], 'count': 1});
                         }else {
                             ncmb_onomatopoeia_list[index].count += 1;
                         }
