@@ -832,7 +832,9 @@ var movieadd = {
                     var ncmb_onomatopoeia_list = search_result.Onomatopoeia_ID;
 
                     var username_list = search_result.UserName;
-                    username_list.push(currentUser.userName);
+                    if (username_list.indexOf(currentUser.userName) == -1) {
+                        username_list.push(currentUser.userName);
+                    }
 
                     //MovieのOnomatopoeia_ID内のidのみを取り出したリストを作成する
                     var ncmb_onomatopoeia_id_list = [];
