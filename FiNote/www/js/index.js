@@ -906,7 +906,7 @@ var movieadd = {
                         }
                         genre_csv = genre_csv.substr(0, genre_csv.length-1);
 
-                        //dvdの情報を作成
+                        //dvd所持情報を作成
                         var dvd = 0;
                         if (movieadd.userdata.dvd === true) {
                             dvd = 1;
