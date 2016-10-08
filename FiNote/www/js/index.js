@@ -937,18 +937,21 @@ var movieadd = {
                         console.log(err);
                         utility.stop_spinner();
                         utility.show_error_alert('映画追加エラー','映画追加時にエラーが発生しました','OK');
+                        utility.removeAttribute_list_object(button_list, 'disabled');
                     });
                 })
                 .catch(function(err) {
                     console.log(err);
                     utility.stop_spinner();
                     utility.show_error_alert('映画追加前処理エラー','映画追加の前処理でエラーが発生しました','OK');
+                    utility.removeAttribute_list_object(button_list, 'disabled');
                 });
             })
             .catch(function(err){
                 console.log(err);
 
                 utility.stop_spinner();
+                utility.removeAttribute_list_object(button_list, 'disabled');
                 
                 switch(err) {
                     case 'NCMB_Get_Genre_Error':
@@ -1902,6 +1905,17 @@ var utility = {
     setAttribute_list_object: function(object_list, attribute_name) {
         for(var i = 0; i < object_list.length; i++) {
             object_list[i].setAttribute(attribute_name);
+        }
+    },
+
+    /**
+     * 複数のオブジェクトから同じattributeを取り除く
+     * @param  {[array]} object_list    [attributeを取り除きたいオブジェクトを格納した配列]
+     * @param  {[string]} attribute_name [取り除きたいattribute名]
+     */
+    removeAttribute_list_object: function(object_list, attribute_name) {
+        for(var i = 0; i < object_list.length; i++) {
+            object_list[i].removeAttribute(attribute_name);
         }
     },
 };
