@@ -227,10 +227,10 @@
               	<!-- ツールバー -->
                 <ons-toolbar modifier="transparent" style="background-color: black; opacity: 0.7;">
                   <div class="right">
-                    <ons-toolbar-button><ons-icon onClick="movieadd.fadeTo_detail_info()" icon="ion-ios-chatboxes" style="color: white;"></ons-icon></ons-toolbar-button>
+                    <ons-toolbar-button id="movieadd_show_info_button" onClick="movieadd.fadeTo_detail_info()"><ons-icon icon="ion-ios-chatboxes" style="color: white;"></ons-icon></ons-toolbar-button>
                   </div>
                   <div class="left">
-                    <ons-toolbar-button><ons-icon onClick="movieadd.tap_backbutton()" icon="ion-arrow-left-c" style="color: white; font-size: 28px;" fixed-width="false"></ons-icon></ons-toolbar-button>
+                    <ons-toolbar-button id="movieadd_back_button" onClick="movieadd.tap_backbutton()"><ons-icon icon="ion-arrow-left-c" style="color: white; font-size: 28px;" fixed-width="false"></ons-icon></ons-toolbar-button>
                   </div>
                 </ons-toolbar>
 
@@ -247,26 +247,26 @@
                   <ons-row class="action">
 
                     <ons-col class="action-col">
-                      <div class="action-icon"><ons-icon onClick="movieadd.add_movie()" icon="ion-plus-circled"></ons-icon></div>
+                      <div class="action-icon"><ons-button onClick="movieadd.add_movie()" id="movieadd_add_button" modifier="quiet" style="color: #1f1f21;"><ons-icon icon="ion-plus-circled"></ons-icon></ons-button></div>
                       <div class="action-label">追加</div>
                     </ons-col>
 
                     <ons-col class="action-col">
-                      <div class="action-icon"><ons-icon onClick="movieadd.pushpage_feeling()" icon="ion-edit"></ons-icon></div>
+                      <div class="action-icon"><ons-button onClick="movieadd.pushpage_feeling()" id="movieadd_pushfeeling_button" modifier="quiet" style="color: #1f1f21;"><ons-icon icon="ion-edit"></ons-icon></ons-button></div>
                       <div class="action-label">気分リスト</div>
                     </ons-col>
 
                     <span class="notification" id="list_number" style="position: fixed; margin-left: -30px; margin-top: 0px; font-size: 13px;">0件</span>
                     
                     <ons-col class="action-col">
-                      <div class="action-icon"><ons-icon onClick="movieadd.pushpage_dvd()" icon="ion-disc"></ons-icon></div>
+                      <div class="action-icon"><ons-button onClick="movieadd.pushpage_dvd()" id="movieadd_pushdvd_button" modifier="quiet" style="color: #1f1f21;"><ons-icon icon="ion-disc"></ons-icon></ons-button></div>
                       <div class="action-label">DVD</div>
                     </ons-col>
 
                     <span class="notification" id="have_dvd" style="position: fixed; margin-left: -30px; margin-top: 0px; font-size: 13px;">No</span>
 
                     <ons-col class="action-col">
-                      <div class="action-icon"><ons-icon icon="ion-share"></ons-icon></div>
+                      <div class="action-icon"><ons-button id="movieadd_share_button" modifier="quiet" style="color: #1f1f21;"><ons-icon icon="ion-share"></ons-icon></ons-button></div>
                       <div class="action-label">シェア</div>
                     </ons-col>
 

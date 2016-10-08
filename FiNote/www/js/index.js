@@ -784,6 +784,10 @@ var movieadd = {
                 message: '気分リストに気分が追加されていません',
                 buttonLabel: 'OK'});
         }else {
+            //ツールバーとユーザアクション部分のボタンを無効にする
+            var button_list = [document.getElementById('movieadd_add_button'),document.getElementById('movieadd_pushfeeling_button'),document.getElementById('movieadd_pushdvd_button'),document.getElementById('movieadd_share_button'),document.getElementById('movieadd_show_info_button'),document.getElementById('movieadd_back_button')];
+            utility.setAttribute_list_object(button_list, 'disabled');
+
             utility.show_spinner('movieadd_card');
 
             //オノマトペをuserdataから取得
@@ -1890,6 +1894,16 @@ var utility = {
         img.src = base64img;
     },
 
+    /**
+     * 複数のオブジェクトに同じattributeをセットする
+     * @param {[array]} object_list    [attributeをセットしたいオブジェクトを格納した配列]
+     * @param {[string]} attribute_name [セットしたいattribute名]
+     */
+    setAttribute_list_object: function(object_list, attribute_name) {
+        for(var i = 0; i < object_list.length; i++) {
+            object_list[i].setAttribute(attribute_name);
+        }
+    },
 };
 
 
