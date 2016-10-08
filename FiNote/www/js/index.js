@@ -25,7 +25,7 @@ var app = {
           }, function(err) {
             console.log('Open database ERROR: ' +JSON.stringify(err) +' ' + err.message);
           });
-          // db_method.delete_all_record();
+          db_method.delete_all_record();
     },
 };
 
@@ -684,7 +684,7 @@ var movieadd = {
         var title = list_data[tap_id].title;
         var overview = list_data[tap_id].overview;
         var release_date = list_data[tap_id].release_date;
-        card.innerHTML = '<div class="modal" id="movie_detail_info" style="height: 87%; opacity: 0.0;"><div class="modal__content"><p>'+ title +'</p><p>'+ overview +'</p><p>'+ release_date +'</p></div></div>';
+        card.innerHTML = '<div class="modal" id="movie_detail_info" style="z-index: 0; height: 87%; opacity: 0.0;"><div class="modal__content"><p>'+ title +'</p><p>'+ overview +'</p><p>'+ release_date +'</p></div></div>';
 
         movieadd.show_vote_average(list_data[tap_id].vote_average);
     },
