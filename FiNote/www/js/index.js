@@ -15,6 +15,9 @@ var app = {
     },
 
     onDeviceReady: function() {
+        //ステータスバーの自動調整を無効にする
+        ons.disableAutoStatusBarFill();
+
         //データベースのテーブルを構築する
         var db = utility.get_database();
 
