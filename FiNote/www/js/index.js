@@ -487,6 +487,9 @@ var movieadd_search = {
                     var movie_subtitle = '公開日：';
                     var movie_dvd = '';
                     var movie_add = '';
+                    var list_item_modifier = '';
+                    var list_item_onClick = '';
+                    var tappable = '';
                     var html_doc = '';
 
 
@@ -495,6 +498,9 @@ var movieadd_search = {
                             //ローカル同じ映画IDが存在するか、DVD情報はtrueかで表示するメッセージを変える
                             var index = local_tmdb_id.indexOf(list_data[i].id);
                             if (index != -1) {
+                                list_item_modifier = '';
+                                list_item_onClick = '';
+                                tappable ='';
                                 movie_add = '追加済み';
 
                                 if (local_dvd[index] !== 0) {
@@ -505,6 +511,9 @@ var movieadd_search = {
                             }else {
                                 movie_add = '';
                                 movie_dvd = '';
+                                list_item_modifier = 'modifier="chevron"';
+                                list_item_onClick = ' onclick="movieadd_search.tap_list(this)" ';
+                                tappable = 'tappable';
                             }
 
                             var date = list_data[i].release_date;
@@ -512,8 +521,7 @@ var movieadd_search = {
                                 list_data[i].release_date = '情報なし';
                             }
 
-                            html_doc = '<ons-list-item id="' + i + '" onclick="movieadd_search.tap_list(this)" modifier="chevron" class="list-item-container"><ons-row><ons-col width="95px"><img style="background:url(img/loading.gif) no-repeat center" class="movie-poster" src="' + list_data_poster[i] +'"></ons-col><ons-col><div class="movie-title">' + list_data[i].title +'</div><div class="release-date">' +movie_subtitle+list_data[i].release_date +'</div><div class="dvd-movieadd">' +movie_add +'</div><div class="dvd-movieadd">'+movie_dvd +'</div></ons-col></ons-row></ons-list-item>';
-
+                            html_doc = '<ons-list-item ' + tappable + ' id="' + i + '"' + list_item_onClick + list_item_modifier+ ' class="list-item-container"><ons-row><ons-col width="95px"><img style="background:url(img/loading.gif) no-repeat center" class="movie-poster" src="' + list_data_poster[i] +'"></ons-col><ons-col><div class="movie-title">' + list_data[i].title +'</div><div class="release-date">' +movie_subtitle+list_data[i].release_date +'</div><div class="dvd-movieadd">' +movie_add +'</div><div class="dvd-movieadd">'+movie_dvd +'</div></ons-col></ons-row></ons-list-item>';
 
                             return ons._util.createElement(html_doc);
                         },
