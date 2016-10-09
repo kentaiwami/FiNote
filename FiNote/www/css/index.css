@@ -213,24 +213,36 @@ input[type=password] {
   padding: 15px 0px 15px 15px;
 }
 
-.thumbnail {
-  width: 80px;
-  height: 80px;
+.movie-poster {
+  width: 120px;
+  height: 150px;
   border-radius: 4px;
   -webkit-border-radius: 4px;
 }
 
-.name {
+.movie-title {
   font-weight: 500;
   line-height: 16px;
-  font-size: 15px;
+  font-size: 18px;
   margin-bottom: 6px;
+  margin-left: 40px;
 }
 
-.desc {
+.release-date {
   line-height: 1.2;
-  font-size: 13px;
+  font-size: 17px;
+  margin-left: 40px;
+  margin-bottom: 12px;
 }
+
+.dvd-movieadd {
+  line-height: 1.2;
+  font-size: 15px;
+  margin-left: 40px;
+  margin-bottom: 6px;
+  color: #FF0000;
+}
+
 /*movieadd_search.htmlのリスト*/
 
 

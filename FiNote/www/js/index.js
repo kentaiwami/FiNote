@@ -450,13 +450,23 @@ var movieadd_search = {
             resetbutton.innerHTML = '<ons-button id="movieadd_reset_button" onclick="movieadd_search.tap_reset()" style="margin: 0px 0px 0px -100px;" modifier="quiet"><ons-icon icon="ion-close-circled"></ons-icon></ons-button>';
             utility.show_spinner('movieadd_no_match_message');
 
-            //日本語と英語のリクエストを行う
-            var promises = [movieadd_search.create_request_movie_search(text,'ja'),movieadd_search.create_request_movie_search(text,'en')];
+            //日本語と英語のリクエスト、ローカルDBから記録した映画リストの取得を行う
+            var query = 'SELECT tmdb_id, dvd FROM movie';
+            var promises = [movieadd_search.create_request_movie_search(text,'ja'),movieadd_search.create_request_movie_search(text,'en'), db_method.single_statement_execute(query,[])];
 
             Promise.all(promises).then(function(results) {
+                //idだけの配列を作成
+                var local_tmdb_id = [];
+                var local_dvd = [];
+                for(var i = 0; i < results[2].rows.length; i++) {
+                    local_tmdb_id.push(results[2].rows.item(i).tmdb_id);
+                    local_dvd.push(results[2].rows.item(i).dvd);
+                }
+
                 utility.stop_spinner();
+
                 //検索結果として表示するデータを生成する
-                var list_data = movieadd_search.create_list_data(results);
+                var list_data = movieadd_search.create_list_data(results[0],results[1]);
                 movieadd_search.show_list_data = list_data;
 
                 //データによって表示するコンテンツを動的に変える
@@ -475,19 +485,37 @@ var movieadd_search = {
                     //サムネイル取得後にリストを表示する
                     var infiniteList = document.getElementById('movieadd_search_list');
                     var movie_subtitle = '公開日：';
-                            
+                    var movie_dvd = '';
+                    var movie_add = '';
+                    var html_doc = '';
+
+
                     infiniteList.delegate = {
                         createItemContent: function(i) {
+                            //ローカル同じ映画IDが存在するか、DVD情報はtrueかで表示するメッセージを変える
+                            var index = local_tmdb_id.indexOf(list_data[i].id);
+                            if (index != -1) {
+                                movie_add = '追加済み';
+
+                                if (local_dvd[index] !== 0) {
+                                    movie_dvd = 'DVD所持';
+                                }else {
+                                    movie_dvd = '';
+                                }
+                            }else {
+                                movie_add = '';
+                                movie_dvd = '';
+                            }
 
                             var date = list_data[i].release_date;
                             if (date.length === 0) {
                                 list_data[i].release_date = '情報なし';
                             }
 
+                            html_doc = '<ons-list-item id="' + i + '" onclick="movieadd_search.tap_list(this)" modifier="chevron" class="list-item-container"><ons-row><ons-col width="95px"><img style="background:url(img/loading.gif) no-repeat center" class="movie-poster" src="' + list_data_poster[i] +'"></ons-col><ons-col><div class="movie-title">' + list_data[i].title +'</div><div class="release-date">' +movie_subtitle+list_data[i].release_date +'</div><div class="dvd-movieadd">' +movie_add +'</div><div class="dvd-movieadd">'+movie_dvd +'</div></ons-col></ons-row></ons-list-item>';
 
-                            return ons._util.createElement(
-                                '<ons-list-item id="' + i + '" onclick="movieadd_search.tap_list(this)" modifier="chevron" class="list-item-container"><ons-row><ons-col width="95px"><img style="background:url(img/loading.gif) no-repeat center" class="thumbnail" src="' + list_data_poster[i] +'"></ons-col><ons-col><div class="name">' + list_data[i].title +'</div><div class="desc">' +movie_subtitle+list_data[i].release_date +'</div></ons-col><ons-col width="40px"></ons-col></ons-row></ons-list-item>'
-                            );
+
+                            return ons._util.createElement(html_doc);
                         },
                                             
                         countItems: function() {
@@ -495,9 +523,10 @@ var movieadd_search = {
                         },
 
                         calculateItemHeight: function() {
-                            return ons.platform.isAndroid() ? 48 : 100;
+                            return 200;
                         }
                     };
+                    
                     
                 }
 
@@ -542,18 +571,19 @@ var movieadd_search = {
 
     /**
      * jaとenの検索結果を1つの配列にまとめる
-     * @param  {[array]} array [[0]にjaリクエストの配列、[1]にenリクエストの配列]
+     * @param  {[array]} ja_results_json [jaリクエストの配列
+     * @param  {[array]} en_results_json [enリクエストの配列]
      * @return {[array]}       [jaとen検索結果をまとめた配列]
      */
-    create_list_data: function(array){
-        if (array.length === 0) {
+    create_list_data: function(ja_results_json,en_results_json){
+        if (ja_results_json.length === 0 && en_results_json.length === 0) {
             return [];
         }else{
             var list_data = [];                     //overviewが空文字でないオブジェクトを格納する
             var overview_nodata = [];               //overviewが空文字のオブジェクトのidプロパティを格納する
 
-            var ja_results = array[0].results;
-            var en_results = array[1].results;
+            var ja_results = ja_results_json.results;
+            var en_results = en_results_json.results;
 
             /*ja_resutlsの中でoverviewが空文字でないオブジェクトをlist_dataに格納する
             overviewが空文字のオブジェクトidをoverview_nodataに格納する*/
