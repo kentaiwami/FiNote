@@ -1881,13 +1881,17 @@ var utility = {
           opacity: 0.25, //透明度
           fps: 40 //fps
         };
-        //描画先の親要素
-        var spin_target = document.getElementById(parent);
-        //スピナーオブジェクト
-        var spinner = new Spinner(opts);
-        utility.spinner = spinner;
-        //スピナー描画
-        spinner.spin(spin_target);
+
+        //重複表示を避けるため既にオブジェクトに格納されていない時のみ処理を行う
+        if (Object.keys(utility.spinner).length === 0) {
+            //描画先の親要素
+            var spin_target = document.getElementById(parent);
+            //スピナーオブジェクト
+            var spinner = new Spinner(opts);
+            utility.spinner = spinner;
+            //スピナー描画
+            spinner.spin(spin_target);
+        }
     },
 
     /**
@@ -1895,6 +1899,7 @@ var utility = {
      */
     stop_spinner: function(){
         utility.spinner.spin();
+        utility.spinner = {};
     },
 
     /**
