@@ -728,6 +728,34 @@ var movieadd = {
         card.innerHTML = '<div class="modal" id="movie_detail_info" style="z-index: 0; height: 87%; opacity: 0.0;"><div class="modal__content"><p>'+ title +'</p><p>'+ overview +'</p><p>'+ release_date +'</p></div></div>';
 
         movieadd.show_vote_average(list_data[tap_id].vote_average);
+
+        //overviewが長すぎて範囲内に収まらない場合に文字列をカットする処理を開始
+        var flag = false;
+        var copy_overview = overview;
+        var info = document.getElementById('movie_detail_info');
+        var info_clone = info.cloneNode(true);
+        info_clone.innerHTML = '<div class="modal__content"><p>'+ title +'</p><p>'+ copy_overview +'</p><p>'+ release_date +'</p></div></div>';
+        card.appendChild(info_clone);
+
+        var rating = document.getElementById('movieadd_rating');
+        var toolbar = document.getElementById('movieadd_toolbar');
+
+        //高さがポスター表示領域の高さ付近になるまで文字列をカットする
+        while((copy_overview.length > 0) && (info_clone.clientHeight > card.clientHeight)) {
+            flag = true;
+
+            copy_overview = copy_overview.substr(0, copy_overview.length-80);
+
+            info_clone.innerHTML = '<div class="modal__content"><p>'+ title +'</p><p>'+ copy_overview +'</p><p>'+ release_date +'</p></div></div>';
+        }
+
+        //文字列カットの処理を実行していたら3点リーダを追加
+        if (flag) {
+            copy_overview = copy_overview + '...';
+        }
+
+        //カット後の文字列でhtmlを上書きする
+        card.innerHTML = '<div class="modal" id="movie_detail_info" style="position: fixed; z-index: 0; height: 87%; opacity: 0.0;"><div class="modal__content"><p>'+ title +'</p><p>'+ copy_overview +'</p><p>'+ release_date +'</p></div></div>';
     },
 
     /**
