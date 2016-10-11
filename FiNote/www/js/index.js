@@ -1571,6 +1571,9 @@ var movieadd = {
      */
     success_movieadd_alert_hide: function() {
         document.getElementById('success_movieadd_alert').hide().then(function(){
+            //追加した結果を反映させるために検索を行う
+            movieadd_search.get_search_movie_title_val();
+            
             utility.popPage();
         });
 
