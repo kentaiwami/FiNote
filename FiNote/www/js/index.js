@@ -1616,8 +1616,8 @@ var movieadd_feeling = {
      */
     feeling_input_name_addEvent: function(){
         document.addEventListener('postshow', function(event) {
-            document.getElementById('feeling_add_button').setAttribute('disabled');
             if (event.target.id == 'feeling_add_dialog') {
+                document.getElementById('feeling_add_button').setAttribute('disabled');
                 document.getElementById('feeling_input_name').focus();
             }
         });
