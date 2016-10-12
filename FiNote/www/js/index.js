@@ -1584,10 +1584,10 @@ var movieadd = {
      */
     sns_share: function() {
         var options = {
-            message: 'share this', // not supported on some apps (Facebook, Instagram)
-            subject: 'the subject', // fi. for email
+            message: 'Share ' + movieadd.current_movie.title + ' #FiNote', // not supported on some apps (Facebook, Instagram)
+            subject: '', // fi. for email
             files: ['', ''], // an array of filenames either locally or remotely
-            url: 'https://www.website.com/foo/#bar?a=b',
+            url: 'https://www.themoviedb.org/movie/' + movieadd.current_movie.id,
             chooserTitle: 'Pick an app' // Android only, you can override the default share sheet title
         };
 
