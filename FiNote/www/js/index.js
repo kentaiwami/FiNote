@@ -1592,6 +1592,16 @@ var movieadd = {
         };
 
         var onSuccess = function(result) {
+            if (result.app === 'com.apple.UIKit.activity.PostToTwitter' || result.app === 'jp.naver.line.Share') {
+
+                document.getElementById('success_sns_alert').show();
+
+                //映画追加画面のボタンオブジェクト
+                var button_list = [document.getElementById('movieadd_add_button'),document.getElementById('movieadd_pushfeeling_button'),document.getElementById('movieadd_pushdvd_button'),document.getElementById('movieadd_share_button'),document.getElementById('movieadd_show_info_button'),document.getElementById('movieadd_back_button')];
+
+                utility.setAttribute_list_object(button_list, 'disabled');
+            }
+
             console.log("Share completed? " + result.completed); // On Android apps mostly return false even while it's true
             console.log("Shared to app: " + result.app); // On Android result.app is currently empty. On iOS it's empty when sharing is cancelled (result.completed=false)
         };
@@ -1601,6 +1611,17 @@ var movieadd = {
         };
 
         window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
+    },
+
+    /**
+     * SNSの投稿が完了した後に表示されるアラートを閉じるボタンが押された時に動作する
+     */
+    success_sns_alert_hide: function() {
+        //映画追加画面のボタンオブジェクト
+        var button_list = [document.getElementById('movieadd_add_button'),document.getElementById('movieadd_pushfeeling_button'),document.getElementById('movieadd_pushdvd_button'),document.getElementById('movieadd_share_button'),document.getElementById('movieadd_show_info_button'),document.getElementById('movieadd_back_button')];
+
+        document.getElementById('success_sns_alert').hide();
+        utility.removeAttribute_list_object(button_list, 'disabled');
     },
 };
 

@@ -274,10 +274,19 @@
                   </ons-row>
                 </ons-list-item></ons-list>
 
+                <!-- 映画追加完了のアラート -->
                 <ons-dialog id="success_movieadd_alert" style="z-index: 1;">
                     <div style="text-align: center; padding: 10px;">
                         <p>映画の追加が完了しました</p>
                         <p><ons-button onclick="movieadd.success_movieadd_alert_hide()">OK</ons-button></p>
+                    </div>
+                </ons-dialog>
+
+                <!-- SNS投稿完了のアラート -->
+                <ons-dialog id="success_sns_alert" style="z-index: 1;">
+                    <div style="text-align: center; padding: 10px;">
+                        <p>投稿が完了しました</p>
+                        <p><ons-button onclick="movieadd.success_sns_alert_hide()">OK</ons-button></p>
                     </div>
                 </ons-dialog>
                 
