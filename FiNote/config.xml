@@ -7,6 +7,14 @@
     <feature name="StatusBar">
         <param name="ios-package" value="CDVStatusBar" onload="true" />
     </feature>
+
+    <feature name="SocialSharing">
+      <param name="ios-package" value="SocialSharing" />
+    </feature>
+
+    <feature name="SocialSharing">
+      <param name="android-package" value="nl.xservices.plugins.SocialSharing" />
+    </feature>
    
     <preference name="StatusBarOverlaysWebView" value="false" />
     <preference name="StatusBarBackgroundColor" value="#48301d" />

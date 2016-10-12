@@ -16,6 +16,7 @@
             <script src="cordova.js"></script>
             <script src="js/ncmb.min.js" charset="utf-8"></script>
             <script src="js/spin.min.js"></script>
+            <script type="text/javascript" src="js/SocialSharing.js"></script>
         </head>
 
         <body>
@@ -266,7 +267,7 @@
                     <span class="notification" id="have_dvd" style="position: fixed; margin-left: -30px; margin-top: 0px; font-size: 13px;">No</span>
 
                     <ons-col class="action-col">
-                      <div class="action-icon"><ons-button id="movieadd_share_button" modifier="quiet" style="color: #1f1f21;"><ons-icon icon="ion-share"></ons-icon></ons-button></div>
+                      <div class="action-icon"><ons-button onClick="movieadd.sns_share()" id="movieadd_share_button" modifier="quiet" style="color: #1f1f21;"><ons-icon icon="ion-share"></ons-icon></ons-button></div>
                       <div class="action-label">シェア</div>
                     </ons-col>
 
