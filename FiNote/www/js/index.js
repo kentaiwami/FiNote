@@ -1584,7 +1584,7 @@ var movieadd = {
      */
     sns_share: function() {
         var options = {
-            message: 'Share ' + movieadd.current_movie.title + ' #FiNote', // not supported on some apps (Facebook, Instagram)
+            message: movieadd.current_movie.title + ' #FiNote', // not supported on some apps (Facebook, Instagram)
             subject: '', // fi. for email
             files: ['', ''], // an array of filenames either locally or remotely
             url: 'https://www.themoviedb.org/movie/' + movieadd.current_movie.id,
