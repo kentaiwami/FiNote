@@ -249,63 +249,67 @@ var movie = {
         var password = storage.getItem('password');
 
         ncmb.User.login(username, password).then(function(data){
+            //
+            var signup_flag = storage.getItem('signup_flag');
+            if (signup_flag == 'true') {
+                document.getElementById('index').innerHTML = '<img  src="img/splash.gif" alt="" / width="100%" height="100%">';
+            }
 
             // ログイン後に映画情報をデータベースから取得
             var db = utility.get_database();
-            db.transaction(function(tx) {
-                db.executeSql('SELECT COUNT(*) AS movie_count FROM movie', [], function(res) {
-                    utility.pushpage('tab.html','fade',0);
+            var query = 'SELECT COUNT(*) AS movie_count FROM movie';
 
-                    var movie_count = res.rows.item(0).movie_count;
-                    var draw_content = function(){};
+            return db_method.single_statement_execute(query,[]);
+        })
+        .then(function(result) {
+            var movie_count = result.rows.item(0).movie_count;
+            var draw_content = function(){};
 
+            //ローカルに保存されている映画情報の件数で表示内容を変える
+            if (movie_count === 0) {
+                draw_content = function(){
+                    document.getElementById('nodata_message').innerHTML = '登録された映画はありません';
+                    movie.pullhook_setting();
+                };
+            }else {
+                draw_content = function(){
+                    var infiniteList = document.getElementById('infinite-list');
 
-                    //ローカルに保存されている映画情報の件数で表示内容を変える
-                    if (movie_count === 0) {
-                        draw_content = function(){
-                            document.getElementById('nodata_message').innerHTML = '登録された映画はありません';
-                            movie.pullhook_setting();
-                        };
-                    }else {
-                        draw_content = function(){
-                            var infiniteList = document.getElementById('infinite-list');
-
-                            var movie_title = 'タイトルがここに入るタイトルがここに入る';
-                            var movie_thumbnail_path = 'http://placekitten.com/g/40/40';
-                            var movie_subtitle = '追加日：yyyy/mm/dd';
+                    var movie_title = 'タイトルがここに入るタイトルがここに入る';
+                    var movie_thumbnail_path = 'http://placekitten.com/g/40/40';
+                    var movie_subtitle = '追加日：yyyy/mm/dd';
                             
-                            infiniteList.delegate = {
-                                createItemContent: function(i) {
-                                    return ons._util.createElement(
-                                        '<ons-list-item><div class="left"><img class="list__item__thumbnail_movie" src="' + movie_thumbnail_path +'"></div><div class="center"><span class="list__item__title">' + movie_title +'</span><span class="list__item__subtitle">' +movie_subtitle +'</span></div></ons-list-item>'
-                                    );
-                                },
+                    infiniteList.delegate = {
+                        createItemContent: function(i) {
+                            return ons._util.createElement(
+                                '<ons-list-item><div class="left"><img class="list__item__thumbnail_movie" src="' + movie_thumbnail_path +'"></div><div class="center"><span class="list__item__title">' + movie_title +'</span><span class="list__item__subtitle">' +movie_subtitle +'</span></div></ons-list-item>'
+                            );
+                        },
                                             
-                                countItems: function() {
-                                    return movie_count;
-                                },
+                        countItems: function() {
+                            return movie_count;
+                        },
 
-                                calculateItemHeight: function() {
-                                    return ons.platform.isAndroid() ? 48 : 100;
-                                }
-                            };
+                        calculateItemHeight: function() {
+                            return ons.platform.isAndroid() ? 48 : 100;
+                        }
+                };
 
-                            infiniteList.refresh();
+                    infiniteList.refresh();
 
-                            movie.pullhook_setting();
-                        };
-                    }
+                    movie.pullhook_setting();
+                };
+            }
 
-                    utility.check_page_init('movies',draw_content);
-                });
-            }, function(err) {
-                    //SELECT文のエラー処理
-                    console.log('SELECT movie ERROR: ' +JSON.stringify(err) +' ' + err.message);
-                });
-        }).catch(function(err){
-                // ログインエラー処理
-                console.log(err);
-            });
+            utility.check_page_init('movies',draw_content);
+        })
+        .then(function() {
+            utility.pushpage('tab.html','fade',0);
+        })
+        .catch(function(err) {
+            //ログインエラー or レコード件数取得エラー
+            console.log(err);
+        });
     },
 
 
