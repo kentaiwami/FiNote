@@ -274,7 +274,7 @@ var movie = {
             }else {
                 draw_content = function(){
 
-                    var movies_area = document.getElementById('hoge');
+                    var movies_area = document.getElementById('movie_collection');
 
                     for(var i = 0; i < 1; i++) {
                         movies_area.innerHTML += '<div id="' +i +'" class="movies_picture_frame"></div>';
