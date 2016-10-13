@@ -289,3 +289,11 @@ input[type=password] {
   display: inline-block;
 }
 /*気分リストをフィルム風にする*/
+
+.movies_picture_frame {
+  margin: 10px;
+  width: 45%;
+  height: 250px;
+  background: url('../img/fr01.png');
+  background-size: cover;
+}

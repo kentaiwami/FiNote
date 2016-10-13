@@ -249,7 +249,7 @@ var movie = {
         var password = storage.getItem('password');
 
         ncmb.User.login(username, password).then(function(data){
-            //
+            //ユーザ情報が存在する場合はローディング画面を表示する
             var signup_flag = storage.getItem('signup_flag');
             if (signup_flag == 'true') {
                 document.getElementById('index').innerHTML = '<img  src="img/splash.gif" alt="" / width="100%" height="100%">';
@@ -257,47 +257,28 @@ var movie = {
 
             // ログイン後に映画情報をデータベースから取得
             var db = utility.get_database();
-            var query = 'SELECT COUNT(*) AS movie_count FROM movie';
+            var query = 'SELECT title,genre_id,onomatopoeia_id,poster,dvd FROM movie';
 
             return db_method.single_statement_execute(query,[]);
         })
         .then(function(result) {
-            var movie_count = result.rows.item(0).movie_count;
+
+            var movie_count = result.rows.length;
             var draw_content = function(){};
 
             //ローカルに保存されている映画情報の件数で表示内容を変える
             if (movie_count === 0) {
                 draw_content = function(){
                     document.getElementById('nodata_message').innerHTML = '登録された映画はありません';
-                    movie.pullhook_setting();
                 };
             }else {
                 draw_content = function(){
-                    var infiniteList = document.getElementById('infinite-list');
 
-                    var movie_title = 'タイトルがここに入るタイトルがここに入る';
-                    var movie_thumbnail_path = 'http://placekitten.com/g/40/40';
-                    var movie_subtitle = '追加日：yyyy/mm/dd';
-                            
-                    infiniteList.delegate = {
-                        createItemContent: function(i) {
-                            return ons._util.createElement(
-                                '<ons-list-item><div class="left"><img class="list__item__thumbnail_movie" src="' + movie_thumbnail_path +'"></div><div class="center"><span class="list__item__title">' + movie_title +'</span><span class="list__item__subtitle">' +movie_subtitle +'</span></div></ons-list-item>'
-                            );
-                        },
-                                            
-                        countItems: function() {
-                            return movie_count;
-                        },
+                    var movies_area = document.getElementById('hoge');
 
-                        calculateItemHeight: function() {
-                            return ons.platform.isAndroid() ? 48 : 100;
-                        }
-                };
-
-                    infiniteList.refresh();
-
-                    movie.pullhook_setting();
+                    for(var i = 0; i < 1; i++) {
+                        movies_area.innerHTML += '<div id="' +i +'" class="movies_picture_frame"></div>';
+                    }
                 };
             }
 
@@ -310,40 +291,6 @@ var movie = {
             //ログインエラー or レコード件数取得エラー
             console.log(err);
         });
-    },
-
-
-    /**
-     * 映画一覧画面のpullhookにイベントを登録する
-     */
-    pullhook_setting: function() {
-        var pullHook = document.getElementById('pull-hook');
-
-        pullHook.thresholdHeight = 150;
-
-        pullHook.addEventListener('changestate', function(event) {
-            var pullhook_message = '';
-
-            switch (event.state){
-                case 'initial':
-                    pullhook_message = 'Pull to refresh';
-                    break;
-                                
-                case 'preaction':
-                    pullhook_message = 'Release';
-                    break;
-                                
-                case 'action':
-                    pullhook_message = 'Loading...';
-                    break;
-            }
-
-            pullHook.innerHTML = pullhook_message;
-        });
-
-        pullHook.onAction = function(done) {
-            setTimeout(done, 1000);
-        };
     },
 };
 
