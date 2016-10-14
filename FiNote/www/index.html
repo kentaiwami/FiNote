@@ -142,27 +142,12 @@
             <!-- ●ここからmovies.html -->
             <ons-template id="movies.html">
               <ons-page id="movies">
-                    <!-- ポップオーバーの設定 -->
-                    <ons-popover direction="down" id="popover">
-                        <div style="padding: 10px; text-align: center;">
-                            <p><ons-button modifier="large"><i class="zmdi zmdi-view-list-alt"></i>　　リスト形式で表示</ons-button></p>
-                            <p><ons-button modifier="large"><i class="zmdi zmdi-grid"></i>　グリッド形式で表示</ons-button></p>
-                            <p><ons-button onclick="document.getElementById('popover').hide()">閉じる</ons-button></p>
-                        </div>
-                    </ons-popover>
-
                     <!-- ツールバー -->
                     <ons-toolbar>
                         <div class="center">映画の一覧</div>
                         <div class="right">
                             <ons-toolbar-button onClick="document.getElementById('myNavigator').pushPage('movieadd_search.html')">
                                 <ons-icon icon="ion-plus-round"></ons-icon>
-                            </ons-toolbar-button>
-                        </div>
-
-                        <div class="left">
-                            <ons-toolbar-button onclick="document.getElementById('popover').show(this)">
-                                <ons-icon icon="ion-ios-settings"></ons-icon>
                             </ons-toolbar-button>
                         </div>
                     </ons-toolbar>
