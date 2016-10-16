@@ -333,6 +333,7 @@ input[type=password] {
 }
 
 .movies_title {
+  text-align: center;
   background-color: #FFF;
   border-bottom: solid 1px #A9A9A9;
 }
