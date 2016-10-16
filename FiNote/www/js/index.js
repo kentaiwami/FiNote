@@ -276,8 +276,8 @@ var movie = {
 
                     var movies_area = document.getElementById('movie_collection');
 
-                    for(var i = 0; i < movie_count; i++) {
-                        movies_area.innerHTML += '<div id="' +i +'" class="movies_picture_frame"><img src="img/sample.jpg" style="width: 100%; height: 100%;"></div>';
+                    for(var i = 0; i < 1; i++) {
+                        movies_area.innerHTML += '<ons-row><ons-col class="movies_col"><img class="movies_image" src="img/sample.jpg"></ons-col><ons-col class="movies_col"><img class="movies_image" src="img/sample.jpg"></ons-col></ons-row>';
                     }
                 };
             }
