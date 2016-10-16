@@ -319,15 +319,20 @@ input[type=password] {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }*/
 
-.movies-col {
-  /*background: #F00;*/
+.movies_col {
   overflow: hidden;
   padding: 4px;
 }
 
-.image {
+.movies_image {
+  display: block;
   width: 100%;
   height: 100%;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
+}
+
+.movies_title {
+  background-color: #FFF;
+  border-bottom: solid 1px #A9A9A9;
 }

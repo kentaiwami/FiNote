@@ -277,7 +277,7 @@ var movie = {
                     var movies_area = document.getElementById('movie_collection');
 
                     for(var i = 0; i < 1; i++) {
-                        movies_area.innerHTML += '<ons-row><ons-col class="movies_col"><img class="movies_image" src="img/sample.jpg"></ons-col><ons-col class="movies_col"><img class="movies_image" src="img/sample.jpg"></ons-col></ons-row>';
+                        movies_area.innerHTML += '<ons-row><ons-col class="movies_col"><img class="movies_image" src="img/sample.jpg"><div class="movies_title">タイトルほげほげ</div></ons-col><ons-col class="movies_col"><img class="movies_image" src="img/sample.jpg"><div class="movies_title">タイトルほげほげ</div></ons-col></ons-row>';
                     }
                 };
             }
