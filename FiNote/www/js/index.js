@@ -247,14 +247,18 @@ var movie = {
         var storage = window.localStorage;
         var username = storage.getItem('username');
         var password = storage.getItem('password');
+        var signup_flag = storage.getItem('signup_flag');
 
-        ncmb.User.login(username, password).then(function(data){
-            //ユーザ情報が存在する場合はローディング画面を表示する
-            var signup_flag = storage.getItem('signup_flag');
+        //ユーザ情報が存在する場合はローディング画面を表示する
+        var callback = function(){
             if (signup_flag == 'true') {
                 document.getElementById('index').innerHTML = '<img  src="img/splash.gif" alt="" / width="100%" height="100%">';
             }
+        };
+        utility.check_page_init('index',callback);
+        
 
+        ncmb.User.login(username, password).then(function(data){
             // ログイン後に映画情報をデータベースから取得
             var db = utility.get_database();
             var query = 'SELECT title,genre_id,onomatopoeia_id,poster,dvd FROM movie';
