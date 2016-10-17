@@ -260,14 +260,37 @@ var movie = {
 
         ncmb.User.login(username, password).then(function(data){
             // ログイン後に映画情報をデータベースから取得
-            var db = utility.get_database();
-            var query = 'SELECT title,genre_id,onomatopoeia_id,poster,dvd FROM movie';
+            return new Promise(function(resolve,reject) {
+                var result = [];
+                var db = utility.get_database();
+                db.readTransaction(function(tx) {
+                    tx.executeSql('SELECT title,genre_id,onomatopoeia_id,poster,dvd FROM movie', [], function(tx, resultSet) {
+                        result.push(resultSet);
 
-            return db_method.single_statement_execute(query,[]);
+                        tx.executeSql('SELECT id,name FROM genre', [], function(tx, resultSet) {
+                            result.push(resultSet);
+
+                            tx.executeSql('SELECT id,name FROM onomatopoeia', [], function(tx, resultSet) {
+                                result.push(resultSet);
+                            }, function(tx, error) {
+                                console.log('SELECT error: ' + error.message);
+                                reject(error.message);
+                            });
+                        });
+                    });
+                }, function(error) {
+                    console.log('transaction error: ' + error.message);
+                    reject(error.message);
+                }, function() {
+                    resolve(result);
+                });
+            });
         })
         .then(function(result) {
-
-            var movie_count = result.rows.length;
+            //result[0]：movie
+            //result[1]：genre
+            //result[2]：onomatopoeia
+            var movie_count = result[0].rows.length;
             var draw_content = function(){};
 
             //ローカルに保存されている映画情報の件数で表示内容を変える
