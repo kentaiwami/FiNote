@@ -277,7 +277,7 @@ var movie = {
                     var movies_area = document.getElementById('movie_collection');
 
                     for(var i = 0; i < 2; i++) {
-                        movies_area.innerHTML += '<ons-row><ons-col class="movies_col"><img class="movies_image" src="img/sample.jpg"><div class="movies_title">タイトルほげほげ</div><div class="movies_onomatopoeia">hoge</div></ons-col><ons-col class="movies_col"><img class="movies_image" src="img/sample.jpg"><div class="movies_title">タイトルほげほげ</div><div class="movies_onomatopoeia">hoge</div></ons-col></ons-row>';
+                        movies_area.innerHTML += '<ons-row><ons-col class="movies_col"><img class="movies_image" src="img/sample.jpg"><div class="movies_title">タイトルほげほげほげほげほげほげほげほげ</div><div class="movies_onomatopoeia"><ons-row><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col></ons-row></div></ons-col><ons-col class="movies_col"><img class="movies_image" src="img/sample.jpg"><div class="movies_title">タイトルほげほげ</div><div class="movies_onomatopoeia">hoge</div></ons-col></ons-row>';
                     }
                 };
             }

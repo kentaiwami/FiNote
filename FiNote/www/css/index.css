@@ -290,24 +290,21 @@ input[type=password] {
 }
 /*気分リストをフィルム風にする*/
 
-/*.movies_picture_frame {
-  width: 35%;
-  height: auto;
-  margin: 20px;
-  position: relative;
-  display: inline-block;
-  overflow: hidden;
-  padding: 1px;
-}*/
 
-/*.movies_picture_frame {
+/*追加した映画一覧画面*/
+.movies_col {
+  overflow: hidden;
+  padding: 4px;
+}
+
+.movies_col:after {
   content: "";
   position: absolute;
   z-index: 1;
   width: 100px;
   height: auto;
   background: red;
-  content: "DVD";
+  content: 'DVD';
   text-align: center;
   color: #fff;
   font-family: 'Arial';
@@ -317,11 +314,6 @@ input[type=password] {
   top: 3px;
   transform: rotate(-30deg);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-}*/
-
-.movies_col {
-  overflow: hidden;
-  padding: 4px;
 }
 
 .movies_image {
@@ -339,8 +331,18 @@ input[type=password] {
 }
 
 .movies_onomatopoeia {
-  text-align: center;
   background-color: rgba(255,255,255,0.5);
   border-bottom-right-radius: 15px;
   border-bottom-left-radius: 15px;
 }
+
+.movies_onomatopoeia_name {
+  text-align: center;
+  margin: 10px;
+  color: #FFF;
+  font-size: small;
+  padding: 2px;
+  background-color: #95765b;
+  border-radius: 5px;
+}
+/*追加した映画一覧画面*/
