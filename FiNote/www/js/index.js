@@ -302,9 +302,27 @@ var movie = {
                 draw_content = function(){
 
                     var movies_area = document.getElementById('movie_collection');
+                    
+                    //movieレコードの件数が偶数か奇数かを判別
+                    var even_odd_flag = 0;
+                    if (movie_count % 2 === 0) {
+                        even_odd_flag = 0;
+                    }else {
+                        even_odd_flag = 1;
+                    }
 
-                    for(var i = 0; i < 2; i++) {
-                        movies_area.innerHTML += '<ons-row><ons-col class="movies_col"><img class="movies_image" src="img/sample.jpg"><div class="movies_title">タイトルほげほげほげほげほげほげほげほげ</div><div class="movies_onomatopoeia"><ons-row><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col></ons-row></div></ons-col><ons-col class="movies_col"><img class="movies_image" src="img/sample.jpg"><div class="movies_title">タイトルほげほげ</div><div class="movies_onomatopoeia">hoge</div></ons-col></ons-row>';
+                    //1行ずつ書き込み
+                    var left_index = movie_count - 1;
+                    var right_index = movie_count - 2;
+                    for(var i = 0; i < Math.floor(movie_count/2); i++) {
+                        movies_area.innerHTML += '<ons-row><ons-col class="movies_col"><img class="movies_image" src="img/sample.jpg"><div class="movies_title">' + result[0].rows.item(left_index).title + '</div><div class="movies_onomatopoeia"><ons-row><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col></ons-row></div></ons-col><ons-col class="movies_col"><img class="movies_image" src="img/sample.jpg"><div class="movies_title">' + result[0].rows.item(right_index).title + '</div><div class="movies_onomatopoeia">hoge</div></ons-col></ons-row>';
+                        left_index -= 2;
+                        right_index -= 2;
+                    }
+
+                    //movieレコードの件数が奇数個の場合のみ最後に余った1つを書き込む
+                    if (even_odd_flag === 1) {
+                        movies_area.innerHTML += '<ons-row><ons-col width="50%" class="movies_col"><img class="movies_image" src="img/sample.jpg"><div class="movies_title">' + result[0].rows.item(left_index).title + '</div><div class="movies_onomatopoeia"><ons-row><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col></ons-row></div></ons-col></ons-row>';
                     }
                 };
             }
