@@ -314,15 +314,52 @@ var movie = {
                     //1行ずつ書き込み
                     var left_index = movie_count - 1;
                     var right_index = movie_count - 2;
+
+                    var hogehoge = function() {
+                        return 'movies_col';
+                    };
+
                     for(var i = 0; i < Math.floor(movie_count/2); i++) {
-                        movies_area.innerHTML += '<ons-row><ons-col class="movies_col"><img class="movies_image" src="img/sample.jpg"><div class="movies_title">' + result[0].rows.item(left_index).title + '</div><div class="movies_onomatopoeia"><ons-row><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col></ons-row></div></ons-col><ons-col class="movies_col"><img class="movies_image" src="img/sample.jpg"><div class="movies_title">' + result[0].rows.item(right_index).title + '</div><div class="movies_onomatopoeia">hoge</div></ons-col></ons-row>';
+                        var movie_record_left = result[0].rows.item(left_index);
+                        var movie_record_right = result[0].rows.item(right_index);
+
+                        //dvdを所持しているかで使用するクラスを分ける
+                        var dvd_left = '';
+                        var dvd_right = '';
+                        var dvd_button_html = '<ons-button><ons-icon icon="ion-disc" style="padding: 0px 3px;"></ons-button>';
+                        if (movie_record_left.dvd == 1) {
+                            dvd_left = dvd_button_html;
+                        }else {
+                            dvd_left = '';
+                        }
+
+                        if (movie_record_right.dvd == 1) {
+                            dvd_right = dvd_button_html;
+                        }else {
+                            dvd_right = '';
+                        }
+
+                        var left_cell = '<ons-col class="movies_col"><img class="movies_image" src="img/sample.jpg"><div class="movies_title">' + movie_record_left.title + '</div><div class="movies_onomatopoeia"><ons-row><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col></ons-row></div><div class="movies_dvd_fab"><ons-row><ons-col><ons-icon size="32px, material:24px" icon="ion-disc" style="padding: 0px 3px;"></ons-col><ons-col><ons-icon size="32px, material:24px" icon="ion-android-favorite" style="padding: 0px 3px;"></ons-col></ons-row></div></ons-col>';
+                        var right_cell = '<ons-col class="movies_col"><img class="movies_image" src="img/sample.jpg"><div class="movies_title">' + movie_record_right.title + '</div><div class="movies_onomatopoeia"><ons-row><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col></ons-row></div><div class="movies_dvd_fab"><ons-row><ons-col><ons-icon size="32px, material:24px" icon="ion-disc" style="padding: 0px 3px;"></ons-col><ons-col><ons-icon size="32px, material:24px" icon="ion-android-favorite" style="padding: 0px 3px;"></ons-col></ons-row></div></ons-col>';
+
+                        movies_area.innerHTML += '<ons-row>' + left_cell + right_cell + '</ons-row>';
+                        
                         left_index -= 2;
                         right_index -= 2;
                     }
 
                     //movieレコードの件数が奇数個の場合のみ最後に余った1つを書き込む
                     if (even_odd_flag === 1) {
-                        movies_area.innerHTML += '<ons-row><ons-col width="50%" class="movies_col"><img class="movies_image" src="img/sample.jpg"><div class="movies_title">' + result[0].rows.item(left_index).title + '</div><div class="movies_onomatopoeia"><ons-row><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col></ons-row></div></ons-col></ons-row>';
+                        var movie_record_last = result[0].rows.item(left_index);
+                        //dvdを所持しているかで使用するクラスを分ける
+                        var dvd_last = '';
+                        if (movie_record_last.dvd == 1) {
+                            dvd_last = 'movies_col';
+                        }else {
+                            dvd_last = 'movies_col_none';
+                        }
+
+                        movies_area.innerHTML += '<ons-row><ons-col width="50%" class="'+ dvd_last + '"><img class="movies_image" src="img/sample.jpg"><div class="movies_title">' + movie_record_last.title + '</div><div class="movies_onomatopoeia"><ons-row><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col></ons-row></div></ons-col></ons-row>';
                     }
                 };
             }
