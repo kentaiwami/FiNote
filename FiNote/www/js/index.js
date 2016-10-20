@@ -264,7 +264,7 @@ var movie = {
                 var result = [];
                 var db = utility.get_database();
                 db.readTransaction(function(tx) {
-                    tx.executeSql('SELECT title,genre_id,onomatopoeia_id,poster,dvd,fav FROM movie', [], function(tx, resultSet) {
+                    tx.executeSql('SELECT title,genre_id,onomatopoeia_id,tmdb_id,poster,dvd,fav FROM movie', [], function(tx, resultSet) {
                         result.push(resultSet);
 
                         tx.executeSql('SELECT id,name FROM genre', [], function(tx, resultSet) {
