@@ -22,7 +22,7 @@ var app = {
         var db = utility.get_database();
 
           db.transaction(function(tx) {
-            tx.executeSql('CREATE TABLE IF NOT EXISTS movie (id integer primary key, title text unique, tmdb_id integer unique, genre_id text, onomatopoeia_id text, poster text, dvd integer)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS movie (id integer primary key, title text unique, tmdb_id integer unique, genre_id text, onomatopoeia_id text, poster text, dvd integer, fav integer)');
             tx.executeSql('CREATE TABLE IF NOT EXISTS genre (id integer primary key, name text unique)');
             tx.executeSql('CREATE TABLE IF NOT EXISTS onomatopoeia (id integer primary Key, name text)');
           }, function(err) {
@@ -1053,8 +1053,8 @@ var movieadd = {
                             dvd = 0;
                         }
 
-                        var query = 'INSERT INTO movie(id,title,tmdb_id,genre_id,onomatopoeia_id,poster,dvd) VALUES(?,?,?,?,?,?,?)';
-                        var data = [movie_record_count,movie_result.Title, movie_result.TMDB_ID, genre_csv, onomatopoeia_csv, image_b64, dvd];
+                        var query = 'INSERT INTO movie(id,title,tmdb_id,genre_id,onomatopoeia_id,poster,dvd,fav) VALUES(?,?,?,?,?,?,?,?)';
+                        var data = [movie_record_count,movie_result.Title, movie_result.TMDB_ID, genre_csv, onomatopoeia_csv, image_b64, dvd, 0];
 
                         return db_method.single_statement_execute(query, data);
                     })
