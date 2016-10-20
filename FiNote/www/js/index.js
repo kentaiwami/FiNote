@@ -351,7 +351,7 @@ var movie = {
                         }
 
                         var left_cell = ['<ons-col class="movies_col">',
-                                        '<img class="movies_image" src="img/sample.jpg">',
+                                        '<img class="movies_image" src="'+ movie_record_left.poster +'">',
                                         '<div class="movies_title">' + movie_record_left.title + '</div>',
                                         '<div class="movies_onomatopoeia_area"><ons-row><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col></ons-row></div>',
                                         '<div class="movies_dvd_fab_area"><ons-row>',
@@ -361,7 +361,7 @@ var movie = {
                                         '</ons-col>'];
 
                         var right_cell = ['<ons-col class="movies_col">',
-                                        '<img class="movies_image" src="img/sample.jpg">',
+                                        '<img class="movies_image" src="'+ movie_record_right.poster +'">',
                                         '<div class="movies_title">' + movie_record_right.title + '</div>',
                                         '<div class="movies_onomatopoeia_area"><ons-row><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col></ons-row></div>',
                                         '<div class="movies_dvd_fab_area"><ons-row>',
@@ -394,7 +394,7 @@ var movie = {
                         } 
 
                         var last_cell = ['<ons-col width="50%" class="movies_col">',
-                                        '<img class="movies_image" src="img/sample.jpg">',
+                                        '<img class="movies_image" src="'+ movie_record_last.poster +'">',
                                         '<div class="movies_title">' + movie_record_last.title + '</div>',
                                         '<div class="movies_onomatopoeia_area"><ons-row><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col></ons-row></div>',
                                         '<div class="movies_dvd_fab_area"><ons-row>',
