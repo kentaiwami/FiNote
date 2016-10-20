@@ -264,7 +264,7 @@ var movie = {
                 var result = [];
                 var db = utility.get_database();
                 db.readTransaction(function(tx) {
-                    tx.executeSql('SELECT title,genre_id,onomatopoeia_id,poster,dvd FROM movie', [], function(tx, resultSet) {
+                    tx.executeSql('SELECT title,genre_id,onomatopoeia_id,poster,dvd,fav FROM movie', [], function(tx, resultSet) {
                         result.push(resultSet);
 
                         tx.executeSql('SELECT id,name FROM genre', [], function(tx, resultSet) {
@@ -322,7 +322,7 @@ var movie = {
                         var movie_record_left = result[0].rows.item(left_index);
                         var movie_record_right = result[0].rows.item(right_index);
 
-                        //dvdの所持、お気に入りの登録しているかで使用するクラスを分ける
+                        //dvdの所持、お気に入りの登録しているかで使用するカラーコードを分ける
                         var buttoncolor_code_left = {dvd:'', fav:''};
                         var buttoncolor_code_right = {dvd:'', fav:''};
 
@@ -332,14 +332,23 @@ var movie = {
                             buttoncolor_code_left.dvd = color_code[0];
                         }
 
+                        if (movie_record_left.fav == 1) {
+                            buttoncolor_code_left.fav = color_code[2];
+                        }else {
+                            buttoncolor_code_left.fav = color_code[0];
+                        }
+
                         if (movie_record_right.dvd == 1) {
                             buttoncolor_code_right.dvd = color_code[1];
                         }else {
                             buttoncolor_code_right.dvd = color_code[0];
                         }
 
-                        buttoncolor_code_left.fav = color_code[2];
-                        buttoncolor_code_right.fav = color_code[2];
+                        if (movie_record_right.fav == 1) {
+                            buttoncolor_code_right.fav = color_code[2];
+                        }else {
+                            buttoncolor_code_right.fav = color_code[0];
+                        }
 
                         var left_cell = ['<ons-col class="movies_col">',
                                         '<img class="movies_image" src="img/sample.jpg">',
@@ -378,7 +387,11 @@ var movie = {
                             buttoncolor_code_last.dvd = color_code[0];
                         }
 
-                        buttoncolor_code_last.fav = color_code[2];
+                        if (movie_record_last.fav == 1) {
+                            buttoncolor_code_last.fav = color_code[2];
+                        }else {
+                            buttoncolor_code_last.fav = color_code[0];
+                        } 
 
                         var last_cell = ['<ons-col width="50%" class="movies_col">',
                                         '<img class="movies_image" src="img/sample.jpg">',
