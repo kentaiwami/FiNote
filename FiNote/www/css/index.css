@@ -290,31 +290,61 @@ input[type=password] {
 }
 /*気分リストをフィルム風にする*/
 
-.movies_picture_frame {
-  width: 40%;
-  height: auto;
-  margin: 10px;
-  position: relative;
-  display: inline-block;
-  overflow: hidden; /* 不要部分を消す */
-  padding: 1px;
+
+/*追加した映画一覧画面*/
+.movies_col {
+  overflow: hidden;
+  padding: 10px;
 }
 
-.movies_picture_frame:after {
-  content: "";
-  position: absolute;
-  z-index: 1;
-  width: 100px;
-  height: auto;
-  background: red;
-  content: "DVD"; /* 表示するテキスト */
-  text-align: center;
-  color: #fff;
-  font-family: 'Arial';
-  font-weight: bold;
-  padding: 5px 10px;
-  left: -30px;
-  top: 3px;
-  transform: rotate(-30deg);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+.movies_image {
+  box-shadow: 8px 0px 15px -15px rgba(0,0,0,0.3);
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
 }
+
+.movies_title {
+  box-shadow: 8px 0px 15px -15px rgba(0,0,0,0.3);
+  font-family: 'Arial';
+  background-color: rgba(255,255,255,1.0);
+  font-weight: bold;
+  text-align: center;
+  border-bottom: solid 0.5px #A9A9A9;
+}
+
+.movies_onomatopoeia_area {
+  box-shadow: 8px 0px 15px -15px rgba(0,0,0,0.3);
+  background-color: rgba(255,255,255,1.0);
+  border-bottom: solid 0.5px #A9A9A9;
+}
+
+.movies_onomatopoeia_name {
+  text-align: center;
+  margin: 10px;
+  color: #FFF;
+  font-size: small;
+  padding: 2px;
+  background-color: #95765b;
+  border-radius: 5px;
+}
+
+.movies_dvd_fab_area {
+  box-shadow: 8px 8px 15px -15px rgba(0,0,0,0.3);
+  color: #a5a5a5;
+  text-align: center;
+  background-color: rgba(255,255,255,1.0);
+  border-bottom-right-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+
+.movies_dvd_fab {
+  box-shadow: 8px 8px 15px -15px rgba(0,0,0,0.3);
+  border-right: solid 0.5px #A9A9A9;
+  background-color: rgba(255,255,255,0.0);
+  border-bottom-right-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+/*追加した映画一覧画面*/
