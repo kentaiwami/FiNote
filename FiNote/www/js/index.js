@@ -316,7 +316,7 @@ var movie = {
                     var right_index = movie_count - 2;
 
                     //[0]:灰色、[1]:オレンジ色、[2]:朱色
-                    var color_code =['#a5a5a5','#ffa500','#FF1D00'];
+                    var color_code =utility.get_color_code('movies');
 
                     for(var i = 0; i < Math.floor(movie_count/2); i++) {
                         var movie_record_left = result[0].rows.item(left_index);
@@ -457,13 +457,14 @@ var movie = {
 
             var lead_id = '';
             var color_code = '';
+            var movies_color_code = utility.get_color_code('movies');
 
             if (flag === 0) {
                 lead_id = 'dvd';
-                color_code = '#ffa500';
+                color_code = movies_color_code[1];
             }else {
                 lead_id = 'fav';
-                color_code = '#FF1D00';
+                color_code = movies_color_code[2];
             }
 
             //タップしたボタンの色を取得してhexへ変換
@@ -472,10 +473,10 @@ var movie = {
             var current_color_hex = color.toHex();
 
             //ボタン色が灰色の場合は色を付ける、色がついている場合は灰色にする
-            if (current_color_hex == '#a5a5a5') {
+            if (current_color_hex == movies_color_code[0]) {
                 document.getElementById(lead_id+'_'+tmdb_id).style.color = color_code;
             }else {
-                document.getElementById(lead_id+'_'+tmdb_id).style.color = '#a5a5a5';
+                document.getElementById(lead_id+'_'+tmdb_id).style.color = movies_color_code[0];
             }
         })
         .catch(function(err) {
@@ -2178,6 +2179,18 @@ var utility = {
     removeAttribute_list_object: function(object_list, attribute_name) {
         for(var i = 0; i < object_list.length; i++) {
             object_list[i].removeAttribute(attribute_name);
+        }
+    },
+
+    /**
+     * 画面名を指定してカラーコードを取得する関数
+     * @param  {[string]} screen_name [画面名]
+     * @return {[array]}             [カラーコードが格納された配列]
+     */
+    get_color_code: function(screen_name) {
+        switch(screen_name) {
+            case 'movies':
+                return ['#a5a5a5','#ffa500','#FF1D00'];
         }
     },
 };
