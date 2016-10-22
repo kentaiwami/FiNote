@@ -398,8 +398,8 @@ var movie = {
                                         '<div class="movies_title">' + movie_record_last.title + '</div>',
                                         '<div class="movies_onomatopoeia_area"><ons-row><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col></ons-row></div>',
                                         '<div class="movies_dvd_fab_area"><ons-row>',
-                                        '<ons-col width="50%;" class="movies_dvd_fab" style="border-bottom-right-radius: 0px; border-left: none;"><ons-button modifier="quiet" style="color: '+ buttoncolor_code_last.dvd +'; width: 100%;"><ons-icon icon="ion-disc" size="32px, material:24px style="padding: 0px 3px;"></ons-button></ons-col>',
-                                        '<ons-col width="50%;" class="movies_dvd_fab" style="border-bottom-left-radius: 0px; border-right: none;"><ons-button modifier="quiet" style="color: '+ buttoncolor_code_last.fav +'; width: 100%;"><ons-icon size="32px, material:24px" icon="ion-android-favorite" style="padding: 0px 3px;"></ons-button></ons-col>',
+                                        '<ons-col width="50%;" class="movies_dvd_fab" style="border-bottom-right-radius: 0px; border-left: none;"><ons-button id="dvd_'+ movie_record_last.tmdb_id +'" onclick="movie.tap_dvd_fav(this.id,0)" modifier="quiet" style="color: '+ buttoncolor_code_last.dvd +'; width: 100%;"><ons-icon icon="ion-disc" size="32px, material:24px style="padding: 0px 3px;"></ons-button></ons-col>',
+                                        '<ons-col width="50%;" class="movies_dvd_fab" style="border-bottom-left-radius: 0px; border-right: none;"><ons-button id="fav_'+ movie_record_last.tmdb_id +'" onclick="movie.tap_dvd_fav(this.id,1)" modifier="quiet" style="color: '+ buttoncolor_code_last.fav +'; width: 100%;"><ons-icon size="32px, material:24px" icon="ion-android-favorite" style="padding: 0px 3px;"></ons-button></ons-col>',
                                         '</ons-row></div>',
                                         '</ons-col>'];
 
