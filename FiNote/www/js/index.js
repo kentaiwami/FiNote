@@ -355,8 +355,8 @@ var movie = {
                                         '<div class="movies_title">' + movie_record_left.title + '</div>',
                                         '<div class="movies_onomatopoeia_area"><ons-row><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col></ons-row></div>',
                                         '<div class="movies_dvd_fab_area"><ons-row>',
-                                        '<ons-col width="50%;" class="movies_dvd_fab" style="border-bottom-right-radius: 0px; border-left: none;"><ons-button id="'+ movie_record_left.tmdb_id +'" onclick="movie.tap_dvd_fav(this.id,0)" modifier="quiet" style="color: '+ buttoncolor_code_left.dvd +'; width: 100%;"><ons-icon icon="ion-disc" size="32px, material:24px style="padding: 0px 3px;"></ons-button></ons-col>',
-                                        '<ons-col width="50%;" class="movies_dvd_fab" style="border-bottom-left-radius: 0px; border-right: none;"><ons-button id="'+ movie_record_left.tmdb_id +'" onclick="movie.tap_dvd_fav(this.id,1)" modifier="quiet" style="color: '+ buttoncolor_code_left.fav +'; width: 100%;"><ons-icon size="32px, material:24px" icon="ion-android-favorite" style="padding: 0px 3px;"></ons-button></ons-col>',
+                                        '<ons-col width="50%;" class="movies_dvd_fab" style="border-bottom-right-radius: 0px; border-left: none;"><ons-button id="dvd_'+ movie_record_left.tmdb_id +'" onclick="movie.tap_dvd_fav(this.id,0)" modifier="quiet" style="color: '+ buttoncolor_code_left.dvd +'; width: 100%;"><ons-icon icon="ion-disc" size="32px, material:24px style="padding: 0px 3px;"></ons-button></ons-col>',
+                                        '<ons-col width="50%;" class="movies_dvd_fab" style="border-bottom-left-radius: 0px; border-right: none;"><ons-button id="fav_'+ movie_record_left.tmdb_id +'" onclick="movie.tap_dvd_fav(this.id,1)" modifier="quiet" style="color: '+ buttoncolor_code_left.fav +'; width: 100%;"><ons-icon size="32px, material:24px" icon="ion-android-favorite" style="padding: 0px 3px;"></ons-button></ons-col>',
                                         '</ons-row></div>',
                                         '</ons-col>'];
 
@@ -365,8 +365,8 @@ var movie = {
                                         '<div class="movies_title">' + movie_record_right.title + '</div>',
                                         '<div class="movies_onomatopoeia_area"><ons-row><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col></ons-row></div>',
                                         '<div class="movies_dvd_fab_area"><ons-row>',
-                                        '<ons-col width="50%;" class="movies_dvd_fab" style="border-bottom-right-radius: 0px; border-left: none;"><ons-button id="'+ movie_record_right.tmdb_id +'" onclick="movie.tap_dvd_fav(this.id,0)" modifier="quiet" style="color: '+ buttoncolor_code_right.dvd +'; width: 100%;"><ons-icon icon="ion-disc" size="32px, material:24px style="padding: 0px 3px;"></ons-button></ons-col>',
-                                        '<ons-col width="50%;" class="movies_dvd_fab" style="border-bottom-left-radius: 0px; border-right: none;"><ons-button id="'+ movie_record_right.tmdb_id +'" onclick="movie.tap_dvd_fav(this.id,1)" modifier="quiet" style="color: '+ buttoncolor_code_right.fav +'; width: 100%;"><ons-icon size="32px, material:24px" icon="ion-android-favorite" style="padding: 0px 3px;"></ons-button></ons-col>',
+                                        '<ons-col width="50%;" class="movies_dvd_fab" style="border-bottom-right-radius: 0px; border-left: none;"><ons-button id="dvd_'+ movie_record_right.tmdb_id +'" onclick="movie.tap_dvd_fav(this.id,0)" modifier="quiet" style="color: '+ buttoncolor_code_right.dvd +'; width: 100%;"><ons-icon icon="ion-disc" size="32px, material:24px style="padding: 0px 3px;"></ons-button></ons-col>',
+                                        '<ons-col width="50%;" class="movies_dvd_fab" style="border-bottom-left-radius: 0px; border-right: none;"><ons-button id="fav_'+ movie_record_right.tmdb_id +'" onclick="movie.tap_dvd_fav(this.id,1)" modifier="quiet" style="color: '+ buttoncolor_code_right.fav +'; width: 100%;"><ons-icon size="32px, material:24px" icon="ion-android-favorite" style="padding: 0px 3px;"></ons-button></ons-col>',
                                         '</ons-row></div>',
                                         '</ons-col>'];
 
@@ -422,12 +422,66 @@ var movie = {
 
     /**
      * moviesのDVDやFAVボタンを押した際にデータベースの値を更新する関数
-     * @param  {[number]} tmdb_id [タップした映画のtmdb_id]
+     * @param  {[string]} id [dvdorfav + タップした映画のtmdb_id]
      * @param  {[number]} flag    [0:DVD, 1:FAV]
      */
-    tap_dvd_fav: function(tmdb_id,flag) {
-        console.log('tmdb_id: ' + tmdb_id);
-        console.log('flag: ' + flag);
+    tap_dvd_fav: function(id,flag) {
+        var tmdb_id = Number(id.substring(id.indexOf('_')+1,id.length));
+
+        /*** タップしたボタンに該当する項目の更新をする ***/
+        var query = 'SELECT dvd,fav FROM movie WHERE tmdb_id = ?';
+        db_method.single_statement_execute(query,[tmdb_id]).then(function(result) {
+            var query_obj = {query:'', data:[]};
+
+            if (flag === 0) {
+                query_obj.query = 'UPDATE movie SET dvd = ? WHERE tmdb_id = ?';
+
+                if (result.rows.item(0).dvd === 0) {
+                    query_obj.data = [1,tmdb_id];
+                }else {
+                    query_obj.data = [0,tmdb_id];
+                }
+            }else {
+                query_obj.query = 'UPDATE movie SET fav = ? WHERE tmdb_id = ?';
+
+                if (result.rows.item(0).fav === 0) {
+                    query_obj.data = [1,tmdb_id];
+                }else {
+                    query_obj.data = [0,tmdb_id];
+                }
+            }
+
+            return db_method.single_statement_execute(query_obj.query,query_obj.data);
+        }).then(function(result) {
+            /*** 更新後にボタンの色を変更する ***/
+
+            var lead_id = '';
+            var color_code = '';
+
+            if (flag === 0) {
+                lead_id = 'dvd';
+                color_code = '#ffa500';
+            }else {
+                lead_id = 'fav';
+                color_code = '#FF1D00';
+            }
+
+            //タップしたボタンの色を取得してhexへ変換
+            var current_color_rgb = document.getElementById(lead_id+'_'+tmdb_id).style.color;
+            var color = new RGBColor(current_color_rgb);
+            var current_color_hex = color.toHex();
+
+            //ボタン色が灰色の場合は色を付ける、色がついている場合は灰色にする
+            if (current_color_hex == '#a5a5a5') {
+                document.getElementById(lead_id+'_'+tmdb_id).style.color = color_code;
+            }else {
+                document.getElementById(lead_id+'_'+tmdb_id).style.color = '#a5a5a5';
+            }
+        })
+        .catch(function(err) {
+            console.log(err);
+            utility.show_error_alert('更新エラー','更新時にエラーが発生しました','OK');
+        });
     },
 };
 
