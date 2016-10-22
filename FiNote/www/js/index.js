@@ -304,7 +304,8 @@ var movie = {
                         //result[1]：genre
                         //result[2]：onomatopoeia
                          var movies_area = document.getElementById('movie_collection');
-                    
+                         var movie_count = result[0].rows.length;
+
                         /*** movieレコードの件数が偶数か奇数かを判別 ***/
                         var even_odd_flag = 0;
                         if (movie_count % 2 === 0) {
@@ -527,10 +528,10 @@ var movieadd_search = {
 
 
     /**
-     * movieadd_searchのsearch-input横にあるキャンセルボタンをタップした際に前のページへ画面遷移する
+     * movieadd_searchのsearch-input横にあるキャンセルボタンをタップ(バックボタンも)した際に前のページへ画面遷移する
      */
     tap_cancel: function(){
-        document.getElementById('myNavigator').popPage();
+        document.getElementById('myNavigator').popPage({refresh:true});
         //console.log("tap_cancel");
     },
 
