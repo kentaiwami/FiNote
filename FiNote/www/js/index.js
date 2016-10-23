@@ -630,57 +630,81 @@ var movieadd_search = {
                     var list_data_poster = movieadd_search.get_poster(list_data);
 
                     //サムネイル取得後にリストを表示する
-                    var infiniteList = document.getElementById('movieadd_search_list');
+                    var movieadd_SearchList = document.getElementById('movieadd_search_list');
                     var movie_subtitle = '公開日：';
                     var movie_dvd = '';
                     var movie_add = '';
                     var list_item_modifier = '';
                     var list_item_onClick = '';
                     var tappable = '';
-                    var html_doc = '';
+                    var html_doc = [];
+
+                    for(i = 0; i < list_data.length; i++) {
+                        var list_item_doc = ['<ons-list-item modifier="longdivider">',
+                                            '<div class="left">',
+                                            '<img class="list__item__thumbnail" src="http://placekitten.com/g/40/40">',
+                                            '</div>',
+                                            '<div class="center">',
+                                            '<span class="list__item__title">Cutest kitty</span><span class="list__item__subtitle">On the Internet</span>',
+                                            '</div>',
+                                            '</ons-list-item>'];
+                        html_doc.push(list_item_doc.join(''));
+                    }
+
+                    movieadd_SearchList.innerHTML = html_doc.join('');
+
+                    // infiniteList.delegate = {
+                    //     createItemContent: function(i) {
+                    //         //ローカル同じ映画IDが存在するか、DVD情報はtrueかで表示するメッセージを変える
+                    //         var index = local_tmdb_id.indexOf(list_data[i].id);
+                    //         if (index != -1) {
+                    //             list_item_modifier = '';
+                    //             list_item_onClick = '';
+                    //             tappable ='';
+                    //             movie_add = '追加済み';
+
+                    //             if (local_dvd[index] !== 0) {
+                    //                 movie_dvd = 'DVD所持';
+                    //             }else {
+                    //                 movie_dvd = '';
+                    //             }
+                    //         }else {
+                    //             movie_add = '';
+                    //             movie_dvd = '';
+                    //             list_item_modifier = 'modifier="chevron"';
+                    //             list_item_onClick = ' onclick="movieadd_search.tap_list(this)" ';
+                    //             tappable = 'tappable';
+                    //         }
+
+                    //         var date = list_data[i].release_date;
+                    //         if (date.length === 0) {
+                    //             list_data[i].release_date = '情報なし';
+                    //         }
 
 
-                    infiniteList.delegate = {
-                        createItemContent: function(i) {
-                            //ローカル同じ映画IDが存在するか、DVD情報はtrueかで表示するメッセージを変える
-                            var index = local_tmdb_id.indexOf(list_data[i].id);
-                            if (index != -1) {
-                                list_item_modifier = '';
-                                list_item_onClick = '';
-                                tappable ='';
-                                movie_add = '追加済み';
+                    //         html_doc = ['<ons-list-item>',
+                    //                     '<div class="left">',
+                    //                     '<img class="list__item__thumbnail" src="http://placekitten.com/g/40/40">',
+                    //                     '</div>',
+                    //                     '<div class="center">',
+                    //                     '<span class="list__item__title">Cutest kitty</span>',
+                    //                     '<span class="list__item__subtitle">On the Internet</span>',
+                    //                     '</div>',
+                    //                     '</ons-list-item>'];
 
-                                if (local_dvd[index] !== 0) {
-                                    movie_dvd = 'DVD所持';
-                                }else {
-                                    movie_dvd = '';
-                                }
-                            }else {
-                                movie_add = '';
-                                movie_dvd = '';
-                                list_item_modifier = 'modifier="chevron"';
-                                list_item_onClick = ' onclick="movieadd_search.tap_list(this)" ';
-                                tappable = 'tappable';
-                            }
+                    //         var hoge = '<ons-list-item ' + tappable + ' id="' + i + '"' + list_item_onClick + list_item_modifier+ ' class="list-item-container"><ons-row><ons-col width="95px"><img style="background:url(img/loading.gif) no-repeat center" class="movie-poster" src="' + list_data_poster[i] +'"></ons-col><ons-col><div class="movie-title">' + list_data[i].title +'</div><div class="release-date">' +movie_subtitle+list_data[i].release_date +'</div><div class="dvd-movieadd">' +movie_add +'</div><div class="dvd-movieadd">'+movie_dvd +'</div></ons-col></ons-row></ons-list-item>';
 
-                            var date = list_data[i].release_date;
-                            if (date.length === 0) {
-                                list_data[i].release_date = '情報なし';
-                            }
-
-                            html_doc = '<ons-list-item ' + tappable + ' id="' + i + '"' + list_item_onClick + list_item_modifier+ ' class="list-item-container"><ons-row><ons-col width="95px"><img style="background:url(img/loading.gif) no-repeat center" class="movie-poster" src="' + list_data_poster[i] +'"></ons-col><ons-col><div class="movie-title">' + list_data[i].title +'</div><div class="release-date">' +movie_subtitle+list_data[i].release_date +'</div><div class="dvd-movieadd">' +movie_add +'</div><div class="dvd-movieadd">'+movie_dvd +'</div></ons-col></ons-row></ons-list-item>';
-
-                            return ons._util.createElement(html_doc);
-                        },
+                    //         return ons._util.createElement(html_doc.join(''));
+                    //     },
                                             
-                        countItems: function() {
-                            return list_data.length;
-                        },
+                    //     countItems: function() {
+                    //         return list_data.length;
+                    //     },
 
-                        calculateItemHeight: function() {
-                            return 200;
-                        }
-                    };
+                    //     calculateItemHeight: function() {
+                    //         return 200;
+                    //     }
+                    // };
                     
                     
                 }
