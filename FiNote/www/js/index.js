@@ -636,13 +636,21 @@ var movieadd_search = {
                     for(i = 0; i < list_data.length; i++) {
                         var list_item_id = '';
                         var movie_releasedate = '公開日：';
+                        var exist_message = [];
 
-                        //ローカルに保存済みの映画はIDにexistを追記する
+                        /*ローカルに保存済みの映画は
+                        ・IDにexistを追記
+                        ・チェックマークと追加済みのメッセージを表示
+                        */
                         var index = local_tmdb_id.indexOf(list_data[i].id);
                         if (index == -1) {
                             list_item_id = i;
+                            exist_message = [''];
                         }else {
                             list_item_id = i + '_exist';
+                            exist_message = ['<div class="exist_message">',
+                                             '<ons-icon icon="ion-ios-checkmark-outline"></ons-icon>',
+                                             '</div>'];
                         }
 
                         //TMDBから取得したrelease_dateが空出会った場合は情報なしを代入する
@@ -662,6 +670,7 @@ var movieadd_search = {
                                             '<span class="list__item__subtitle">あああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ…</span>',
                                             '<span class="list__item__subtitle">'+ movie_releasedate +'</span>',
                                             '</div>',
+                                            exist_message.join(''),
                                             '</ons-list-item>'];
                         list_doc.push(list_item_doc.join(''));
                     }
