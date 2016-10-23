@@ -632,12 +632,12 @@ var movieadd_search = {
                     //サムネイル取得後にリストを表示する
                     var movieadd_SearchList = document.getElementById('movieadd_search_list');
                     var movie_subtitle = '公開日：';
-                    var movie_dvd = '';
-                    var movie_add = '';
-                    var list_item_modifier = '';
-                    var list_item_onClick = '';
-                    var tappable = '';
-                    var html_doc = [];
+                    // var movie_dvd = '';
+                    // var movie_add = '';
+                    // var list_item_modifier = '';
+                    // var list_item_onClick = '';
+                    // var tappable = '';
+                    var list_doc = [];
 
                     for(i = 0; i < list_data.length; i++) {
                         var list_item_doc = ['<ons-list-item modifier="longdivider">',
@@ -648,10 +648,10 @@ var movieadd_search = {
                                             '<span class="list__item__title">Cutest kitty</span><span class="list__item__subtitle">On the Internet</span>',
                                             '</div>',
                                             '</ons-list-item>'];
-                        html_doc.push(list_item_doc.join(''));
+                        list_doc.push(list_item_doc.join(''));
                     }
 
-                    movieadd_SearchList.innerHTML = html_doc.join('');
+                    movieadd_SearchList.innerHTML = list_doc.join('');
 
                     // infiniteList.delegate = {
                     //     createItemContent: function(i) {
