@@ -645,7 +645,7 @@ var movieadd_search = {
                                             '<img class="list__item__thumbnail" src="http://placekitten.com/g/40/40">',
                                             '</div>',
                                             '<div class="center">',
-                                            '<span class="list__item__title">Cutest kitty</span><span class="list__item__subtitle">On the Internet</span>',
+                                            '<span class="list__item__title">'+ list_data[i].title +'</span><span class="list__item__subtitle">On the Internet</span>',
                                             '</div>',
                                             '</ons-list-item>'];
                         list_doc.push(list_item_doc.join(''));
@@ -680,17 +680,6 @@ var movieadd_search = {
                     //         if (date.length === 0) {
                     //             list_data[i].release_date = '情報なし';
                     //         }
-
-
-                    //         html_doc = ['<ons-list-item>',
-                    //                     '<div class="left">',
-                    //                     '<img class="list__item__thumbnail" src="http://placekitten.com/g/40/40">',
-                    //                     '</div>',
-                    //                     '<div class="center">',
-                    //                     '<span class="list__item__title">Cutest kitty</span>',
-                    //                     '<span class="list__item__subtitle">On the Internet</span>',
-                    //                     '</div>',
-                    //                     '</ons-list-item>'];
 
                     //         var hoge = '<ons-list-item ' + tappable + ' id="' + i + '"' + list_item_onClick + list_item_modifier+ ' class="list-item-container"><ons-row><ons-col width="95px"><img style="background:url(img/loading.gif) no-repeat center" class="movie-poster" src="' + list_data_poster[i] +'"></ons-col><ons-col><div class="movie-title">' + list_data[i].title +'</div><div class="release-date">' +movie_subtitle+list_data[i].release_date +'</div><div class="dvd-movieadd">' +movie_add +'</div><div class="dvd-movieadd">'+movie_dvd +'</div></ons-col></ons-row></ons-list-item>';
 
