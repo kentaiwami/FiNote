@@ -499,9 +499,7 @@ var movieadd_search = {
         //console.log('click_done');
         cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 
-        document.getElementById('search_movie_title').blur();
-        
-        movieadd_search.get_search_movie_title_val();
+        document.getElementById('search_movie_title').blur();        
     },
 
 
