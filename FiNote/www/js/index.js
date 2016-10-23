@@ -631,21 +631,36 @@ var movieadd_search = {
 
                     //サムネイル取得後にリストを表示する
                     var movieadd_SearchList = document.getElementById('movieadd_search_list');
-                    var movie_subtitle = '公開日：';
-                    // var movie_dvd = '';
-                    // var movie_add = '';
-                    // var list_item_modifier = '';
-                    // var list_item_onClick = '';
-                    // var tappable = '';
                     var list_doc = [];
 
                     for(i = 0; i < list_data.length; i++) {
-                        var list_item_doc = ['<ons-list-item modifier="longdivider">',
+                        var list_item_id = '';
+                        var movie_releasedate = '公開日：';
+
+                        //ローカルに保存済みの映画はIDにexistを追記する
+                        var index = local_tmdb_id.indexOf(list_data[i].id);
+                        if (index == -1) {
+                            list_item_id = i;
+                        }else {
+                            list_item_id = i + '_exist';
+                        }
+
+                        //TMDBから取得したrelease_dateが空出会った場合は情報なしを代入する
+                        var date = list_data[i].release_date;
+                        if (date.length === 0) {
+                            movie_releasedate += '情報なし';
+                        }else {
+                            movie_releasedate += list_data[i].release_date;
+                        }
+
+                        var list_item_doc = ['<ons-list-item id="'+ list_item_id +'" modifier="longdivider chevron" tappable="true" onclick="movieadd_search.tap_list(this)">',
                                             '<div class="left">',
-                                            '<img class="list__item__thumbnail" src="http://placekitten.com/g/40/40">',
+                                            '<img id="'+ list_item_id +'_img" style="box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.5); width: 80px; height: 120px; background:url(img/loading.gif) no-repeat center;" class="list__item__thumbnail" src="'+ list_data_poster[i] +'">',
                                             '</div>',
                                             '<div class="center">',
-                                            '<span class="list__item__title">'+ list_data[i].title +'</span><span class="list__item__subtitle">On the Internet</span>',
+                                            '<span class="list__item__title" style="font-weight: 700;">'+ list_data[i].title +'</span>',
+                                            '<span class="list__item__subtitle">あああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ…</span>',
+                                            '<span class="list__item__subtitle">'+ movie_releasedate +'</span>',
                                             '</div>',
                                             '</ons-list-item>'];
                         list_doc.push(list_item_doc.join(''));
@@ -685,17 +700,6 @@ var movieadd_search = {
 
                     //         return ons._util.createElement(html_doc.join(''));
                     //     },
-                                            
-                    //     countItems: function() {
-                    //         return list_data.length;
-                    //     },
-
-                    //     calculateItemHeight: function() {
-                    //         return 200;
-                    //     }
-                    // };
-                    
-                    
                 }
 
             }, function(reason) {
@@ -830,20 +834,24 @@ var movieadd_search = {
      * @param  {[object]} obj [タップしたオブジェクト]
      */
     tap_list: function(obj){
-        var list_data = movieadd_search.show_list_data;
-        var tap_id = obj.id;
-        var myNavigator = document.getElementById('myNavigator');
+        if (obj.id.indexOf('_exist') == -1) {
+            var list_data = movieadd_search.show_list_data;
+            var tap_id = obj.id;
+            var myNavigator = document.getElementById('myNavigator');
 
-        //movieaddの画面初期化後に動作する関数を定義
-        var callback = function(){
-            movieadd.show_contents(list_data,tap_id);
-        };
-        utility.check_page_init('movieadd',callback);
+            //movieaddの画面初期化後に動作する関数を定義
+            var callback = function(){
+                movieadd.show_contents(list_data,tap_id);
+            };
+            utility.check_page_init('movieadd',callback);
 
-        movieadd.current_movie = list_data[tap_id];
+            movieadd.current_movie = list_data[tap_id];
 
-        //映画追加画面へ遷移
-        myNavigator.pushPage('movieadd.html', {});
+            //映画追加画面へ遷移
+            myNavigator.pushPage('movieadd.html', {});
+        }else {
+            utility.show_error_alert('','既に追加済みの映画です','OK');
+        }
     },
 };
 
@@ -869,8 +877,8 @@ var movieadd = {
 
         //card部分に表示する画像を取得して表示
         var card = document.getElementById('movieadd_card');
-        var tap_list_obj = document.getElementById(tap_id);
-        var img_url = tap_list_obj.children[0].children[0].children[0].children[0].getAttribute('src');
+        var tap_list_obj = document.getElementById(tap_id+'_img');
+        var img_url = tap_list_obj.getAttribute('src');
 
         $('#movieadd_card').css('backgroundImage' ,'url('+img_url+')');
 
