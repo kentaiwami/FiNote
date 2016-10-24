@@ -804,6 +804,9 @@ var movieadd_search = {
      * @param  {[object]} obj [タップしたオブジェクト]
      */
     tap_list: function(obj){
+        //キャンセルボタンが移動しきれない場合があるため強制的に移動させる
+        document.getElementById('movieadd_search_cancel_button').style.marginLeft = '500px';
+        
         if (obj.id.indexOf('_exist') == -1) {
             var list_data = movieadd_search.show_list_data;
             var tap_id = obj.id;
