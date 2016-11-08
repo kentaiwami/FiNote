@@ -647,7 +647,7 @@ var movieadd_search = {
                                              '</div>'];
                         }
 
-                        //TMDBから取得したrelease_dateが空出会った場合は情報なしを代入する
+                        //TMDBから取得したrelease_dateが空だった場合は情報なしを代入する
                         var date = list_data[i].release_date;
                         if (date.length === 0) {
                             movie_releasedate += '情報なし';
@@ -661,7 +661,7 @@ var movieadd_search = {
                                             '</div>',
                                             '<div class="center">',
                                             '<span class="list__item__title" style="font-weight: 700;">'+ list_data[i].title +'</span>',
-                                            '<span class="list__item__subtitle">あああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ…</span>',
+                                            '<span id="overview_'+i +'" class="list__item__subtitle">'+ list_data[i].overview +'</span>',
                                             '<span class="list__item__subtitle">'+ movie_releasedate +'</span>',
                                             '</div>',
                                             exist_message.join(''),
@@ -670,6 +670,25 @@ var movieadd_search = {
                     }
 
                     movieadd_SearchList.innerHTML = list_doc.join('');
+
+                    //overviewが長すぎて範囲内に収まらない場合に文字列をカットする処理
+                    for(i = 0; i < list_data.length; i++) {
+                        var flag = false;
+                        var span = document.getElementById('overview_'+i);
+                        var span_height = span.offsetHeight;
+                        var copy_overview = list_data[i].overview;
+
+                        while(span_height > 80 && copy_overview.length > 0) {
+                            flag = true;
+                            copy_overview = copy_overview.substr(0, copy_overview.length-5);
+                            document.getElementById('overview_'+i).innerHTML = copy_overview;
+                            span_height = document.getElementById('overview_'+i).offsetHeight;
+                        }
+
+                        if (flag) {
+                            document.getElementById('overview_'+i).innerHTML += '…';
+                        }
+                    }
                 }
 
             }, function(reason) {
