@@ -826,24 +826,20 @@ var movieadd_search = {
         //キャンセルボタンが移動しきれない場合があるため強制的に移動させる
         document.getElementById('movieadd_search_cancel_button').style.marginLeft = '500px';
         
-        if (obj.id.indexOf('_exist') == -1) {
-            var list_data = movieadd_search.show_list_data;
-            var tap_id = obj.id;
-            var myNavigator = document.getElementById('myNavigator');
+        var list_data = movieadd_search.show_list_data;
+        var tap_id = obj.id;
+        var myNavigator = document.getElementById('myNavigator');
 
-            //movieaddの画面初期化後に動作する関数を定義
-            var callback = function(){
-                movieadd.show_contents(list_data,tap_id);
-            };
-            utility.check_page_init('movieadd',callback);
+        //movieaddの画面初期化後に動作する関数を定義
+        var callback = function(){
+            movieadd.show_contents(list_data,tap_id);
+        };
+        utility.check_page_init('movieadd',callback);
 
-            movieadd.current_movie = list_data[tap_id];
+        movieadd.current_movie = list_data[tap_id];
 
-            //映画追加画面へ遷移
-            myNavigator.pushPage('movieadd.html', {});
-        }else {
-            utility.show_error_alert('','既に追加済みの映画です','OK');
-        }
+        //映画追加画面へ遷移
+        myNavigator.pushPage('movieadd.html', {});
     },
 };
 
