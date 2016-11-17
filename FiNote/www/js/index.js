@@ -628,9 +628,9 @@ var movieadd_search = {
                     var list_doc = [];
 
                     for(i = 0; i < list_data.length; i++) {
-                        var list_item_id = '';
                         var movie_releasedate = '公開日：';
                         var exist_message = [];
+                        var exist_flag = '';
 
                         /*ローカルに保存済みの映画は
                         ・IDにexistを追記
@@ -638,13 +638,13 @@ var movieadd_search = {
                         */
                         var index = local_tmdb_id.indexOf(list_data[i].id);
                         if (index == -1) {
-                            list_item_id = i;
                             exist_message = [''];
+                            exist_flag = '';
                         }else {
-                            list_item_id = i + '_exist';
                             exist_message = ['<div class="exist_message">',
                                              '<ons-icon icon="ion-ios-checkmark-outline"></ons-icon>',
                                              '</div>'];
+                            exist_flag = 'exist';
                         }
 
                         //TMDBから取得したrelease_dateが空だった場合は情報なしを代入する
@@ -655,9 +655,9 @@ var movieadd_search = {
                             movie_releasedate += list_data[i].release_date;
                         }
 
-                        var list_item_doc = ['<ons-list-item id="'+ list_item_id +'" modifier="longdivider chevron" tappable="true" onclick="movieadd_search.tap_list(this)">',
+                        var list_item_doc = ['<ons-list-item id="'+ i +'" name="' + exist_flag + '" modifier="longdivider chevron" tappable="true" onclick="movieadd_search.tap_list(this)">',
                                             '<div class="left">',
-                                            '<img id="'+ list_item_id +'_img" style="box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.5); width: 80px; height: 120px; background:url(img/loading.gif) no-repeat center;" class="list__item__thumbnail" src="'+ list_data_poster[i] +'">',
+                                            '<img id="'+ i +'_img" style="box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.5); width: 80px; height: 120px; background:url(img/loading.gif) no-repeat center;" class="list__item__thumbnail" src="'+ list_data_poster[i] +'">',
                                             '</div>',
                                             '<div class="center">',
                                             '<span class="list__item__title" style="font-weight: 700;">'+ list_data[i].title +'</span>',
