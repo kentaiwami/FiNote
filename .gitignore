@@ -3,7 +3,7 @@
 /*.asta
 /*.asta.lock
 /素材
-/*.sketch
+secret.js
 #Node
 npm-debug.log
 node_modules/
