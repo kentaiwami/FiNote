@@ -68,7 +68,7 @@
       <!-- 会員登録成功時のアラート -->
       <ons-alert-dialog id="signup-alert-success">
         <div class="alert-dialog-title">登録完了</div>
-        <div class="alert-dialog-content">会員情報の登録に成功しました！</div>
+        <div class="alert-dialog-content">登録に成功しました！</div>
         <div class="alert-dialog-footer">
           <button class="alert-dialog-button" onclick="Signup.alert_hide('signup-alert-success')">OK</button>
         </div>
@@ -84,13 +84,14 @@
       </ons-alert-dialog>
 
       <!-- signup.htmlのページの中身 -->
-      <ons-page>
-        <ons-toolbar>
-          <div class="center">ユーザ登録</div>
-        </ons-toolbar>
+      <ons-toolbar>
+        <div class="center">ユーザ登録</div>
+      </ons-toolbar>
 
+			<ons-list>
         <div class="formarea">
           <!-- ユーザ名とパスワードのフォーム -->
+          <ons-list-header>ユーザ名とパスワード</ons-list-header>
           <div class="form-row">
             <input type="text" id="username" class="text-input--underbar width-full" placeholder="ユーザ名" value="">
           </div>
@@ -104,31 +105,29 @@
           </div>
 
           <!-- 性別を選択させるラジオボタン -->
-          <ons-list>
-            <ons-list-header>性別</ons-list-header>
-            <ons-list-item tappable>
-              <label class="left"><ons-input name="color" type="radio" input-id="radio_m" checked></ons-input></label>
-              <label for="radio_m" class="center">男性</label>
-            </ons-list-item>
+          <ons-list-header>性別</ons-list-header>
+          <ons-list-item tappable>
+            <label class="left"><ons-input name="color" type="radio" input-id="radio_m" checked></ons-input></label>
+            <label for="radio_m" class="center">男性</label>
+          </ons-list-item>
 
-            <ons-list-item tappable>
-              <label class="left"><ons-input name="color" type="radio" input-id="radio_f"></ons-input></label>
-              <label for="radio_f" class="center">女性</label>
-            </ons-list-item>
-          </ons-list>
-
+          <ons-list-item tappable>
+            <label class="left"><ons-input name="color" type="radio" input-id="radio_f"></ons-input></label>
+            <label for="radio_f" class="center">女性</label>
+          </ons-list-item>
+          
           <!-- 生年選択のフォーム -->
           <ons-list-header>生年</ons-list-header>
           <div class="form-row">
             <input onfocus="Signup.birthday_pickerview()" type="text" id="birthday" class="text-input--underbar width-full" placeholder="生年を選択する" value="">
           </div>
-           
+         
           <!-- 登録ボタン -->
           <div class="vspc form-row">
             <ons-button disabled modifier="large--cta" id="signup_button" onclick="Signup.usersignup()">登録</ons-button>
           </div>
-        </div>
-      </ons-page>
+      	</div>
+    	</ons-list>
     </ons-page>
   </ons-template>
   <!-- ●ここまでsignup.html -->
