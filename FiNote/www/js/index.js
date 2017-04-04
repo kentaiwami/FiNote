@@ -269,10 +269,12 @@ var movie = {
       //ローカルに保存されている映画情報の件数で表示内容を変える
       if (movie_count === 0) {
         draw_content = function(){
-          var nodata_message_p = $('<p>');
-          nodata_message_p.addClass('center_message');
-          nodata_message_p.html('登録された映画はありません');
-          $('#nodata_message').append(nodata_message_p);
+          var nodata_message_p = document.createElement('p');
+          nodata_message_p.classList.add('center_message');
+          nodata_message_p.innerHTML = '登録された映画はありません';
+
+          var nodata_message_div = document.getElementById('nodata_message');
+          nodata_message_div.appendChild(nodata_message_p);
         };
       }else {
         draw_content = function(){
