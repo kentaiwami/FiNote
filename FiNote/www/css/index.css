@@ -277,6 +277,22 @@ input[type=password] {
   opacity: .6;
 }
 
+.list_img {
+  box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.5);
+  width: 15vw;
+  height: auto;
+  background:url(../img/loading.gif) no-repeat center;
+  object-fit: contain;
+}
+
+.list_title {
+  position: absolute ;
+}
+
+.list_sub_title {
+  margin-top: 2.5rem;
+}
+
 .movies_col {
   overflow: hidden;
   padding: 10px;

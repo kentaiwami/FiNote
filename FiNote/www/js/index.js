@@ -308,21 +308,15 @@ var movie = {
             //result[1]：genre
             //result[2]：onomatopoeia
 
-             var movies_area = document.getElementById('movie_collection');
+             var movie_collection_list = document.getElementById('movie_collection_list');
              movie_count = result[0].rows.length;
-
-            /*** 1行ずつ書き込み ***/
-            var left_index = movie_count - 1;
-            var right_index = movie_count - 2;
 
             //[0]:灰色、[1]:オレンジ色、[2]:朱色
             var color_code =utility.get_color_code('movies');
 
-
-            // ここからrow1つで書き込むテスト
-            var col_html = '';
-            for(var k = 0; k < movie_count; k++) {
-              var movie_record = result[0].rows.item(k);
+            var lists_html = '';
+            for(var i = 0; i < movie_count; i++) {
+              var movie_record = result[0].rows.item(i);
               var buttoncolor_code = {dvd:'', fav:''};
 
               if (movie_record.dvd == 1) {
@@ -335,22 +329,32 @@ var movie = {
                 buttoncolor_code.fav = color_code[2];
               }else {
                 buttoncolor_code.fav = color_code[0];
-              }
+              }     
 
-              var cell = ['<ons-col width="50vw" class="movies_col">',
-                          '<img class="movies_image" src="'+ movie_record.poster +'">',
-                          '<div class="movies_onomatopoeia_area"><ons-row><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col></ons-row></div>',
-                          '<div class="movies_dvd_fab_area"><ons-row>',
-                          '<ons-col width="50%;" class="movies_dvd_fab" style="border-bottom-right-radius: 0px; border-left: none;"><ons-button id="dvd_'+ movie_record.tmdb_id +'" onclick="movie.tap_dvd_fav(this.id,0)" modifier="quiet" style="color: '+ buttoncolor_code.dvd +'; width: 100%;"><ons-icon icon="ion-disc" size="32px, material:24px style="padding: 0px 3px;"></ons-button></ons-col>',
-                          '<ons-col width="50%;" class="movies_dvd_fab" style="border-bottom-left-radius: 0px; border-right: none;"><ons-button id="fav_'+ movie_record.tmdb_id +'" onclick="movie.tap_dvd_fav(this.id,1)" modifier="quiet" style="color: '+ buttoncolor_code.fav +'; width: 100%;"><ons-icon size="32px, material:24px" icon="ion-android-favorite" style="padding: 0px 3px;"></ons-button></ons-col>',
-                          '</ons-row></div>',
-                          '</ons-col>'];
+              var list = '<ons-list-item modifier="longdivider">'+
+                         '<div class="left">'+
+                         '<img class="list_img" src="' + movie_record.poster + '">'+
+                         '</div>'+
+                         '<div class="center">'+
+                         '<span class="list-item__title list_title">'+
+                         movie_record.title+
+                         '</span>'+
+                         '<span class="list-item__subtitle list_sub_title">'+
+                         'ドキドキ、ハラハラ、モヤモヤ'+
+                         '</span>'+
+                         '<span class="list-item__subtitle">'+
+                         '追加日:2015-05-30'+
+                         '</span>'+
+                         '</div>'+
+                         '</ons-list-item>';
 
-
-              col_html += cell.join('');
+              lists_html += list;
             }
 
-            movies_area.innerHTML = '<ons-row>' + col_html + '</ons-row>';
+            movie_collection_list.innerHTML = '<ons-list>' + 
+                                              '<ons-list-header>全て</ons-list-header>' + 
+                                              lists_html + 
+                                              '</ons-list>';
           });
         };
       }
