@@ -476,15 +476,6 @@ var movieadd_search = {
 
 
   /**
-   * movieadd_searchのsearch-input横にあるキャンセルボタンをタップ(バックボタンも)した際に前のページへ画面遷移する
-   */
-  tap_cancel: function(){
-    document.getElementById('myNavigator').popPage({refresh:true});
-    //console.log("tap_cancel");
-  },
-
-
-  /**
    * 検索フォームにフォーカス時、フォーカスが外れた時のアニメーションを設定する
    * @param {[string]} event_name [focusまたはblurを受け取る]
    */
@@ -1667,7 +1658,7 @@ var movieadd = {
       //追加した結果を反映させるために検索を行う
       movieadd_search.get_search_movie_title_val();
       
-      utility.popPage();
+      utility.pop_page();
     });
   },
 
@@ -1857,7 +1848,7 @@ var movieadd_dvd = {
     //ラベルの更新
     movieadd.show_feelingAnddvd_label();
     
-    utility.popPage();
+    utility.pop_page();
   },
 };
 
@@ -1952,7 +1943,7 @@ var utility = {
   /**
    * onsen uiのpopPageを実行する関数
    */
-  popPage: function(){
+  pop_page: function(){
     document.getElementById('myNavigator').popPage();
   },
 
