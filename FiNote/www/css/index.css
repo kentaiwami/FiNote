@@ -272,6 +272,11 @@ input[type=password] {
 
 
 /*** 追加した映画一覧画面 ***/
+.center_message {
+  margin-top: 5vh;
+  opacity: .6;
+}
+
 .movies_col {
   overflow: hidden;
   padding: 10px;

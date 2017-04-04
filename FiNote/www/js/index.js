@@ -266,9 +266,12 @@ var movie = {
       var draw_content = function(){};
 
       //ローカルに保存されている映画情報の件数で表示内容を変える
-      if (movie_count === 0) {
+      if (movie_count !== 0) {
         draw_content = function(){
-          document.getElementById('nodata_message').innerHTML = '登録された映画はありません';
+          var nodata_message_p = $('<p>');
+          nodata_message_p.addClass('center_message');
+          nodata_message_p.html('登録された映画はありません');
+          $('#nodata_message').append(nodata_message_p);
         };
       }else {
         draw_content = function(){
