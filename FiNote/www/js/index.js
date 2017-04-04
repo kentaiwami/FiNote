@@ -266,7 +266,7 @@ var movie = {
       var draw_content = function(){};
 
       //ローカルに保存されている映画情報の件数で表示内容を変える
-      if (movie_count !== 0) {
+      if (movie_count === 0) {
         draw_content = function(){
           var nodata_message_p = $('<p>');
           nodata_message_p.addClass('center_message');
