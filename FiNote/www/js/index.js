@@ -240,124 +240,127 @@ var movie = {
    * 自動ログイン後に映画一覧画面の表示を行う
    */
   draw_movie_content: function() {
-      //自動ログイン
-      var ncmb = utility.get_ncmb();
-      var storage = window.localStorage;
-      var username = storage.getItem('username');
-      var password = storage.getItem('password');
-      var signup_flag = storage.getItem('signup_flag');
+    //自動ログイン
+    var ncmb = utility.get_ncmb();
+    var storage = window.localStorage;
+    var username = storage.getItem('username');
+    var password = storage.getItem('password');
+    var signup_flag = storage.getItem('signup_flag');
 
-      //ユーザ情報が存在する場合はローディング画面を表示する
-      var callback = function(){
-          if (signup_flag == 'true') {
-              document.getElementById('index').innerHTML = '<img  src="img/splash.gif" alt="" / width="100%" height="100%">';
-          }
-      };
-      utility.check_page_init('index',callback);
-      
+    //ユーザ情報が存在する場合はローディング画面を表示する
+    var callback = function(){
+      if (signup_flag == 'true') {
+        document.getElementById('index').innerHTML = '<img  src="img/splash.gif" alt="" / width="100%" height="100%">';
+      }
+    };
+    utility.check_page_init('index',callback);
+    
 
-      ncmb.User.login(username, password).then(function(data){
-          // ログイン後に映画情報をデータベースから取得
-          var query = 'SELECT tmdb_id FROM movie';
-          return db_method.single_statement_execute(query,[]);
-      })
-      .then(function(movie_result) {
-          var movie_count = movie_result.rows.length;
-          var draw_content = function(){};
+    ncmb.User.login(username, password).then(function(data){
+      // ログイン後に映画情報をデータベースから取得
+      var query = 'SELECT tmdb_id FROM movie';
+      return db_method.single_statement_execute(query,[]);
+    })
+    .then(function(movie_result) {
+      var movie_count = movie_result.rows.length;
+      var draw_content = function(){};
 
-          //ローカルに保存されている映画情報の件数で表示内容を変える
-          if (movie_count === 0) {
-              draw_content = function(){
-                  document.getElementById('nodata_message').innerHTML = '登録された映画はありません';
-              };
-          }else {
-              draw_content = function(){
-                  return new Promise(function(resolve,reject) {
-                      var result = [];
-                      var db = utility.get_database();
-                      db.readTransaction(function(tx) {
-                          tx.executeSql('SELECT title,genre_id,onomatopoeia_id,tmdb_id,poster,dvd,fav FROM movie', [], function(tx, resultSet) {
-                              result.push(resultSet);
+      //ローカルに保存されている映画情報の件数で表示内容を変える
+      if (movie_count === 0) {
+        draw_content = function(){
+          document.getElementById('nodata_message').innerHTML = '登録された映画はありません';
+        };
+      }else {
+        draw_content = function(){
+          return new Promise(function(resolve,reject) {
+            var result = [];
+            var db = utility.get_database();
+            db.readTransaction(function(tx) {
+              tx.executeSql('SELECT title,genre_id,onomatopoeia_id,tmdb_id,poster,dvd,fav FROM movie', [], function(tx, resultSet) {
+                result.push(resultSet);
 
-                              tx.executeSql('SELECT id,name FROM genre', [], function(tx, resultSet) {
-                                  result.push(resultSet);
+                tx.executeSql('SELECT id,name FROM genre', [], function(tx, resultSet) {
+                  result.push(resultSet);
 
-                                  tx.executeSql('SELECT id,name FROM onomatopoeia', [], function(tx, resultSet) {
-                                      result.push(resultSet);
-                                  }, function(tx, error) {
-                                      console.log('SELECT error: ' + error.message);
-                                      reject(error.message);
-                                  });
-                              });
-                          });
-                      }, function(error) {
-                          console.log('transaction error: ' + error.message);
-                          reject(error.message);
-                      }, function() {
-                          resolve(result);
-                      });
-                  })
-                  .then(function(result) {
-                      //result[0]：movie
-                      //result[1]：genre
-                      //result[2]：onomatopoeia
-
-                       var movies_area = document.getElementById('movie_collection');
-                       movie_count = result[0].rows.length;
-
-                      /*** 1行ずつ書き込み ***/
-                      var left_index = movie_count - 1;
-                      var right_index = movie_count - 2;
-
-                      //[0]:灰色、[1]:オレンジ色、[2]:朱色
-                      var color_code =utility.get_color_code('movies');
-
-
-                      // ここからrow1つで書き込むテスト
-                      var col_html = '';
-                      for(var k = 0; k < movie_count; k++) {
-                          var movie_record = result[0].rows.item(k);
-                          var buttoncolor_code = {dvd:'', fav:''};
-
-                          if (movie_record.dvd == 1) {
-                              buttoncolor_code.dvd = color_code[1];
-                          }else {
-                              buttoncolor_code.dvd = color_code[0];
-                          }
-
-                          if (movie_record.fav == 1) {
-                              buttoncolor_code.fav = color_code[2];
-                          }else {
-                              buttoncolor_code.fav = color_code[0];
-                          }
-
-                          var cell = ['<ons-col width="50vw" class="movies_col">',
-                                          '<img class="movies_image" src="'+ movie_record.poster +'">',
-                                          '<div class="movies_onomatopoeia_area"><ons-row><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col></ons-row></div>',
-                                          '<div class="movies_dvd_fab_area"><ons-row>',
-                                          '<ons-col width="50%;" class="movies_dvd_fab" style="border-bottom-right-radius: 0px; border-left: none;"><ons-button id="dvd_'+ movie_record.tmdb_id +'" onclick="movie.tap_dvd_fav(this.id,0)" modifier="quiet" style="color: '+ buttoncolor_code.dvd +'; width: 100%;"><ons-icon icon="ion-disc" size="32px, material:24px style="padding: 0px 3px;"></ons-button></ons-col>',
-                                          '<ons-col width="50%;" class="movies_dvd_fab" style="border-bottom-left-radius: 0px; border-right: none;"><ons-button id="fav_'+ movie_record.tmdb_id +'" onclick="movie.tap_dvd_fav(this.id,1)" modifier="quiet" style="color: '+ buttoncolor_code.fav +'; width: 100%;"><ons-icon size="32px, material:24px" icon="ion-android-favorite" style="padding: 0px 3px;"></ons-button></ons-col>',
-                                          '</ons-row></div>',
-                                          '</ons-col>'];
-
-
-                          col_html += cell.join('');
-                      }
-
-                      movies_area.innerHTML = '<ons-row>' + col_html + '</ons-row>';
+                  tx.executeSql('SELECT id,name FROM onomatopoeia', [], function(tx, resultSet) {
+                    result.push(resultSet);
+                  },
+                  function(tx, error) {
+                    console.log('SELECT error: ' + error.message);
+                    reject(error.message);
                   });
-              };
-          }
+                });
+              });
+            },
+            function(error) {
+              console.log('transaction error: ' + error.message);
+              reject(error.message);
+            },
+            function() {
+              resolve(result);
+            });
+          })
+          .then(function(result) {
+            //result[0]：movie
+            //result[1]：genre
+            //result[2]：onomatopoeia
 
-          utility.check_page_init('movies',draw_content);
-      })
-      .then(function() {
-          utility.pushpage('tab.html','fade',0);
-      })
-      .catch(function(err) {
-          //ログインエラー or レコード件数取得エラー
-          console.log(err);
-      });
+             var movies_area = document.getElementById('movie_collection');
+             movie_count = result[0].rows.length;
+
+            /*** 1行ずつ書き込み ***/
+            var left_index = movie_count - 1;
+            var right_index = movie_count - 2;
+
+            //[0]:灰色、[1]:オレンジ色、[2]:朱色
+            var color_code =utility.get_color_code('movies');
+
+
+            // ここからrow1つで書き込むテスト
+            var col_html = '';
+            for(var k = 0; k < movie_count; k++) {
+              var movie_record = result[0].rows.item(k);
+              var buttoncolor_code = {dvd:'', fav:''};
+
+              if (movie_record.dvd == 1) {
+                buttoncolor_code.dvd = color_code[1];
+              }else {
+                buttoncolor_code.dvd = color_code[0];
+              }
+
+              if (movie_record.fav == 1) {
+                buttoncolor_code.fav = color_code[2];
+              }else {
+                buttoncolor_code.fav = color_code[0];
+              }
+
+              var cell = ['<ons-col width="50vw" class="movies_col">',
+                          '<img class="movies_image" src="'+ movie_record.poster +'">',
+                          '<div class="movies_onomatopoeia_area"><ons-row><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col></ons-row></div>',
+                          '<div class="movies_dvd_fab_area"><ons-row>',
+                          '<ons-col width="50%;" class="movies_dvd_fab" style="border-bottom-right-radius: 0px; border-left: none;"><ons-button id="dvd_'+ movie_record.tmdb_id +'" onclick="movie.tap_dvd_fav(this.id,0)" modifier="quiet" style="color: '+ buttoncolor_code.dvd +'; width: 100%;"><ons-icon icon="ion-disc" size="32px, material:24px style="padding: 0px 3px;"></ons-button></ons-col>',
+                          '<ons-col width="50%;" class="movies_dvd_fab" style="border-bottom-left-radius: 0px; border-right: none;"><ons-button id="fav_'+ movie_record.tmdb_id +'" onclick="movie.tap_dvd_fav(this.id,1)" modifier="quiet" style="color: '+ buttoncolor_code.fav +'; width: 100%;"><ons-icon size="32px, material:24px" icon="ion-android-favorite" style="padding: 0px 3px;"></ons-button></ons-col>',
+                          '</ons-row></div>',
+                          '</ons-col>'];
+
+
+              col_html += cell.join('');
+            }
+
+            movies_area.innerHTML = '<ons-row>' + col_html + '</ons-row>';
+          });
+        };
+      }
+
+      utility.check_page_init('movies',draw_content);
+    })
+    .then(function() {
+      utility.pushpage('tab.html','fade',0);
+    })
+    .catch(function(err) {
+      //ログインエラー or レコード件数取得エラー
+      console.log(err);
+    });
   },
 
 
@@ -367,63 +370,63 @@ var movie = {
    * @param  {[number]} flag    [0:DVD, 1:FAV]
    */
   tap_dvd_fav: function(id,flag) {
-      var tmdb_id = Number(id.substring(id.indexOf('_')+1,id.length));
+    var tmdb_id = Number(id.substring(id.indexOf('_')+1,id.length));
 
-      /*** タップしたボタンに該当する項目の更新をする ***/
-      var query = 'SELECT dvd,fav FROM movie WHERE tmdb_id = ?';
-      db_method.single_statement_execute(query,[tmdb_id]).then(function(result) {
-          var query_obj = {query:'', data:[]};
+    /*** タップしたボタンに該当する項目の更新をする ***/
+    var query = 'SELECT dvd,fav FROM movie WHERE tmdb_id = ?';
+    db_method.single_statement_execute(query,[tmdb_id]).then(function(result) {
+      var query_obj = {query:'', data:[]};
 
-          if (flag === 0) {
-              query_obj.query = 'UPDATE movie SET dvd = ? WHERE tmdb_id = ?';
+      if (flag === 0) {
+        query_obj.query = 'UPDATE movie SET dvd = ? WHERE tmdb_id = ?';
 
-              if (result.rows.item(0).dvd === 0) {
-                  query_obj.data = [1,tmdb_id];
-              }else {
-                  query_obj.data = [0,tmdb_id];
-              }
-          }else {
-              query_obj.query = 'UPDATE movie SET fav = ? WHERE tmdb_id = ?';
+        if (result.rows.item(0).dvd === 0) {
+          query_obj.data = [1,tmdb_id];
+        }else {
+          query_obj.data = [0,tmdb_id];
+        }
+      }else {
+        query_obj.query = 'UPDATE movie SET fav = ? WHERE tmdb_id = ?';
 
-              if (result.rows.item(0).fav === 0) {
-                  query_obj.data = [1,tmdb_id];
-              }else {
-                  query_obj.data = [0,tmdb_id];
-              }
-          }
+        if (result.rows.item(0).fav === 0) {
+          query_obj.data = [1,tmdb_id];
+        }else {
+          query_obj.data = [0,tmdb_id];
+        }
+      }
 
-          return db_method.single_statement_execute(query_obj.query,query_obj.data);
-      }).then(function(result) {
-          /*** 更新後にボタンの色を変更する ***/
+    return db_method.single_statement_execute(query_obj.query,query_obj.data);
+    }).then(function(result) {
+      /*** 更新後にボタンの色を変更する ***/
 
-          var lead_id = '';
-          var color_code = '';
-          var movies_color_code = utility.get_color_code('movies');
+      var lead_id = '';
+      var color_code = '';
+      var movies_color_code = utility.get_color_code('movies');
 
-          if (flag === 0) {
-              lead_id = 'dvd';
-              color_code = movies_color_code[1];
-          }else {
-              lead_id = 'fav';
-              color_code = movies_color_code[2];
-          }
+      if (flag === 0) {
+        lead_id = 'dvd';
+        color_code = movies_color_code[1];
+      }else {
+        lead_id = 'fav';
+        color_code = movies_color_code[2];
+      }
 
-          //タップしたボタンの色を取得してhexへ変換
-          var current_color_rgb = document.getElementById(lead_id+'_'+tmdb_id).style.color;
-          var color = new RGBColor(current_color_rgb);
-          var current_color_hex = color.toHex();
+      //タップしたボタンの色を取得してhexへ変換
+      var current_color_rgb = document.getElementById(lead_id+'_'+tmdb_id).style.color;
+      var color = new RGBColor(current_color_rgb);
+      var current_color_hex = color.toHex();
 
-          //ボタン色が灰色の場合は色を付ける、色がついている場合は灰色にする
-          if (current_color_hex == movies_color_code[0]) {
-              document.getElementById(lead_id+'_'+tmdb_id).style.color = color_code;
-          }else {
-              document.getElementById(lead_id+'_'+tmdb_id).style.color = movies_color_code[0];
-          }
-      })
-      .catch(function(err) {
-          console.log(err);
-          utility.show_error_alert('更新エラー','更新時にエラーが発生しました','OK');
-      });
+      //ボタン色が灰色の場合は色を付ける、色がついている場合は灰色にする
+      if (current_color_hex == movies_color_code[0]) {
+        document.getElementById(lead_id+'_'+tmdb_id).style.color = color_code;
+      }else {
+        document.getElementById(lead_id+'_'+tmdb_id).style.color = movies_color_code[0];
+      }
+    })
+    .catch(function(err) {
+      console.log(err);
+      utility.show_error_alert('更新エラー','更新時にエラーが発生しました','OK');
+    });
   },
 };
 
@@ -433,10 +436,10 @@ var movieadd_search = {
    * Searchボタン(改行)を押した際に動作
    */
   click_done: function(){
-      //console.log('click_done');
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+    //console.log('click_done');
+    cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 
-      document.getElementById('search_movie_title').blur();        
+    document.getElementById('search_movie_title').blur();        
   },
 
 
@@ -444,21 +447,21 @@ var movieadd_search = {
    * バツボタンをタップした際に動作
    */
   tap_reset: function(){
-      //formのテキストを初期化、バツボタンの削除、検索結果なしメッセージの削除
-      document.getElementById('search_movie_title').value = '';
-      document.getElementById('movieadd_search_reset').innerHTML = '';
-      document.getElementById('movieadd_no_match_message').innerHTML = '';
-      movieadd_search.not_show_list();
+    //formのテキストを初期化、バツボタンの削除、検索結果なしメッセージの削除
+    document.getElementById('search_movie_title').value = '';
+    document.getElementById('movieadd_search_reset').innerHTML = '';
+    document.getElementById('movieadd_no_match_message').innerHTML = '';
+    movieadd_search.not_show_list();
 
-      //テキスト未確定入力時にリセットボタンを押した時
-     if ($(':focus').attr('id') == 'search_movie_title') {
-      document.getElementById('search_movie_title').blur();
-      document.getElementById('search_movie_title').focus();
+    //テキスト未確定入力時にリセットボタンを押した時
+   if ($(':focus').attr('id') == 'search_movie_title') {
+    document.getElementById('search_movie_title').blur();
+    document.getElementById('search_movie_title').focus();
 
-      //テキスト入力確定後にリセットボタンを押した時
-     }else {
-      document.getElementById('search_movie_title').focus();
-     }
+    //テキスト入力確定後にリセットボタンを押した時
+   }else {
+    document.getElementById('search_movie_title').focus();
+   }
   },
 
 
@@ -466,8 +469,8 @@ var movieadd_search = {
    * movieadd_searchのsearch-input横にあるキャンセルボタンをタップ(バックボタンも)した際に前のページへ画面遷移する
    */
   tap_cancel: function(){
-      document.getElementById('myNavigator').popPage({refresh:true});
-      //console.log("tap_cancel");
+    document.getElementById('myNavigator').popPage({refresh:true});
+    //console.log("tap_cancel");
   },
 
 
@@ -477,38 +480,38 @@ var movieadd_search = {
    */
   set_animation_movieadd_search_input: function(event_name) {
 
-      //検索フィールドにフォーカスした時のアニメーション
-      if (event_name == 'focus') {
-          //console.log("focus");
+    //検索フィールドにフォーカスした時のアニメーション
+    if (event_name == 'focus') {
+      //console.log("focus");
 
-          //検索窓の入力を監視するイベントを追加する
-          $('#search_movie_title').on('input', movieadd_search.get_search_movie_title_val);
+      //検索窓の入力を監視するイベントを追加する
+      $('#search_movie_title').on('input', movieadd_search.get_search_movie_title_val);
 
-          $('#movieadd_search_backbutton').animate({opacity: 0},{queue: false, duration: 200}).animate({marginLeft: '-40px'}, {queue: false, duration: 200});
+      $('#movieadd_search_backbutton').animate({opacity: 0},{queue: false, duration: 200}).animate({marginLeft: '-40px'}, {queue: false, duration: 200});
 
-          $('#search_movie_title').animate({width: '150%'},{queue: false, duration: 200});
+      $('#search_movie_title').animate({width: '150%'},{queue: false, duration: 200});
 
-          $('#movieadd_search_cancel_button').html('キャンセル');
-          $('#movieadd_search_cancel_button').animate({marginLeft: '45px'},{queue: false, duration: 200}).animate({opacity: 1},{queue: false, duration: 200});
+      $('#movieadd_search_cancel_button').html('キャンセル');
+      $('#movieadd_search_cancel_button').animate({marginLeft: '45px'},{queue: false, duration: 200}).animate({opacity: 1},{queue: false, duration: 200});
 
-          $('#movieadd_reset_button').animate({margin: '0px 0px 0px -100px'},{queue: false, duration: 200});
+      $('#movieadd_reset_button').animate({margin: '0px 0px 0px -100px'},{queue: false, duration: 200});
 
-      //検索フィールドのフォーカスが外れた時のアニメーション
-      } else if (event_name == 'blur') {
-          //console.log("blur");
-          movieadd_search.get_search_movie_title_val();
+    //検索フィールドのフォーカスが外れた時のアニメーション
+    } else if (event_name == 'blur') {
+      //console.log("blur");
+      movieadd_search.get_search_movie_title_val();
 
-          //検索窓の入力を監視するイベントを削除する
-          $('#search_movie_title').off('input', movieadd_search.get_search_movie_title_val);
+      //検索窓の入力を監視するイベントを削除する
+      $('#search_movie_title').off('input', movieadd_search.get_search_movie_title_val);
 
-          $('#movieadd_search_backbutton').animate({marginLeft: '0px'},{queue: false , duration: 200}).animate({opacity: 1},{queue: false , duration: 200});
+      $('#movieadd_search_backbutton').animate({marginLeft: '0px'},{queue: false , duration: 200}).animate({opacity: 1},{queue: false , duration: 200});
 
-          $('#search_movie_title').animate({width: '170%'},{queue: false, duration: 200});
+      $('#search_movie_title').animate({width: '170%'},{queue: false, duration: 200});
 
-          $('#movieadd_search_cancel_button').animate({marginLeft: '500px'},{queue: false, duration: 200}).animate({opacity: 0},{queue: false , duration: 200});
+      $('#movieadd_search_cancel_button').animate({marginLeft: '500px'},{queue: false, duration: 200}).animate({opacity: 0},{queue: false , duration: 200});
 
-          $('#movieadd_reset_button').animate({margin: '0px 0px 0px -60px'},{queue: false, duration: 200});
-      }
+      $('#movieadd_reset_button').animate({margin: '0px 0px 0px -60px'},{queue: false, duration: 200});
+    }
   },
 
   show_list_data: [],     //listに表示中のデータを格納する
@@ -519,124 +522,124 @@ var movieadd_search = {
    * 検索窓の文字数が1以上ならリセットボタンを表示させる
    */
   get_search_movie_title_val: function(){
-      var text = document.getElementById('search_movie_title').value;
-      var resetbutton = document.getElementById('movieadd_search_reset');
-      var no_match_message = document.getElementById('movieadd_no_match_message');
+    var text = document.getElementById('search_movie_title').value;
+    var resetbutton = document.getElementById('movieadd_search_reset');
+    var no_match_message = document.getElementById('movieadd_no_match_message');
 
-      if (text.length > 0) {
-          //テキストエリアのリセットボタン表示、スピナー表示
-          resetbutton.innerHTML = '<ons-button id="movieadd_reset_button" onclick="movieadd_search.tap_reset()" style="margin: 0px 0px 0px -100px;" modifier="quiet"><ons-icon icon="ion-close-circled"></ons-icon></ons-button>';
-          utility.show_spinner('movieadd_no_match_message');
+    if (text.length > 0) {
+      //テキストエリアのリセットボタン表示、スピナー表示
+      resetbutton.innerHTML = '<ons-button id="movieadd_reset_button" onclick="movieadd_search.tap_reset()" style="margin: 0px 0px 0px -100px;" modifier="quiet"><ons-icon icon="ion-close-circled"></ons-icon></ons-button>';
+      utility.show_spinner('movieadd_no_match_message');
 
-          //日本語と英語のリクエスト、ローカルDBから記録した映画リストの取得を行う
-          var query = 'SELECT tmdb_id, dvd FROM movie';
-          var promises = [movieadd_search.create_request_movie_search(text,'ja'),movieadd_search.create_request_movie_search(text,'en'), db_method.single_statement_execute(query,[])];
+      //日本語と英語のリクエスト、ローカルDBから記録した映画リストの取得を行う
+      var query = 'SELECT tmdb_id, dvd FROM movie';
+      var promises = [movieadd_search.create_request_movie_search(text,'ja'),movieadd_search.create_request_movie_search(text,'en'), db_method.single_statement_execute(query,[])];
 
-          Promise.all(promises).then(function(results) {
-              //idだけの配列を作成
-              var local_tmdb_id = [];
-              var local_dvd = [];
-              for(var i = 0; i < results[2].rows.length; i++) {
-                  local_tmdb_id.push(results[2].rows.item(i).tmdb_id);
-                  local_dvd.push(results[2].rows.item(i).dvd);
-              }
+      Promise.all(promises).then(function(results) {
+        //idだけの配列を作成
+        var local_tmdb_id = [];
+        var local_dvd = [];
+        for(var i = 0; i < results[2].rows.length; i++) {
+            local_tmdb_id.push(results[2].rows.item(i).tmdb_id);
+            local_dvd.push(results[2].rows.item(i).dvd);
+        }
 
-              utility.stop_spinner();
+        utility.stop_spinner();
 
-              //検索結果として表示するデータを生成する
-              var list_data = movieadd_search.create_list_data(results[0],results[1]);
-              movieadd_search.show_list_data = list_data;
+        //検索結果として表示するデータを生成する
+        var list_data = movieadd_search.create_list_data(results[0],results[1]);
+        movieadd_search.show_list_data = list_data;
 
-              //データによって表示するコンテンツを動的に変える
-              if (list_data.length === 0) {
-                  no_match_message.innerHTML = '検索結果なし';
-                  
-                   $('#movieadd_no_match_message').css('height', '100%');
-                  movieadd_search.not_show_list();
-              }else{
-                  no_match_message.innerHTML = '';
-
-                   $('#movieadd_no_match_message').css('height', '0%');
-                                     
-                  var list_data_poster = movieadd_search.get_poster(list_data);
-
-                  //サムネイル取得後にリストを表示する
-                  var movieadd_SearchList = document.getElementById('movieadd_search_list');
-                  var list_doc = [];
-
-                  for(i = 0; i < list_data.length; i++) {
-                      var movie_releasedate = '公開日：';
-                      var exist_message = [];
-                      var exist_flag = '';
-
-                      /*ローカルに保存済みの映画は
-                      ・IDにexistを追記
-                      ・チェックマークと追加済みのメッセージを表示
-                      */
-                      var index = local_tmdb_id.indexOf(list_data[i].id);
-                      if (index == -1) {
-                          exist_message = [''];
-                          exist_flag = '';
-                      }else {
-                          exist_message = ['<div class="exist_message">',
-                                           '<ons-icon icon="ion-ios-checkmark-outline"></ons-icon>',
-                                           '</div>'];
-                          exist_flag = 'exist';
-                      }
-
-                      //TMDBから取得したrelease_dateが空だった場合は情報なしを代入する
-                      var date = list_data[i].release_date;
-                      if (date.length === 0) {
-                          movie_releasedate += '情報なし';
-                      }else {
-                          movie_releasedate += list_data[i].release_date;
-                      }
-
-                      var list_item_doc = ['<ons-list-item id="'+ i +'" name="' + exist_flag + '" modifier="longdivider chevron" tappable="true" onclick="movieadd_search.tap_list(this)">',
-                                          '<div class="left">',
-                                          '<img id="'+ i +'_img" style="box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.5); width: 80px; height: 120px; background:url(img/loading.gif) no-repeat center;" class="list__item__thumbnail" src="'+ list_data_poster[i] +'">',
-                                          '</div>',
-                                          '<div class="center">',
-                                          '<span class="list__item__title" style="font-weight: 700;">'+ list_data[i].title +'</span>',
-                                          '<span id="overview_'+i +'" class="list__item__subtitle">'+ list_data[i].overview +'</span>',
-                                          '<span class="list__item__subtitle">'+ movie_releasedate +'</span>',
-                                          '</div>',
-                                          exist_message.join(''),
-                                          '</ons-list-item>'];
-                      list_doc.push(list_item_doc.join(''));
-                  }
-
-                  movieadd_SearchList.innerHTML = list_doc.join('');
-
-                  //overviewが長すぎて範囲内に収まらない場合に文字列をカットする処理
-                  for(i = 0; i < list_data.length; i++) {
-                      var flag = false;
-                      var span = document.getElementById('overview_'+i);
-                      var span_height = span.offsetHeight;
-                      var copy_overview = list_data[i].overview;
-
-                      while(span_height > 80 && copy_overview.length > 0) {
-                          flag = true;
-                          copy_overview = copy_overview.substr(0, copy_overview.length-5);
-                          document.getElementById('overview_'+i).innerHTML = copy_overview;
-                          span_height = document.getElementById('overview_'+i).offsetHeight;
-                      }
-
-                      if (flag) {
-                          document.getElementById('overview_'+i).innerHTML += '…';
-                      }
-                  }
-              }
-
-          }, function(reason) {
-            console.log(reason);
-          });
-
-      } else {
-          resetbutton.innerHTML = '';
-          no_match_message.innerHTML = '';
+        //データによって表示するコンテンツを動的に変える
+        if (list_data.length === 0) {
+          no_match_message.innerHTML = '検索結果なし';
+          
+          $('#movieadd_no_match_message').css('height', '100%');
           movieadd_search.not_show_list();
-      }
+        }else{
+          no_match_message.innerHTML = '';
+
+          $('#movieadd_no_match_message').css('height', '0%');
+                               
+          var list_data_poster = movieadd_search.get_poster(list_data);
+
+          //サムネイル取得後にリストを表示する
+          var movieadd_SearchList = document.getElementById('movieadd_search_list');
+          var list_doc = [];
+
+          for(i = 0; i < list_data.length; i++) {
+            var movie_releasedate = '公開日：';
+            var exist_message = [];
+            var exist_flag = '';
+
+            /*ローカルに保存済みの映画は
+            ・IDにexistを追記
+            ・チェックマークと追加済みのメッセージを表示
+            */
+            var index = local_tmdb_id.indexOf(list_data[i].id);
+            if (index == -1) {
+              exist_message = [''];
+              exist_flag = '';
+            }else {
+              exist_message = ['<div class="exist_message">',
+                               '<ons-icon icon="ion-ios-checkmark-outline"></ons-icon>',
+                               '</div>'];
+              exist_flag = 'exist';
+            }
+
+            //TMDBから取得したrelease_dateが空だった場合は情報なしを代入する
+            var date = list_data[i].release_date;
+            if (date.length === 0) {
+              movie_releasedate += '情報なし';
+            }else {
+              movie_releasedate += list_data[i].release_date;
+            }
+
+            var list_item_doc = ['<ons-list-item id="'+ i +'" name="' + exist_flag + '" modifier="longdivider chevron" tappable="true" onclick="movieadd_search.tap_list(this)">',
+                                 '<div class="left">',
+                                 '<img id="'+ i +'_img" style="box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.5); width: 80px; height: 120px; background:url(img/loading.gif) no-repeat center;" class="list__item__thumbnail" src="'+ list_data_poster[i] +'">',
+                                 '</div>',
+                                 '<div class="center">',
+                                 '<span class="list__item__title" style="font-weight: 700;">'+ list_data[i].title +'</span>',
+                                 '<span id="overview_'+i +'" class="list__item__subtitle">'+ list_data[i].overview +'</span>',
+                                 '<span class="list__item__subtitle">'+ movie_releasedate +'</span>',
+                                 '</div>',
+                                 exist_message.join(''),
+                                 '</ons-list-item>'];
+            list_doc.push(list_item_doc.join(''));
+          }
+
+          movieadd_SearchList.innerHTML = list_doc.join('');
+
+          //overviewが長すぎて範囲内に収まらない場合に文字列をカットする処理
+          for(i = 0; i < list_data.length; i++) {
+            var flag = false;
+            var span = document.getElementById('overview_'+i);
+            var span_height = span.offsetHeight;
+            var copy_overview = list_data[i].overview;
+
+            while(span_height > 80 && copy_overview.length > 0) {
+              flag = true;
+              copy_overview = copy_overview.substr(0, copy_overview.length-5);
+              document.getElementById('overview_'+i).innerHTML = copy_overview;
+              span_height = document.getElementById('overview_'+i).offsetHeight;
+            }
+
+            if (flag) {
+              document.getElementById('overview_'+i).innerHTML += '…';
+            }
+          }
+        }
+
+      }, function(reason) {
+        console.log(reason);
+      });
+
+    } else {
+      resetbutton.innerHTML = '';
+      no_match_message.innerHTML = '';
+      movieadd_search.not_show_list();
+    }
   },
 
   
@@ -647,24 +650,24 @@ var movieadd_search = {
    * @return {[json]}             [検索結果をjsonに変換したもの]
    */
   create_request_movie_search: function(movie_title, language){
-      return new Promise(function(resolve, reject) {
-          var request = new XMLHttpRequest();
-          var api_key = utility.get_tmdb_apikey();
-          var request_url = 'http://api.themoviedb.org/3/search/movie?query=' +movie_title +'&api_key=' + api_key + '&language=' +language;
+    return new Promise(function(resolve, reject) {
+      var request = new XMLHttpRequest();
+      var api_key = utility.get_tmdb_apikey();
+      var request_url = 'http://api.themoviedb.org/3/search/movie?query=' +movie_title +'&api_key=' + api_key + '&language=' +language;
 
-          request.open('GET', request_url);
+      request.open('GET', request_url);
 
-          request.setRequestHeader('Accept', 'application/json');
+      request.setRequestHeader('Accept', 'application/json');
 
-          request.onreadystatechange = function () {
-              if (this.readyState === 4) {
-                  var contact = JSON.parse(this.responseText);
-                  resolve(contact);
-              }
-          };
+      request.onreadystatechange = function () {
+        if (this.readyState === 4) {
+          var contact = JSON.parse(this.responseText);
+          resolve(contact);
+        }
+      };
 
-          request.send();
-      });
+      request.send();
+    });
   },
 
   /**
@@ -674,40 +677,40 @@ var movieadd_search = {
    * @return {[array]}       [jaとen検索結果をまとめた配列]
    */
   create_list_data: function(ja_results_json,en_results_json){
-      if (ja_results_json.length === 0 && en_results_json.length === 0) {
-          return [];
-      }else{
-          var list_data = [];                     //overviewが空文字でないオブジェクトを格納する
-          var overview_nodata = [];               //overviewが空文字のオブジェクトのidプロパティを格納する
+    if (ja_results_json.length === 0 && en_results_json.length === 0) {
+      return [];
+    }else{
+      var list_data = [];                     //overviewが空文字でないオブジェクトを格納する
+      var overview_nodata = [];               //overviewが空文字のオブジェクトのidプロパティを格納する
 
-          var ja_results = ja_results_json.results;
-          var en_results = en_results_json.results;
+      var ja_results = ja_results_json.results;
+      var en_results = en_results_json.results;
 
-          /*ja_resutlsの中でoverviewが空文字でないオブジェクトをlist_dataに格納する
-          overviewが空文字のオブジェクトidをoverview_nodataに格納する*/
-          for(var i = 0; i < ja_results.length; i++){
-              var ja_overview_text = ja_results[i].overview;
-              if (ja_overview_text.length !== 0) {
-                  list_data.push(ja_results[i]);
-              }else{
-                  overview_nodata.push(ja_results[i].id);
-              }
-          }
-
-          //en_resultsの中からoverview_nodataに格納されているidと一致したオブジェクトをlist_dataに格納する
-          for(var j = 0; j < overview_nodata.length; j++){
-              for(var k = 0; k < en_results.length; k++){
-                  var nodata_id = overview_nodata[j];
-                  var en_id = en_results[k].id;
-
-                  if (nodata_id == en_id) {
-                      list_data.push(en_results[k]);
-                  }
-              }
-          }
-
-          return list_data;
+      /*ja_resutlsの中でoverviewが空文字でないオブジェクトをlist_dataに格納する
+      overviewが空文字のオブジェクトidをoverview_nodataに格納する*/
+      for(var i = 0; i < ja_results.length; i++){
+        var ja_overview_text = ja_results[i].overview;
+        if (ja_overview_text.length !== 0) {
+          list_data.push(ja_results[i]);
+        }else{
+          overview_nodata.push(ja_results[i].id);
+        }
       }
+
+      //en_resultsの中からoverview_nodataに格納されているidと一致したオブジェクトをlist_dataに格納する
+      for(var j = 0; j < overview_nodata.length; j++){
+        for(var k = 0; k < en_results.length; k++){
+          var nodata_id = overview_nodata[j];
+          var en_id = en_results[k].id;
+
+          if (nodata_id == en_id) {
+            list_data.push(en_results[k]);
+          }
+        }
+      }
+
+      return list_data;
+    }
   },
 
   /**
@@ -716,42 +719,42 @@ var movieadd_search = {
    * @return {[string]}           [画像のパス]
    */
   get_poster: function(list_data){
-      var image_url_array = [];
+    var image_url_array = [];
 
-      //画像を配列に格納する
-      for(var i = 0; i < list_data.length; i++){
-          var poster_path = list_data[i].poster_path;
-          var url = '';
+    //画像を配列に格納する
+    for(var i = 0; i < list_data.length; i++){
+      var poster_path = list_data[i].poster_path;
+      var url = '';
 
-          if (poster_path !== null) {
-              url = 'https://image.tmdb.org/t/p/w300_and_h450_bestv2' + poster_path;
-              image_url_array.push(url);
-          }else{
-              url = 'img/noimage.png';
-              image_url_array.push(url);
-          }
+      if (poster_path !== null) {
+        url = 'https://image.tmdb.org/t/p/w300_and_h450_bestv2' + poster_path;
+        image_url_array.push(url);
+      }else{
+        url = 'img/noimage.png';
+        image_url_array.push(url);
       }
-      return image_url_array;
+    }
+    return image_url_array;
   },
 
   /**
    * リストのコンテンツを非表示にする
    */
   not_show_list: function(){
-      var infiniteList = document.getElementById('movieadd_search_list');
-      infiniteList.delegate = {
-          createItemContent: function(i) {
-              return ons._util.createElement();
-          },
-                                          
-          countItems: function() {
-              return 0;
-          },
+    var infiniteList = document.getElementById('movieadd_search_list');
+    infiniteList.delegate = {
+      createItemContent: function(i) {
+        return ons._util.createElement();
+      },
+                                      
+      countItems: function() {
+        return 0;
+      },
 
-          calculateItemHeight: function() {
-              return ons.platform.isAndroid() ? 48 : 100;
-          }
-      };
+      calculateItemHeight: function() {
+        return ons.platform.isAndroid() ? 48 : 100;
+      }
+    };
   },
 
 
@@ -760,23 +763,23 @@ var movieadd_search = {
    * @param  {[object]} obj [タップしたオブジェクト]
    */
   tap_list: function(obj){
-      //キャンセルボタンが移動しきれない場合があるため強制的に移動させる
-      document.getElementById('movieadd_search_cancel_button').style.marginLeft = '500px';
-      
-      var list_data = movieadd_search.show_list_data;
-      var tap_id = obj.id;
-      var myNavigator = document.getElementById('myNavigator');
+    //キャンセルボタンが移動しきれない場合があるため強制的に移動させる
+    document.getElementById('movieadd_search_cancel_button').style.marginLeft = '500px';
+    
+    var list_data = movieadd_search.show_list_data;
+    var tap_id = obj.id;
+    var myNavigator = document.getElementById('myNavigator');
 
-      //movieaddの画面初期化後に動作する関数を定義
-      var callback = function(){
-          movieadd.show_contents(list_data,tap_id);
-      };
-      utility.check_page_init('movieadd',callback);
+    //movieaddの画面初期化後に動作する関数を定義
+    var callback = function(){
+      movieadd.show_contents(list_data,tap_id);
+    };
+    utility.check_page_init('movieadd',callback);
 
-      movieadd.current_movie = list_data[tap_id];
+    movieadd.current_movie = list_data[tap_id];
 
-      //映画追加画面へ遷移
-      myNavigator.pushPage('movieadd.html', {});
+    //映画追加画面へ遷移
+    myNavigator.pushPage('movieadd.html', {});
   },
 };
 
