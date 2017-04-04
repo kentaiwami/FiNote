@@ -22,7 +22,7 @@ var app = {
     var db = utility.get_database();
 
     db.transaction(function(tx) {
-      tx.executeSql('CREATE TABLE IF NOT EXISTS movie (id integer primary key, title text unique, tmdb_id integer unique, genre_id text, onomatopoeia_id text, poster text, dvd integer, fav integer)');
+      tx.executeSql('CREATE TABLE IF NOT EXISTS movie (id integer primary key, title text unique, tmdb_id integer unique, genre_id text, onomatopoeia_id text, poster text, dvd integer, fav integer, add_date text)');
       tx.executeSql('CREATE TABLE IF NOT EXISTS genre (id integer primary key, name text unique)');
       tx.executeSql('CREATE TABLE IF NOT EXISTS onomatopoeia (id integer primary Key, name text)');
     }, function(err) {
