@@ -17,6 +17,7 @@ var app = {
   onDeviceReady: function() {
     //ステータスバーの自動調整を無効にする
     ons.disableAutoStatusBarFill();
+    utility.hideKeyboardAccessoryBar(false);
 
     //データベースのテーブルを構築する
     var db = utility.get_database();
@@ -86,7 +87,7 @@ var index = {
     if (index.formcheck[0] === true && index.formcheck[1] === true) {
       document.getElementById('signup_button').removeAttribute('disabled');
     }else{
-      document.getElementById('signup_button').setAttribute('disabled');
+      document.getElementById('signup_button').setAttribute('disabled', 'disabled');
     }
   },
 };
@@ -173,11 +174,10 @@ var Signup = {
   },
 
   /**
-   * 生年月日を選択させるフォーム
+   * 生年を選択させるフォーム
    */
   birthday_pickerview: function(){
     cordova.plugins.Keyboard.close();
-
     //今年から100年前までの年テキストをオブジェクトとして生成する
     var birthday = document.getElementById('birthday');
     var time = new Date();
@@ -202,8 +202,8 @@ var Signup = {
       items: items_array,
 
       selectedValue: fastvalue,
-      doneButtonLabel: 'Done',
-      cancelButtonLabel: 'Cancel'
+      doneButtonLabel: '完了',
+      cancelButtonLabel: 'キャンセル'
     };
 
     window.plugins.listpicker.showPicker(config, function(item) { 
@@ -215,6 +215,7 @@ var Signup = {
       console.log("You have cancelled");
     });
   },
+
 
   /**
    * 性別を選択するチェックボックスの状態から性別の識別子を返す
@@ -2127,6 +2128,10 @@ var utility = {
       case 'movies':
         return ['#a5a5a5','#ffa500','#FF1D00'];
     }
+  },
+
+  hideKeyboardAccessoryBar:function(bool) {
+    cordova.plugins.Keyboard.hideKeyboardAccessoryBar(bool);
   },
 };
 
