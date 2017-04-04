@@ -1479,56 +1479,55 @@ var movieadd = {
    * @param {[array]} genre_obj_list [ユーザが追加した映画に付与されているジャンルIDにジャンル名をつけたオブジェクト配列]
    */
   set_genre_local: function(genre_obj_list) {
-      return new Promise(function(resolve,reject) {
+    return new Promise(function(resolve,reject) {
+      //テストコード
+      // genre_obj_list.push({'id': 666, 'name': 'hoge4'});
+      // genre_obj_list.push({'id': 555, 'name': 'hoge5'});
+      // genre_obj_list.push({'id': 444, 'name': 'hoge6'});
 
-          //テストコード
-          // genre_obj_list.push({'id': 666, 'name': 'hoge4'});
-          // genre_obj_list.push({'id': 555, 'name': 'hoge5'});
-          // genre_obj_list.push({'id': 444, 'name': 'hoge6'});
+      //ローカルからジャンルリストを取得
+      db_method.single_statement_execute('SELECT id FROM genre',[]).then(function(results) {
+        //ジャンルID(ユーザ登録)だけの配列を作成
+        var genre_id_list = [];
+        for(var i = 0; i < genre_obj_list.length; i++ ){
+          genre_id_list.push(genre_obj_list[i].id);
+        }
 
-          //ローカルからジャンルリストを取得
-          db_method.single_statement_execute('SELECT id FROM genre',[]).then(function(results) {
-              //ジャンルID(ユーザ登録)だけの配列を作成
-              var genre_id_list = [];
-              for(var i = 0; i < genre_obj_list.length; i++ ){
-                  genre_id_list.push(genre_obj_list[i].id);
-              }
+        //ジャンルID(ローカル)だけの配列を作成
+        var genre_id_list_local = [];
+        for(i = 0; i < results.rows.length; i++) {
+          genre_id_list_local.push(results.rows.item(i).id);
+        }
 
-              //ジャンルID(ローカル)だけの配列を作成
-              var genre_id_list_local = [];
-              for(i = 0; i < results.rows.length; i++) {
-                  genre_id_list_local.push(results.rows.item(i).id);
-              }
+        //ローカルから取得したリストにジャンルID(ユーザ登録)が含まれていなければpromiseに登録する
+        var promises = [];
+        for(i = 0; i < genre_id_list.length; i++) {
+          if (genre_id_list_local.indexOf(genre_id_list[i]) == -1) {
+            var index = genre_id_list.indexOf(genre_id_list[i]);
+            var name = genre_obj_list[index].name;
 
-              //ローカルから取得したリストにジャンルID(ユーザ登録)が含まれていなければpromiseに登録する
-              var promises = [];
-              for(i = 0; i < genre_id_list.length; i++) {
-                  if (genre_id_list_local.indexOf(genre_id_list[i]) == -1) {
-                      var index = genre_id_list.indexOf(genre_id_list[i]);
-                      var name = genre_obj_list[index].name;
+            var query = 'INSERT INTO genre(id,name) VALUES(?,?)';
+            var data = [genre_id_list[i], name];
+            promises.push(db_method.single_statement_execute(query,data));
+          }
+        }
 
-                      var query = 'INSERT INTO genre(id,name) VALUES(?,?)';
-                      var data = [genre_id_list[i], name];
-                      promises.push(db_method.single_statement_execute(query,data));
-                  }
-              }
-
-              return promises;
-          })
-          .then(function(promises) {
-              Promise.all(promises).then(function(results) {
-                  resolve(results);
-              })
-              .catch(function(error) {
-                  console.log(error);
-                  reject(error);
-              });
-          })
-          .catch(function(error) {
-              console.log(error);
-              reject(error);
-          });
+        return promises;
+      })
+      .then(function(promises) {
+        Promise.all(promises).then(function(results) {
+          resolve(results);
+        })
+        .catch(function(error) {
+          console.log(error);
+          reject(error);
+        });
+      })
+      .catch(function(error) {
+        console.log(error);
+        reject(error);
       });
+    });
   },
 
   /**
@@ -1537,20 +1536,20 @@ var movieadd = {
    * @param {[string]} name [オノマトペ名]
    */
   set_onomatopoeia_ncmb: function(id,name) {
-      return new Promise(function(resolve,reject) {
-          var ncmb = utility.get_ncmb();
-          var Onomatopoeia = ncmb.DataStore('Onomatopoeia');
-          var onomatopoeia = new Onomatopoeia();
-          onomatopoeia.set('ID', id)
-               .set('Name', name)
-               .save()
-               .then(function(){
-                   resolve('OK');
-               })
-               .catch(function(err){
-                   reject('NCMB_Set_Onomatopoeia_Error');
-               });
-      });
+    return new Promise(function(resolve,reject) {
+      var ncmb = utility.get_ncmb();
+      var Onomatopoeia = ncmb.DataStore('Onomatopoeia');
+      var onomatopoeia = new Onomatopoeia();
+      onomatopoeia.set('ID', id)
+           .set('Name', name)
+           .save()
+           .then(function(){
+             resolve('OK');
+           })
+           .catch(function(err){
+             reject('NCMB_Set_Onomatopoeia_Error');
+           });
+    });
   },
 
   /**
@@ -1558,64 +1557,61 @@ var movieadd = {
    * @param {[array]} onomatopoeia_obj_list [ユーザが追加したオノマトペオブジェクトリスト]
    */
   set_onomatopoeia_local: function(onomatopoeia_obj_list) {
-      return new Promise(function(resolve,reject) {
+    return new Promise(function(resolve,reject) {
+        //ローカルからオノマトペリストを取得
+        db_method.single_statement_execute('SELECT id FROM onomatopoeia', []).then(function(results) {
+          //オノマトペID(ユーザ登録)だけの配列を作成
+          var onomatopoeia_id_list = [];
+          for(var i = 0; i < onomatopoeia_obj_list.length; i++ ){
+            onomatopoeia_id_list.push(onomatopoeia_obj_list[i].id);
+          }
 
+          //オノマトペID(ローカル)だけの配列を作成
+          var onomatopoeia_id_list_local = [];
+          for(i = 0; i < results.rows.length; i++) {
+            onomatopoeia_id_list_local.push(results.rows.item(i).id);
+          }
 
-          //ローカルからオノマトペリストを取得
-          db_method.single_statement_execute('SELECT id FROM onomatopoeia', []).then(function(results) {
-              //オノマトペID(ユーザ登録)だけの配列を作成
-              var onomatopoeia_id_list = [];
-              for(var i = 0; i < onomatopoeia_obj_list.length; i++ ){
-                  onomatopoeia_id_list.push(onomatopoeia_obj_list[i].id);
-              }
+          //ローカルから取得したリストにオノマトペID(ユーザ登録)が含まれていなければpromiseに登録する
+          var promises = [];
+          for(i = 0; i < onomatopoeia_id_list.length; i++) {
+            if (onomatopoeia_id_list_local.indexOf(onomatopoeia_id_list[i]) == -1) {
+              var index = onomatopoeia_id_list.indexOf(onomatopoeia_id_list[i]);
+              var name = onomatopoeia_obj_list[index].name;
 
-              //オノマトペID(ローカル)だけの配列を作成
-              var onomatopoeia_id_list_local = [];
-              for(i = 0; i < results.rows.length; i++) {
-                  onomatopoeia_id_list_local.push(results.rows.item(i).id);
-              }
-
-              //ローカルから取得したリストにオノマトペID(ユーザ登録)が含まれていなければpromiseに登録する
-              var promises = [];
-              for(i = 0; i < onomatopoeia_id_list.length; i++) {
-                  if (onomatopoeia_id_list_local.indexOf(onomatopoeia_id_list[i]) == -1) {
-                      var index = onomatopoeia_id_list.indexOf(onomatopoeia_id_list[i]);
-                      var name = onomatopoeia_obj_list[index].name;
-
-                      var query = 'INSERT INTO onomatopoeia(id,name) VALUES(?,?)';
-                      var data = [onomatopoeia_id_list[i], name];
-                      promises.push(db_method.single_statement_execute(query,data));
-                  }
-              }
-
-              return promises;
-          })
-          .then(function(promises) {
-              Promise.all(promises).then(function(results) {
-                  resolve(results);
-              })
-              .catch(function(error) {
-                  console.log(error);
-                  reject(error);
-              });
+              var query = 'INSERT INTO onomatopoeia(id,name) VALUES(?,?)';
+              var data = [onomatopoeia_id_list[i], name];
+              promises.push(db_method.single_statement_execute(query,data));
+            }
+          }
+          return promises;
+        })
+        .then(function(promises) {
+          Promise.all(promises).then(function(results) {
+            resolve(results);
           })
           .catch(function(error) {
-              console.log(error);
-              reject(error);
-          });   
-      });
+            console.log(error);
+            reject(error);
+          });
+        })
+        .catch(function(error) {
+          console.log(error);
+          reject(error);
+        });   
+    });
   },
 
   /**
    * 映画の詳細を表示している画面の気分リストをタップした際に画面遷移する
    */
   pushpage_feeling: function(){
-      var callback = function(){
-          movieadd_feeling.show_contents();
-      };
+    var callback = function(){
+      movieadd_feeling.show_contents();
+    };
 
-      utility.check_page_init('movieadd_feeling', callback);
-      utility.pushpage('movieadd_feeling.html', 'lift', 0);
+    utility.check_page_init('movieadd_feeling', callback);
+    utility.pushpage('movieadd_feeling.html', 'lift', 0);
   },
 
 
@@ -1623,33 +1619,33 @@ var movieadd = {
    * 映画の詳細を表示している画面のDVDをタップした際に画面遷移する
    */
   pushpage_dvd: function(){
-      var callback = function(){
-          movieadd_dvd.show_contents();
-      };
+    var callback = function(){
+      movieadd_dvd.show_contents();
+    };
 
-      utility.check_page_init('movieadd_dvd', callback);
-      utility.pushpage('movieadd_dvd.html', 'lift', 0);
+    utility.check_page_init('movieadd_dvd', callback);
+    utility.pushpage('movieadd_dvd.html', 'lift', 0);
   },
 
   /**
    * 登録されたリストの件数とDVD所持情報をもとにラベルを更新する関数
    */
   show_feelingAnddvd_label: function(){
-      var list_length = movieadd.userdata.feeling_name_list.length;
-      var dvd_flag = movieadd.userdata.dvd;
-      var dvd = 'No';
+    var list_length = movieadd.userdata.feeling_name_list.length;
+    var dvd_flag = movieadd.userdata.dvd;
+    var dvd = 'No';
 
-      if (dvd_flag) {
-          dvd = 'Yes';
-      }else {
-          dvd = 'No';
-      }
+    if (dvd_flag) {
+      dvd = 'Yes';
+    }else {
+      dvd = 'No';
+    }
 
-      var list_number = document.getElementById('list_number');
-      var have_dvd = document.getElementById('have_dvd');
+    var list_number = document.getElementById('list_number');
+    var have_dvd = document.getElementById('have_dvd');
 
-      list_number.innerHTML = list_length + '件';
-      have_dvd.innerHTML = dvd;
+    list_number.innerHTML = list_length + '件';
+    have_dvd.innerHTML = dvd;
   },
 
 
@@ -1657,113 +1653,111 @@ var movieadd = {
    * 映画追加が完了した後に表示するアラートのOKボタンをタップして動作
    */
   success_movieadd_alert_hide: function() {
-      document.getElementById('success_movieadd_alert').hide().then(function(){
-          //追加した結果を反映させるために検索を行う
-          movieadd_search.get_search_movie_title_val();
-          
-          utility.popPage();
-      });
-
+    document.getElementById('success_movieadd_alert').hide().then(function(){
+      //追加した結果を反映させるために検索を行う
+      movieadd_search.get_search_movie_title_val();
+      
+      utility.popPage();
+    });
   },
 
   /**
    * Twitter、FaceBook、LINEなどのSNSに投稿する
    */
   sns_share: function() {
-      var options = {
-          message: movieadd.current_movie.title + ' #FiNote', // not supported on some apps (Facebook, Instagram)
-          subject: '', // fi. for email
-          files: ['', ''], // an array of filenames either locally or remotely
-          url: 'https://www.themoviedb.org/movie/' + movieadd.current_movie.id,
-          chooserTitle: 'Pick an app' // Android only, you can override the default share sheet title
-      };
+    var options = {
+      message: movieadd.current_movie.title + ' #FiNote', // not supported on some apps (Facebook, Instagram)
+      subject: '', // fi. for email
+      files: ['', ''], // an array of filenames either locally or remotely
+      url: 'https://www.themoviedb.org/movie/' + movieadd.current_movie.id,
+      chooserTitle: 'Pick an app' // Android only, you can override the default share sheet title
+    };
 
-      var onSuccess = function(result) {
-          if (result.app === 'com.apple.UIKit.activity.PostToTwitter' || result.app === 'jp.naver.line.Share') {
+    var onSuccess = function(result) {
+      if (result.app === 'com.apple.UIKit.activity.PostToTwitter' || result.app === 'jp.naver.line.Share') {
+          document.getElementById('success_sns_alert').show();
 
-              document.getElementById('success_sns_alert').show();
+          //映画追加画面のボタンオブジェクト
+          var button_list = [document.getElementById('movieadd_add_button'),document.getElementById('movieadd_pushfeeling_button'),document.getElementById('movieadd_pushdvd_button'),document.getElementById('movieadd_share_button'),document.getElementById('movieadd_show_info_button'),document.getElementById('movieadd_back_button')];
 
-              //映画追加画面のボタンオブジェクト
-              var button_list = [document.getElementById('movieadd_add_button'),document.getElementById('movieadd_pushfeeling_button'),document.getElementById('movieadd_pushdvd_button'),document.getElementById('movieadd_share_button'),document.getElementById('movieadd_show_info_button'),document.getElementById('movieadd_back_button')];
+          utility.setAttribute_list_object(button_list, 'disabled');
+      }
 
-              utility.setAttribute_list_object(button_list, 'disabled');
-          }
+      console.log("Share completed? " + result.completed); // On Android apps mostly return false even while it's true
+      console.log("Shared to app: " + result.app); // On Android result.app is currently empty. On iOS it's empty when sharing is cancelled (result.completed=false)
+    };
 
-          console.log("Share completed? " + result.completed); // On Android apps mostly return false even while it's true
-          console.log("Shared to app: " + result.app); // On Android result.app is currently empty. On iOS it's empty when sharing is cancelled (result.completed=false)
-      };
+    var onError = function(msg) {
+      console.log("Sharing failed with message: " + msg);
+    };
 
-      var onError = function(msg) {
-          console.log("Sharing failed with message: " + msg);
-      };
-
-      window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
+    window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
   },
 
   /**
    * SNSの投稿が完了した後に表示されるアラートを閉じるボタンが押された時に動作する
    */
   success_sns_alert_hide: function() {
-      //映画追加画面のボタンオブジェクト
-      var button_list = [document.getElementById('movieadd_add_button'),document.getElementById('movieadd_pushfeeling_button'),document.getElementById('movieadd_pushdvd_button'),document.getElementById('movieadd_share_button'),document.getElementById('movieadd_show_info_button'),document.getElementById('movieadd_back_button')];
+    //映画追加画面のボタンオブジェクト
+    var button_list = [document.getElementById('movieadd_add_button'),document.getElementById('movieadd_pushfeeling_button'),document.getElementById('movieadd_pushdvd_button'),document.getElementById('movieadd_share_button'),document.getElementById('movieadd_show_info_button'),document.getElementById('movieadd_back_button')];
 
-      document.getElementById('success_sns_alert').hide();
-      utility.removeAttribute_list_object(button_list, 'disabled');
+    document.getElementById('success_sns_alert').hide();
+    utility.removeAttribute_list_object(button_list, 'disabled');
   },
 };
 
 var movieadd_feeling = {
 
   show_contents: function(){
-      //アラート表示後に自動フォーカスするためのイベントを登録する
-      movieadd_feeling.feeling_input_name_addEvent();
+    //アラート表示後に自動フォーカスするためのイベントを登録する
+    movieadd_feeling.feeling_input_name_addEvent();
 
-      var nodata_message = document.getElementById('movieadd_feeling_nodata_message');
-      var length = movieadd.userdata.feeling_name_list.length;
-      if (length === 0) {
-          $('#movieadd_feeling_nodata_message').css('height', '100%');
-          nodata_message.innerHTML = '感情を1件以上登録してください<br>(1件につき6文字以内)';
-      }else {
-          $('#movieadd_feeling_nodata_message').css('height', '0%');
-          nodata_message.innerHTML = '';
+    var nodata_message = document.getElementById('movieadd_feeling_nodata_message');
+    var length = movieadd.userdata.feeling_name_list.length;
+    if (length === 0) {
+      $('#movieadd_feeling_nodata_message').css('height', '100%');
+      nodata_message.innerHTML = '感情を1件以上登録してください<br>(1件につき6文字以内)';
+    }else {
+      $('#movieadd_feeling_nodata_message').css('height', '0%');
+      nodata_message.innerHTML = '';
 
-          //リスト表示
-          var feeling_list = document.getElementById('feeling_list');
-          feeling_list.innerHTML = '';
-          for(var i = 0; i < length; i++) {
-              feeling_list.innerHTML += '<h3 class="feeling_film" style="opacity: 0; margin-top: 40px;">' + movieadd.userdata.feeling_name_list[i] + '</h3>';
-          }
-
-          //アニメーション表示
-          var delaySpeed = 50;
-          var fadeSpeed = 400;
-          $('.feeling_film').each(function(index) {
-              $(this).delay(index*delaySpeed).animate({opacity:'1', marginTop: '20px'},fadeSpeed);  
-          });
+      //リスト表示
+      var feeling_list = document.getElementById('feeling_list');
+      feeling_list.innerHTML = '';
+      for(var i = 0; i < length; i++) {
+        feeling_list.innerHTML += '<h3 class="feeling_film" style="opacity: 0; margin-top: 40px;">' + movieadd.userdata.feeling_name_list[i] + '</h3>';
       }
+
+      //アニメーション表示
+      var delaySpeed = 50;
+      var fadeSpeed = 400;
+      $('.feeling_film').each(function(index) {
+        $(this).delay(index*delaySpeed).animate({opacity:'1', marginTop: '20px'},fadeSpeed);  
+      });
+    }
   },
 
   /**
    * アラート表示後にフォーカスを当てる処理を行う
    */
   feeling_input_name_addEvent: function(){
-      document.addEventListener('postshow', function(event) {
-          if (event.target.id == 'feeling_add_dialog') {
-              document.getElementById('feeling_add_button').setAttribute('disabled');
-              document.getElementById('feeling_input_name').focus();
-          }
-      });
+    document.addEventListener('postshow', function(event) {
+      if (event.target.id == 'feeling_add_dialog') {
+        document.getElementById('feeling_add_button').setAttribute('disabled');
+        document.getElementById('feeling_input_name').focus();
+      }
+    });
   },
 
   /**
    * 気分を入力するアラートを表示してinputのvalueを初期化する
    */
   show_input_alert: function(){
-      document.getElementById('feeling_add_dialog').show();
+    document.getElementById('feeling_add_dialog').show();
 
-      var input_form = document.getElementById('feeling_input_name');
-      input_form.value = '';
-      input_form.addEventListener('keyup', movieadd_feeling.check_input_form);
+    var input_form = document.getElementById('feeling_input_name');
+    input_form.value = '';
+    input_form.addEventListener('keyup', movieadd_feeling.check_input_form);
   },
 
   /**
@@ -1771,14 +1765,14 @@ var movieadd_feeling = {
    * @return {[type]} [description]
    */
   check_input_form: function(){
-      var value = document.getElementById('feeling_input_name').value;
-      var add_button = document.getElementById('feeling_add_button');
+    var value = document.getElementById('feeling_input_name').value;
+    var add_button = document.getElementById('feeling_add_button');
 
-      if (value.replace(/\s+/g, '') !== '') {
-          add_button.removeAttribute('disabled');
-      }else {
-          add_button.setAttribute('disabled');
-      }
+    if (value.replace(/\s+/g, '') !== '') {
+      add_button.removeAttribute('disabled');
+    }else {
+      add_button.setAttribute('disabled');
+    }
   },
 
   /**
@@ -1786,24 +1780,23 @@ var movieadd_feeling = {
    * @param  {[string]} id [cancelかadd]
    */
   hide_input_alert: function(id){
-      if (id == 'cancel') {
-          document.getElementById('feeling_add_dialog').hide();
+    if (id == 'cancel') {
+      document.getElementById('feeling_add_dialog').hide();
+    }else {
+      var feeling_name = document.getElementById('feeling_input_name').value;
+      feeling_name = feeling_name.replace(/\s+/g, '');
+
+      //既出でない場合
+      if (movieadd.userdata.feeling_name_list.indexOf(feeling_name) == -1) {
+        movieadd_feeling.add_list(feeling_name);
+        document.getElementById('feeling_add_dialog').hide();
+
+      //既出の場合
       }else {
-          var feeling_name = document.getElementById('feeling_input_name').value;
-          feeling_name = feeling_name.replace(/\s+/g, '');
-
-          //既出でない場合
-          if (movieadd.userdata.feeling_name_list.indexOf(feeling_name) == -1) {
-          movieadd_feeling.add_list(feeling_name);
-          document.getElementById('feeling_add_dialog').hide();
-
-          //既出の場合
-          }else {
-              document.getElementById('feeling_add_dialog').hide();
-              utility.show_error_alert('登録エラー','既に登録済みです','OK');
-          }
+        document.getElementById('feeling_add_dialog').hide();
+        utility.show_error_alert('登録エラー','既に登録済みです','OK');
       }
-
+    }
   },
 
   /**
@@ -1811,12 +1804,12 @@ var movieadd_feeling = {
    * @param {[string]} feeling_name [ユーザが入力した気分]
    */
   add_list: function(feeling_name){
-      //リスト表示
-      movieadd.userdata.feeling_name_list.push(feeling_name);
-      movieadd_feeling.show_contents();
+    //リスト表示
+    movieadd.userdata.feeling_name_list.push(feeling_name);
+    movieadd_feeling.show_contents();
 
-      //ラベルの更新
-      movieadd.show_feelingAnddvd_label();
+    //ラベルの更新
+    movieadd.show_feelingAnddvd_label();
   },
 };
 
@@ -1827,14 +1820,14 @@ var movieadd_dvd = {
    * 保存しているラジオボタンの状態をもとにチェックをつける
    */
   show_contents: function(){
-      var dvd_check = movieadd.userdata.dvd;
-      var radio_dvd_yes = document.getElementById('radio_dvd_yes');
+    var dvd_check = movieadd.userdata.dvd;
+    var radio_dvd_yes = document.getElementById('radio_dvd_yes');
 
-      if (dvd_check === true) {
-          radio_dvd_yes.checked = true;
-      }else {
-          radio_dvd_yes.checked = false;
-      }
+    if (dvd_check === true) {
+      radio_dvd_yes.checked = true;
+    }else {
+      radio_dvd_yes.checked = false;
+    }
   },
 
 
@@ -1842,19 +1835,19 @@ var movieadd_dvd = {
    * movieadd_dvd.html(DVDの所持確認画面)を閉じる時の関数
    */
   close_movieadd_dvd: function(){
-      //チェックボタンの状態を保存する
-      var yes = document.getElementById('radio_dvd_yes').checked;
+    //チェックボタンの状態を保存する
+    var yes = document.getElementById('radio_dvd_yes').checked;
 
-      if (yes === true) {
-          movieadd.userdata.dvd = true;
-      }else {
-          movieadd.userdata.dvd = false;
-      }
+    if (yes === true) {
+      movieadd.userdata.dvd = true;
+    }else {
+      movieadd.userdata.dvd = false;
+    }
 
-      //ラベルの更新
-      movieadd.show_feelingAnddvd_label();
-      
-      utility.popPage();
+    //ラベルの更新
+    movieadd.show_feelingAnddvd_label();
+    
+    utility.popPage();
   },
 };
 
@@ -1869,34 +1862,34 @@ var utility = {
    * @return {[object]} [生成したncmb]
    */
   get_ncmb: function(){
-      var ncmb = new NCMB(get_ncmb_application_key(),get_ncmb_get_client_key());
-      return ncmb;
+    var ncmb = new NCMB(get_ncmb_application_key(),get_ncmb_get_client_key());
+    return ncmb;
   },
 
   /**
    * ローカルストレージの初期化をする
    */
   delete_localstorage: function(){
-      var storage = window.localStorage;
-      storage.removeItem('username');
-      storage.removeItem('password');
-      storage.removeItem('birthday');
-      storage.removeItem('sex');
-      storage.removeItem('signup_flag');
+    var storage = window.localStorage;
+    storage.removeItem('username');
+    storage.removeItem('password');
+    storage.removeItem('birthday');
+    storage.removeItem('sex');
+    storage.removeItem('signup_flag');
   },
 
   /**
    * ローカルストレージの状態を表示する
    */
   show_localstorage: function(){
-      var storage = window.localStorage;
-      var username = storage.getItem('username');
-      var password = storage.getItem('password');
-      var birthday = storage.getItem('birthday');
-      var sex = storage.getItem('sex');
-      var signup_flag = storage.getItem('signup_flag');
-      var obj = {'username':username, 'password':password, 'birthday':birthday, 'sex':sex, 'signup_flag':signup_flag};
-      console.log(obj);
+    var storage = window.localStorage;
+    var username = storage.getItem('username');
+    var password = storage.getItem('password');
+    var birthday = storage.getItem('birthday');
+    var sex = storage.getItem('sex');
+    var signup_flag = storage.getItem('signup_flag');
+    var obj = {'username':username, 'password':password, 'birthday':birthday, 'sex':sex, 'signup_flag':signup_flag};
+    console.log(obj);
   },
 
 
@@ -1906,12 +1899,12 @@ var utility = {
    * @param  {Function} callback [読み込み終了後に実行したいコールバック関数]
    */
   check_page_init: function(pageid,callback){
-      document.addEventListener('init', function(event) {
-          if (event.target.id == pageid) {
-              console.log(pageid + ' is inited');
-              callback();
-          }
-      });
+    document.addEventListener('init', function(event) {
+      if (event.target.id == pageid) {
+        console.log(pageid + ' is inited');
+        callback();
+      }
+    });
   },
 
   /**
@@ -1919,8 +1912,8 @@ var utility = {
    * @return {[type]} [description]
    */
   get_database: function(){
-      var db = window.sqlitePlugin.openDatabase({name: 'my_db', location: 'default'});
-      return db;
+    var db = window.sqlitePlugin.openDatabase({name: 'my_db', location: 'default'});
+    return db;
   },
 
 
@@ -1929,7 +1922,7 @@ var utility = {
    * @return {[string]} [TMDBのAPIキー]
    */
   get_tmdb_apikey: function(){
-      return 'dcf593b3416b09594c1f13fabd1b9802';
+    return 'dcf593b3416b09594c1f13fabd1b9802';
   },
 
   /**
@@ -1939,53 +1932,42 @@ var utility = {
    * @param  {[number]} delaytime      [Timeoutの時間]
    */
   pushpage: function(html_name, animation_name, delaytime) {
-      var showpage = function(){
-          document.getElementById('myNavigator').pushPage(html_name, { animation : animation_name });
-      };
-  
-      setTimeout(showpage, delaytime);
+    var showpage = function(){
+      document.getElementById('myNavigator').pushPage(html_name, { animation : animation_name });
+    };
+
+    setTimeout(showpage, delaytime);
   },
 
   /**
    * onsen uiのpopPageを実行する関数
    */
   popPage: function(){
-      document.getElementById('myNavigator').popPage();
+    document.getElementById('myNavigator').popPage();
   },
 
-  /**
-   * 画面のwidth,heightを取得する
-   * @return {[object]} [widthとheightが格納されたオブジェクト]
-   */
-  getScreenSize: function() {
-      var w = window.parent.screen.width;
-      var h = window.parent.screen.height;
-      
-      var obj = {w:w,h:h};
-      return obj;
-  },
 
   /**
    * ブラウザで強制的にログインするための関数
    * @return {[type]} [description]
    */
   browser_signup: function(){
-      var callback = function(){
-          document.getElementById('username').value = 'ブラウザユーザ';
-          document.getElementById('password').value = 'password';
-          document.getElementById('birthday').value = '1994';
+    var callback = function(){
+      document.getElementById('username').value = 'ブラウザユーザ';
+      document.getElementById('password').value = 'password';
+      document.getElementById('birthday').value = '1994';
 
-          index.formcheck[0] = true;
-          index.formcheck[1] = true;
+      index.formcheck[0] = true;
+      index.formcheck[1] = true;
 
-          var storage = window.localStorage;
-          storage.setItem('username', document.getElementById('username').value);
-          storage.setItem('password', document.getElementById('password').value);
-          storage.setItem('birthday', Number(document.getElementById('birthday').value));
-          storage.setItem('sex', 'M');
-          storage.setItem('signup_flag', true);
-      };
-      utility.check_page_init('signup',callback);
+      var storage = window.localStorage;
+      storage.setItem('username', document.getElementById('username').value);
+      storage.setItem('password', document.getElementById('password').value);
+      storage.setItem('birthday', Number(document.getElementById('birthday').value));
+      storage.setItem('sex', 'M');
+      storage.setItem('signup_flag', true);
+    };
+    utility.check_page_init('signup',callback);
   },
 
 
@@ -1996,45 +1978,45 @@ var utility = {
    * @param  {[string]} parent [親要素のid]
    */
   show_spinner: function(parent){
-      var opts = {
-        lines: 13, //線の数
-        length: 8, //線の長さ
-        width: 3, //線の幅
-        radius: 16, //スピナーの内側の広さ
-        corners: 1, //角の丸み
-        rotate: 74, //向き(あんまり意味が無い・・)
-        direction: 1, //1：時計回り -1：反時計回り
-        color: '#000', // 色
-        speed: 2.0, // 一秒間に回転する回数
-        trail: 71, //残像の長さ
-        shadow: true, // 影
-        hwaccel: true, // ？
-        className: 'spinner', // クラス名
-        zIndex: 2e9, // Z-index
-        top: '50%', // relative TOP
-        left: '50%', // relative LEFT
-        opacity: 0.25, //透明度
-        fps: 40 //fps
-      };
+    var opts = {
+      lines: 13, //線の数
+      length: 8, //線の長さ
+      width: 3, //線の幅
+      radius: 16, //スピナーの内側の広さ
+      corners: 1, //角の丸み
+      rotate: 74, //向き(あんまり意味が無い・・)
+      direction: 1, //1：時計回り -1：反時計回り
+      color: '#000', // 色
+      speed: 2.0, // 一秒間に回転する回数
+      trail: 71, //残像の長さ
+      shadow: true, // 影
+      hwaccel: true, // ？
+      className: 'spinner', // クラス名
+      zIndex: 2e9, // Z-index
+      top: '50%', // relative TOP
+      left: '50%', // relative LEFT
+      opacity: 0.25, //透明度
+      fps: 40 //fps
+    };
 
-      //重複表示を避けるため既にオブジェクトに格納されていない時のみ処理を行う
-      if (Object.keys(utility.spinner).length === 0) {
-          //描画先の親要素
-          var spin_target = document.getElementById(parent);
-          //スピナーオブジェクト
-          var spinner = new Spinner(opts);
-          utility.spinner = spinner;
-          //スピナー描画
-          spinner.spin(spin_target);
-      }
+    //重複表示を避けるため既にオブジェクトに格納されていない時のみ処理を行う
+    if (Object.keys(utility.spinner).length === 0) {
+      //描画先の親要素
+      var spin_target = document.getElementById(parent);
+      //スピナーオブジェクト
+      var spinner = new Spinner(opts);
+      utility.spinner = spinner;
+      //スピナー描画
+      spinner.spin(spin_target);
+    }
   },
 
   /**
    * [スピナーの表示を止める]
    */
   stop_spinner: function(){
-      utility.spinner.spin();
-      utility.spinner = {};
+    utility.spinner.spin();
+    utility.spinner = {};
   },
 
   /**
@@ -2044,10 +2026,12 @@ var utility = {
    * @param  {[string]} buttonLabel [ボタンのラベル]
    */
   show_error_alert: function(title,message,buttonLabel) {
-      ons.notification.alert({
-          title: title,
-          message: message,
-          buttonLabel: buttonLabel});
+    ons.notification.alert(
+    {
+        title: title,
+        message: message,
+        buttonLabel: buttonLabel
+    });
   },
 
   /**
@@ -2055,20 +2039,20 @@ var utility = {
    * @param  {[number]} err_status [エラーのHTTPstatus]
    */
   show_tmdb_error: function(err_status) {
-      switch(err_status) {
-          case 0:
-              utility.show_error_alert('通信エラー','ネットワーク接続を確認して下さい','OK');
-              break;
-          case 401:
-              utility.show_error_alert('APIエラー','有効なAPIキーを設定して下さい','OK');
-              break;
-          case 404:
-              utility.show_error_alert('Not found','リソースが見つかりませんでした','OK');
-              break;
-          default:
-              utility.show_error_alert('不明なエラー','不明なエラーが発生しました','OK');
-              break;
-      }
+    switch(err_status) {
+      case 0:
+        utility.show_error_alert('通信エラー','ネットワーク接続を確認して下さい','OK');
+        break;
+      case 401:
+        utility.show_error_alert('APIエラー','有効なAPIキーを設定して下さい','OK');
+        break;
+      case 404:
+        utility.show_error_alert('Not found','リソースが見つかりませんでした','OK');
+        break;
+      default:
+        utility.show_error_alert('不明なエラー','不明なエラーが発生しました','OK');
+        break;
+    }
   },
 
 
@@ -2079,16 +2063,16 @@ var utility = {
    * @return {[promise]}           [成功時：画像をbase64エンコードした文字列]
    */
   image_to_base64: function(image_src, mine_type) {
-      return new Promise(function(resolve,reject) {
-          var canvas = document.createElement('canvas');
-          canvas.width  = image_src.width;
-          canvas.height = image_src.height;
+    return new Promise(function(resolve,reject) {
+      var canvas = document.createElement('canvas');
+      canvas.width  = image_src.width;
+      canvas.height = image_src.height;
 
-          var ctx = canvas.getContext('2d');
-          ctx.drawImage(image_src, 0, 0);
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(image_src, 0, 0);
 
-          resolve(canvas.toDataURL(mine_type));
-          });
+      resolve(canvas.toDataURL(mine_type));
+    });
   },
 
   /**
@@ -2097,11 +2081,11 @@ var utility = {
    * @param  {Function} callback  [変換後のコールバック]
    */
   base64_to_image: function(base64img, callback) {
-      var img = new Image();
-      img.onload = function() {
-          callback(img);
-      };
-      img.src = base64img;
+    var img = new Image();
+    img.onload = function() {
+      callback(img);
+    };
+    img.src = base64img;
   },
 
   /**
@@ -2110,9 +2094,9 @@ var utility = {
    * @param {[string]} attribute_name [セットしたいattribute名]
    */
   setAttribute_list_object: function(object_list, attribute_name) {
-      for(var i = 0; i < object_list.length; i++) {
-          object_list[i].setAttribute(attribute_name);
-      }
+    for(var i = 0; i < object_list.length; i++) {
+      object_list[i].setAttribute(attribute_name);
+    }
   },
 
   /**
@@ -2121,9 +2105,9 @@ var utility = {
    * @param  {[string]} attribute_name [取り除きたいattribute名]
    */
   removeAttribute_list_object: function(object_list, attribute_name) {
-      for(var i = 0; i < object_list.length; i++) {
-          object_list[i].removeAttribute(attribute_name);
-      }
+    for(var i = 0; i < object_list.length; i++) {
+      object_list[i].removeAttribute(attribute_name);
+    }
   },
 
   /**
@@ -2132,10 +2116,10 @@ var utility = {
    * @return {[array]}             [カラーコードが格納された配列]
    */
   get_color_code: function(screen_name) {
-      switch(screen_name) {
-          case 'movies':
-              return ['#a5a5a5','#ffa500','#FF1D00'];
-      }
+    switch(screen_name) {
+      case 'movies':
+        return ['#a5a5a5','#ffa500','#FF1D00'];
+    }
   },
 };
 
@@ -2151,31 +2135,33 @@ var db_method = {
    * @return {[promise]}            [成功時：レコード件数、失敗時：エラーメッセージ]
    */
   count_record: function(table_name) {
-      return new Promise(function(resolve,reject) {
-          var db = utility.get_database();
-          var query = 'SELECT COUNT(*) AS count FROM ' + table_name;
-          db.executeSql(query, [], function (resultSet) {
-              resolve(JSON.stringify(resultSet.rows.item(0).count));
-          }, function(error) {
-              console.log('COUNT RECORD ERROR: ' + error.message);
-              reject(error.message);
-          });
+    return new Promise(function(resolve,reject) {
+      var db = utility.get_database();
+      var query = 'SELECT COUNT(*) AS count FROM ' + table_name;
+      db.executeSql(query, [], function (resultSet) {
+        resolve(JSON.stringify(resultSet.rows.item(0).count));
+      }, 
+      function(error) {
+        console.log('COUNT RECORD ERROR: ' + error.message);
+        reject(error.message);
       });
+    });
   },
 
   /**
    * データベースのレコードを全削除する
    */
   delete_all_record: function() {
-      var db = utility.get_database();
+    var db = utility.get_database();
 
-      db.transaction(function(tx) {
-          tx.executeSql('DELETE FROM movie');
-          tx.executeSql('DELETE FROM genre');
-          tx.executeSql('DELETE FROM onomatopoeia');
-        }, function(err) {
-          console.log('DELETE ALL RECORD ERROR: ' +JSON.stringify(err) +' ' + err.message);
-        });
+    db.transaction(function(tx) {
+      tx.executeSql('DELETE FROM movie');
+      tx.executeSql('DELETE FROM genre');
+      tx.executeSql('DELETE FROM onomatopoeia');
+    },
+    function(err) {
+      console.log('DELETE ALL RECORD ERROR: ' +JSON.stringify(err) +' ' + err.message);
+    });
   },
 
 
@@ -2186,17 +2172,17 @@ var db_method = {
    * @return {[promise]}           [成功時：クエリーの実行結果，失敗時：エラーメッセージ]
    */
   single_statement_execute: function(query,data_list) {
-      return new Promise(function(resolve,reject) {
-          var db = utility.get_database();
+    return new Promise(function(resolve,reject) {
+      var db = utility.get_database();
 
-          db.executeSql(query, data_list, function(resultSet) {
-              resolve(resultSet);
-          }, function(error) {
-              console.log(error.message);
-              reject(error.message);
-          });
+      db.executeSql(query, data_list, function(resultSet) {
+        resolve(resultSet);
+      },
+      function(error) {
+        console.log(error.message);
+        reject(error.message);
       });
-      
+    });
   },
 };
 
