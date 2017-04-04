@@ -303,16 +303,9 @@ var movie = {
                         //result[0]：movie
                         //result[1]：genre
                         //result[2]：onomatopoeia
-                         var movies_area = document.getElementById('movie_collection');
-                         var movie_count = result[0].rows.length;
 
-                        /*** movieレコードの件数が偶数か奇数かを判別 ***/
-                        var even_odd_flag = 0;
-                        if (movie_count % 2 === 0) {
-                            even_odd_flag = 0;
-                        }else {
-                            even_odd_flag = 1;
-                        }
+                         var movies_area = document.getElementById('movie_collection');
+                         movie_count = result[0].rows.length;
 
                         /*** 1行ずつ書き込み ***/
                         var left_index = movie_count - 1;
@@ -321,93 +314,39 @@ var movie = {
                         //[0]:灰色、[1]:オレンジ色、[2]:朱色
                         var color_code =utility.get_color_code('movies');
 
-                        for(var i = 0; i < Math.floor(movie_count/2); i++) {
-                            var movie_record_left = result[0].rows.item(left_index);
-                            var movie_record_right = result[0].rows.item(right_index);
 
-                            //dvdの所持、お気に入りの登録しているかで使用するカラーコードを分ける
-                            var buttoncolor_code_left = {dvd:'', fav:''};
-                            var buttoncolor_code_right = {dvd:'', fav:''};
+                        // ここからrow1つで書き込むテスト
+                        var col_html = '';
+                        for(var k = 0; k < movie_count; k++) {
+                            var movie_record = result[0].rows.item(k);
+                            var buttoncolor_code = {dvd:'', fav:''};
 
-                            if (movie_record_left.dvd == 1) {
-                                buttoncolor_code_left.dvd = color_code[1];
+                            if (movie_record.dvd == 1) {
+                                buttoncolor_code.dvd = color_code[1];
                             }else {
-                                buttoncolor_code_left.dvd = color_code[0];
+                                buttoncolor_code.dvd = color_code[0];
                             }
 
-                            if (movie_record_left.fav == 1) {
-                                buttoncolor_code_left.fav = color_code[2];
+                            if (movie_record.fav == 1) {
+                                buttoncolor_code.fav = color_code[2];
                             }else {
-                                buttoncolor_code_left.fav = color_code[0];
+                                buttoncolor_code.fav = color_code[0];
                             }
 
-                            if (movie_record_right.dvd == 1) {
-                                buttoncolor_code_right.dvd = color_code[1];
-                            }else {
-                                buttoncolor_code_right.dvd = color_code[0];
-                            }
-
-                            if (movie_record_right.fav == 1) {
-                                buttoncolor_code_right.fav = color_code[2];
-                            }else {
-                                buttoncolor_code_right.fav = color_code[0];
-                            }
-
-                            var left_cell = ['<ons-col class="movies_col">',
-                                            '<img class="movies_image" src="'+ movie_record_left.poster +'">',
-                                            '<div class="movies_title">' + movie_record_left.title + '</div>',
+                            var cell = ['<ons-col width="50vw" class="movies_col">',
+                                            '<img class="movies_image" src="'+ movie_record.poster +'">',
                                             '<div class="movies_onomatopoeia_area"><ons-row><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col></ons-row></div>',
                                             '<div class="movies_dvd_fab_area"><ons-row>',
-                                            '<ons-col width="50%;" class="movies_dvd_fab" style="border-bottom-right-radius: 0px; border-left: none;"><ons-button id="dvd_'+ movie_record_left.tmdb_id +'" onclick="movie.tap_dvd_fav(this.id,0)" modifier="quiet" style="color: '+ buttoncolor_code_left.dvd +'; width: 100%;"><ons-icon icon="ion-disc" size="32px, material:24px style="padding: 0px 3px;"></ons-button></ons-col>',
-                                            '<ons-col width="50%;" class="movies_dvd_fab" style="border-bottom-left-radius: 0px; border-right: none;"><ons-button id="fav_'+ movie_record_left.tmdb_id +'" onclick="movie.tap_dvd_fav(this.id,1)" modifier="quiet" style="color: '+ buttoncolor_code_left.fav +'; width: 100%;"><ons-icon size="32px, material:24px" icon="ion-android-favorite" style="padding: 0px 3px;"></ons-button></ons-col>',
+                                            '<ons-col width="50%;" class="movies_dvd_fab" style="border-bottom-right-radius: 0px; border-left: none;"><ons-button id="dvd_'+ movie_record.tmdb_id +'" onclick="movie.tap_dvd_fav(this.id,0)" modifier="quiet" style="color: '+ buttoncolor_code.dvd +'; width: 100%;"><ons-icon icon="ion-disc" size="32px, material:24px style="padding: 0px 3px;"></ons-button></ons-col>',
+                                            '<ons-col width="50%;" class="movies_dvd_fab" style="border-bottom-left-radius: 0px; border-right: none;"><ons-button id="fav_'+ movie_record.tmdb_id +'" onclick="movie.tap_dvd_fav(this.id,1)" modifier="quiet" style="color: '+ buttoncolor_code.fav +'; width: 100%;"><ons-icon size="32px, material:24px" icon="ion-android-favorite" style="padding: 0px 3px;"></ons-button></ons-col>',
                                             '</ons-row></div>',
                                             '</ons-col>'];
 
-                            var right_cell = ['<ons-col class="movies_col">',
-                                            '<img class="movies_image" src="'+ movie_record_right.poster +'">',
-                                            '<div class="movies_title">' + movie_record_right.title + '</div>',
-                                            '<div class="movies_onomatopoeia_area"><ons-row><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col></ons-row></div>',
-                                            '<div class="movies_dvd_fab_area"><ons-row>',
-                                            '<ons-col width="50%;" class="movies_dvd_fab" style="border-bottom-right-radius: 0px; border-left: none;"><ons-button id="dvd_'+ movie_record_right.tmdb_id +'" onclick="movie.tap_dvd_fav(this.id,0)" modifier="quiet" style="color: '+ buttoncolor_code_right.dvd +'; width: 100%;"><ons-icon icon="ion-disc" size="32px, material:24px style="padding: 0px 3px;"></ons-button></ons-col>',
-                                            '<ons-col width="50%;" class="movies_dvd_fab" style="border-bottom-left-radius: 0px; border-right: none;"><ons-button id="fav_'+ movie_record_right.tmdb_id +'" onclick="movie.tap_dvd_fav(this.id,1)" modifier="quiet" style="color: '+ buttoncolor_code_right.fav +'; width: 100%;"><ons-icon size="32px, material:24px" icon="ion-android-favorite" style="padding: 0px 3px;"></ons-button></ons-col>',
-                                            '</ons-row></div>',
-                                            '</ons-col>'];
 
-                            movies_area.innerHTML += '<ons-row>' + left_cell.join('') + right_cell.join('') + '</ons-row>';
-                            
-                            left_index -= 2;
-                            right_index -= 2;
+                            col_html += cell.join('');
                         }
 
-                        //movieレコードの件数が奇数個の場合のみ最後に余った1つを書き込む
-                        if (even_odd_flag === 1) {
-                            var movie_record_last = result[0].rows.item(left_index);
-                            var buttoncolor_code_last = {dvd:'', fav:''};
-
-                            if (movie_record_last.dvd == 1) {
-                                buttoncolor_code_last.dvd = color_code[1];
-                            }else {
-                                buttoncolor_code_last.dvd = color_code[0];
-                            }
-
-                            if (movie_record_last.fav == 1) {
-                                buttoncolor_code_last.fav = color_code[2];
-                            }else {
-                                buttoncolor_code_last.fav = color_code[0];
-                            } 
-
-                            var last_cell = ['<ons-col width="50%" class="movies_col">',
-                                            '<img class="movies_image" src="'+ movie_record_last.poster +'">',
-                                            '<div class="movies_title">' + movie_record_last.title + '</div>',
-                                            '<div class="movies_onomatopoeia_area"><ons-row><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col><ons-col class="movies_onomatopoeia_name">ドキドキ</ons-col></ons-row></div>',
-                                            '<div class="movies_dvd_fab_area"><ons-row>',
-                                            '<ons-col width="50%;" class="movies_dvd_fab" style="border-bottom-right-radius: 0px; border-left: none;"><ons-button id="dvd_'+ movie_record_last.tmdb_id +'" onclick="movie.tap_dvd_fav(this.id,0)" modifier="quiet" style="color: '+ buttoncolor_code_last.dvd +'; width: 100%;"><ons-icon icon="ion-disc" size="32px, material:24px style="padding: 0px 3px;"></ons-button></ons-col>',
-                                            '<ons-col width="50%;" class="movies_dvd_fab" style="border-bottom-left-radius: 0px; border-right: none;"><ons-button id="fav_'+ movie_record_last.tmdb_id +'" onclick="movie.tap_dvd_fav(this.id,1)" modifier="quiet" style="color: '+ buttoncolor_code_last.fav +'; width: 100%;"><ons-icon size="32px, material:24px" icon="ion-android-favorite" style="padding: 0px 3px;"></ons-button></ons-col>',
-                                            '</ons-row></div>',
-                                            '</ons-col>'];
-
-                            movies_area.innerHTML += '<ons-row>' + last_cell.join('') + '</ons-row>';
-                        }
+                        movies_area.innerHTML = '<ons-row>' + col_html + '</ons-row>';
                     });
                 };
             }
