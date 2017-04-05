@@ -512,8 +512,8 @@ var movieadd_search = {
    */
   get_search_movie_title_val: function(){
     var text = document.getElementById('search_movie_title').value;
-    // var resetbutton = document.getElementById('movieadd_search_reset');
     var no_match_message = document.getElementById('movieadd_no_match_message');
+    no_match_message.innerHTML = '';
 
     if (text.length > 0) {
       //テキストエリアのスピナー表示
@@ -625,7 +625,7 @@ var movieadd_search = {
 
     } else {
       no_match_message.innerHTML = '';
-      movieadd_search.not_show_list();
+      // movieadd_search.not_show_list();
     }
   },
 
@@ -728,20 +728,8 @@ var movieadd_search = {
    * リストのコンテンツを非表示にする
    */
   not_show_list: function(){
-    var infiniteList = document.getElementById('movieadd_search_list');
-    infiniteList.delegate = {
-      createItemContent: function(i) {
-        return ons._util.createElement();
-      },
-                                      
-      countItems: function() {
-        return 0;
-      },
-
-      calculateItemHeight: function() {
-        return ons.platform.isAndroid() ? 48 : 100;
-      }
-    };
+    var movieadd_search_list = document.getElementById('movieadd_search_list');
+    movieadd_search_list.innerHTML = '';
   },
 
 
