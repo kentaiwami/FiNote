@@ -484,11 +484,6 @@ var movieadd_search = {
   set_animation_movieadd_search_input: function(event_name) {
     //検索フィールドにフォーカスした時のアニメーション
     if (event_name == 'focus') {
-      //console.log("focus");
-
-      //検索窓の入力を監視するイベントを追加する
-      $('#search_movie_title').on('input', movieadd_search.get_search_movie_title_val);
-
       $('#movieadd_search_backbutton').animate({opacity: 0},{queue: false, duration: 200}).animate({marginLeft: '-40px'}, {queue: false, duration: 200});
 
       $('#search_movie_title').animate({width: '150%'},{queue: false, duration: 200});
@@ -500,11 +495,7 @@ var movieadd_search = {
 
     //検索フィールドのフォーカスが外れた時のアニメーション
     } else if (event_name == 'blur') {
-      //console.log("blur");
       movieadd_search.get_search_movie_title_val();
-
-      //検索窓の入力を監視するイベントを削除する
-      $('#search_movie_title').off('input', movieadd_search.get_search_movie_title_val);
 
       $('#movieadd_search_backbutton').animate({marginLeft: '0px'},{queue: false , duration: 200}).animate({opacity: 1},{queue: false , duration: 200});
 
