@@ -187,12 +187,15 @@
     <ons-page modifier="shop-details" id="movieadd" ontouchmove="event.preventDefault()">
 
     	<!-- ツールバー -->
-      <ons-toolbar id="movieadd_toolbar" modifier="transparent" style="background-color: black; opacity: 0.7;">
-        <div class="right">
-          <ons-toolbar-button id="movieadd_show_info_button" onClick="movieadd.fadeTo_detail_info()"><ons-icon icon="ion-ios-chatboxes" style="color: white;"></ons-icon></ons-toolbar-button>
-        </div>
+      <ons-toolbar id="movieadd_toolbar" modifier="transparent" class="black_bg">
         <div class="left">
-          <ons-toolbar-button id="movieadd_back_button" onClick="movieadd.tap_backbutton()"><ons-icon icon="ion-arrow-left-c" style="color: white; font-size: 28px;" fixed-width="false"></ons-icon></ons-toolbar-button>
+          <ons-toolbar-button id="movieadd_back_button" onClick="movieadd.tap_backbutton()"><ons-icon icon="ion-arrow-left-c" class="white_color" fixed-width="false"></ons-icon></ons-toolbar-button>
+        </div>
+
+        <div class="right">
+          <ons-toolbar-button id="movieadd_show_info_button" onClick="movieadd.fadeTo_detail_info()">
+            <ons-icon icon="ion-ios-chatboxes" class="white_color"></ons-icon>
+          </ons-toolbar-button>
         </div>
       </ons-toolbar>
 

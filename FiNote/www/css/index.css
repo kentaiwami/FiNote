@@ -268,3 +268,16 @@ input[type=password] {
   margin-right: 0.3em;
   content: '追加済み';
 }
+
+
+/************************************************************
+                          Toolbar
+************************************************************/
+.black_bg {
+  background-color: #000;
+  opacity: .7;
+}
+
+.white_color {
+  color: #FFF;
+}
