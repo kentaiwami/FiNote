@@ -55,7 +55,7 @@ var index = {
       movie.draw_movie_content();
     //ユーザ情報が登録されていない場合はsignupへ遷移
     }else {
-      utility.push_page('signup.html','fade',1000);
+      utility.push_page('signup.html','fade',1000, '');
       
       //イベント登録
       var addevent = function(){
@@ -367,7 +367,7 @@ var movie = {
       utility.check_page_init('movies',draw_content);
     })
     .then(function() {
-      utility.push_page('tab.html','fade',0);
+      utility.push_page('tab.html','fade',0, '');
     })
     .catch(function(err) {
       //ログインエラー or レコード件数取得エラー
@@ -482,7 +482,6 @@ var movieadd_search = {
    * @param {[string]} event_name [focusまたはblurを受け取る]
    */
   set_animation_movieadd_search_input: function(event_name) {
-
     //検索フィールドにフォーカスした時のアニメーション
     if (event_name == 'focus') {
       //console.log("focus");
@@ -781,7 +780,7 @@ var movieadd_search = {
     movieadd.current_movie = list_data[tap_id];
 
     //映画追加画面へ遷移
-    utility.push_page('movieadd.html', '', 0);
+    utility.push_page('movieadd.html', '', 0,'');
   },
 };
 
@@ -1613,7 +1612,7 @@ var movieadd = {
     };
 
     utility.check_page_init('movieadd_feeling', callback);
-    utility.push_page('movieadd_feeling.html', 'lift', 0);
+    utility.push_page('movieadd_feeling.html', 'lift', 0, '');
   },
 
 
@@ -1626,7 +1625,7 @@ var movieadd = {
     };
 
     utility.check_page_init('movieadd_dvd', callback);
-    utility.push_page('movieadd_dvd.html', 'lift', 0);
+    utility.push_page('movieadd_dvd.html', 'lift', 0, '');
   },
 
   /**
@@ -1932,10 +1931,15 @@ var utility = {
    * @param  {[string]} html_name      [画面遷移したいhtmlファイル名]
    * @param  {[string]} animation_name [アニメーション名]
    * @param  {[number]} delaytime      [Timeoutの時間]
+   * @param  {[function]} callback     [push_page実施後のコールバック]
    */
-  push_page: function(html_name, animation_name, delaytime) {
+  push_page: function(html_name, animation_name, delaytime, callback) {
     var showpage = function(){
-      document.getElementById('myNavigator').pushPage(html_name, { animation : animation_name });
+      document.getElementById('myNavigator').pushPage(html_name,
+        { animation: animation_name,
+          callback: callback 
+        }
+      );
     };
 
     setTimeout(showpage, delaytime);
