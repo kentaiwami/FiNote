@@ -798,8 +798,8 @@ var movieadd = {
     info_clone.innerHTML = '<div class="modal__content"><p>'+ title +'</p><p>'+ copy_overview +'</p><p>'+ release_date +'</p></div></div>';
     card.appendChild(info_clone);
 
-    var rating = document.getElementById('movieadd_rating');
-    var toolbar = document.getElementById('movieadd_toolbar');
+    // var rating = document.getElementById('movieadd_rating');
+    // var toolbar = document.getElementById('movieadd_toolbar');
 
     //高さがポスター表示領域の高さ付近になるまで文字列をカットする
     while((copy_overview.length > 0) && (info_clone.clientHeight > card.clientHeight)) {

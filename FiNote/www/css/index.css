@@ -39,40 +39,40 @@ input[type=password] {
 
 
 /*** movieadd.html ***/
-.page--shop-details__content {
+/*.page--shop-details__content {
   position: absolute;
   left: 0px;
   right: 0px;
   top: 0px !important;
   bottom: 0px;
-}
+}*/
 
 .card {
-  background-color: white;
+  background-color: #FFF;
   background-repeat: no-repeat;
   background-size: cover;
-  color: white;
+  color: #FFF;
   height: 250px;
 }
 
-.card-toolbar ons-back-button span {
+/*.card-toolbar ons-back-button span {
   color: white;
-}
+}*/
 
-.card-name {
+/*.card-name {
   font-weight: 600;
   font-size: 20px;
   padding: 66px 0 8px 0;
   text-align: center;
-}
+}*/
 
-.card-desc {
+/*.card-desc {
   font-size: 14px;
   font-weight: 400;
   opacity: 0.9;
   text-align: center;
   line-height: 1.4;
-}
+}*/
 
 .card_back_image {
   background-image: url('../img/noimage.png');
@@ -107,10 +107,10 @@ input[type=password] {
   display: inline-block;
 }
 
-.rating-num ons-icon {
+/*.rating-num ons-icon {
   font-size: 11px;
   vertical-align: -0px;
-}
+}*/
 
 .action-col {
   text-align: center;
@@ -139,16 +139,16 @@ input[type=password] {
   font-size: 12px;
 }
 
-.prop-desc {
+/*.prop-desc {
   font-size: 14px;
   opacity: 0.7;
-}
+}*/
 
-.prop-desc ons-icon {
+/*.prop-desc ons-icon {
   font-size: 14px;
   vertical-align: -0px;
   opacity: 0.5;
-}
+}*/
 
 .feeling_film {
   -webkit-transform: rotate(-3deg);
