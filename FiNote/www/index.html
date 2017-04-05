@@ -163,15 +163,15 @@
       <ons-toolbar>
         <div class="left" onclick="utility.pop_page()" id="movieadd_search_backbutton"><ons-back-button></ons-back-button></div>
 
-        <div class="center" id="movieadd_search_input">
+        <div class="center toolbar_center_search_form" id="movieadd_search_input">
           <form action="javascript:movieadd_search.click_done()">
               <input onfocus="movieadd_search.set_animation_movieadd_search_input('focus')" onblur="movieadd_search.set_animation_movieadd_search_input('blur')" type="search" id="search_movie_title" value="" placeholder="追加する映画を検索" class="search-input search_form">
           </form>
         </div>
 
-        <div class="right">
+        <!-- <div class="right">
           <ons-toolbar-button onclick="utility.pop_page()" id="movieadd_search_cancel_button" style="margin-left: 200px; width: 10px;"></ons-toolbar-button>
-        </div>
+        </div> -->
         
         <div id="movieadd_search_reset"></div>
       </ons-toolbar>

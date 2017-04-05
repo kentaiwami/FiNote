@@ -484,26 +484,26 @@ var movieadd_search = {
   set_animation_movieadd_search_input: function(event_name) {
     //検索フィールドにフォーカスした時のアニメーション
     if (event_name == 'focus') {
-      $('#movieadd_search_backbutton').animate({opacity: 0},{queue: false, duration: 200}).animate({marginLeft: '-40px'}, {queue: false, duration: 200});
+      // $('#movieadd_search_backbutton').animate({opacity: 0},{queue: false, duration: 200}).animate({marginLeft: '-40px'}, {queue: false, duration: 200});
 
-      $('#search_movie_title').animate({width: '150%'},{queue: false, duration: 200});
+      // $('#search_movie_title').animate({width: '150%'},{queue: false, duration: 200});
 
-      $('#movieadd_search_cancel_button').html('キャンセル');
-      $('#movieadd_search_cancel_button').animate({marginLeft: '45px'},{queue: false, duration: 200}).animate({opacity: 1},{queue: false, duration: 200});
+      // $('#movieadd_search_cancel_button').html('キャンセル');
+      // $('#movieadd_search_cancel_button').animate({marginLeft: '45px'},{queue: false, duration: 200}).animate({opacity: 1},{queue: false, duration: 200});
 
-      $('#movieadd_reset_button').animate({margin: '0px 0px 0px -100px'},{queue: false, duration: 200});
+      // $('#movieadd_reset_button').animate({margin: '0px 0px 0px -100px'},{queue: false, duration: 200});
 
     //検索フィールドのフォーカスが外れた時のアニメーション
     } else if (event_name == 'blur') {
       movieadd_search.get_search_movie_title_val();
 
-      $('#movieadd_search_backbutton').animate({marginLeft: '0px'},{queue: false , duration: 200}).animate({opacity: 1},{queue: false , duration: 200});
+      // $('#movieadd_search_backbutton').animate({marginLeft: '0px'},{queue: false , duration: 200}).animate({opacity: 1},{queue: false , duration: 200});
 
-      $('#search_movie_title').animate({width: '170%'},{queue: false, duration: 200});
+      // $('#search_movie_title').animate({width: '170%'},{queue: false, duration: 200});
 
-      $('#movieadd_search_cancel_button').animate({marginLeft: '500px'},{queue: false, duration: 200}).animate({opacity: 0},{queue: false , duration: 200});
+      // $('#movieadd_search_cancel_button').animate({marginLeft: '500px'},{queue: false, duration: 200}).animate({opacity: 0},{queue: false , duration: 200});
 
-      $('#movieadd_reset_button').animate({margin: '0px 0px 0px -60px'},{queue: false, duration: 200});
+      // $('#movieadd_reset_button').animate({margin: '0px 0px 0px -60px'},{queue: false, duration: 200});
     }
   },
 

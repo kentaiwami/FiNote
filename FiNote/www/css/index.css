@@ -237,9 +237,14 @@ input[type=password] {
 /*** movieadd_search.htmlのmovieadd_no_match_message ***/
 
 .search_form {
-  margin: 6px 0px;
-  margin-left: -50px;
-  width: 170%;
+  width: 80vw;
+}
+
+.toolbar_center_search_form {
+  margin-left: 12vw;
+  position: absolute ;
+  left: 0;
+  padding: .4rem 0rem;
 }
 
 
