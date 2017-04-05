@@ -786,37 +786,51 @@ var movieadd = {
     var title = list_data[tap_id].title;
     var overview = list_data[tap_id].overview;
     var release_date = list_data[tap_id].release_date;
-    card.innerHTML = '<div class="modal" id="movie_detail_info" style="z-index: 0; height: 87%; opacity: 0.0;"><div class="modal__content"><p>'+ title +'</p><p>'+ overview +'</p><p>'+ release_date +'</p></div></div>';
+    var rating_html = '<div class="rating">'+
+                      '<div class="rating-num" id="movieadd_rating">'+
+                      movieadd.show_vote_average(list_data[tap_id].vote_average)+
+                      '</div></div>';
+    
 
-    movieadd.show_vote_average(list_data[tap_id].vote_average);
+    card.innerHTML = '<div class="modal card_modal" id="movie_detail_info"><div class="modal__content"><p>'+ title +'</p><p>'+ overview +'</p><p>'+ release_date +'</p>' + rating_html + '</div></div>';
 
     //overviewが長すぎて範囲内に収まらない場合に文字列をカットする処理を開始
-    var flag = false;
-    var copy_overview = overview;
-    var info = document.getElementById('movie_detail_info');
-    var info_clone = info.cloneNode(true);
-    info_clone.innerHTML = '<div class="modal__content"><p>'+ title +'</p><p>'+ copy_overview +'</p><p>'+ release_date +'</p></div></div>';
-    card.appendChild(info_clone);
+    // var flag = false;
+    // var copy_overview = overview;
+    // var info = document.getElementById('movie_detail_info');
+    // var info_clone = info.cloneNode(true);
+    // info_clone.innerHTML = '<div class="modal__content"><p>'+ title +'</p><p>'+ copy_overview +'</p><p>'+ release_date +'</p>' + rating_html + '</div></div>';
+    // card.appendChild(info_clone);
 
-    // var rating = document.getElementById('movieadd_rating');
-    // var toolbar = document.getElementById('movieadd_toolbar');
+    // 高さがポスター表示領域の高さ付近になるまで文字列をカットする
+    // console.log('info client: ' +info_clone.clientHeight);
+    // console.log('card client: ' +card.clientHeight);
+    // console.log('info off: ' +info_clone.offsetHeight);
+    // console.log('card off: ' +card.offsetHeight);
+    // console.log('info scroll: ' +info_clone.scrollHeight);
+    // console.log('card scroll: ' +card.scrollHeight);
+    // while((copy_overview.length > 0) && (info_clone.clientHeight > card.clientHeight)) {
+    //   flag = true;
+    //   console.log('**********');
+    //   console.log('info client: ' +info_clone.clientHeight);
+    // console.log('card client: ' +card.clientHeight);
+    // console.log('info off: ' +info_clone.offsetHeight);
+    // console.log('card off: ' +card.offsetHeight);
+    // console.log('info scroll: ' +info_clone.scrollHeight);
+    // console.log('card scroll: ' +card.scrollHeight);
 
-    //高さがポスター表示領域の高さ付近になるまで文字列をカットする
-    while((copy_overview.length > 0) && (info_clone.clientHeight > card.clientHeight)) {
-      flag = true;
+    //   copy_overview = copy_overview.substr(0, copy_overview.length-10);
 
-      copy_overview = copy_overview.substr(0, copy_overview.length-80);
-
-      info_clone.innerHTML = '<div class="modal__content"><p>'+ title +'</p><p>'+ copy_overview +'</p><p>'+ release_date +'</p></div></div>';
-    }
+    //   info_clone.innerHTML = '<div class="modal__content"><p>'+ title +'</p><p>'+ copy_overview +'</p><p>'+ release_date +'</p>' + rating_html + '</div></div>';
+    // }
 
     //文字列カットの処理を実行していたら3点リーダを追加
-    if (flag) {
-      copy_overview = copy_overview + '...';
-    }
+    // if (flag) {
+    //   copy_overview = copy_overview + '...';
+    // }
 
     //カット後の文字列でhtmlを上書きする
-    card.innerHTML = '<div class="modal" id="movie_detail_info" style="position: fixed; z-index: 0; height: 87%; opacity: 0.0;"><div class="modal__content"><p>'+ title +'</p><p>'+ copy_overview +'</p><p>'+ release_date +'</p></div></div>';
+    // card.innerHTML = '<div class="modal card_modal" id="movie_detail_info" style="position: fixed; z-index: 0; height: 87%; opacity: 0.0;"><div class="modal__content"><p>'+ title +'</p><p>'+ copy_overview +'</p><p>'+ release_date +'</p>' + rating_html + '</div></div>';
   },
 
   /**
@@ -831,13 +845,14 @@ var movieadd = {
    * card部分や吹き出しタップ時にアニメーション表示を行う
    */
   fadeTo_detail_info: function(){
-    if (movieadd.taped === false) {
-      $('#movie_detail_info').fadeTo(300,1);
-      movieadd.taped = true;
+    var movie_detail_info = document.getElementById('movie_detail_info');
+    movie_detail_info.style.transition = 'opacity 0.5s';
+
+    if (movie_detail_info.style.opacity == 1) {
+      movie_detail_info.style.opacity = '0';
     }else {
-      $('#movie_detail_info').fadeTo(300,0);
-      movieadd.taped = false;
-    }  
+      movie_detail_info.style.opacity = '1';
+    }
   },
 
 
@@ -881,7 +896,7 @@ var movieadd = {
     var few = String(result).split(".")[1];
 
     //星と数値を書き込む
-    var rating_num = document.getElementById('movieadd_rating');
+    // var rating_num = document.getElementById('movieadd_rating');
     var innerHTML_string = '';
     var few_write = false;
     for(var i = 0; i < 5; i++){
@@ -897,7 +912,7 @@ var movieadd = {
 
     innerHTML_string += result;
 
-    rating_num.innerHTML = innerHTML_string;
+    return innerHTML_string;
   },
 
   //映画追加ボタンを押したら動作
