@@ -585,12 +585,12 @@ var movieadd_search = {
 
             var list_item_doc = ['<ons-list-item id="'+ i +'" name="' + exist_flag + '" modifier="longdivider chevron" tappable="true" onclick="movieadd_search.tap_list(this)">',
                                  '<div class="left">',
-                                 '<img id="'+ i +'_img" style="box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.5); width: 80px; height: 120px; background:url(img/loading.gif) no-repeat center;" class="list__item__thumbnail" src="'+ list_data_poster[i] +'">',
+                                 '<img id="'+ i +'_img" class="list_img_large" src="'+ list_data_poster[i] +'">',
                                  '</div>',
                                  '<div class="center">',
-                                 '<span class="list__item__title" style="font-weight: 700;">'+ list_data[i].title +'</span>',
-                                 '<span id="overview_'+i +'" class="list__item__subtitle">'+ list_data[i].overview +'</span>',
-                                 '<span class="list__item__subtitle">'+ movie_releasedate +'</span>',
+                                 '<span class="list_title_bold">'+ list_data[i].title +'</span>',
+                                 '<span id="overview_'+i +'" class="list_sub_title_small">'+ list_data[i].overview +'</span>',
+                                 '<span class="list_sub_title_small">'+ movie_releasedate +'</span>',
                                  '</div>',
                                  exist_message.join(''),
                                  '</ons-list-item>'];
