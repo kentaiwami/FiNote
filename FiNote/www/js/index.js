@@ -17,6 +17,8 @@ var app = {
   onDeviceReady: function() {
     //ステータスバーの自動調整を無効にする
     ons.disableAutoStatusBarFill();
+
+    //キーボードのアクセサリーバーを表示する
     utility.hideKeyboardAccessoryBar(false);
 
     //データベースのテーブルを構築する
