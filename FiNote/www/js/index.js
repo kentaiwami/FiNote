@@ -540,15 +540,10 @@ var movieadd_search = {
 
         //データによって表示するコンテンツを動的に変える
         if (list_data.length === 0) {
-          no_match_message.innerHTML = '検索結果なし';
-          
-          $('#movieadd_no_match_message').css('height', '100%');
+          no_match_message.innerHTML = '検索結果なし';          
           movieadd_search.not_show_list();
         }else{
-          no_match_message.innerHTML = '';
-
-          $('#movieadd_no_match_message').css('height', '0%');
-                               
+          no_match_message.innerHTML = '';                               
           var list_data_poster = movieadd_search.get_poster(list_data);
 
           //サムネイル取得後にリストを表示する
@@ -606,7 +601,7 @@ var movieadd_search = {
             var span_height = span.offsetHeight;
             var copy_overview = list_data[i].overview;
 
-            while(span_height > 80 && copy_overview.length > 0) {
+            while(span_height > 85 && copy_overview.length > 0) {
               flag = true;
               copy_overview = copy_overview.substr(0, copy_overview.length-5);
               document.getElementById('overview_'+i).innerHTML = copy_overview;
