@@ -451,7 +451,8 @@ var movieadd_search = {
     //console.log('click_done');
     cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 
-    document.getElementById('search_movie_title').blur();        
+    document.getElementById('search_movie_title').blur();
+    movieadd_search.get_search_movie_title_val();
   },
 
 
@@ -461,7 +462,7 @@ var movieadd_search = {
   tap_reset: function(){
     //formのテキストを初期化、バツボタンの削除、検索結果なしメッセージの削除
     document.getElementById('search_movie_title').value = '';
-    document.getElementById('movieadd_search_reset').innerHTML = '';
+    movieadd_search.show_hide_reset_button();
     document.getElementById('movieadd_no_match_message').innerHTML = '';
     movieadd_search.not_show_list();
 
@@ -478,32 +479,26 @@ var movieadd_search = {
 
 
   /**
-   * 検索フォームにフォーカス時、フォーカスが外れた時のアニメーションを設定する
+   * 検索フォームにフォーカス時、フォーカスが外れた時のイベントを設定する
    * @param {[string]} event_name [focusまたはblurを受け取る]
    */
   set_animation_movieadd_search_input: function(event_name) {
-    //検索フィールドにフォーカスした時のアニメーション
     if (event_name == 'focus') {
-      // $('#movieadd_search_backbutton').animate({opacity: 0},{queue: false, duration: 200}).animate({marginLeft: '-40px'}, {queue: false, duration: 200});
+      document.getElementById('search_movie_title').addEventListener('input', movieadd_search.show_hide_reset_button, false);
 
-      // $('#search_movie_title').animate({width: '150%'},{queue: false, duration: 200});
-
-      // $('#movieadd_search_cancel_button').html('キャンセル');
-      // $('#movieadd_search_cancel_button').animate({marginLeft: '45px'},{queue: false, duration: 200}).animate({opacity: 1},{queue: false, duration: 200});
-
-      // $('#movieadd_reset_button').animate({margin: '0px 0px 0px -100px'},{queue: false, duration: 200});
-
-    //検索フィールドのフォーカスが外れた時のアニメーション
     } else if (event_name == 'blur') {
-      movieadd_search.get_search_movie_title_val();
+      document.getElementById('search_movie_title').removeEventListener('input', movieadd_search.show_hide_reset_button, false);
+    }
+  },
 
-      // $('#movieadd_search_backbutton').animate({marginLeft: '0px'},{queue: false , duration: 200}).animate({opacity: 1},{queue: false , duration: 200});
+  show_hide_reset_button: function() {
+    var text = document.getElementById('search_movie_title').value;
+    var reset_button = document.getElementById('movieadd_reset_button');
 
-      // $('#search_movie_title').animate({width: '170%'},{queue: false, duration: 200});
-
-      // $('#movieadd_search_cancel_button').animate({marginLeft: '500px'},{queue: false, duration: 200}).animate({opacity: 0},{queue: false , duration: 200});
-
-      // $('#movieadd_reset_button').animate({margin: '0px 0px 0px -60px'},{queue: false, duration: 200});
+    if (text.length > 0) {
+      reset_button.style.visibility = 'visible';
+    }else {
+      reset_button.style.visibility = 'hidden';
     }
   },
 
@@ -516,12 +511,11 @@ var movieadd_search = {
    */
   get_search_movie_title_val: function(){
     var text = document.getElementById('search_movie_title').value;
-    var resetbutton = document.getElementById('movieadd_search_reset');
+    // var resetbutton = document.getElementById('movieadd_search_reset');
     var no_match_message = document.getElementById('movieadd_no_match_message');
 
     if (text.length > 0) {
-      //テキストエリアのリセットボタン表示、スピナー表示
-      resetbutton.innerHTML = '<ons-button id="movieadd_reset_button" onclick="movieadd_search.tap_reset()" style="margin: 0px 0px 0px -100px;" modifier="quiet"><ons-icon icon="ion-close-circled"></ons-icon></ons-button>';
+      //テキストエリアのスピナー表示
       utility.show_spinner('movieadd_no_match_message');
 
       //日本語と英語のリクエスト、ローカルDBから記録した映画リストの取得を行う
@@ -629,7 +623,6 @@ var movieadd_search = {
       });
 
     } else {
-      resetbutton.innerHTML = '';
       no_match_message.innerHTML = '';
       movieadd_search.not_show_list();
     }
@@ -756,9 +749,6 @@ var movieadd_search = {
    * @param  {[object]} obj [タップしたオブジェクト]
    */
   tap_list: function(obj){
-    //キャンセルボタンが移動しきれない場合があるため強制的に移動させる
-    document.getElementById('movieadd_search_cancel_button').style.marginLeft = '500px';
-    
     var list_data = movieadd_search.show_list_data;
     var tap_id = obj.id;
 

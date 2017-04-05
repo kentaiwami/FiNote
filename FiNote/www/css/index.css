@@ -247,6 +247,13 @@ input[type=password] {
   padding: .4rem 0rem;
 }
 
+.reset_button {
+  margin-left: 100%;
+  position: absolute;
+  top: 0;
+  visibility: hidden;
+}
+
 
 /*** movieadd.htmlのポスター表示部分 ***/
 .card_back_image {

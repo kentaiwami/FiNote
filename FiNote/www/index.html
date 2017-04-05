@@ -167,13 +167,9 @@
           <form action="javascript:movieadd_search.click_done()">
               <input onfocus="movieadd_search.set_animation_movieadd_search_input('focus')" onblur="movieadd_search.set_animation_movieadd_search_input('blur')" type="search" id="search_movie_title" value="" placeholder="追加する映画を検索" class="search-input search_form">
           </form>
-        </div>
 
-        <!-- <div class="right">
-          <ons-toolbar-button onclick="utility.pop_page()" id="movieadd_search_cancel_button" style="margin-left: 200px; width: 10px;"></ons-toolbar-button>
-        </div> -->
-        
-        <div id="movieadd_search_reset"></div>
+          <ons-button id="movieadd_reset_button" onclick="movieadd_search.tap_reset()" class="reset_button" modifier="quiet"><ons-icon icon="ion-close-circled"></ons-icon></ons-button>
+        </div>
       </ons-toolbar>
 
       <!-- ローディング表示、検索結果なしメッセージ用 -->
