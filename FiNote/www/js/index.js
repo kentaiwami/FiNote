@@ -467,14 +467,15 @@ var movieadd_search = {
     movieadd_search.not_show_list();
 
     //テキスト未確定入力時にリセットボタンを押した時
-   if ($(':focus').attr('id') == 'search_movie_title') {
-    document.getElementById('search_movie_title').blur();
-    document.getElementById('search_movie_title').focus();
+    var element = document.activeElement;
+    if (element.getAttribute('id') == 'search_movie_title') {
+      document.getElementById('search_movie_title').blur();
+      document.getElementById('search_movie_title').focus();
 
-    //テキスト入力確定後にリセットボタンを押した時
-   }else {
-    document.getElementById('search_movie_title').focus();
-   }
+      //テキスト入力確定後にリセットボタンを押した時
+    }else {
+      document.getElementById('search_movie_title').focus();
+    }
   },
 
 
