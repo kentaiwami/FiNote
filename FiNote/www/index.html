@@ -205,35 +205,45 @@
       </div>
 
       <!-- ユーザアクション部分 -->
-      <ons-list style="border-top: none"><ons-list-item style="line-height: 1; padding: 0;">
-        <ons-row class="action">
+      <ons-list style="border-top: none">
+        <ons-list-item style="line-height: 1; padding: 0;">
+          <ons-row class="action">
 
-          <ons-col class="action-col">
-            <div class="action-icon"><ons-button onClick="movieadd.add_movie()" id="movieadd_add_button" modifier="quiet" style="color: #1f1f21;"><ons-icon icon="ion-plus-circled"></ons-icon></ons-button></div>
-            <div class="action-label">追加</div>
-          </ons-col>
+            <ons-col class="action-col">
+              <div class="action-icon">
+                <ons-button onClick="movieadd.add_movie()" id="movieadd_add_button" modifier="quiet" style="color: #1f1f21;">
+                  <ons-icon icon="ion-plus-circled"></ons-icon>
+                </ons-button>
+              </div>
+              <div class="action-label">追加</div>
+            </ons-col>
 
-          <ons-col class="action-col">
-            <div class="action-icon"><ons-button onClick="movieadd.pushpage_feeling()" id="movieadd_pushfeeling_button" modifier="quiet" style="color: #1f1f21;"><ons-icon icon="ion-edit"></ons-icon></ons-button></div>
-            <div class="action-label">気分リスト</div>
-          </ons-col>
+            <ons-col class="action-col">
+              <div class="action-icon">
+                <ons-button onClick="movieadd.pushpage_feeling()" id="movieadd_pushfeeling_button" modifier="quiet" style="color: #1f1f21;">
+                  <ons-icon icon="ion-edit"></ons-icon>
+                </ons-button>
+              </div>
+              <div class="action-label">気分リスト</div>
+            </ons-col>
 
-          <span class="notification" id="list_number" style="position: fixed; margin-left: -30px; margin-top: 0px; font-size: 13px;">0件</span>
-          
-          <ons-col class="action-col">
-            <div class="action-icon"><ons-button onClick="movieadd.pushpage_dvd()" id="movieadd_pushdvd_button" modifier="quiet" style="color: #1f1f21;"><ons-icon icon="ion-disc"></ons-icon></ons-button></div>
-            <div class="action-label">DVD</div>
-          </ons-col>
+            <span class="notification" id="list_number" style="position: fixed; margin-left: -30px; margin-top: 0px; font-size: 13px;">0件</span>
+            
+            <ons-col class="action-col">
+              <div class="action-icon"><ons-button onClick="movieadd.pushpage_dvd()" id="movieadd_pushdvd_button" modifier="quiet" style="color: #1f1f21;"><ons-icon icon="ion-disc"></ons-icon></ons-button></div>
+              <div class="action-label">DVD</div>
+            </ons-col>
 
-          <span class="notification" id="have_dvd" style="position: fixed; margin-left: -30px; margin-top: 0px; font-size: 13px;">No</span>
+            <span class="notification" id="have_dvd" style="position: fixed; margin-left: -30px; margin-top: 0px; font-size: 13px;">No</span>
 
-          <ons-col class="action-col">
-            <div class="action-icon"><ons-button onClick="movieadd.sns_share()" id="movieadd_share_button" modifier="quiet" style="color: #1f1f21;"><ons-icon icon="ion-share"></ons-icon></ons-button></div>
-            <div class="action-label">シェア</div>
-          </ons-col>
+            <ons-col class="action-col">
+              <div class="action-icon"><ons-button onClick="movieadd.sns_share()" id="movieadd_share_button" modifier="quiet" style="color: #1f1f21;"><ons-icon icon="ion-share"></ons-icon></ons-button></div>
+              <div class="action-label">シェア</div>
+            </ons-col>
 
-        </ons-row>
-      </ons-list-item></ons-list>
+          </ons-row>
+        </ons-list-item>
+      </ons-list>
 
       <!-- 映画追加完了のアラート -->
       <ons-dialog id="success_movieadd_alert" style="z-index: 1;">
