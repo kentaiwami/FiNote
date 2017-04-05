@@ -1,4 +1,4 @@
-/*** singup.htmlの画面表示 ***/
+/*** singup.html ***/
 .form-row {
   margin: 4px;
 }
@@ -35,9 +35,10 @@ input[type=password] {
   padding-top: 10px;
   padding-bottom: 10px;
 }
-/*** singup.htmlの画面表示 ***/
+/*** singup.html ***/
 
-/*** movieadd.htmlの画面表示 ***/
+
+/*** movieadd.html ***/
 .page--shop-details__content {
   position: absolute;
   left: 0px;
@@ -71,6 +72,15 @@ input[type=password] {
   opacity: 0.9;
   text-align: center;
   line-height: 1.4;
+}
+
+.card_back_image {
+  background-image: url('../img/noimage.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 87%;
+  width: 100%;
 }
 
 .rating {
@@ -139,9 +149,30 @@ input[type=password] {
   vertical-align: -0px;
   opacity: 0.5;
 }
-/*** movieadd.htmlの画面表示 ***/
 
-/*** movieadd_search.htmlの追加済み表示用 ***/
+.feeling_film {
+  -webkit-transform: rotate(-3deg);
+  -moz-transform: rotate(-3deg);
+  transform: rotate(-3deg);
+  -o-transform:rotate(-3deg);
+  -ms-transform:rotate(-3deg);
+  background:#554738;
+  color:#fff;
+  font-size:19pt;
+  width:auto;
+  border-top:13px dashed #fff;
+  border-bottom:13px dashed #fff;
+  box-shadow: 0 0 3px 8px #554738;
+  text-shadow: 0 0 5px;
+  padding:20px;
+  margin-left: 35px;
+  margin-bottom:40px;
+  display: inline-block;
+}
+/*** movieadd.html ***/
+
+
+/*** movieadd_search.html ***/
 .exist_message {
   color: #4A90E2;
   font-size: 15px; 
@@ -158,10 +189,7 @@ input[type=password] {
   margin-right: 0.3em;
   content: '追加済み';
 }
-/*** movieadd_search.htmlの追加済み表示用 ***/
 
-
-/*** movieadd_search.htmlのmovieadd_no_match_message ***/
 .center_message {
   display: flex;
   justify-content: center;
@@ -169,7 +197,6 @@ input[type=password] {
   text-align: center;
   height: 0%;
 }
-/*** movieadd_search.htmlのmovieadd_no_match_message ***/
 
 .search_form {
   width: 80vw;
@@ -190,41 +217,7 @@ input[type=password] {
 }
 
 
-/*** movieadd.htmlのポスター表示部分 ***/
-.card_back_image {
-  background-image: url('../img/noimage.png');
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  height: 87%;
-  width: 100%;
-}
-/*** movieadd.htmlのポスター表示部分 ***/
-
-/*** 気分リストをフィルム風にする ***/
-.feeling_film {
-  -webkit-transform: rotate(-3deg);
-  -moz-transform: rotate(-3deg);
-  transform: rotate(-3deg);
-  -o-transform:rotate(-3deg);
-  -ms-transform:rotate(-3deg);
-  background:#554738;
-  color:#fff;
-  font-size:19pt;
-  width:auto;
-  border-top:13px dashed #fff;
-  border-bottom:13px dashed #fff;
-  box-shadow: 0 0 3px 8px #554738;
-  text-shadow: 0 0 5px;
-  padding:20px;
-  margin-left: 35px;
-  margin-bottom:40px;
-  display: inline-block;
-}
-/*** 気分リストをフィルム風にする ***/
-
-
-/*** 追加した映画一覧画面 ***/
+/*** movies.html ***/
 .center_message {
   margin-top: 5vh;
   opacity: .6;
@@ -256,8 +249,6 @@ input[type=password] {
   display: block;
   width: 100%;
   height: 100%;
-  /*border-top-left-radius: 15px;*/
-  /*border-top-right-radius: 15px;*/
 }
 
 .movies_title {
@@ -301,4 +292,4 @@ input[type=password] {
   border-bottom-right-radius: 15px;
   border-bottom-left-radius: 15px;
 }
-/*** 追加した映画一覧画面 ***/
+/*** movies.html ***/
