@@ -236,6 +236,12 @@ input[type=password] {
 }
 /*** movieadd_search.htmlのmovieadd_no_match_message ***/
 
+.search_form {
+  margin: 6px 0px;
+  margin-left: -50px;
+  width: 170%;
+}
+
 
 /*** movieadd.htmlのポスター表示部分 ***/
 .card_back_image {
