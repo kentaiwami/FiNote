@@ -755,8 +755,6 @@ var movieadd = {
   userdata: {feeling_name_list: [], dvd: false},
   current_movie: {},
 
-  taped: false,       //falseなら映画の情報が表示されていない、trueは表示済み(表示中)
-
   /**
    * [映画追加画面のコンテンツを表示する]
    * @param  {[array]} list_data [検索結果の映画オブジェクトが格納された配列]
@@ -773,13 +771,13 @@ var movieadd = {
     var tap_list_obj = document.getElementById(tap_id+'_img');
     var img_url = tap_list_obj.getAttribute('src');
 
-    $('#movieadd_card').css('backgroundImage' ,'url('+img_url+')');
+    card.style.backgroundImage = 'url(' + img_url + ')';
 
     //noimageとサムネイルでサイズ設定を変える
     if (img_url.indexOf('noimage.png') != -1) {
-      $('#movieadd_card').css('backgroundSize' ,'contain');
+      card.style.backgroundSize = 'contain';
     }else {
-      $('#movieadd_card').css('backgroundSize' ,'cover');
+      card.style.backgroundSize = 'cover';
     }
 
     //card部分や吹き出しタップ時に表示する情報の取得と追加
@@ -791,46 +789,30 @@ var movieadd = {
                       movieadd.show_vote_average(list_data[tap_id].vote_average)+
                       '</div></div>';
     
-
     card.innerHTML = '<div class="modal card_modal" id="movie_detail_info"><div class="modal__content"><p>'+ title +'</p><p>'+ overview +'</p><p>'+ release_date +'</p>' + rating_html + '</div></div>';
 
     //overviewが長すぎて範囲内に収まらない場合に文字列をカットする処理を開始
-    // var flag = false;
-    // var copy_overview = overview;
-    // var info = document.getElementById('movie_detail_info');
-    // var info_clone = info.cloneNode(true);
-    // info_clone.innerHTML = '<div class="modal__content"><p>'+ title +'</p><p>'+ copy_overview +'</p><p>'+ release_date +'</p>' + rating_html + '</div></div>';
-    // card.appendChild(info_clone);
+    var flag = false;
+    var copy_overview = overview;
+    var info = document.getElementById('movie_detail_info');
+    var info_clone = info.cloneNode(true);
+    info_clone.innerHTML = '<div class="modal__content"><p>'+ title +'</p><p>'+ copy_overview +'</p><p>'+ release_date +'</p>' + rating_html + '</div></div>';
+    card.appendChild(info_clone);
 
     // 高さがポスター表示領域の高さ付近になるまで文字列をカットする
-    // console.log('info client: ' +info_clone.clientHeight);
-    // console.log('card client: ' +card.clientHeight);
-    // console.log('info off: ' +info_clone.offsetHeight);
-    // console.log('card off: ' +card.offsetHeight);
-    // console.log('info scroll: ' +info_clone.scrollHeight);
-    // console.log('card scroll: ' +card.scrollHeight);
-    // while((copy_overview.length > 0) && (info_clone.clientHeight > card.clientHeight)) {
-    //   flag = true;
-    //   console.log('**********');
-    //   console.log('info client: ' +info_clone.clientHeight);
-    // console.log('card client: ' +card.clientHeight);
-    // console.log('info off: ' +info_clone.offsetHeight);
-    // console.log('card off: ' +card.offsetHeight);
-    // console.log('info scroll: ' +info_clone.scrollHeight);
-    // console.log('card scroll: ' +card.scrollHeight);
+    while((copy_overview.length > 0) && (info_clone.clientHeight > card.clientHeight)) {
+      flag = true;
+      copy_overview = copy_overview.substr(0, copy_overview.length-100);
+      info_clone.innerHTML = '<div class="modal__content"><p>'+ title +'</p><p>'+ copy_overview +'</p><p>'+ release_date +'</p>' + rating_html + '</div></div>';
+    }
 
-    //   copy_overview = copy_overview.substr(0, copy_overview.length-10);
+    // 文字列カットの処理を実行していたら3点リーダを追加
+    if (flag) {
+      copy_overview = copy_overview + '...';
+    }
 
-    //   info_clone.innerHTML = '<div class="modal__content"><p>'+ title +'</p><p>'+ copy_overview +'</p><p>'+ release_date +'</p>' + rating_html + '</div></div>';
-    // }
-
-    //文字列カットの処理を実行していたら3点リーダを追加
-    // if (flag) {
-    //   copy_overview = copy_overview + '...';
-    // }
-
-    //カット後の文字列でhtmlを上書きする
-    // card.innerHTML = '<div class="modal card_modal" id="movie_detail_info" style="position: fixed; z-index: 0; height: 87%; opacity: 0.0;"><div class="modal__content"><p>'+ title +'</p><p>'+ copy_overview +'</p><p>'+ release_date +'</p>' + rating_html + '</div></div>';
+    // カット後の文字列でhtmlを上書きする
+    card.innerHTML = '<div class="modal card_modal" id="movie_detail_info" style="position: fixed; z-index: 0; height: 87%; opacity: 0.0;"><div class="modal__content"><p>'+ title +'</p><p>'+ copy_overview +'</p><p>'+ release_date +'</p>' + rating_html + '</div></div>';
   },
 
   /**
