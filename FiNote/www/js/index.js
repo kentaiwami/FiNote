@@ -1753,7 +1753,14 @@ var movieadd_feeling = {
 
       //既出でない場合
       if (movieadd.userdata.feeling_name_list.indexOf(feeling_name) == -1) {
-        movieadd_feeling.add_list(feeling_name);
+        // movieadd_feeling.add_list(feeling_name);
+        //リスト追加と表示
+        movieadd.userdata.feeling_name_list.push(feeling_name);
+        movieadd_feeling.show_contents();
+
+        //ラベルの更新
+        movieadd.show_feelingAnddvd_label();
+
         document.getElementById('feeling_add_dialog').hide();
 
       //既出の場合
@@ -1762,19 +1769,6 @@ var movieadd_feeling = {
         utility.show_error_alert('登録エラー','既に登録済みです','OK');
       }
     }
-  },
-
-  /**
-   * 引き数で渡された気分の文字列をリストに表示する
-   * @param {[string]} feeling_name [ユーザが入力した気分]
-   */
-  add_list: function(feeling_name){
-    //リスト表示
-    movieadd.userdata.feeling_name_list.push(feeling_name);
-    movieadd_feeling.show_contents();
-
-    //ラベルの更新
-    movieadd.show_feelingAnddvd_label();
   },
 };
 
