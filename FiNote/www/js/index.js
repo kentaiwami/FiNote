@@ -1689,16 +1689,13 @@ var movieadd_feeling = {
       //リスト表示
       var feeling_list = document.getElementById('feeling_list');
       feeling_list.innerHTML = '';
-      for(var i = 0; i < length; i++) {
-        feeling_list.innerHTML += '<h3 class="feeling_film" style="opacity: 0; margin-top: 40px;">' + movieadd.userdata.feeling_name_list[i] + '</h3>';
-      }
+      feeling_list.innerHTML = '<ons-list-header>登録済みの気分</ons-list-header>';
 
-      //アニメーション表示
-      var delaySpeed = 50;
-      var fadeSpeed = 400;
-      $('.feeling_film').each(function(index) {
-        $(this).delay(index*delaySpeed).animate({opacity:'1', marginTop: '20px'},fadeSpeed);  
-      });
+      for(var i = 0; i < length; i++) {
+        feeling_list.innerHTML += '<ons-list-item>'+
+                                  movieadd.userdata.feeling_name_list[i]+
+                                  '</ons-list-item>';
+      }
     }
   },
 
