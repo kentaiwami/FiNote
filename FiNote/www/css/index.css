@@ -158,7 +158,11 @@ input[type=password] {
   font-size: .85rem;
 }
 
-.feeling_film {
+
+/************************************************************
+                          Feeling
+************************************************************/
+/*.feeling_film {
   -webkit-transform: rotate(-3deg);
   -moz-transform: rotate(-3deg);
   transform: rotate(-3deg);
@@ -176,7 +180,7 @@ input[type=password] {
   margin-left: 35px;
   margin-bottom:40px;
   display: inline-block;
-}
+}*/
 
 .feeling_no_message {
   display: flex;
