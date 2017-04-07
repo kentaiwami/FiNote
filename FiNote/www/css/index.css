@@ -178,6 +178,14 @@ input[type=password] {
   display: inline-block;
 }
 
+.feeling_no_message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  opacity: .6;
+}
+
 
 /************************************************************
                           Message
