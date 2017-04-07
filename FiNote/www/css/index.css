@@ -41,6 +41,14 @@ input[type=password] {
 /************************************************************
                             Movie Detail&Add
  ************************************************************/
+.button_color {
+  color: #1f1f21;
+}
+
+.button_color_disabled {
+  opacity: .4;
+}
+
 .card {
   background-color: #FFF;
   background-repeat: no-repeat;
@@ -97,7 +105,6 @@ input[type=password] {
 
 .action-col {
   text-align: center;
-  opacity: 0.4;
   padding: 10px 0 8px;
 }
 
