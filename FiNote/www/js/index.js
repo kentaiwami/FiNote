@@ -1629,25 +1629,22 @@ var movieadd = {
    */
   sns_share: function() {
     var options = {
-      message: movieadd.current_movie.title + ' #FiNote', // not supported on some apps (Facebook, Instagram)
-      subject: '', // fi. for email
-      files: ['', ''], // an array of filenames either locally or remotely
+      message: movieadd.current_movie.title + ' #FiNote',
+      subject: '',
+      files: ['', ''],
       url: 'https://www.themoviedb.org/movie/' + movieadd.current_movie.id,
-      chooserTitle: 'Pick an app' // Android only, you can override the default share sheet title
+      chooserTitle: 'Pick an app'
     };
 
     var onSuccess = function(result) {
-      if (result.app === 'com.apple.UIKit.activity.PostToTwitter' || result.app === 'jp.naver.line.Share') {
-          document.getElementById('success_sns_alert').show();
+      if (result.completed === true && result.app != 'com.apple.UIKit.activity.PostToFacebook') {
+        document.getElementById('success_sns_alert').show();
 
-          //映画追加画面のボタンオブジェクト
+        //映画追加画面のボタンオブジェクト
           var button_list = [document.getElementById('movieadd_add_button'),document.getElementById('movieadd_pushfeeling_button'),document.getElementById('movieadd_pushdvd_button'),document.getElementById('movieadd_share_button'),document.getElementById('movieadd_show_info_button'),document.getElementById('movieadd_back_button')];
 
           utility.setAttribute_list_object(button_list, 'disabled');
       }
-
-      console.log("Share completed? " + result.completed); // On Android apps mostly return false even while it's true
-      console.log("Shared to app: " + result.app); // On Android result.app is currently empty. On iOS it's empty when sharing is cancelled (result.completed=false)
     };
 
     var onError = function(msg) {
