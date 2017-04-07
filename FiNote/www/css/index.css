@@ -148,6 +148,15 @@ input[type=password] {
   padding: 10px;
 }
 
+.center_button {
+  margin-top: 2.5vh;
+  padding: 2.5vh;
+}
+
+.small_message {
+  opacity: 0.5;
+  font-size: .85rem;
+}
 
 .feeling_film {
   -webkit-transform: rotate(-3deg);
