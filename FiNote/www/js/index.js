@@ -1648,7 +1648,13 @@ var movieadd = {
     };
 
     var onError = function(msg) {
-      console.log("Sharing failed with message: " + msg);
+      document.getElementById('sns_error_message').innerHTML = msg;
+      document.getElementById('error_sns_alert').show();
+
+      //映画追加画面のボタンオブジェクト
+        var button_list = [document.getElementById('movieadd_add_button'),document.getElementById('movieadd_pushfeeling_button'),document.getElementById('movieadd_pushdvd_button'),document.getElementById('movieadd_share_button'),document.getElementById('movieadd_show_info_button'),document.getElementById('movieadd_back_button')];
+
+        utility.setAttribute_list_object(button_list, 'disabled');
     };
 
     window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
@@ -1657,11 +1663,11 @@ var movieadd = {
   /**
    * SNSの投稿が完了した後に表示されるアラートを閉じるボタンが押された時に動作する
    */
-  success_sns_alert_hide: function() {
+  sns_alert_hide: function(alert_id) {
     //映画追加画面のボタンオブジェクト
     var button_list = [document.getElementById('movieadd_add_button'),document.getElementById('movieadd_pushfeeling_button'),document.getElementById('movieadd_pushdvd_button'),document.getElementById('movieadd_share_button'),document.getElementById('movieadd_show_info_button'),document.getElementById('movieadd_back_button')];
 
-    document.getElementById('success_sns_alert').hide();
+    document.getElementById(alert_id).hide();
     utility.removeAttribute_list_object(button_list, 'disabled');
   },
 };
