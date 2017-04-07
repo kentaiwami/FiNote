@@ -49,6 +49,20 @@ input[type=password] {
   opacity: .4;
 }
 
+.notification_space_small {
+  position: relative;
+  margin-left: 13vw;
+  margin-top: -15vw;
+  font-size: .75rem;
+}
+
+.notification_space_large {
+  position: relative;
+  margin-left: 15vw;
+  margin-top: -15vw;
+  font-size: .75rem;
+}
+
 .card {
   background-color: #FFF;
   background-repeat: no-repeat;
