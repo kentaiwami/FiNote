@@ -1609,6 +1609,13 @@ var movieadd = {
 
     list_number.innerHTML = list_length;
     have_dvd.innerHTML = dvd;
+
+    var movieadd_add_button = document.getElementById('movieadd_add_button');
+    if (list_length === 0) {
+      movieadd_add_button.style.opacity = '.4';
+    }else {
+      movieadd_add_button.style.opacity = '1';
+    }
   },
 
 
