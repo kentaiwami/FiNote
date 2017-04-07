@@ -1648,8 +1648,7 @@ var movieadd = {
     };
 
     var onError = function(msg) {
-      document.getElementById('sns_error_message').innerHTML = msg;
-      document.getElementById('error_sns_alert').show();
+      utility.show_error_alert('投稿エラー',msg,'OK');
 
       //映画追加画面のボタンオブジェクト
         var button_list = [document.getElementById('movieadd_add_button'),document.getElementById('movieadd_pushfeeling_button'),document.getElementById('movieadd_pushdvd_button'),document.getElementById('movieadd_share_button'),document.getElementById('movieadd_show_info_button'),document.getElementById('movieadd_back_button')];
@@ -1663,11 +1662,11 @@ var movieadd = {
   /**
    * SNSの投稿が完了した後に表示されるアラートを閉じるボタンが押された時に動作する
    */
-  sns_alert_hide: function(alert_id) {
+  sns_alert_hide: function() {
     //映画追加画面のボタンオブジェクト
     var button_list = [document.getElementById('movieadd_add_button'),document.getElementById('movieadd_pushfeeling_button'),document.getElementById('movieadd_pushdvd_button'),document.getElementById('movieadd_share_button'),document.getElementById('movieadd_show_info_button'),document.getElementById('movieadd_back_button')];
 
-    document.getElementById(alert_id).hide();
+    document.getElementById('success_sns_alert').hide();
     utility.removeAttribute_list_object(button_list, 'disabled');
   },
 };
