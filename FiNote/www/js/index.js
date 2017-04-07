@@ -1607,7 +1607,7 @@ var movieadd = {
     var list_number = document.getElementById('list_number');
     var have_dvd = document.getElementById('have_dvd');
 
-    list_number.innerHTML = list_length + '件';
+    list_number.innerHTML = list_length;
     have_dvd.innerHTML = dvd;
   },
 
