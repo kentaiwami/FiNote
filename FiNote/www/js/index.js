@@ -1591,9 +1591,9 @@ var movieadd = {
   },
 
   /**
-   * 登録されたリストの件数とDVD所持情報をもとにラベルを更新する関数
+   * 登録されたリストの件数とDVD所持情報をもとにボタン透過率とラベルを更新する関数
    */
-  show_feelingAnddvd_label: function(){
+  update_labels: function(){
     var list_length = movieadd.userdata.feeling_name_list.length;
     var dvd_flag = movieadd.userdata.dvd;
     var dvd = 'No';
@@ -1763,7 +1763,7 @@ var movieadd_feeling = {
         movieadd_feeling.show_contents();
 
         //ラベルの更新
-        movieadd.show_feelingAnddvd_label();
+        movieadd.update_labels();
 
         document.getElementById('feeling_add_dialog').hide();
 
@@ -1808,7 +1808,7 @@ var movieadd_dvd = {
     }
 
     //ラベルの更新
-    movieadd.show_feelingAnddvd_label();
+    movieadd.update_labels();
     
     utility.pop_page();
   },
