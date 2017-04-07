@@ -143,6 +143,11 @@ input[type=password] {
   font-size: 12px;
 }
 
+.success_alert {
+  text-align: center;
+  padding: 10px;
+}
+
 
 .feeling_film {
   -webkit-transform: rotate(-3deg);
