@@ -1680,10 +1680,10 @@ var movieadd_feeling = {
     var nodata_message = document.getElementById('movieadd_feeling_nodata_message');
     var length = movieadd.userdata.feeling_name_list.length;
     if (length === 0) {
-      $('#movieadd_feeling_nodata_message').css('height', '100%');
+      nodata_message.style.height = '100%';
       nodata_message.innerHTML = '感情を1件以上登録してください<br>(1件につき6文字以内)';
     }else {
-      $('#movieadd_feeling_nodata_message').css('height', '0%');
+      nodata_message.style.height = '0%';
       nodata_message.innerHTML = '';
 
       //リスト表示
