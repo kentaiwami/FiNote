@@ -2063,7 +2063,7 @@ var utility = {
    */
   setAttribute_list_object: function(object_list, attribute_name) {
     for(var i = 0; i < object_list.length; i++) {
-      object_list[i].setAttribute(attribute_name);
+      object_list[i].setAttribute(attribute_name, attribute_name);
     }
   },
 
