@@ -284,7 +284,7 @@ var movie = {
             var result = [];
             var db = utility.get_database();
             db.readTransaction(function(tx) {
-              tx.executeSql('SELECT title,genre_id,onomatopoeia_id,tmdb_id,poster,dvd,fav FROM movie', [], function(tx, resultSet) {
+              tx.executeSql('SELECT title,genre_id,onomatopoeia_id,tmdb_id,poster,dvd,fav,add_year,add_month,add_day FROM movie', [], function(tx, resultSet) {
                 result.push(resultSet);
 
                 tx.executeSql('SELECT id,name FROM genre', [], function(tx, resultSet) {
@@ -336,6 +336,8 @@ var movie = {
                 buttoncolor_code.fav = color_code[0];
               }     
 
+              var add_month = ('00' + movie_record.add_month).slice(-2);
+              var add_day = ('00' + movie_record.add_day).slice(-2);
               var list = '<ons-list-item modifier="longdivider">'+
                          '<div class="left">'+
                          '<img class="list_img" src="' + movie_record.poster + '">'+
@@ -348,7 +350,10 @@ var movie = {
                          'ドキドキ、ハラハラ、モヤモヤ'+
                          '</span>'+
                          '<span class="list-item__subtitle">'+
-                         '追加日:2015-05-30'+
+                         '追加日:'+
+                         movie_record.add_year+'-'+
+                         add_month+'-'+
+                         add_day+
                          '</span>'+
                          '</div>'+
                          '</ons-list-item>';
@@ -1049,8 +1054,14 @@ var movieadd = {
               dvd = 0;
             }
 
-            var query = 'INSERT INTO movie(id,title,tmdb_id,genre_id,onomatopoeia_id,poster,dvd,fav) VALUES(?,?,?,?,?,?,?,?)';
-            var data = [movie_record_count,movie_result.Title, movie_result.TMDB_ID, genre_csv, onomatopoeia_csv, image_b64, dvd, 0];
+            var query = 'INSERT INTO movie(id,title,tmdb_id,genre_id,onomatopoeia_id,poster,dvd,fav, add_year, add_month, add_day) VALUES(?,?,?,?,?,?,?,?,?,?,?)';
+            
+            var today = new Date();
+            var year = today.getFullYear();
+            var month = today.getMonth()+1;
+            var day = today.getDate();
+
+            var data = [movie_record_count,movie_result.Title, movie_result.TMDB_ID, genre_csv, onomatopoeia_csv, image_b64, dvd, 0, year, month, day];
 
             return db_method.single_statement_execute(query, data);
           })
