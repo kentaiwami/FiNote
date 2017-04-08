@@ -1,11 +1,275 @@
-.container {
-  background-color: red;
+@charset "UTF-8";
+/************************************************************
+                          	Base
+ ************************************************************/
+/************************************************************
+                          	Signup
+ ************************************************************/
+.form-row {
+  margin: .8rem;
 }
-.container .span5 {
-  background-color: pink;
+
+.width-full {
+  width: 100%;
 }
-.container .span7 {
-  background-color: orange;
+
+.note {
+  margin: .6rem;
+  font-size: 0.75rem;
+  opacity: .8;
+}
+
+.vspc {
+  margin-top: 1.5rem;
+}
+
+.formarea {
+  margin: 3rem auto;
+  height: 78.5vh;
+}
+
+input[type=text],
+input[type=password] {
+  height: 3rem;
+  padding: 10px 0px;
+}
+
+/************************************************************
+                            Movie Detail&Add
+ ************************************************************/
+.button_color {
+  color: #1f1f21;
+}
+
+.button_color_disabled {
+  opacity: .4;
+}
+
+.notification_space_small {
+  position: relative;
+  margin-left: 13vw;
+  margin-top: -15vw;
+  font-size: .75rem;
+}
+
+.notification_space_large {
+  position: relative;
+  margin-left: 15vw;
+  margin-top: -15vw;
+  font-size: .75rem;
+}
+
+.card {
+  background-color: #FFF;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #FFF;
+  height: 80vh;
+}
+
+.modal__content {
+  font-size: 4vmin;
+}
+
+.card_modal {
+  z-index: 0;
+  height: 80vh;
+  opacity: 0;
+}
+
+.card_back_image {
+  background-image: url("../img/noimage.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 80vh;
+  width: 100%;
+}
+
+.rating {
+  text-align: center;
+  position: relative;
+}
+
+.rating-num {
+  display: inline-block;
+  margin: 0 auto 0 auto;
+  padding: 0 6px;
+  position: absolute;
+  left: 0;
+  bottom: 100;
+  right: 0;
+  width: auto;
+  height: 24px;
+  border-radius: 4px 4px 0 0;
+  text-align: center;
+  color: white;
+  font-size: .8rem;
+  font-weight: 600;
+}
+
+.rating-num ons-icon {
+  font-size: 11px;
+  vertical-align: 0px;
+}
+
+.action-col {
+  text-align: center;
+  padding: 10px 0 8px;
+}
+
+.action-col:active {
+  opacity: 0.7;
+}
+
+.action-col ons-button {
+  padding: 0;
+  line-height: 1;
+}
+
+.action-icon {
+  padding: 0 0 4px 0;
+}
+
+.action-icon ons-icon {
+  font-size: 28px;
+}
+
+.action-label {
+  font-size: 12px;
+}
+
+.alert {
+  text-align: center;
+  padding: 10px;
+}
+
+.center_button {
+  margin-top: 2.5vh;
+  padding: 2.5vh;
+}
+
+.small_message {
+  opacity: 0.5;
+  font-size: .85rem;
+}
+
+/************************************************************
+                          Feeling
+************************************************************/
+.feeling_no_message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  opacity: .6;
+}
+
+/************************************************************
+                          Message
+************************************************************/
+.center_message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 5vh;
+  opacity: .6;
+}
+
+.all_center_message {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  opacity: .6;
+}
+
+/************************************************************
+                        Search Form
+************************************************************/
+.search_form {
+  width: 80vw;
+}
+
+.toolbar_center_search_form {
+  margin-left: 12vw;
+  position: absolute;
+  left: 0;
+  padding: .4rem 0rem;
+}
+
+.reset_button {
+  margin-left: 100%;
+  position: absolute;
+  top: 0;
+  visibility: hidden;
+}
+
+/************************************************************
+                          list
+************************************************************/
+.list_img {
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
+  width: 15vw;
+  height: auto;
+  background: url(../img/loading.gif) no-repeat center;
+  object-fit: contain;
+}
+
+.list_img_large {
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
+  width: 25vw;
+  height: auto;
+  background: url(../img/loading.gif) no-repeat center;
+  object-fit: contain;
+}
+
+.list_title {
+  position: absolute;
+}
+
+.list_title_bold {
+  font-weight: 500;
+}
+
+.list_sub_title {
+  margin-top: 2.5rem;
+}
+
+.list_sub_title_small {
+  font-size: 3.5vw;
+  line-height: 1rem;
+}
+
+.exist_message {
+  color: #4A90E2;
+  font-size: 15px;
+  margin: 5px 5px 5px 0px;
+  position: absolute;
+  right: 0%;
+  bottom: 0%;
+}
+
+.exist_message:after {
+  position: relative;
+  bottom: -0.16em;
+  margin-left: 0.1em;
+  margin-right: 0.3em;
+  content: '追加済み';
+}
+
+/************************************************************
+                          Toolbar
+************************************************************/
+.black_bg {
+  background-color: #000;
+  opacity: .7;
+}
+
+.white_color {
+  color: #FFF;
 }
 
 /*# sourceMappingURL=index.css.map */
