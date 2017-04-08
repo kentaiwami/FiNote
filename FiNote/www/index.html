@@ -177,6 +177,14 @@
 
       <!-- 検索結果を表示するリスト -->
       <ons-list id="movieadd_search_list"></ons-list>
+
+      <!-- 追加済みの映画リストをタップした時のアラート -->
+      <ons-dialog id="tap_exist_movie_list">
+        <div class="alert">
+          <p>追加済みの映画を編集するには映画の一覧から行ってください</p>
+          <p><ons-button onclick="movieadd_search.exist_movie_list_alert_hide()">OK</ons-button></p>
+        </div>
+      </ons-dialog>
     </ons-page>
   </ons-template>
   <!-- ●ここまでmovieadd_search.html -->

@@ -592,15 +592,21 @@ var movieadd_search = {
           for(i = 0; i < list_data.length; i++) {
             var movie_releasedate = '公開日：';
             var exist_message = [];
+            var modifier = '';
+            var tappable = '';
 
             // ローカルに保存済みの映画はチェックマークと追加済みのメッセージを表示
             var index = local_tmdb_id.indexOf(list_data[i].id);
             if (index == -1) {
               exist_message = [''];
+              modifier = 'longdivider chevron';
+              tappable = 'tappable onclick="movieadd_search.tap_list(this)"';
             }else {
               exist_message = ['<div class="exist_message">',
                                '<ons-icon icon="ion-ios-checkmark-outline"></ons-icon>',
                                '</div>'];
+              modifier = 'longdivider';
+              tappable = 'tappable onclick="movieadd_search.exist_movie_list_alert_show()"';
             }
 
             //TMDBから取得したrelease_dateが空だった場合は情報なしを代入する
@@ -611,7 +617,8 @@ var movieadd_search = {
               movie_releasedate += list_data[i].release_date;
             }
 
-            var list_item_doc = ['<ons-list-item id="'+ i +'" modifier="longdivider chevron" tappable="true" onclick="movieadd_search.tap_list(this)">',
+            var list_item_doc = ['<ons-list-item id="'+ i +'" modifier="' + modifier + '"'+
+                                 ' ' + tappable + '>',
                                  '<div class="left">',
                                  '<img id="'+ i +'_img" class="list_img_large" src="'+ list_data_poster[i] +'">',
                                  '</div>',
@@ -622,6 +629,7 @@ var movieadd_search = {
                                  '</div>',
                                  exist_message.join(''),
                                  '</ons-list-item>'];
+
             list_doc.push(list_item_doc.join(''));
           }
 
@@ -780,6 +788,14 @@ var movieadd_search = {
     //映画追加画面へ遷移
     utility.push_page('movieadd.html', '', 0,'');
   },
+
+  exist_movie_list_alert_hide: function() {
+    document.getElementById('tap_exist_movie_list').hide();
+  },
+
+  exist_movie_list_alert_show: function() {
+    document.getElementById('tap_exist_movie_list').show();
+  }
 };
 
 
