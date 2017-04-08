@@ -4,6 +4,7 @@
 /*.asta.lock
 /素材
 secret.js
+.sass-cache/
 #Node
 npm-debug.log
 node_modules/
