@@ -103,6 +103,10 @@ input[type=password] {
 .btn_disable {
 	@extend .btn_able;
   opacity: .4;
+
+  &:active {
+  	color: $color-base;
+  }
 }
 
 .notification_space_small {

@@ -95,6 +95,9 @@ input[type=password] {
 .btn_disable {
   opacity: .4;
 }
+.btn_disable:active {
+  color: #1f1f21;
+}
 
 .notification_space_small, .notification_space_large {
   position: relative;
