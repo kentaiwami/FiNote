@@ -37,6 +37,16 @@ var app = {
 
 
 /**
+* 関数をまとめたオブジェクト間で使用する変数をまとめる
+* @type {Object}
+*/
+var global_variable = {
+  //movie.update_movieとmovieadd.add_movieにて使用
+  movie_update_flag: true
+};
+
+
+/**
 * indexで使用する関数をまとめたオブジェクト
 * @type {Object}
 */
@@ -297,107 +307,111 @@ var movie = {
    * 映画一覧画面の表示を行う
    */
   update_movies: function() {
-    var movie_collection_list = document.getElementById('movie_collection_list');
-    movie_collection_list.innerHTML = '';
+    if (global_variable.movie_update_flag) {
+      global_variable.movie_update_flag = false;
 
-    return new Promise(function(resolve,reject) {
-      var result = [];
-      var db = utility.get_database();
-      db.readTransaction(function(tx) {
-        tx.executeSql('SELECT title,genre_id,onomatopoeia_id,tmdb_id,poster,dvd,fav,add_year,add_month,add_day FROM movie ORDER BY id DESC', [], function(tx, resultSet) {
-          result.push(resultSet);
+      var movie_collection_list = document.getElementById('movie_collection_list');
+      movie_collection_list.innerHTML = '';
 
-          tx.executeSql('SELECT id,name FROM genre', [], function(tx, resultSet) {
+      return new Promise(function(resolve,reject) {
+        var result = [];
+        var db = utility.get_database();
+        db.readTransaction(function(tx) {
+          tx.executeSql('SELECT title,genre_id,onomatopoeia_id,tmdb_id,poster,dvd,fav,add_year,add_month,add_day FROM movie ORDER BY id DESC', [], function(tx, resultSet) {
             result.push(resultSet);
 
-            tx.executeSql('SELECT id,name FROM onomatopoeia', [], function(tx, resultSet) {
+            tx.executeSql('SELECT id,name FROM genre', [], function(tx, resultSet) {
               result.push(resultSet);
-            },
-            function(tx, error) {
-              console.log('SELECT error: ' + error.message);
-              reject(error.message);
+
+              tx.executeSql('SELECT id,name FROM onomatopoeia', [], function(tx, resultSet) {
+                result.push(resultSet);
+              },
+              function(tx, error) {
+                console.log('SELECT error: ' + error.message);
+                reject(error.message);
+              });
             });
           });
+        },
+        function(error) {
+          console.log('transaction error: ' + error.message);
+          reject(error.message);
+        },
+        function() {
+          resolve(result);
         });
-      },
-      function(error) {
-        console.log('transaction error: ' + error.message);
-        reject(error.message);
-      },
-      function() {
-        resolve(result);
-      });
-    })
-    .then(function(result) {
-      //result[0]：movie
-      //result[1]：genre
-      //result[2]：onomatopoeia
+      })
+      .then(function(result) {
+        //result[0]：movie
+        //result[1]：genre
+        //result[2]：onomatopoeia
 
-       var movie_collection_list = document.getElementById('movie_collection_list');
-       movie_count = result[0].rows.length;
+         var movie_collection_list = document.getElementById('movie_collection_list');
+         movie_count = result[0].rows.length;
 
-      //[0]:灰色、[1]:オレンジ色、[2]:朱色
-      var color_code =utility.get_color_code('movies');
+        //[0]:灰色、[1]:オレンジ色、[2]:朱色
+        var color_code =utility.get_color_code('movies');
 
-      var lists_html = '';
-      for(var i = 0; i < movie_count; i++) {
-        var movie_record = result[0].rows.item(i);
-        var buttoncolor_code = {dvd:'', fav:''};
+        var lists_html = '';
+        for(var i = 0; i < movie_count; i++) {
+          var movie_record = result[0].rows.item(i);
+          var buttoncolor_code = {dvd:'', fav:''};
 
-        if (movie_record.dvd == 1) {
-          buttoncolor_code.dvd = color_code[1];
-        }else {
-          buttoncolor_code.dvd = color_code[0];
-        }
-
-        if (movie_record.fav == 1) {
-          buttoncolor_code.fav = color_code[2];
-        }else {
-          buttoncolor_code.fav = color_code[0];
-        }
-
-        var onomatopoeia_id_list = movie_record.onomatopoeia_id.split(',');
-        var onomatopoeia_name_list = [];
-        var onomatopoeia_names = '';
-        for(var j = 0; j < result[2].rows.length; j++) {
-          var onomatopoeia = result[2].rows.item(j);
-          if (onomatopoeia_id_list.indexOf(String(onomatopoeia.id)) != -1) {
-            onomatopoeia_name_list.push(onomatopoeia.name);
+          if (movie_record.dvd == 1) {
+            buttoncolor_code.dvd = color_code[1];
+          }else {
+            buttoncolor_code.dvd = color_code[0];
           }
+
+          if (movie_record.fav == 1) {
+            buttoncolor_code.fav = color_code[2];
+          }else {
+            buttoncolor_code.fav = color_code[0];
+          }
+
+          var onomatopoeia_id_list = movie_record.onomatopoeia_id.split(',');
+          var onomatopoeia_name_list = [];
+          var onomatopoeia_names = '';
+          for(var j = 0; j < result[2].rows.length; j++) {
+            var onomatopoeia = result[2].rows.item(j);
+            if (onomatopoeia_id_list.indexOf(String(onomatopoeia.id)) != -1) {
+              onomatopoeia_name_list.push(onomatopoeia.name);
+            }
+          }
+
+          onomatopoeia_names = onomatopoeia_name_list.join('、');
+
+          var add_month = ('00' + movie_record.add_month).slice(-2);
+          var add_day = ('00' + movie_record.add_day).slice(-2);
+          var list = '<ons-list-item modifier="longdivider">'+
+                     '<div class="left">'+
+                     '<img class="list_img" src="' + movie_record.poster + '">'+
+                     '</div>'+
+                     '<div class="center">'+
+                     '<span class="list-item__title list_title">'+
+                     movie_record.title+
+                     '</span>'+
+                     '<span class="list-item__subtitle list_sub_title">'+
+                     onomatopoeia_names+
+                     '</span>'+
+                     '<span class="list-item__subtitle">'+
+                     '追加日:'+
+                     movie_record.add_year+'-'+
+                     add_month+'-'+
+                     add_day+
+                     '</span>'+
+                     '</div>'+
+                     '</ons-list-item>';
+
+          lists_html += list;
         }
 
-        onomatopoeia_names = onomatopoeia_name_list.join('、');
-
-        var add_month = ('00' + movie_record.add_month).slice(-2);
-        var add_day = ('00' + movie_record.add_day).slice(-2);
-        var list = '<ons-list-item modifier="longdivider">'+
-                   '<div class="left">'+
-                   '<img class="list_img" src="' + movie_record.poster + '">'+
-                   '</div>'+
-                   '<div class="center">'+
-                   '<span class="list-item__title list_title">'+
-                   movie_record.title+
-                   '</span>'+
-                   '<span class="list-item__subtitle list_sub_title">'+
-                   onomatopoeia_names+
-                   '</span>'+
-                   '<span class="list-item__subtitle">'+
-                   '追加日:'+
-                   movie_record.add_year+'-'+
-                   add_month+'-'+
-                   add_day+
-                   '</span>'+
-                   '</div>'+
-                   '</ons-list-item>';
-
-        lists_html += list;
-      }
-
-      movie_collection_list.innerHTML = '<ons-list>' + 
-                                              '<ons-list-header>全て</ons-list-header>' + 
-                                              lists_html + 
-                                              '</ons-list>';
-    });
+        movie_collection_list.innerHTML = '<ons-list>' + 
+                                                '<ons-list-header>全て</ons-list-header>' + 
+                                                lists_html + 
+                                                '</ons-list>';
+      });
+    }
   },
 
 
@@ -1089,6 +1103,7 @@ var movieadd = {
             console.log(result);
             utility.stop_spinner();
             document.getElementById('success_movieadd_alert').show();
+            global_variable.movie_update_flag = true;
           })
           .catch(function(err) {
             console.log(err);
