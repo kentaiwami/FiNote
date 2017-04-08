@@ -334,7 +334,19 @@ var movie = {
                 buttoncolor_code.fav = color_code[2];
               }else {
                 buttoncolor_code.fav = color_code[0];
-              }     
+              }
+
+              var onomatopoeia_id_list = movie_record.onomatopoeia_id.split(',');
+              var onomatopoeia_name_list = [];
+              var onomatopoeia_names = '';
+              for(var j = 0; j < result[2].rows.length; j++) {
+                var onomatopoeia = result[2].rows.item(j);
+                if (onomatopoeia_id_list.indexOf(String(onomatopoeia.id)) != -1) {
+                  onomatopoeia_name_list.push(onomatopoeia.name);
+                }
+              }
+
+              onomatopoeia_names = onomatopoeia_name_list.join('、');
 
               var add_month = ('00' + movie_record.add_month).slice(-2);
               var add_day = ('00' + movie_record.add_day).slice(-2);
@@ -347,7 +359,7 @@ var movie = {
                          movie_record.title+
                          '</span>'+
                          '<span class="list-item__subtitle list_sub_title">'+
-                         'ドキドキ、ハラハラ、モヤモヤ'+
+                         onomatopoeia_names+
                          '</span>'+
                          '<span class="list-item__subtitle">'+
                          '追加日:'+
