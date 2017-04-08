@@ -901,6 +901,8 @@ var movieadd = {
   add_movie: function(){
     var userdata = movieadd.userdata;
 
+    document.getElementById('movieadd_add_button').style.opacity = '';
+
     if (userdata.feeling_name_list.length === 0) {
       ons.notification.alert(
       {
@@ -1712,7 +1714,7 @@ var movieadd_feeling = {
   feeling_input_name_addEvent: function(){
     document.addEventListener('postshow', function(event) {
       if (event.target.id == 'feeling_add_dialog') {
-        document.getElementById('feeling_add_button').setAttribute('disabled');
+        document.getElementById('feeling_add_button').setAttribute('disabled', 'disabled');
         document.getElementById('feeling_input_name').focus();
       }
     });
