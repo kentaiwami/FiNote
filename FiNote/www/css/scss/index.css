@@ -2,6 +2,31 @@
 /************************************************************
                           	Base
  ************************************************************/
+.gray_color {
+  color: #A5A5A5;
+}
+
+.orange_color {
+  color: #FFA500;
+}
+
+.red_color {
+  color: #FF1D00;
+}
+
+.brown_color {
+  color: #462401;
+}
+
+.brown_bg_color {
+  background-color: #462401;
+  color: #FFF;
+}
+.brown_bg_color:active {
+  background-color: #462401;
+  color: #FFF;
+}
+
 /************************************************************
                           	Signup
  ************************************************************/
@@ -65,22 +90,6 @@ input[type=password] {
 
 .list_sub_title_small {
   margin-top: 1rem;
-}
-
-.gray_color {
-  color: #A5A5A5;
-}
-
-.orange_color {
-  color: #FFA500;
-}
-
-.red_color {
-  color: #FF1D00;
-}
-
-.brown_color {
-  color: #462401;
 }
 
 .list_button_row {

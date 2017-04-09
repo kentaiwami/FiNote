@@ -2,13 +2,40 @@
                           	Base
  ************************************************************/
 $color-base: #1f1f21;
-$color-sub: #FFF;
+$color-white: #FFF;
 $color-gray: #A5A5A5;
 $color-orange: #FFA500;
 $color-red: #FF1D00;
 $color-brown: #462401;
 $color-brown-sub: #BE956A;
 $font-small: .75rem;
+
+
+.gray_color {
+  color: $color-gray;
+}
+
+.orange_color {
+  color: $color-orange;
+}
+
+.red_color {
+  color: $color-red;
+}
+
+.brown_color {
+  color: $color-brown;
+}
+
+.brown_bg_color {
+  background-color: $color-brown;
+  color: $color-white;
+
+  &:active {
+    background-color: $color-brown;
+    color: $color-white;
+  }
+}
 
 
 /************************************************************
@@ -75,22 +102,6 @@ input[type=password] {
 
 .list_sub_title_small {
   margin-top: 1rem;
-}
-
-.gray_color {
-  color: $color-gray;
-}
-
-.orange_color {
-  color: $color-orange;
-}
-
-.red_color {
-  color: $color-red;
-}
-
-.brown_color {
-  color: $color-brown;
 }
 
 .list_button_row {
@@ -172,7 +183,7 @@ input[type=password] {
 }
 
 .tool_bar_btn {
-  color: $color-sub;
+  color: $color-white;
 }
 
 .btn_able {
@@ -202,10 +213,10 @@ input[type=password] {
 
 .card {
 	height: 80vh;
-  background-color: $color-sub;
+  background-color: $color-white;
   background-repeat: no-repeat;
   background-size: cover;
-  color: $color-sub;
+  color: $color-white;
 }
 
 .modal__content {
