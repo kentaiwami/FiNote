@@ -869,7 +869,7 @@ var movieadd = {
                       movieadd.show_vote_average(list_data[tap_id].vote_average)+
                       '</div></div>';
     
-    card.innerHTML = '<div class="modal card_modal" id="movie_detail_info"><div class="modal__content"><p>'+ title +'</p><p>'+ overview +'</p><p>'+ release_date +'</p>' + rating_html + '</div></div>';
+    card.innerHTML = '<div class="modal card_modal_prev" id="movie_detail_info"><div class="modal__content"><p>'+ title +'</p><p>'+ overview +'</p><p>'+ release_date +'</p>' + rating_html + '</div></div>';
 
     //overviewが長すぎて範囲内に収まらない場合に文字列をカットする処理を開始
     var flag = false;
@@ -892,7 +892,7 @@ var movieadd = {
     }
 
     // カット後の文字列でhtmlを上書きする
-    card.innerHTML = '<div class="modal card_modal" id="movie_detail_info" style="position: fixed; z-index: 0; height: 87%; opacity: 0.0;"><div class="modal__content"><p>'+ title +'</p><p>'+ copy_overview +'</p><p>'+ release_date +'</p>' + rating_html + '</div></div>';
+    card.innerHTML = '<div class="modal card_modal" id="movie_detail_info"><div class="modal__content"><p>'+ title +'</p><p>'+ copy_overview +'</p><p>'+ release_date +'</p>' + rating_html + '</div></div>';
   },
 
   /**

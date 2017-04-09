@@ -196,10 +196,15 @@ input[type=password] {
   font-size: 4vmin;
 }
 
-.card_modal {
+.card_modal_prev, .card_modal {
   height: 80vh;
   z-index: 0;
   opacity: 0;
+}
+
+.card_modal {
+  position: fixed;
+  height: 87%;
 }
 
 .card_back_image {
