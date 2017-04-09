@@ -31,6 +31,15 @@
   color: #FFF;
 }
 
+.brown_sub_bg_color {
+  background-color: #BE956A;
+  color: #FFF;
+}
+.brown_sub_bg_color:active {
+  background-color: #BE956A;
+  color: #FFF;
+}
+
 /************************************************************
                           	Signup
  ************************************************************/
@@ -177,6 +186,7 @@ input[type=password] {
   position: relative;
   margin-top: -15vw;
   margin-left: 13vw;
+  background-color: #462401;
   font-size: .75rem;
 }
 

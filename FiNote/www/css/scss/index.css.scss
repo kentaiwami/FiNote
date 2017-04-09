@@ -41,6 +41,16 @@ $font-small: .75rem;
   }
 }
 
+.brown_sub_bg_color {
+  background-color: $color-brown-sub;
+  color: $color-white;
+
+  &:active {
+    background-color: $color-brown-sub;
+    color: $color-white;
+  }
+}
+
 
 /************************************************************
                           	Signup
@@ -194,6 +204,7 @@ input[type=password] {
   position: relative;
   margin-top: -15vw;
   margin-left: 13vw;
+  background-color: $color-brown;
   font-size: .75rem;
 }
 
