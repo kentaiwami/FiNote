@@ -68,17 +68,25 @@ input[type=password] {
 
 .gray_button {
   color: #A5A5A5;
-  width: 100%;
 }
 
 .orange_button {
   color: #FFA500;
-  width: 100%;
 }
 
 .red_button {
   color: #FF1D00;
-  width: 100%;
+}
+
+.brown_button {
+  color: #795548;
+}
+
+.list_button_row {
+  position: absolute;
+  bottom: 5%;
+  right: 2%;
+  width: 40vw;
 }
 
 /************************************************************

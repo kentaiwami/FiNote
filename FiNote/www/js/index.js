@@ -399,14 +399,26 @@ var movie = {
                      '</span>'+
                      '</div>'+
                      '<div class="right">'+
+                     '<ons-row class="list_button_row">'+
+                     '<ons-col>'+
                      '<ons-button class="' + button_class.dvd + '" id="dvd_'+ movie_record.id +'" onclick="movie.tap_dvd_fav(this.id,0)" modifier="quiet">'+
                      '<ons-icon class="list_icon" icon="ion-disc" size="25px, material:18px">'+
                      '</ons-icon>'+
                      '</ons-button>'+
+                     '</ons-col>'+
+                     '<ons-col>'+
                      '<ons-button class="' + button_class.fav + '" id="fav_' + movie_record.id + '" onclick="movie.tap_dvd_fav(this.id,1)" modifier="quiet">'+
                      '<ons-icon class="list_icon" size="25px, material:18px" icon="ion-android-favorite">'+
                      '</ons-icon>'+
                      '</ons-button>'+
+                     '</ons-col>'+
+                     '<ons-col>'+
+                     '<ons-button class="brown_button" id=' + movie_record.id + ' onclick="movie.tap_detail(this.id)" modifier="quiet">'+
+                     '<ons-icon class="list_icon" size="25px, material:18px" icon="ion-information-circled">'+
+                     '</ons-icon>'+
+                     '</ons-button>'+
+                     '</ons-col>'+
+                     '</ons-row>'+
                      '</div>'+
                      '</ons-list-item>';
 
@@ -484,6 +496,15 @@ var movie = {
       utility.show_error_alert('更新エラー','更新時にエラーが発生しました','OK');
     });
   },
+
+
+  /**
+   * moviesのDetailを押した際に詳細画面へと遷移させる
+   * @param  {[Number]} id [タップした映画のprimary key]
+   */
+  tap_detail: function(id) {
+    console.log(id);
+  }
 };
 
 
