@@ -384,6 +384,7 @@ var movie = {
                      '<div class="left">'+
                      '<img class="list_img" src="' + movie_record.poster + '">'+
                      '</div>'+
+
                      '<div class="center">'+
                      '<span class="list-item__title list_title">'+
                      movie_record.title+
@@ -398,6 +399,7 @@ var movie = {
                      add_day+
                      '</span>'+
                      '</div>'+
+
                      '<div class="right">'+
                      '<ons-row class="list_button_row">'+
                      '<ons-col>'+
@@ -406,12 +408,14 @@ var movie = {
                      '</ons-icon>'+
                      '</ons-button>'+
                      '</ons-col>'+
+
                      '<ons-col>'+
                      '<ons-button class="' + button_class.fav + '" id="fav_' + movie_record.id + '" onclick="movie.tap_dvd_fav(this.id,1)" modifier="quiet">'+
                      '<ons-icon class="list_icon" size="25px, material:18px" icon="ion-android-favorite">'+
                      '</ons-icon>'+
                      '</ons-button>'+
                      '</ons-col>'+
+                     
                      '<ons-col>'+
                      '<ons-button class="brown_button" id=' + movie_record.id + ' onclick="movie.tap_detail(this.id)" modifier="quiet">'+
                      '<ons-icon class="list_icon" size="25px, material:18px" icon="ion-information-circled">'+
