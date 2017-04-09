@@ -317,7 +317,7 @@ var movie = {
         var result = [];
         var db = utility.get_database();
         db.readTransaction(function(tx) {
-          tx.executeSql('SELECT title,genre_id,onomatopoeia_id,tmdb_id,poster,dvd,fav,add_year,add_month,add_day FROM movie ORDER BY id DESC', [], function(tx, resultSet) {
+          tx.executeSql('SELECT id,title,genre_id,onomatopoeia_id,tmdb_id,poster,dvd,fav,add_year,add_month,add_day FROM movie ORDER BY id DESC', [], function(tx, resultSet) {
             result.push(resultSet);
 
             tx.executeSql('SELECT id,name FROM genre', [], function(tx, resultSet) {
@@ -401,6 +401,16 @@ var movie = {
                      add_day+
                      '</span>'+
                      '</div>'+
+                     '<div class="right">'+
+                     '<ons-button id="dvd_'+ movie_record.id +'" onclick="movie.tap_dvd_fav(this.id,0)" modifier="quiet" style="color:'+ buttoncolor_code.dvd + '; width: 100%;">'+
+                     '<ons-icon icon="ion-disc" size="32px, material:24px style="padding: 0px 3px;">'+
+                     '</ons-icon>'+
+                     '</ons-button>'+
+                     '<ons-button id="fav_' + movie_record.id + '" onclick="movie.tap_dvd_fav(this.id,1)" modifier="quiet" style="color: ' + buttoncolor_code.fav + '; width: 100%;">'+
+                     '<ons-icon size="32px, material:24px" icon="ion-android-favorite" style="padding: 0px 3px;">'+
+                     '</ons-icon>'+
+                     '</ons-button>'+
+                     '</div>'+
                      '</ons-list-item>';
 
           lists_html += list;
@@ -417,32 +427,32 @@ var movie = {
 
   /**
    * moviesのDVDやFAVボタンを押した際にデータベースの値を更新する関数
-   * @param  {[string]} id [dvdorfav + タップした映画のtmdb_id]
+   * @param  {[string]} id [dvdorfav + タップした映画のprimary key]
    * @param  {[number]} flag    [0:DVD, 1:FAV]
    */
   tap_dvd_fav: function(id,flag) {
-    var tmdb_id = Number(id.substring(id.indexOf('_')+1,id.length));
+    var pk = Number(id.substring(id.indexOf('_')+1,id.length));
 
     /*** タップしたボタンに該当する項目の更新をする ***/
-    var query = 'SELECT dvd,fav FROM movie WHERE tmdb_id = ?';
-    db_method.single_statement_execute(query,[tmdb_id]).then(function(result) {
+    var query = 'SELECT dvd,fav FROM movie WHERE id = ?';
+    db_method.single_statement_execute(query,[pk]).then(function(result) {
       var query_obj = {query:'', data:[]};
 
       if (flag === 0) {
-        query_obj.query = 'UPDATE movie SET dvd = ? WHERE tmdb_id = ?';
+        query_obj.query = 'UPDATE movie SET dvd = ? WHERE id = ?';
 
         if (result.rows.item(0).dvd === 0) {
-          query_obj.data = [1,tmdb_id];
+          query_obj.data = [1,pk];
         }else {
-          query_obj.data = [0,tmdb_id];
+          query_obj.data = [0,pk];
         }
       }else {
-        query_obj.query = 'UPDATE movie SET fav = ? WHERE tmdb_id = ?';
+        query_obj.query = 'UPDATE movie SET fav = ? WHERE id = ?';
 
         if (result.rows.item(0).fav === 0) {
-          query_obj.data = [1,tmdb_id];
+          query_obj.data = [1,pk];
         }else {
-          query_obj.data = [0,tmdb_id];
+          query_obj.data = [0,pk];
         }
       }
 
@@ -463,15 +473,15 @@ var movie = {
       }
 
       //タップしたボタンの色を取得してhexへ変換
-      var current_color_rgb = document.getElementById(lead_id+'_'+tmdb_id).style.color;
+      var current_color_rgb = document.getElementById(lead_id+'_'+pk).style.color;
       var color = new RGBColor(current_color_rgb);
       var current_color_hex = color.toHex();
 
       //ボタン色が灰色の場合は色を付ける、色がついている場合は灰色にする
       if (current_color_hex == movies_color_code[0]) {
-        document.getElementById(lead_id+'_'+tmdb_id).style.color = color_code;
+        document.getElementById(lead_id+'_'+pk).style.color = color_code;
       }else {
-        document.getElementById(lead_id+'_'+tmdb_id).style.color = movies_color_code[0];
+        document.getElementById(lead_id+'_'+pk).style.color = movies_color_code[0];
       }
     })
     .catch(function(err) {
