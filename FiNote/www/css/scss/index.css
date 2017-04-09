@@ -67,20 +67,20 @@ input[type=password] {
   margin-top: 1rem;
 }
 
-.gray_button {
+.gray_color {
   color: #A5A5A5;
 }
 
-.orange_button {
+.orange_color {
   color: #FFA500;
 }
 
-.red_button {
+.red_color {
   color: #FF1D00;
 }
 
-.brown_button {
-  color: #795548;
+.brown_color {
+  color: #462401;
 }
 
 .list_button_row {

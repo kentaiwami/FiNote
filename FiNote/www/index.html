@@ -138,10 +138,10 @@
     <ons-page id="movies">
       <!-- ツールバー -->
       <ons-toolbar>
-	      <div class="center">映画の一覧</div>
+	      <div class="center brown_color">映画の一覧</div>
 	      <div class="right">
           <ons-toolbar-button onClick="utility.push_page('movieadd_search.html', '', 0, function(){utility.hideKeyboardAccessoryBar(true)})">
-            <ons-icon icon="ion-plus-round"></ons-icon>
+            <ons-icon class="brown_color" icon="ion-plus-round"></ons-icon>
           </ons-toolbar-button>
 	      </div>
       </ons-toolbar>
@@ -161,7 +161,7 @@
 	  <ons-page id="movieadd_search">
       <!-- ツールバー -->
       <ons-toolbar>
-        <div class="left" onclick="utility.pop_page(movie.update_movies())" id="movieadd_search_backbutton"><ons-back-button></ons-back-button></div>
+        <div class="left" onclick="utility.pop_page(movie.update_movies())" id="movieadd_search_backbutton"><ons-back-button class="brown_color"></ons-back-button></div>
 
         <div class="center toolbar_center_search_form" id="movieadd_search_input">
           <form action="javascript:movieadd_search.click_done()">

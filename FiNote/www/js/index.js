@@ -355,15 +355,15 @@ var movie = {
           var button_class = {dvd:'', fav:''};
 
           if (movie_record.dvd == 1) {
-            button_class.dvd = 'orange_button';
+            button_class.dvd = 'orange_color';
           }else {
-            button_class.dvd = 'gray_button';
+            button_class.dvd = 'gray_color';
           }
 
           if (movie_record.fav == 1) {
-            button_class.fav = 'red_button';
+            button_class.fav = 'red_color';
           }else {
-            button_class.fav = 'gray_button';
+            button_class.fav = 'gray_color';
           }
 
           var onomatopoeia_id_list = movie_record.onomatopoeia_id.split(',');
@@ -417,7 +417,7 @@ var movie = {
                      '</ons-col>'+
 
                      '<ons-col>'+
-                     '<ons-button class="brown_button" id=' + movie_record.id + ' onclick="movie.tap_detail(this.id)" modifier="quiet">'+
+                     '<ons-button class="brown_color" id=' + movie_record.id + ' onclick="movie.tap_detail(this.id)" modifier="quiet">'+
                      '<ons-icon size="20px" icon="ion-information-circled">'+
                      '</ons-icon>'+
                      '</ons-button>'+
@@ -478,21 +478,21 @@ var movie = {
 
       if (flag === 0) {
         lead_id = 'dvd';
-        class_name = 'orange_button';
+        class_name = 'orange_color';
       }else {
         lead_id = 'fav';
-        class_name = 'red_button';
+        class_name = 'red_color';
       }
 
       var element = document.getElementById(lead_id + '_' + pk);
-      var has_class = element.classList.contains('gray_button');
+      var has_class = element.classList.contains('gray_color');
 
       if (has_class) {
-        element.classList.remove('gray_button');
+        element.classList.remove('gray_color');
         element.classList.add(class_name);
       }else {
         element.classList.remove(class_name);
-        element.classList.add('gray_button');
+        element.classList.add('gray_color');
       }
     })
     .catch(function(err) {

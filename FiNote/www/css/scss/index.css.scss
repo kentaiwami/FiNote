@@ -6,7 +6,7 @@ $color-sub: #FFF;
 $color-gray: #A5A5A5;
 $color-orange: #FFA500;
 $color-red: #FF1D00;
-$color-brown: #795548;
+$color-brown: #462401;
 
 $font-small: .75rem;
 
@@ -77,19 +77,19 @@ input[type=password] {
   margin-top: 1rem;
 }
 
-.gray_button {
+.gray_color {
   color: $color-gray;
 }
 
-.orange_button {
+.orange_color {
   color: $color-orange;
 }
 
-.red_button {
+.red_color {
   color: $color-red;
 }
 
-.brown_button {
+.brown_color {
   color: $color-brown;
 }
 
