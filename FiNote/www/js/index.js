@@ -415,7 +415,7 @@ var movie = {
                      '</ons-icon>'+
                      '</ons-button>'+
                      '</ons-col>'+
-                     
+
                      '<ons-col>'+
                      '<ons-button class="brown_button" id=' + movie_record.id + ' onclick="movie.tap_detail(this.id)" modifier="quiet">'+
                      '<ons-icon class="list_icon" size="25px, material:18px" icon="ion-information-circled">'+
@@ -617,24 +617,24 @@ var movieadd_search = {
 
           //サムネイル取得後にリストを表示する
           var movieadd_SearchList = document.getElementById('movieadd_search_list');
-          var list_doc = [];
+          var list_doc = '';
 
           for(i = 0; i < list_data.length; i++) {
             var movie_releasedate = '公開日：';
-            var exist_message = [];
+            var exist_message = '';
             var modifier = '';
             var tappable = '';
 
             // ローカルに保存済みの映画はチェックマークと追加済みのメッセージを表示
             var index = local_tmdb_id.indexOf(list_data[i].id);
             if (index == -1) {
-              exist_message = [''];
+              exist_message = '';
               modifier = 'longdivider chevron';
               tappable = 'tappable onclick="movieadd_search.tap_list(this)"';
             }else {
-              exist_message = ['<div class="exist_message">',
-                               '<ons-icon icon="ion-ios-checkmark-outline"></ons-icon>',
-                               '</div>'];
+              exist_message = '<div class="exist_message">'+
+                              '<ons-icon icon="ion-ios-checkmark-outline"></ons-icon>'+
+                              '</div>';
               modifier = 'longdivider';
               tappable = 'tappable onclick="movieadd_search.exist_movie_list_alert_show()"';
             }
@@ -647,23 +647,24 @@ var movieadd_search = {
               movie_releasedate += list_data[i].release_date;
             }
 
-            var list_item_doc = ['<ons-list-item id="'+ i +'" modifier="' + modifier + '"'+
-                                 ' ' + tappable + '>',
-                                 '<div class="left">',
-                                 '<img id="'+ i +'_img" class="list_img_large" src="'+ list_data_poster[i] +'">',
-                                 '</div>',
-                                 '<div class="center">',
-                                 '<span class="list_title_bold">'+ list_data[i].title +'</span>',
-                                 '<span id="overview_'+i +'" class="list_sub_title_small">'+ list_data[i].overview +'</span>',
-                                 '<span class="list_sub_title_small">'+ movie_releasedate +'</span>',
-                                 '</div>',
-                                 exist_message.join(''),
-                                 '</ons-list-item>'];
+            var list_item_doc =
+            '<ons-list-item id="'+ i +'" modifier="' + modifier + '"'+' ' + tappable + '>'+
+            '<div class="left">'+
+            '<img id="'+ i +'_img" class="list_img_large" src="'+ list_data_poster[i] +'">'+
+            '</div>'+
 
-            list_doc.push(list_item_doc.join(''));
+            '<div class="center">'+
+            '<span class="list_title_bold">'+ list_data[i].title +'</span>'+
+            '<span id="overview_'+i +'" class="list_sub_title_small">'+ list_data[i].overview +'</span>'+
+            '<span class="list_sub_title_small">'+ movie_releasedate +'</span>'+
+            '</div>'+
+            exist_message+
+            '</ons-list-item>';
+
+            list_doc += list_item_doc;
           }
 
-          movieadd_SearchList.innerHTML = list_doc.join('');
+          movieadd_SearchList.innerHTML = list_doc;
 
           //overviewが長すぎて範囲内に収まらない場合に文字列をカットする処理
           for(i = 0; i < list_data.length; i++) {
