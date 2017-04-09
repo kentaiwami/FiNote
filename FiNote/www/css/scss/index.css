@@ -134,12 +134,12 @@ input[type=password] {
 }
 
 .exist_message {
-  color: #4A90E2;
-  font-size: 15px;
-  margin: 5px 5px 5px 0px;
   position: absolute;
-  right: 0%;
-  bottom: 0%;
+  bottom: 6%;
+  right: 2%;
+  color: #BE956A;
+  font-size: .9rem;
+  font-weight: 500;
 }
 
 .exist_message:after {

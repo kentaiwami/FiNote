@@ -7,7 +7,7 @@ $color-gray: #A5A5A5;
 $color-orange: #FFA500;
 $color-red: #FF1D00;
 $color-brown: #462401;
-
+$color-brown-sub: #BE956A;
 $font-small: .75rem;
 
 
@@ -146,12 +146,12 @@ input[type=password] {
 }
 
 .exist_message {
-  color: #4A90E2;
-  font-size: 15px; 
-  margin: 5px 5px 5px 0px;
-  position:absolute;
-  right:0%;
-  bottom:0%;
+  position: absolute;
+  bottom: 6%;
+  right: 2%;
+  color: $color-brown-sub;
+  font-size: .9rem;
+  font-weight: 500;
 }
 
 .exist_message:after {
