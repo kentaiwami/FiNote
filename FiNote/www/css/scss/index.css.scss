@@ -50,6 +50,14 @@ $font-small: .75rem;
   color: $color-brown;
 }
 
+// ラジオボタンのチェックをした方の色を指定
+.radio-button__checkmark:after {
+  border: 2px solid $color-brown;
+  border-top: none;
+  border-right: none;
+  border-radius: 0;
+}
+
 
 /************************************************************
                           	Signup

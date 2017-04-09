@@ -31,8 +31,18 @@
   color: #FFF;
 }
 
+/************************************************************
+                      Onsen UI Override
+ ************************************************************/
 :checked + .tabbar__button {
   color: #462401;
+}
+
+.radio-button__checkmark:after {
+  border: 2px solid #462401;
+  border-top: none;
+  border-right: none;
+  border-radius: 0;
 }
 
 /************************************************************
