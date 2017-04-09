@@ -403,33 +403,6 @@ var movie = {
                      '</div>'+
                      '</ons-list-item>';
 
-          // var list = '<ons-list-item modifier="longdivider">'+
-          //            '<ons-carousel style="height: 70px; width: 100%;" swipeable auto-refresh overscrollable auto-scroll auto-scroll-ratio="0.5">'+
-          //            '<ons-carousel-item>'+
-          //            '<div class="left">'+
-          //            '<img class="list_img" src="' + movie_record.poster + '">'+
-          //            '</div>'+
-          //            '<div class="center">'+
-          //            '<span class="list-item__title list_title">'+
-          //            movie_record.title+
-          //            '</span>'+
-          //            '<span class="list-item__subtitle list_sub_title">'+
-          //            onomatopoeia_names+
-          //            '</span>'+
-          //            '<span class="list-item__subtitle">'+
-          //            '追加日:'+
-          //            movie_record.add_year+'-'+
-          //            add_month+'-'+
-          //            add_day+
-          //            '</span>'+
-          //            '</div>'+
-          //            '</ons-carousel-item>'+
-          //            '<ons-carousel-item>'+
-          //            'hoge'+
-          //            '</ons-carousel-item>'+
-          //            '</ons-carousel>'+
-          //            '</ons-list-item>';
-
           lists_html += list;
         }
 

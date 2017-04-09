@@ -52,6 +52,22 @@ input[type=password] {
   opacity: .6;
 }
 
+.list_img {
+  box-shadow: 0px 2px 4px 0px rgba(0,0,0,.5);
+  width: 15vw;
+  height: auto;
+  background: url(../../img/loading.gif) no-repeat center;
+  object-fit: contain;
+}
+
+.list_title {
+  position: absolute;
+}
+
+.list_sub_title {
+  margin-top: 2.5rem;
+}
+
 
 /************************************************************
                        Movie Add Search
@@ -81,6 +97,37 @@ input[type=password] {
   left: 0;
   right: 0;
   opacity: .6;
+}
+
+.list_img_large {
+  @extend .list_img;
+  width: 25vw;
+}
+
+.list_title_bold {
+  font-weight: 500;
+}
+
+.list_sub_title_small {
+  font-size: 3.5vw;
+  line-height: 1rem;
+}
+
+.exist_message {
+  color: #4A90E2;
+  font-size: 15px; 
+  margin: 5px 5px 5px 0px;
+  position:absolute;
+  right:0%;
+  bottom:0%;
+}
+
+.exist_message:after {
+  position: relative;
+  bottom: -0.16em;
+  margin-left: 0.1em;
+  margin-right: 0.3em;
+  content: '追加済み';
 }
 
 
@@ -230,55 +277,4 @@ input[type=password] {
   align-items: center;
   text-align: center;
   opacity: .6;
-}
-
-
-/************************************************************
-                          list
-************************************************************/
-.list_img {
-  box-shadow: 0px 2px 4px 0px rgba(0,0,0,.5);
-  width: 15vw;
-  height: auto;
-  background: url(../../img/loading.gif) no-repeat center;
-  object-fit: contain;
-}
-
-.list_img_large {
-	@extend .list_img;
-  width: 25vw;
-}
-
-.list_title {
-  position: absolute;
-}
-
-.list_title_bold {
-  font-weight: 500;
-}
-
-.list_sub_title {
-  margin-top: 2.5rem;
-}
-
-.list_sub_title_small {
-  font-size: 3.5vw;
-  line-height: 1rem;
-}
-
-.exist_message {
-  color: #4A90E2;
-  font-size: 15px; 
-  margin: 5px 5px 5px 0px;
-  position:absolute;
-  right:0%;
-  bottom:0%;
-}
-
-.exist_message:after {
-  position: relative;
-  bottom: -0.16em;
-  margin-left: 0.1em;
-  margin-right: 0.3em;
-  content: '追加済み';
 }
