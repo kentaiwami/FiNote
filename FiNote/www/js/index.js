@@ -426,9 +426,9 @@ var movie = {
         }
 
         movie_collection_list.innerHTML = '<ons-list>' + 
-                                                '<ons-list-header>全て</ons-list-header>' + 
-                                                lists_html + 
-                                                '</ons-list>';
+                                          '<ons-list-header>全て</ons-list-header>' + 
+                                          lists_html + 
+                                          '</ons-list>';
       });
     }
   },
