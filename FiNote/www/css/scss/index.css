@@ -2,6 +2,10 @@
 /************************************************************
                           	Base
  ************************************************************/
+.white_color {
+  color: #FFF;
+}
+
 .gray_color {
   color: #A5A5A5;
 }
@@ -14,7 +18,7 @@
   color: #FF1D00;
 }
 
-.brown_color {
+.brown_color, .btn_disable {
   color: #462401;
 }
 
@@ -162,24 +166,11 @@ input[type=password] {
 /************************************************************
                           Movie Add
  ************************************************************/
-.tool_bar_bg {
-  background-color: #1f1f21;
-  opacity: .7;
-}
-
-.tool_bar_btn {
-  color: #FFF;
-}
-
-.btn_able, .btn_disable {
-  color: #1f1f21;
-}
-
 .btn_disable {
   opacity: .4;
 }
 .btn_disable:active {
-  color: #1f1f21;
+  color: #462401;
 }
 
 .notification_space_small, .notification_space_large {

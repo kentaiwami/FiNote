@@ -11,6 +11,10 @@ $color-brown-sub: #BE956A;
 $font-small: .75rem;
 
 
+.white_color {
+  color:  $color-white;
+}
+
 .gray_color {
   color: $color-gray;
 }
@@ -177,25 +181,12 @@ input[type=password] {
 /************************************************************
                           Movie Add
  ************************************************************/
-.tool_bar_bg {
-  background-color: $color-base;
-  opacity: .7;
-}
-
-.tool_bar_btn {
-  color: $color-white;
-}
-
-.btn_able {
-  color: $color-base;
-}
-
 .btn_disable {
-	@extend .btn_able;
+	@extend .brown_color;
   opacity: .4;
 
   &:active {
-  	color: $color-base;
+  	color: $color-brown;
   }
 }
 
