@@ -458,27 +458,25 @@ var movie = {
       /*** 更新後にボタンの色を変更する ***/
 
       var lead_id = '';
-      var color_code = '';
-      var movies_color_code = utility.get_color_code('movies');
+      var class_name = '';
 
       if (flag === 0) {
         lead_id = 'dvd';
-        color_code = movies_color_code[1];
+        class_name = 'orange_button';
       }else {
         lead_id = 'fav';
-        color_code = movies_color_code[2];
+        class_name = 'red_button';
       }
 
-      //タップしたボタンの色を取得してhexへ変換
-      var current_color_rgb = document.getElementById(lead_id+'_'+pk).style.color;
-      var color = new RGBColor(current_color_rgb);
-      var current_color_hex = color.toHex();
+      var element = document.getElementById(lead_id + '_' + pk);
+      var has_class = element.classList.contains('gray_button');
 
-      //ボタン色が灰色の場合は色を付ける、色がついている場合は灰色にする
-      if (current_color_hex == movies_color_code[0]) {
-        document.getElementById(lead_id+'_'+pk).style.color = color_code;
+      if (has_class) {
+        element.classList.remove('gray_button');
+        element.classList.add(class_name);
       }else {
-        document.getElementById(lead_id+'_'+pk).style.color = movies_color_code[0];
+        element.classList.remove(class_name);
+        element.classList.add('gray_button');
       }
     })
     .catch(function(err) {
@@ -2140,18 +2138,6 @@ var utility = {
   removeAttribute_list_object: function(object_list, attribute_name) {
     for(var i = 0; i < object_list.length; i++) {
       object_list[i].removeAttribute(attribute_name);
-    }
-  },
-
-  /**
-   * 画面名を指定してカラーコードを取得する関数
-   * @param  {[string]} screen_name [画面名]
-   * @return {[array]}             [カラーコードが格納された配列]
-   */
-  get_color_code: function(screen_name) {
-    switch(screen_name) {
-      case 'movies':
-        return ['#a5a5a5','#ffa500','#FF1D00'];
     }
   },
 
