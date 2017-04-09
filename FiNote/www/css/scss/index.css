@@ -62,6 +62,25 @@ input[type=password] {
   margin-top: 2.5rem;
 }
 
+.list_icon {
+  padding: 0px 3px;
+}
+
+.gray_button {
+  color: #A5A5A5;
+  width: 100%;
+}
+
+.orange_button {
+  color: #FFA500;
+  width: 100%;
+}
+
+.red_button {
+  color: #FF1D00;
+  width: 100%;
+}
+
 /************************************************************
                        Movie Add Search
 ************************************************************/

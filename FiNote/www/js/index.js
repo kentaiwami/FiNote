@@ -349,24 +349,21 @@ var movie = {
          var movie_collection_list = document.getElementById('movie_collection_list');
          movie_count = result[0].rows.length;
 
-        //[0]:灰色、[1]:オレンジ色、[2]:朱色
-        var color_code =utility.get_color_code('movies');
-
         var lists_html = '';
         for(var i = 0; i < movie_count; i++) {
           var movie_record = result[0].rows.item(i);
-          var buttoncolor_code = {dvd:'', fav:''};
+          var button_class = {dvd:'', fav:''};
 
           if (movie_record.dvd == 1) {
-            buttoncolor_code.dvd = color_code[1];
+            button_class.dvd = 'orange_button';
           }else {
-            buttoncolor_code.dvd = color_code[0];
+            button_class.dvd = 'gray_button';
           }
 
           if (movie_record.fav == 1) {
-            buttoncolor_code.fav = color_code[2];
+            button_class.fav = 'red_button';
           }else {
-            buttoncolor_code.fav = color_code[0];
+            button_class.fav = 'gray_button';
           }
 
           var onomatopoeia_id_list = movie_record.onomatopoeia_id.split(',');
@@ -402,12 +399,12 @@ var movie = {
                      '</span>'+
                      '</div>'+
                      '<div class="right">'+
-                     '<ons-button id="dvd_'+ movie_record.id +'" onclick="movie.tap_dvd_fav(this.id,0)" modifier="quiet" style="color:'+ buttoncolor_code.dvd + '; width: 100%;">'+
-                     '<ons-icon icon="ion-disc" size="32px, material:24px style="padding: 0px 3px;">'+
+                     '<ons-button class="' + button_class.dvd + '" id="dvd_'+ movie_record.id +'" onclick="movie.tap_dvd_fav(this.id,0)" modifier="quiet">'+
+                     '<ons-icon class="list_icon" icon="ion-disc" size="25px, material:18px">'+
                      '</ons-icon>'+
                      '</ons-button>'+
-                     '<ons-button id="fav_' + movie_record.id + '" onclick="movie.tap_dvd_fav(this.id,1)" modifier="quiet" style="color: ' + buttoncolor_code.fav + '; width: 100%;">'+
-                     '<ons-icon size="32px, material:24px" icon="ion-android-favorite" style="padding: 0px 3px;">'+
+                     '<ons-button class="' + button_class.fav + '" id="fav_' + movie_record.id + '" onclick="movie.tap_dvd_fav(this.id,1)" modifier="quiet">'+
+                     '<ons-icon class="list_icon" size="25px, material:18px" icon="ion-android-favorite">'+
                      '</ons-icon>'+
                      '</ons-button>'+
                      '</div>'+
