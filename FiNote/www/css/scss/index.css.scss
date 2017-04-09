@@ -65,15 +65,16 @@ input[type=password] {
 }
 
 .list_title {
-  position: absolute;
+  font-weight: 500;
 }
 
 .list_sub_title {
-  margin-top: 2.5rem;
+  margin-top: .3rem;
+  font-size: 1rem;
 }
 
-.list_icon {
-  padding: 0px 3px;
+.list_sub_title_small {
+  margin-top: 1rem;
 }
 
 .gray_button {
@@ -94,7 +95,7 @@ input[type=password] {
 
 .list_button_row {
   position: absolute;
-  bottom: 5%;
+  bottom: 3.5%;
   right: 2%;
   width: 40vw;
 }

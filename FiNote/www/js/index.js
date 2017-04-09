@@ -392,7 +392,7 @@ var movie = {
                      '<span class="list-item__subtitle list_sub_title">'+
                      onomatopoeia_names+
                      '</span>'+
-                     '<span class="list-item__subtitle">'+
+                     '<span class="list-item__subtitle list_sub_title_small">'+
                      '追加日:'+
                      movie_record.add_year+'-'+
                      add_month+'-'+
@@ -404,21 +404,21 @@ var movie = {
                      '<ons-row class="list_button_row">'+
                      '<ons-col>'+
                      '<ons-button class="' + button_class.dvd + '" id="dvd_'+ movie_record.id +'" onclick="movie.tap_dvd_fav(this.id,0)" modifier="quiet">'+
-                     '<ons-icon class="list_icon" icon="ion-disc" size="25px, material:18px">'+
+                     '<ons-icon icon="ion-disc" size="20px">'+
                      '</ons-icon>'+
                      '</ons-button>'+
                      '</ons-col>'+
 
                      '<ons-col>'+
                      '<ons-button class="' + button_class.fav + '" id="fav_' + movie_record.id + '" onclick="movie.tap_dvd_fav(this.id,1)" modifier="quiet">'+
-                     '<ons-icon class="list_icon" size="25px, material:18px" icon="ion-android-favorite">'+
+                     '<ons-icon size="20px" icon="ion-android-favorite">'+
                      '</ons-icon>'+
                      '</ons-button>'+
                      '</ons-col>'+
 
                      '<ons-col>'+
                      '<ons-button class="brown_button" id=' + movie_record.id + ' onclick="movie.tap_detail(this.id)" modifier="quiet">'+
-                     '<ons-icon class="list_icon" size="25px, material:18px" icon="ion-information-circled">'+
+                     '<ons-icon size="20px" icon="ion-information-circled">'+
                      '</ons-icon>'+
                      '</ons-button>'+
                      '</ons-col>'+
