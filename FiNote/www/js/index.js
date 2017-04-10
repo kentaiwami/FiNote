@@ -111,6 +111,8 @@ var index = {
 */
 var Signup = {
   usersignup: function() {
+    utility.show_spinner('signup_list');
+
     //mobile backendアプリとの連携
     var ncmb = utility.get_ncmb();
     var user = new ncmb.User();
@@ -142,6 +144,7 @@ var Signup = {
       //同時にこれらの情報が記録されているかを判断するフラグも保存する
       storage.setItem('signup_flag', true);
 
+      utility.stop_spinner();
       document.getElementById('signup-alert-success').show();
     })
     .catch(function(err){
