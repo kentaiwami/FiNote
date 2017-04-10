@@ -50,7 +50,7 @@ var global_variable = {
 * indexで使用する関数をまとめたオブジェクト
 * @type {Object}
 */
-var Index = {
+var index = {
   formcheck: [false,false],                 //[0]はユーザ名とパスワード、[1]は生年月日に対応している
   
   /**
@@ -69,8 +69,8 @@ var Index = {
       
       //イベント登録
       var addevent = function(){
-        document.getElementById('username').addEventListener('keyup',Index.check_usernameAndpassword_form);
-        document.getElementById('password').addEventListener('keyup',Index.check_usernameAndpassword_form);
+        document.getElementById('username').addEventListener('keyup',index.check_usernameAndpassword_form);
+        document.getElementById('password').addEventListener('keyup',index.check_usernameAndpassword_form);
       };
       utility.check_page_init('signup',addevent);
     }
@@ -84,19 +84,19 @@ var Index = {
     var password = document.getElementById('password').value;
 
     if (username.length === 0 || password.length < 6) {
-      Index.formcheck[0] = false;
+      index.formcheck[0] = false;
     }else{
-      Index.formcheck[0] = true;
+      index.formcheck[0] = true;
     }
     
-    Index.change_abled_signup_button();
+    index.change_abled_signup_button();
   },
 
   /**
    * formcheck配列を確認して全てtrueならボタンをabledに、そうでなければdisabledにする
    */
   change_abled_signup_button: function(){
-    if (Index.formcheck[0] === true && Index.formcheck[1] === true) {
+    if (index.formcheck[0] === true && index.formcheck[1] === true) {
       document.getElementById('signup_button').removeAttribute('disabled');
     }else{
       document.getElementById('signup_button').setAttribute('disabled', 'disabled');
@@ -223,8 +223,8 @@ var Signup = {
 
     window.plugins.listpicker.showPicker(config, function(item) { 
       birthday.value = item;
-      Index.formcheck[1] = true;
-      Index.change_abled_signup_button();
+      index.formcheck[1] = true;
+      index.change_abled_signup_button();
     },
     function() { 
       console.log("You have cancelled");
@@ -2026,8 +2026,8 @@ var utility = {
       document.getElementById('password').value = 'password';
       document.getElementById('birthday').value = '1994';
 
-      Index.formcheck[0] = true;
-      Index.formcheck[1] = true;
+      index.formcheck[0] = true;
+      index.formcheck[1] = true;
 
       var storage = window.localStorage;
       storage.setItem('username', document.getElementById('username').value);
