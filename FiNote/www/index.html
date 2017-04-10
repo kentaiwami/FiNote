@@ -85,13 +85,13 @@
 
       <!-- signup.htmlのページの中身 -->
       <ons-toolbar>
-        <div class="center">ユーザ登録</div>
+        <div class="center brown_color">ユーザ登録</div>
       </ons-toolbar>
 
 			<ons-list>
         <div class="formarea">
           <!-- ユーザ名とパスワードのフォーム -->
-          <ons-list-header>ユーザ名とパスワード</ons-list-header>
+          <ons-list-header class="brown_color">ユーザ名とパスワード</ons-list-header>
           <div class="form-row">
             <input type="text" id="username" class="text-input--underbar width-full" placeholder="ユーザ名" value="">
           </div>
@@ -101,11 +101,11 @@
           </div>
 
           <div>
-            <p class="note">Password - 6 characters or more</p>
+            <p class="note brown_color">Password - 6 characters or more</p>
           </div>
 
           <!-- 性別を選択させるラジオボタン -->
-          <ons-list-header>性別</ons-list-header>
+          <ons-list-header class="brown_color">性別</ons-list-header>
           <ons-list-item tappable>
             <label class="left"><ons-input name="color" type="radio" input-id="radio_m" checked></ons-input></label>
             <label for="radio_m" class="center">男性</label>
@@ -117,7 +117,7 @@
           </ons-list-item>
           
           <!-- 生年選択のフォーム -->
-          <ons-list-header>生年</ons-list-header>
+          <ons-list-header class="brown_color">生年</ons-list-header>
           <div class="form-row">
             <input onfocus="Signup.birthday_pickerview()" type="text" id="birthday" class="text-input--underbar width-full" placeholder="生年を選択する" value="">
           </div>
