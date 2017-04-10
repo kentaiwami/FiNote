@@ -17,18 +17,34 @@ $font-small: .75rem;
 
 .gray_color {
   color: $color-gray;
+
+  &:active {
+    color: $color-gray;
+  }
 }
 
 .orange_color {
   color: $color-orange;
+
+  &:active {
+    color: $color-orange;
+  }
 }
 
 .red_color {
   color: $color-red;
+
+  &:active {
+    color: $color-red;
+  }
 }
 
 .brown_color {
   color: $color-brown;
+
+  &:active {
+    color: $color-brown;
+  }
 }
 
 .brown_bg_color {
