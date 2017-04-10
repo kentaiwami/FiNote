@@ -283,6 +283,7 @@ var movie = {
         draw_content = function(){
           var nodata_message_p = document.createElement('p');
           nodata_message_p.classList.add('center_message');
+          nodata_message_p.setAttribute('id', 'nodata_message_p');
           nodata_message_p.innerHTML = '登録された映画はありません';
 
           var nodata_message_div = document.getElementById('nodata_message');
@@ -312,6 +313,14 @@ var movie = {
 
       var movie_collection_list = document.getElementById('movie_collection_list');
       movie_collection_list.innerHTML = '';
+
+      // 映画データがない旨のメッセージが存在する場合は削除する
+      var nodata_message = document.getElementById('nodata_message');
+
+      if (nodata_message.hasChildNodes()) {
+        var nodata_message_p = document.getElementById('nodata_message_p');
+        nodata_message.removeChild(nodata_message_p);
+      }
 
       return new Promise(function(resolve,reject) {
         var result = [];
