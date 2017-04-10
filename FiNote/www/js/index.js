@@ -40,7 +40,7 @@ var app = {
 * 関数をまとめたオブジェクト間で使用する変数をまとめる
 * @type {Object}
 */
-var Global_variable = {
+var global_variable = {
   //movie.update_movieとmovieadd.add_movieにて使用
   movie_update_flag: true
 };
@@ -311,8 +311,8 @@ var movie = {
    * 映画一覧画面の表示を行う
    */
   update_movies: function() {
-    if (Global_variable.movie_update_flag) {
-      Global_variable.movie_update_flag = false;
+    if (global_variable.movie_update_flag) {
+      global_variable.movie_update_flag = false;
 
       var movie_collection_list = document.getElementById('movie_collection_list');
       movie_collection_list.innerHTML = '';
@@ -1156,7 +1156,7 @@ var movieadd = {
             console.log(result);
             utility.stop_spinner();
             document.getElementById('success_movieadd_alert').show();
-            Global_variable.movie_update_flag = true;
+            global_variable.movie_update_flag = true;
           })
           .catch(function(err) {
             console.log(err);
