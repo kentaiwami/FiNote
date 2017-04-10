@@ -42,7 +42,7 @@ var app = {
 */
 var global_variable = {
   //movie.update_movieとmovieadd.add_movieにて使用
-  movie_update_flag: true
+  movie_update_flag: false
 };
 
 
