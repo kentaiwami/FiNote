@@ -41,6 +41,14 @@ $font-small: .75rem;
   }
 }
 
+.brown_bg_color_quiet {
+  @extend .brown_color;
+
+  &:active {
+    @extend .brown_color;
+  }
+}
+
 
 /************************************************************
                       Onsen UI Override

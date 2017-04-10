@@ -417,7 +417,7 @@ var movie = {
                      '</ons-col>'+
 
                      '<ons-col>'+
-                     '<ons-button class="brown_color" id=' + movie_record.id + ' onclick="movie.tap_detail(this.id)" modifier="quiet">'+
+                     '<ons-button class="brown_bg_color_quiet" id=' + movie_record.id + ' onclick="movie.tap_detail(this.id)" modifier="quiet">'+
                      '<ons-icon size="20px" icon="ion-information-circled">'+
                      '</ons-icon>'+
                      '</ons-button>'+
