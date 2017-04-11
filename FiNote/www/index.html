@@ -23,10 +23,10 @@
 
 <body>
   <script>
-   // db_method.delete_all_record();
+   // DB_method.delete_all_record();
 
    //ブラウザでの確認のため強制的に遷移させるテストコード
-   // utility.check_page_init('index',function(){utility.push_page('movieadd_search.html', 'push', 0, '');});
+   // Utility.check_page_init('index',function(){Utility.push_page('movieadd_search.html', 'push', 0, '');});
 
 
    //エラー表示用
@@ -36,8 +36,8 @@
    };
 
    //サインアップしているかどうかをチェックする
-   index.check_signup();
-   // utility.browser_signup();
+   Index.check_signup();
+   // Utility.browser_signup();
   </script>
 
   <!-- ページ管理をするnavigatorを設置 -->
@@ -138,7 +138,7 @@
       <ons-toolbar>
 	      <div class="center brown_color">映画の一覧</div>
 	      <div class="right">
-          <ons-toolbar-button onClick="utility.push_page('movieadd_search.html', '', 0, function(){utility.hideKeyboardAccessoryBar(true)})">
+          <ons-toolbar-button onClick="Utility.push_page('movieadd_search.html', '', 0, function(){Utility.hideKeyboardAccessoryBar(true)})">
             <ons-icon class="brown_color" icon="ion-plus-round"></ons-icon>
           </ons-toolbar-button>
 	      </div>
@@ -159,14 +159,14 @@
 	  <ons-page id="movieadd_search">
       <!-- ツールバー -->
       <ons-toolbar>
-        <div class="left" onclick="utility.pop_page(movie.update_movies())" id="movieadd_search_backbutton"><ons-back-button class="brown_color"></ons-back-button></div>
+        <div class="left" onclick="Utility.pop_page(Movies.update_movies())" id="movieadd_search_backbutton"><ons-back-button class="brown_color"></ons-back-button></div>
 
         <div class="center toolbar_center_search_form" id="movieadd_search_input">
-          <form action="javascript:movieadd_search.click_done()">
-              <input onfocus="movieadd_search.set_animation_movieadd_search_input('focus')" onblur="movieadd_search.set_animation_movieadd_search_input('blur')" type="search" id="search_movie_title" value="" placeholder="追加する映画を検索" class="search-input search_form">
+          <form action="javascript:Movieadd_search.click_done()">
+              <input onfocus="Movieadd_search.set_animation_movieadd_search_input('focus')" onblur="Movieadd_search.set_animation_movieadd_search_input('blur')" type="search" id="search_movie_title" value="" placeholder="追加する映画を検索" class="search-input search_form">
           </form>
 
-          <ons-button id="movieadd_reset_button" onclick="movieadd_search.tap_reset()" class="reset_button" modifier="quiet"><ons-icon class="brown_color" icon="ion-close-circled"></ons-icon></ons-button>
+          <ons-button id="movieadd_reset_button" onclick="Movieadd_search.tap_reset()" class="reset_button" modifier="quiet"><ons-icon class="brown_color" icon="ion-close-circled"></ons-icon></ons-button>
         </div>
       </ons-toolbar>
 
@@ -180,7 +180,7 @@
       <ons-dialog id="tap_exist_movie_list">
         <div class="alert">
           <p>追加済みの映画を編集するには映画の一覧から行ってください</p>
-          <p><ons-button class="brown_bg_color" onclick="movieadd_search.exist_movie_list_alert_hide()">OK</ons-button></p>
+          <p><ons-button class="brown_bg_color" onclick="Movieadd_search.exist_movie_list_alert_hide()">OK</ons-button></p>
         </div>
       </ons-dialog>
     </ons-page>
@@ -195,18 +195,18 @@
     	<!-- ツールバー -->
       <ons-toolbar id="movieadd_toolbar" modifier="transparent" class="brown_bg_color">
         <div class="left">
-          <ons-toolbar-button id="movieadd_back_button" onClick="movieadd.tap_backbutton()"><ons-icon icon="ion-arrow-left-c" class="white_color" fixed-width="false"></ons-icon></ons-toolbar-button>
+          <ons-toolbar-button id="movieadd_back_button" onClick="Movieadd.tap_backbutton()"><ons-icon icon="ion-arrow-left-c" class="white_color" fixed-width="false"></ons-icon></ons-toolbar-button>
         </div>
 
         <div class="right">
-          <ons-toolbar-button id="movieadd_show_info_button" onClick="movieadd.fadeTo_detail_info()">
+          <ons-toolbar-button id="movieadd_show_info_button" onClick="Movieadd.fadeTo_detail_info()">
             <ons-icon icon="ion-chatbox-working" class="white_color"></ons-icon>
           </ons-toolbar-button>
         </div>
       </ons-toolbar>
 
       <!-- 映画のポスター表示 -->
-      <div class="card card_back_image" id="movieadd_card" onclick="movieadd.fadeTo_detail_info()"></div>
+      <div class="card card_back_image" id="movieadd_card" onclick="Movieadd.fadeTo_detail_info()"></div>
 
       <!-- ユーザアクション部分 -->
       <ons-list>
@@ -215,7 +215,7 @@
 
             <ons-col class="action-col">
               <div class="action-icon">
-                <ons-button class="btn_disable" onClick="movieadd.add_movie()" id="movieadd_add_button" modifier="quiet">
+                <ons-button class="btn_disable" onClick="Movieadd.add_movie()" id="movieadd_add_button" modifier="quiet">
                   <ons-icon icon="ion-plus-circled"></ons-icon>
                 </ons-button>
               </div>
@@ -224,7 +224,7 @@
 
             <ons-col class="action-col">
               <div class="action-icon">
-                <ons-button class="brown_color" onClick="movieadd.pushpage_feeling()" id="movieadd_pushfeeling_button" modifier="quiet">
+                <ons-button class="brown_color" onClick="Movieadd.pushpage_feeling()" id="movieadd_pushfeeling_button" modifier="quiet">
                   <ons-icon icon="ion-edit"></ons-icon>
                 </ons-button>
               </div>
@@ -234,14 +234,14 @@
             </ons-col>
             
             <ons-col class="action-col">
-              <div class="action-icon"><ons-button class="brown_color" onClick="movieadd.pushpage_dvd()" id="movieadd_pushdvd_button" modifier="quiet"><ons-icon icon="ion-disc"></ons-icon></ons-button></div>
+              <div class="action-icon"><ons-button class="brown_color" onClick="Movieadd.pushpage_dvd()" id="movieadd_pushdvd_button" modifier="quiet"><ons-icon icon="ion-disc"></ons-icon></ons-button></div>
               <div class="action-label">DVD</div>
 
               <span class="notification notification_space_large" id="have_dvd">No</span>
             </ons-col>
 
             <ons-col class="action-col">
-              <div class="action-icon"><ons-button class="brown_color" onClick="movieadd.sns_share()" id="movieadd_share_button" modifier="quiet"><ons-icon icon="ion-share"></ons-icon></ons-button></div>
+              <div class="action-icon"><ons-button class="brown_color" onClick="Movieadd.sns_share()" id="movieadd_share_button" modifier="quiet"><ons-icon icon="ion-share"></ons-icon></ons-button></div>
               <div class="action-label">シェア</div>
             </ons-col>
 
@@ -253,7 +253,7 @@
       <ons-dialog id="success_movieadd_alert">
         <div class="alert">
           <p>映画の追加が完了しました</p>
-          <p><ons-button class="brown_bg_color" onclick="movieadd.success_movieadd_alert_hide()">OK</ons-button></p>
+          <p><ons-button class="brown_bg_color" onclick="Movieadd.success_movieadd_alert_hide()">OK</ons-button></p>
         </div>
       </ons-dialog>
 
@@ -261,7 +261,7 @@
       <ons-dialog id="success_sns_alert">
         <div class="alert">
           <p>投稿が完了しました</p>
-          <p><ons-button class="brown_bg_color" onclick="movieadd.sns_alert_hide()">OK</ons-button></p>
+          <p><ons-button class="brown_bg_color" onclick="Movieadd.sns_alert_hide()">OK</ons-button></p>
         </div>
       </ons-dialog>
     </ons-page>
@@ -275,13 +275,13 @@
       <!-- ツールバー -->
       <ons-toolbar>
         <div class="left">
-          <ons-toolbar-button class="brown_color" onClick="utility.pop_page()">閉じる</ons-toolbar-button>
+          <ons-toolbar-button class="brown_color" onClick="Utility.pop_page()">閉じる</ons-toolbar-button>
         </div>
 
         <div class="center brown_color">気分リスト</div>
 
         <div class="right">
-					<ons-toolbar-button onClick="movieadd_feeling.show_input_alert()">
+					<ons-toolbar-button onClick="Movieadd_feeling.show_input_alert()">
 			    	<ons-icon class="brown_color" icon="ion-plus-round"></ons-icon>
 			  	</ons-toolbar-button>
 				</div>
@@ -299,8 +299,8 @@
           <p>映画を観た気分を6文字以内で入力</p>
           <ons-input input-id="feeling_input_name" placeholder="例) ドキドキ、ワクワクなど" modifier="underbar" maxlength="6" float></ons-input>
           <p>
-            <ons-button class="brown_bg_color" onclick="movieadd_feeling.hide_input_alert('cancel')">キャンセル</ons-button>
-            <ons-button class="brown_bg_color" id="feeling_add_button" onclick="movieadd_feeling.hide_input_alert('add')" disabled>登  　　録</ons-button>
+            <ons-button class="brown_bg_color" onclick="Movieadd_feeling.hide_input_alert('cancel')">キャンセル</ons-button>
+            <ons-button class="brown_bg_color" id="feeling_add_button" onclick="Movieadd_feeling.hide_input_alert('add')" disabled>登  　　録</ons-button>
           </p>
         </div>
       </ons-dialog>
@@ -339,7 +339,7 @@
 			<div class="small_message">初期状態は「いいえ」で登録されます。</div>
 
 			<div class="center_button">
-	    	<ons-button class="brown_bg_color" onClick="movieadd_dvd.close_movieadd_dvd()" modifier="large">登録</ons-button>
+	    	<ons-button class="brown_bg_color" onClick="Movieadd_dvd.close_movieadd_dvd()" modifier="large">登録</ons-button>
 	  	</div>
 		</ons-page>
 	</ons-template>
