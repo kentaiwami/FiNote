@@ -293,6 +293,7 @@ var movie = {
           nodata_message_div.appendChild(nodata_message_p);
         };
       }else {
+        global_variable.movie_update_flag = true;
         draw_content = movie.update_movies;
       }
 
