@@ -348,13 +348,13 @@ var Movies = {
         var result = [];
         var db = Utility.get_database();
         db.readTransaction(function(tx) {
-          tx.executeSql('SELECT id,title,genre_id,onomatopoeia_id,tmdb_id,poster,dvd,fav,add_year,add_month,add_day FROM movie ORDER BY id DESC', [], function(tx, resultSet) {
+          tx.executeSql('SELECT * FROM movie ORDER BY id DESC', [], function(tx, resultSet) {
             result.push(resultSet);
 
-            tx.executeSql('SELECT id,name FROM genre', [], function(tx, resultSet) {
+            tx.executeSql('SELECT * FROM genre', [], function(tx, resultSet) {
               result.push(resultSet);
 
-              tx.executeSql('SELECT id,name FROM onomatopoeia', [], function(tx, resultSet) {
+              tx.executeSql('SELECT * FROM onomatopoeia', [], function(tx, resultSet) {
                 result.push(resultSet);
               },
               function(tx, error) {
