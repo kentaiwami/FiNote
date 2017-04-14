@@ -448,7 +448,7 @@ var Movies = {
                      '</ons-col>'+
 
                      '<ons-col>'+
-                     '<ons-button class="brown_bg_color_quiet" id=' + movie_record.id + ' onclick="Movie_detail.show_contents(this.id)" modifier="quiet">'+
+                     '<ons-button class="brown_bg_color_quiet" id=' + movie_record.id + ' onclick="Movies_detail.show_contents(this.id)" modifier="quiet">'+
                      '<ons-icon size="20px" icon="ion-information-circled">'+
                      '</ons-icon>'+
                      '</ons-button>'+
@@ -538,7 +538,7 @@ var Movies = {
 /************************************************************
                         movie_detail.html
  ************************************************************/
-var Movie_detail = {
+var Movies_detail = {
 
   /**
    * moviesのinfoボタンを押した際に詳細画面へと遷移させる
