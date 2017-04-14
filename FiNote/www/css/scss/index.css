@@ -124,9 +124,9 @@ input[type=password] {
 
 .list_button_row {
   position: absolute;
+  left: 70%;
   bottom: 3.5%;
-  right: 2%;
-  width: 40vw;
+  width: 30vw;
 }
 
 /************************************************************
