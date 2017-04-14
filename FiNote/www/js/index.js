@@ -411,7 +411,7 @@ var Movies = {
 
           var add_month = ('00' + movie_record.add_month).slice(-2);
           var add_day = ('00' + movie_record.add_day).slice(-2);
-          var list = '<ons-list-item modifier="longdivider">'+
+          var list = '<ons-list-item modifier="longdivider chevron">'+
                      '<div class="left">'+
                      '<img class="list_img" src="' + movie_record.poster + '">'+
                      '</div>'+
