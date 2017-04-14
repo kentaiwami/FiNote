@@ -448,7 +448,7 @@ var Movies = {
                      '</ons-col>'+
 
                      '<ons-col>'+
-                     '<ons-button class="brown_bg_color_quiet" id=' + movie_record.id + ' onclick="Movies.tap_detail(this.id)" modifier="quiet">'+
+                     '<ons-button class="brown_bg_color_quiet" id=' + movie_record.id + ' onclick="Movie_detail.show_contents(this.id)" modifier="quiet">'+
                      '<ons-icon size="20px" icon="ion-information-circled">'+
                      '</ons-icon>'+
                      '</ons-button>'+
@@ -531,15 +531,27 @@ var Movies = {
       Utility.show_error_alert('更新エラー','更新時にエラーが発生しました','OK');
     });
   },
+};
 
+
+
+/************************************************************
+                        movie_detail.html
+ ************************************************************/
+var Movie_detail = {
 
   /**
-   * moviesのDetailを押した際に詳細画面へと遷移させる
+   * moviesのinfoボタンを押した際に詳細画面へと遷移させる
    * @param  {[Number]} id [タップした映画のprimary key]
    */
-  tap_detail: function(id) {
-    console.log(id);
-  }
+  show_contents: function(id) {
+    var query = 'SELECT * from movie WHERE id = ?';
+    return DB_method.single_statement_execute(query,[id])
+    .then(function(result) {
+      var movie_record = result.rows.item(0);
+      console.log(movie_record.title);
+    });
+  },
 };
 
 
