@@ -1807,12 +1807,19 @@ var Movieadd = {
  ************************************************************/
 var Movieadd_feeling = {
 
+  // タップしたリストのidを保存する
+  data: {tap_id: 0},
+
   show_contents: function(){
     //アラート表示後に自動フォーカスするためのイベントを登録する
     Movieadd_feeling.feeling_input_name_addEvent();
 
     var nodata_message = document.getElementById('movieadd_feeling_nodata_message');
+    var feeling_list = document.getElementById('feeling_list');
     var length = Movieadd.userdata.feeling_name_list.length;
+
+    feeling_list.innerHTML = '';
+
     if (length === 0) {
       nodata_message.style.height = '100%';
       nodata_message.innerHTML = '感情を1件以上登録してください<br>(1件につき6文字以内)';
@@ -1821,8 +1828,6 @@ var Movieadd_feeling = {
       nodata_message.innerHTML = '';
 
       //リスト表示
-      var feeling_list = document.getElementById('feeling_list');
-      feeling_list.innerHTML = '';
       feeling_list.innerHTML = '<ons-list-header>登録済みの気分</ons-list-header>';
 
       for(var i = 0; i < length; i++) {
@@ -1832,11 +1837,11 @@ var Movieadd_feeling = {
                                   '</div>'+
 
                                   '<div class="right">'+
-                                  '<ons-button class="brown_bg_color_quiet" modifier="quiet" onclick="Movieadd_feeling.hoge('+ i +')">'+
+                                  '<ons-button class="brown_bg_color_quiet" modifier="quiet" onclick="Movieadd_feeling.tap_edit('+ i +')">'+
                                   '<ons-icon size="25px" icon="ion-edit"></ons-icon>'+
                                   '</ons-button>'+
 
-                                  '<ons-button class="brown_bg_color_quiet" modifier="quiet" onclick="Movieadd_feeling.hoge('+ i +')">'+
+                                  '<ons-button class="brown_bg_color_quiet" modifier="quiet" onclick="Movieadd_feeling.tap_delete('+ i +')">'+
                                   '<ons-icon size="25px" icon="ion-trash-a"></ons-icon>'+
                                   '</ons-button>'+
                                   '</div>'+
@@ -1942,10 +1947,13 @@ var Movieadd_feeling = {
     }
   },
 
-  data: {tap_id: 0},
-
-  hoge: function(i) {
+  /**
+   * リストの編集ボタンをタップした際に、入力用のアラートを表示する
+   * @param  {[number]} i [タップしたリストの配列の添え字]
+   */
+  tap_edit: function(i) {
     Movieadd_feeling.data.tap_id = i;
+
     var feeling_name_list = Movieadd.userdata.feeling_name_list;
     var edit_input = document.getElementById('feeling_edit_input_name');
     edit_input.value= feeling_name_list[i];
@@ -1959,6 +1967,26 @@ var Movieadd_feeling = {
       }
     });
   },
+
+  /**
+   * リストの削除ボタンをタップした際に、確認用のアラートを表示して削除を行う
+   * @param  {[number]} i [タップしたリストの配列の添え字]
+   */
+  tap_delete: function(i) {
+    Movieadd_feeling.data.tap_id = i;
+
+    var feeling_name_list = Movieadd.userdata.feeling_name_list;
+    var message = '「' + feeling_name_list[i] + '」を削除します';
+
+    var func_cancel = function() {};
+    var func_delete = function() {
+      feeling_name_list.splice(i, 1);
+      Movieadd_feeling.show_contents();
+      Movieadd.update_labels();
+    };
+    
+    Utility.show_confirm_alert('気分の削除', message, ['キャンセル', '削除'], func_cancel, func_delete);
+  }
 };
 
 
@@ -2201,6 +2229,30 @@ var Utility = {
         title: title,
         message: message,
         buttonLabel: buttonLabel
+    });
+  },
+
+  /**
+   * confirmアラートを表示する
+   * @param  {[string]} title        [タイトル]
+   * @param  {[string]} message      [メッセージ]
+   * @param  {[array]} buttonLabels  [ボタンのラベルを文字列で格納した配列]
+   * @param  {[function]} func0      [ボタンのラベル配列の0番目をタップすると実行される関数]
+   * @param  {[function]} func1      [ボタンのラベル配列の1番目をタップすると実行される関数]
+   */
+  show_confirm_alert: function(title, message, buttonLabels, func0, func1) {
+    ons.notification.confirm(
+    {
+        title: title,
+        message: message,
+        buttonLabel: buttonLabels
+    })
+    .then(function(index) {
+      if (index === 0) {
+        func0();
+      }else {
+        func1();
+      }
     });
   },
 
