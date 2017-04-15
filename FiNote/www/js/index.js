@@ -899,6 +899,7 @@ var Movieadd = {
     //映画のユーザデータを初期化する
     Movieadd.userdata.feeling_name_list = [];
     Movieadd.userdata.dvd = false;
+    Movieadd.userdata.fav = false;
 
     //card部分に表示する画像を取得して表示
     var card = document.getElementById('movieadd_card');
