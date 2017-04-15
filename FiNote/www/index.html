@@ -288,7 +288,9 @@
       <!-- ツールバー -->
       <ons-toolbar>
         <div class="left">
-          <ons-toolbar-button class="brown_color" onClick="Utility.pop_page()">閉じる</ons-toolbar-button>
+          <ons-toolbar-button class="brown_color" onClick="Utility.pop_page()">
+          	<ons-icon class="brown_color" icon="ion-close-round"></ons-icon>
+          </ons-toolbar-button>
         </div>
 
         <div class="center brown_color">気分リスト</div>
@@ -328,7 +330,9 @@
   		<!-- ツールバー -->
   		<ons-toolbar>
 	  		<div class="left">
-          <ons-toolbar-button class="brown_color" onClick="Utility.pop_page(Movieadd_dvd.close_movieadd_dvd())">閉じる</ons-toolbar-button>
+          <ons-toolbar-button onClick="Utility.pop_page(Movieadd_dvd.close_movieadd_dvd())">
+          	<ons-icon class="brown_color" icon="ion-close-round"></ons-icon>
+          </ons-toolbar-button>
         </div>
   			<div class="center brown_color">ステータスの登録</div>
   		</ons-toolbar>
