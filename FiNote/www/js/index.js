@@ -443,7 +443,7 @@ var Movies = {
 
                      '<ons-col>'+
                      '<ons-button class="brown_bg_color_quiet" id=' + movie_record.id + ' onclick="Movies_detail.show_contents(this.id)" modifier="quiet">'+
-                     '<ons-icon size="20px" icon="ion-information-circled"></ons-icon>'+
+                     '<ons-icon size="20px" icon="ion-more"></ons-icon>'+
                      '</ons-button>'+
                      '</ons-col>'+
                      '</ons-row>'+
