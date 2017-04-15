@@ -886,7 +886,7 @@ var Movieadd_search = {
                         movieadd.html
  ************************************************************/
 var Movieadd = {
-  userdata: {feeling_name_list: [], dvd: false},
+  userdata: {feeling_name_list: [], dvd: false, fav: false},
   current_movie: {},
 
   /**
@@ -1182,6 +1182,13 @@ var Movieadd = {
             }else {
               dvd = 0;
             }
+            // お気に入り情報を作成
+            var fav = 0;
+            if (Movieadd.userdata.fav === true) {
+              fav = 1;
+            }else {
+              fav = 0;
+            }
 
             var query = 'INSERT INTO movie(id,title,tmdb_id,genre_id,onomatopoeia_id,poster,dvd,fav, add_year, add_month, add_day) VALUES(?,?,?,?,?,?,?,?,?,?,?)';
             
@@ -1190,7 +1197,7 @@ var Movieadd = {
             var month = today.getMonth()+1;
             var day = today.getDate();
 
-            var data = [movie_record_count,movie_result.Title, movie_result.TMDB_ID, genre_csv, onomatopoeia_csv, image_b64, dvd, 0, year, month, day];
+            var data = [movie_record_count,movie_result.Title, movie_result.TMDB_ID, genre_csv, onomatopoeia_csv, image_b64, dvd, fav, year, month, day];
 
             return DB_method.single_statement_execute(query, data);
           })
@@ -1734,24 +1741,13 @@ var Movieadd = {
   },
 
   /**
-   * 登録されたリストの件数とDVD所持情報をもとにボタン透過率とラベルを更新する関数
+   * 登録されたリストの件数をもとにボタン透過率とラベルを更新する関数
    */
   update_labels: function(){
     var list_length = Movieadd.userdata.feeling_name_list.length;
-    var dvd_flag = Movieadd.userdata.dvd;
-    var dvd = 'No';
-
-    if (dvd_flag) {
-      dvd = 'Yes';
-    }else {
-      dvd = 'No';
-    }
-
     var list_number = document.getElementById('list_number');
-    var have_dvd = document.getElementById('have_dvd');
 
     list_number.innerHTML = list_length;
-    have_dvd.innerHTML = dvd;
 
     var movieadd_add_button = document.getElementById('movieadd_add_button');
     if (list_length === 0) {
@@ -1934,13 +1930,17 @@ var Movieadd_dvd = {
    * 保存しているラジオボタンの状態をもとにチェックをつける
    */
   show_contents: function(){
-    var dvd_check = Movieadd.userdata.dvd;
-    var dvd_switch = document.getElementById('dvd_switch');
+    var check_list = [Movieadd.userdata.dvd, Movieadd.userdata.fav];
+    var id_list = ['dvd_switch', 'fav_switch'];
 
-    if (dvd_check === true) {
-      dvd_switch.checked = true;
-    }else {
-      dvd_switch.checked = false;
+    for(var i = 0; i < id_list.length; i++) {
+      var switch_dom = document.getElementById(id_list[i]);
+
+      if (check_list[i] === true) {
+        switch_dom.checked = true;
+      }else {
+        switch_dom.checked = false;
+      }
     }
   },
 
@@ -1951,6 +1951,7 @@ var Movieadd_dvd = {
   close_movieadd_dvd: function(){
     //チェックボタンの状態を保存する
     var dvd_switch_status = document.getElementById('dvd_switch').checked;
+    var fav_switch_status = document.getElementById('fav_switch').checked;
 
     if (dvd_switch_status === true) {
       Movieadd.userdata.dvd = true;
@@ -1958,8 +1959,11 @@ var Movieadd_dvd = {
       Movieadd.userdata.dvd = false;
     }
 
-    //ラベルの更新
-    Movieadd.update_labels();
+    if (fav_switch_status === true) {
+      Movieadd.userdata.fav = true;
+    }else {
+      Movieadd.userdata.fav = false;
+    }
     
     Utility.pop_page();
   },

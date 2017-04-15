@@ -248,10 +248,9 @@
             </ons-col>
             
             <ons-col class="action-col">
-              <div class="action-icon"><ons-button class="brown_color" onClick="Movieadd.pushpage_dvd()" id="movieadd_pushdvd_button" modifier="quiet"><ons-icon icon="ion-disc"></ons-icon></ons-button></div>
-              <div class="action-label">DVD</div>
+              <div class="action-icon"><ons-button class="brown_color" onClick="Movieadd.pushpage_dvd()" id="movieadd_pushdvd_button" modifier="quiet"><ons-icon icon="ion-ios-toggle"></ons-icon></ons-button></div>
+              <div class="action-label">ステータス</div>
 
-              <span class="notification notification_space_large" id="have_dvd">No</span>
             </ons-col>
 
             <ons-col class="action-col">
@@ -331,15 +330,28 @@
 	  		<div class="left">
           <ons-toolbar-button class="brown_color" onClick="Utility.pop_page(Movieadd_dvd.close_movieadd_dvd())">閉じる</ons-toolbar-button>
         </div>
-  			<div class="center brown_color">DVD所持の登録</div>
+  			<div class="center brown_color">ステータスの登録</div>
   		</ons-toolbar>
 
   		<!-- switchボタン -->
   		<ons-list>
 		    <ons-list-item>
+			    <div class="left">
+		        <ons-icon icon="ion-disc" class="list-item__icon"></ons-icon>
+		      </div>
 		      <div class="center">DVDを所持している</div>
 		      <div class="right">
 		        <ons-switch id="dvd_switch"></ons-switch>
+		      </div>
+		    </ons-list-item>
+
+		    <ons-list-item>
+			    <div class="left">
+		        <ons-icon icon="ion-android-favorite" class="list-item__icon"></ons-icon>
+		      </div>
+		      <div class="center">お気に入りにする</div>
+		      <div class="right">
+		        <ons-switch id="fav_switch"></ons-switch>
 		      </div>
 		    </ons-list-item>
 			</ons-list>
