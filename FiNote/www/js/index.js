@@ -431,22 +431,19 @@ var Movies = {
                      '<ons-row class="list_button_row">'+
                      '<ons-col>'+
                      '<ons-button class="' + button_class.dvd + '" id="dvd_'+ movie_record.id +'" onclick="Movies.tap_dvd_fav(this.id,0)" modifier="quiet">'+
-                     '<ons-icon icon="ion-disc" size="20px">'+
-                     '</ons-icon>'+
+                     '<ons-icon icon="ion-disc" size="20px"></ons-icon>'+
                      '</ons-button>'+
                      '</ons-col>'+
 
                      '<ons-col>'+
                      '<ons-button class="' + button_class.fav + '" id="fav_' + movie_record.id + '" onclick="Movies.tap_dvd_fav(this.id,1)" modifier="quiet">'+
-                     '<ons-icon size="20px" icon="ion-android-favorite">'+
-                     '</ons-icon>'+
+                     '<ons-icon size="20px" icon="ion-android-favorite"></ons-icon>'+
                      '</ons-button>'+
                      '</ons-col>'+
 
                      '<ons-col>'+
                      '<ons-button class="brown_bg_color_quiet" id=' + movie_record.id + ' onclick="Movies_detail.show_contents(this.id)" modifier="quiet">'+
-                     '<ons-icon size="20px" icon="ion-information-circled">'+
-                     '</ons-icon>'+
+                     '<ons-icon size="20px" icon="ion-information-circled"></ons-icon>'+
                      '</ons-button>'+
                      '</ons-col>'+
                      '</ons-row>'+
@@ -1831,6 +1828,14 @@ var Movieadd_feeling = {
       for(var i = 0; i < length; i++) {
         feeling_list.innerHTML += '<ons-list-item>'+
                                   Movieadd.userdata.feeling_name_list[i]+
+                                  '<div class="right">'+
+                                  '<ons-button class="brown_bg_color_quiet" modifier="quiet" onclick="Movieadd_feeling.hoge('+ i +')">'+
+                                  '<ons-icon size="25px" icon="ion-edit"></ons-icon>'+
+                                  '</ons-button>'+
+                                  '<ons-button class="brown_bg_color_quiet" modifier="quiet" onclick="Movieadd_feeling.hoge('+ i +')">'+
+                                  '<ons-icon size="25px" icon="ion-trash-a"></ons-icon>'+
+                                  '</ons-button>'+
+                                  '</div>'+
                                   '</ons-list-item>';
       }
     }
@@ -1902,6 +1907,11 @@ var Movieadd_feeling = {
         Utility.show_error_alert('登録エラー','既に登録済みです','OK');
       }
     }
+  },
+
+  hoge: function(i) {
+    var feeling_name_list = Movieadd.userdata.feeling_name_list;
+    console.log(feeling_name_list[i]);
   },
 };
 
