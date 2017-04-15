@@ -549,7 +549,12 @@ var Movies_detail = {
     return DB_method.single_statement_execute(query,[id])
     .then(function(result) {
       var movie_record = result.rows.item(0);
-      console.log(movie_record.title);
+      var callback = function(){
+        console.log(movie_record.title);
+      };
+      
+      Utility.check_page_init('movies_detail', callback);
+      Utility.push_page('movies_detail.html', '', 0, '');
     });
   },
 };
