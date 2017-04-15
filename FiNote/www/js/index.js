@@ -2025,6 +2025,7 @@ var Utility = {
       if (event.target.id == pageid) {
         console.log(pageid + ' is inited');
         callback();
+        document.removeEventListener('init', arguments.callee);
       }
     });
   },
