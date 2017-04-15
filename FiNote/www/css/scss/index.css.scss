@@ -69,17 +69,23 @@ $font-small: .75rem;
 /************************************************************
                       Onsen UI Override
  ************************************************************/
-// タブバーのボタンがactiveになっている時の色を指定
+/* タブバーのボタンがactiveになっている時の色を指定 */
 :checked + .tabbar__button {
   color: $color-brown;
 }
 
-// ラジオボタンのチェックをした方の色を指定
+/* ラジオボタンのチェックをした方の色を指定 */
 .radio-button__checkmark:after {
   border: 2px solid $color-brown;
   border-top: none;
   border-right: none;
   border-radius: 0;
+}
+
+/* switchボタンのチェックをした際の色を指定 */
+:checked + .switch__toggle {
+  box-shadow: inset 0 0 0 2px $color-brown;
+  background-color: $color-brown;
 }
 
 

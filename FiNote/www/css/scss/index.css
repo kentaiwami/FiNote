@@ -46,15 +46,23 @@
 /************************************************************
                       Onsen UI Override
  ************************************************************/
+/* タブバーのボタンがactiveになっている時の色を指定 */
 :checked + .tabbar__button {
   color: #462401;
 }
 
+/* ラジオボタンのチェックをした方の色を指定 */
 .radio-button__checkmark:after {
   border: 2px solid #462401;
   border-top: none;
   border-right: none;
   border-radius: 0;
+}
+
+/* switchボタンのチェックをした際の色を指定 */
+:checked + .switch__toggle {
+  box-shadow: inset 0 0 0 2px #462401;
+  background-color: #462401;
 }
 
 /************************************************************
