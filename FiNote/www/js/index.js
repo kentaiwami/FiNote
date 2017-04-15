@@ -1826,12 +1826,16 @@ var Movieadd_feeling = {
       feeling_list.innerHTML = '<ons-list-header>登録済みの気分</ons-list-header>';
 
       for(var i = 0; i < length; i++) {
-        feeling_list.innerHTML += '<ons-list-item>'+
+        feeling_list.innerHTML += '<ons-list-item modifier="longdivider">'+
+                                  '<div class="left">'+
                                   Movieadd.userdata.feeling_name_list[i]+
+                                  '</div>'+
+                                  
                                   '<div class="right">'+
                                   '<ons-button class="brown_bg_color_quiet" modifier="quiet" onclick="Movieadd_feeling.hoge('+ i +')">'+
                                   '<ons-icon size="25px" icon="ion-edit"></ons-icon>'+
                                   '</ons-button>'+
+
                                   '<ons-button class="brown_bg_color_quiet" modifier="quiet" onclick="Movieadd_feeling.hoge('+ i +')">'+
                                   '<ons-icon size="25px" icon="ion-trash-a"></ons-icon>'+
                                   '</ons-button>'+
