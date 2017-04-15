@@ -1935,12 +1935,12 @@ var Movieadd_dvd = {
    */
   show_contents: function(){
     var dvd_check = Movieadd.userdata.dvd;
-    var radio_dvd_yes = document.getElementById('radio_dvd_yes');
+    var dvd_switch = document.getElementById('dvd_switch');
 
     if (dvd_check === true) {
-      radio_dvd_yes.checked = true;
+      dvd_switch.checked = true;
     }else {
-      radio_dvd_yes.checked = false;
+      dvd_switch.checked = false;
     }
   },
 
@@ -1950,9 +1950,9 @@ var Movieadd_dvd = {
    */
   close_movieadd_dvd: function(){
     //チェックボタンの状態を保存する
-    var yes = document.getElementById('radio_dvd_yes').checked;
+    var dvd_switch_status = document.getElementById('dvd_switch').checked;
 
-    if (yes === true) {
+    if (dvd_switch_status === true) {
       Movieadd.userdata.dvd = true;
     }else {
       Movieadd.userdata.dvd = false;
