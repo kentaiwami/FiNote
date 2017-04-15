@@ -1039,8 +1039,11 @@ var Movieadd = {
       });
     }else {
       //ツールバーとユーザアクション部分のボタンを無効にする
+      //気分リストへの登録件数の表示を透過させる
       var button_list = [document.getElementById('movieadd_add_button'),document.getElementById('movieadd_pushfeeling_button'),document.getElementById('movieadd_pushdvd_button'),document.getElementById('movieadd_share_button'),document.getElementById('movieadd_show_info_button'),document.getElementById('movieadd_back_button')];
       Utility.setAttribute_list_object(button_list, 'disabled');
+
+      document.getElementById('list_number').style.opacity = '.4';
 
       Utility.show_spinner('movieadd_card');
 
