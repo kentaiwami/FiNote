@@ -314,8 +314,20 @@
           <p>映画を観た気分を6文字以内で入力</p>
           <ons-input input-id="feeling_input_name" placeholder="例) ドキドキ、ワクワクなど" modifier="underbar" maxlength="6" float></ons-input>
           <p>
-            <ons-button class="brown_bg_color" onclick="Movieadd_feeling.hide_input_alert('cancel')">キャンセル</ons-button>
-            <ons-button class="brown_bg_color" id="feeling_add_button" onclick="Movieadd_feeling.hide_input_alert('add')" disabled>登  　　録</ons-button>
+            <ons-button class="brown_bg_color" onclick="Movieadd_feeling.hide_input_alert('cancel', 'feeling_add_dialog')">キャンセル</ons-button>
+            <ons-button class="brown_bg_color" id="feeling_add_button" onclick="Movieadd_feeling.hide_input_alert('add', 'feeling_add_dialog')" disabled>登  　　録</ons-button>
+          </p>
+        </div>
+      </ons-dialog>
+
+      <!-- 気分を入力するためのアラート -->
+      <ons-dialog id="feeling_edit_dialog">
+        <div class="alert">
+          <p>映画を観た気分を6文字以内で入力</p>
+          <ons-input input-id="feeling_edit_input_name" modifier="underbar" maxlength="6" float></ons-input>
+          <p>
+            <ons-button class="brown_bg_color" onclick="Movieadd_feeling.hide_input_alert('cancel', 'feeling_edit_dialog')">キャンセル</ons-button>
+            <ons-button class="brown_bg_color" id="feeling_edit_button" onclick="Movieadd_feeling.hide_input_alert('change', 'feeling_edit_dialog')">変  　　更</ons-button>
           </p>
         </div>
       </ons-dialog>

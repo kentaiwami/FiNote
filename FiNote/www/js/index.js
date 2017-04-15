@@ -1830,7 +1830,7 @@ var Movieadd_feeling = {
                                   '<div class="left">'+
                                   Movieadd.userdata.feeling_name_list[i]+
                                   '</div>'+
-                                  
+
                                   '<div class="right">'+
                                   '<ons-button class="brown_bg_color_quiet" modifier="quiet" onclick="Movieadd_feeling.hoge('+ i +')">'+
                                   '<ons-icon size="25px" icon="ion-edit"></ons-icon>'+
@@ -1853,6 +1853,8 @@ var Movieadd_feeling = {
       if (event.target.id == 'feeling_add_dialog') {
         document.getElementById('feeling_add_button').setAttribute('disabled', 'disabled');
         document.getElementById('feeling_input_name').focus();
+      }else if (event.target.id == 'feeling_edit_dialog') {
+        document.getElementById('feeling_edit_input_name').focus();
       }
     });
   },
@@ -1865,14 +1867,14 @@ var Movieadd_feeling = {
 
     var input_form = document.getElementById('feeling_input_name');
     input_form.value = '';
-    input_form.addEventListener('keyup', Movieadd_feeling.check_input_form);
+    input_form.addEventListener('keyup', Movieadd_feeling.check_add_input_form);
   },
 
   /**
-   * フォームの値を監視して登録ボタンの有効・無効を設定する関数
+   * 気分の追加フォームの値を監視して登録ボタンの有効・無効を設定する関数
    * @return {[type]} [description]
    */
-  check_input_form: function(){
+  check_add_input_form: function(){
     var value = document.getElementById('feeling_input_name').value;
     var add_button = document.getElementById('feeling_add_button');
 
@@ -1884,13 +1886,29 @@ var Movieadd_feeling = {
   },
 
   /**
-   * アラートを閉じるor閉じてリストへ追加する関数
-   * @param  {[string]} id [cancelかadd]
+   * 気分の変更フォームの値を監視して変更ボタンの有効・無効を設定する関数
+   * @return {[type]} [description]
    */
-  hide_input_alert: function(id){
-    if (id == 'cancel') {
-      document.getElementById('feeling_add_dialog').hide();
+  check_edit_input_form: function(){
+    var value = document.getElementById('feeling_edit_input_name').value;
+    var change_button = document.getElementById('feeling_edit_button');
+
+    if (value.replace(/\s+/g, '') !== '') {
+      change_button.removeAttribute('disabled');
     }else {
+      change_button.setAttribute('disabled');
+    }
+  },
+
+  /**
+   * アラートを閉じるor閉じてリストへ追加する関数
+   * @param  {[string]} func_id [cancel or add or change]
+   * @param  {[string]} dialog_id [feeling_add_dialog or feeling_edit_dialog]
+   */
+  hide_input_alert: function(func_id, dialog_id){
+    if (func_id == 'cancel') {
+      document.getElementById(dialog_id).hide();
+    }else if (func_id == 'add' ){
       var feeling_name = document.getElementById('feeling_input_name').value;
       feeling_name = feeling_name.replace(/\s+/g, '');
 
@@ -1903,19 +1921,43 @@ var Movieadd_feeling = {
         //ラベルの更新
         Movieadd.update_labels();
 
-        document.getElementById('feeling_add_dialog').hide();
+        document.getElementById(dialog_id).hide();
 
       //既出の場合
       }else {
-        document.getElementById('feeling_add_dialog').hide();
+        document.getElementById(dialog_id).hide();
+        Utility.show_error_alert('登録エラー','既に登録済みです','OK');
+      }
+    }else {
+      // changeの場合
+      var value = document.getElementById('feeling_edit_input_name').value;
+      if (Movieadd.userdata.feeling_name_list.indexOf(value) == -1) {
+        Movieadd.userdata.feeling_name_list[Movieadd_feeling.data.tap_id] = value;
+        document.getElementById('feeling_edit_dialog').hide();
+        Movieadd_feeling.show_contents();
+      }else {
+        document.getElementById(dialog_id).hide();
         Utility.show_error_alert('登録エラー','既に登録済みです','OK');
       }
     }
   },
 
+  data: {tap_id: 0},
+
   hoge: function(i) {
+    Movieadd_feeling.data.tap_id = i;
     var feeling_name_list = Movieadd.userdata.feeling_name_list;
-    console.log(feeling_name_list[i]);
+    var edit_input = document.getElementById('feeling_edit_input_name');
+    edit_input.value= feeling_name_list[i];
+
+    document.getElementById('feeling_edit_dialog').show();
+    edit_input.addEventListener('keyup', Movieadd_feeling.check_edit_input_form);
+
+    document.addEventListener('preshow', function(event) {
+      if (event.target.id == 'feeling_edit_dialog') {
+        document.getElementById('feeling_edit_input_name').value = feeling_name_list[Movieadd_feeling.data.tap_id];
+      }
+    });
   },
 };
 
