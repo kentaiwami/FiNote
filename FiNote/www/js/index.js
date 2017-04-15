@@ -2,14 +2,10 @@
                             Cordova
  ************************************************************/
 var app = {
-  // Application Constructor
   initialize: function() {
     this.bindEvents();
   },
-  // Bind Event Listeners
-  //
-  // Bind any events that are required on startup. Common events are:
-  // 'load', 'deviceready', 'offline', and 'online'.
+
   bindEvents: function() {
     document.addEventListener('deviceready', this.onDeviceReady, false);
     setTimeout(function() {
@@ -1013,7 +1009,6 @@ var Movieadd = {
     var few = String(result).split(".")[1];
 
     //星と数値を書き込む
-    // var rating_num = document.getElementById('movieadd_rating');
     var innerHTML_string = '';
     var few_write = false;
     for(var i = 0; i < 5; i++){
@@ -1070,11 +1065,6 @@ var Movieadd = {
         return Movieadd.get_ncmb_same_movie(movie.id);
       })
       .then(function(same_movie_results) {
-        // console.log(same_movie_results);
-        // console.log(genre_obj_list);
-        // console.log(onomatopoeia_obj_list);
-        // console.log(movie);
-          
         //オノマトペオブジェクトリストからIDとcount1を格納した配列を作成
         var onomatopoeia_id_count_list = [];
         for(var i = 0; i < onomatopoeia_obj_list.length; i++) {
@@ -1127,16 +1117,11 @@ var Movieadd = {
             }
           }
 
-          // console.log(ncmb_onomatopoeia_list);
           return Movieadd.update_ncmb_movie(search_result.TMDB_ID,ncmb_onomatopoeia_list,username_list);
         }
       })
       .then(function(movie_result) {
         //ローカル保存処理を開始
-
-        //(id integer primary key, title text unique, tmdb_id integer unique, genre_id text, onomatopoeia_id text, poster blob)
-        // console.log(movie_result);
-
         var base_url = 'https://image.tmdb.org/t/p/w300_and_h450_bestv2';
         var image = new Image();
         image.src = base_url + movie.poster_path;
@@ -1928,7 +1913,7 @@ var Movieadd_feeling = {
 var Movieadd_dvd = {
 
   /**
-   * 保存しているラジオボタンの状態をもとにチェックをつける
+   * 保存しているスイッチボタンの状態をもとにチェックをつける
    */
   show_contents: function(){
     var check_list = [Movieadd.userdata.dvd, Movieadd.userdata.fav];
@@ -1947,10 +1932,10 @@ var Movieadd_dvd = {
 
 
   /**
-   * movieadd_dvd.html(DVDの所持確認画面)を閉じる時の関数
+   * movieadd_dvd.html(DVDの所持確認画面)を閉じる時にスイッチボタンの状態を一時保存する
    */
   close_movieadd_dvd: function(){
-    //チェックボタンの状態を保存する
+    //スイッチボタンの状態を保存する
     var dvd_switch_status = document.getElementById('dvd_switch').checked;
     var fav_switch_status = document.getElementById('fav_switch').checked;
 
@@ -2113,7 +2098,7 @@ var Utility = {
       width: 3, //線の幅
       radius: 16, //スピナーの内側の広さ
       corners: 1, //角の丸み
-      rotate: 74, //向き(あんまり意味が無い・・)
+      rotate: 74, //向き
       direction: 1, //1：時計回り -1：反時計回り
       color: '#000', // 色
       speed: 2.0, // 一秒間に回転する回数
@@ -2239,6 +2224,10 @@ var Utility = {
     }
   },
 
+  /**
+   * キーボードのアクセサリーバーの表示・非表示を設定する
+   * @param  {[bool]} bool [description]
+   */
   hideKeyboardAccessoryBar:function(bool) {
     cordova.plugins.Keyboard.hideKeyboardAccessoryBar(bool);
   },
@@ -2309,52 +2298,6 @@ var DB_method = {
       });
     });
   },
-};
-
-
-//SQLメモ
-//"INSERT INTO movie(id,title, tmdb_id, genre_id, onomatopoeia_id, poster) VALUES(1,'test', 10, 'genre_id_hogehoge','onomatopoeia_id_hogehoge','poster_hogehoge')
-
-// //ローカルのデータベースにサーバから取得したmovieを記録する
-// function insert_movie(movies){
-//     var db = this.get_database();
-  
-//     for (var i = 0; i < movies.length; i++) {
-//         console.log(movies[i]);
-
-//        db.executeSql("INSERT INTO movie(title, tmdb_id, genre_id, keyword_id, onomatopoeia_id, thumbnail_path, username) VALUES('title', 'tmdb_id', 'genre_id')");
-//         //id integer primary key, title text unique, tmdb_id integer unique, genre_id text, keyword_id text, onomatopoeia_id text, thumbnail_path text, username text
-//     }
-
-//     // db.transaction(function(tx) {
-//     //     // console.log('Open database success');
-//     //     for (var i = 0; i >= 0; i--) {
-//     //         Things[i]
-//     //     }
-//     //     tx.executeSql('CREATE TABLE IF NOT EXISTS movie (id integer primary key, title text, tmdb_id text, genre_id text, keyword_id text, onomatopoeia_id text, thumbnail text, username text)');
-//     //     tx.executeSql('CREATE TABLE IF NOT EXISTS Genre (id integer primary key, name text, username text)');
-//     //     tx.executeSql('CREATE TABLE IF NOT EXISTS KeyWord (id integer primary key, name text, username text)');
-//     //     tx.executeSql('CREATE TABLE IF NOT EXISTS Onomatopoeia (id integer primary Key, name text, joy_status text, anger_status text, sadness_status text, happiness_status text)');
-//     // }, function(err) {
-//     //     console.log('Open database ERROR: ' +JSON.stringify(err) +' ' + err.message);
-//     //     });
-// }
-// 
-//ログイン中のユーザ名が含まれるMovieオブジェクトを最新順で取得する
-// function get_movies_ncmbobject(username, callback){
-//     var ncmb = get_ncmb();
-//     var Movie = ncmb.DataStore("Movie");
-//     Movie.equalTo("UserName", username)
-//     .order("updateDate",true)
-//     .fetchAll()
-//     .then(function(results){
-//         insert_movie(results);
-//         callback();
-//     })
-//     .catch(function(err){
-//         console.log(err);
-//     });
-// }
-   
+}; 
 
 app.initialize();
