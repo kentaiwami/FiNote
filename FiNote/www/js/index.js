@@ -44,7 +44,106 @@ var app = {
 */
 var Global_variable = {
   //Movies.update_movieとMovieadd.add_movieにて使用
-  movie_update_flag: false
+  movie_update_flag: false,
+
+  //0なら映画追加画面からの気分リスト、1なら映画詳細画面からの気分リスト
+  feeling_flag: 0,
+
+  /**
+   * 気分リストのツールバー左に表示するボタンを動的に変える
+   * @param  {[integer]} flag [0なら映画追加画面、1なら映画詳細画面からの気分リスト]
+   * @return {[string]}       [ボタンのhtml]
+   */
+  get_toolbar: function(flag) {
+    if (flag === 0) {
+      return '<ons-toolbar-button class="brown_color"><ons-icon class="brown_color" icon="ion-close-round"></ons-icon></ons-toolbar-button>';
+    }else {
+      return '<ons-back-button class="brown_color"></ons-back-button>';
+    }
+  }
+};
+
+
+/************************************************************
+                            ID
+ ************************************************************/
+
+/**
+ * js内で参照するIDをまとめたオブジェクト
+ * @type {Object}
+ */
+var ID = {
+  get_index_ID: function() {
+    var id_obj = {tmp_id: 'index.html', page_id: 'index'};
+    return id_obj;
+  },
+
+  get_tab_ID: function() {
+    var id_obj = {tmp_id: 'tab.html', page_id: 'tab'};
+    return id_obj;
+  },
+
+  get_signup_ID: function() {
+    var id_obj = {tmp_id: 'signup.html', page_id: 'signup', signup_button: 'signup_button', 
+                  list_id: 'signup_list', username: 'username', password: 'password',
+                  birthday: 'birthday', success_alert: 'signup-alert-success',
+                  error_alert: 'signup-alert-error', error_message: 'error-message',
+                  radio: 'radio_m'};
+    return id_obj;
+  },
+
+  get_movies_ID: function() {
+    var id_obj = {tmp_id: 'movies.html', page_id: 'movies', nodata_message: 'nodata_message',
+                  nodata_message_p: 'nodata_message_p', list: 'movie_collection_list'};
+    return id_obj;
+  },
+
+  get_movies_detail_ID: function() {
+    var id_obj = {tmp_id: 'movies_detail.html', page_id: 'movies_detail',
+                  poster: 'detail_poster_area', detail: 'movie_detail_area'};
+    return id_obj;
+  },
+
+  get_feeling_ID: function() {
+    var id_obj = {tmp_id: 'feeling.html', page_id: 'feeling',
+                  toolbar: 'feeling_toolbar_left', nodata_message: 'feeling_nodata_message',
+                  list: 'feeling_list', add_dialog: 'feeling_add_dialog',
+                  edit_dialog: 'feeling_edit_dialog', add_button: 'feeling_add_button',
+                  edit_button: 'feeling_edit_button',
+                  input: 'feeling_input_name', edit_input: 'feeling_edit_input_name'};
+    return id_obj;
+  },
+
+  get_movieadd_search_ID: function() {
+    var id_obj = {form: 'search_movie_title', nodata_message: 'movieadd_no_match_message',
+                  reset: 'movieadd_reset_button', list: 'movieadd_search_list',
+                  exist_alert: 'tap_exist_movie_list'};
+    return id_obj;
+  },
+
+  get_moveadd_ID: function() {
+    var id_obj = {tmp_id: 'movieadd.html', page_id: 'movieadd', poster: 'movieadd_card',
+                  detail_info: 'movie_detail_info', add_button: 'movieadd_add_button',
+                  feeling_button: 'movieadd_pushfeeling_button',
+                  dvd_button: 'movieadd_pushdvd_button',
+                  share_button: 'movieadd_share_button',
+                  show_info_button: 'movieadd_show_info_button',
+                  back_button: 'movieadd_back_button', feeling_number: 'list_number',
+                  success_alert: 'success_movieadd_alert',
+                  success_sns_alert: 'success_sns_alert'};
+    return id_obj;
+  },
+
+  get_movieadd_status_ID: function() {
+    var id_obj = {tmp_id: 'movieadd_status.html', page_id: 'movieadd_status',
+                  dvd: 'dvd_switch', fav: 'fav_switch'};
+    return id_obj;
+  },
+
+  get_utility_ID: function() {
+    var id_obj = {navigator: 'myNavigator'};
+    return id_obj;
+  },
 };
 
 
@@ -71,14 +170,14 @@ var Index = {
       Movies.draw_movie_content();
     //ユーザ情報が登録されていない場合はsignupへ遷移
     }else {
-      Utility.push_page('signup.html','fade',1000, '');
+      Utility.push_page(ID.get_signup_ID().tmp_id,'fade',1000, '');
       
       //イベント登録
       var addevent = function(){
-        document.getElementById('username').addEventListener('keyup',Index.check_usernameAndpassword_form);
-        document.getElementById('password').addEventListener('keyup',Index.check_usernameAndpassword_form);
+        document.getElementById(ID.get_signup_ID().username).addEventListener('keyup',Index.check_usernameAndpassword_form);
+        document.getElementById(ID.get_signup_ID().password).addEventListener('keyup',Index.check_usernameAndpassword_form);
       };
-      Utility.check_page_init('signup',addevent);
+      Utility.check_page_init(ID.get_signup_ID().page_id,addevent);
     }
   },
 
@@ -86,8 +185,8 @@ var Index = {
    * ユーザ名とパスワード入力フォームのkeyupイベントが起きるたびに入力文字数を確認する
    */
   check_usernameAndpassword_form: function(){
-    var username = document.getElementById('username').value;
-    var password = document.getElementById('password').value;
+    var username = document.getElementById(ID.get_signup_ID().username).value;
+    var password = document.getElementById(ID.get_signup_ID().password).value;
 
     if (username.length === 0 || password.length < 6) {
       Index.formcheck[0] = false;
@@ -103,9 +202,9 @@ var Index = {
    */
   change_abled_signup_button: function(){
     if (Index.formcheck[0] === true && Index.formcheck[1] === true) {
-      document.getElementById('signup_button').removeAttribute('disabled');
+      document.getElementById(ID.get_signup_ID().signup_button).removeAttribute('disabled');
     }else{
-      document.getElementById('signup_button').setAttribute('disabled', 'disabled');
+      document.getElementById(ID.get_signup_ID().signup_button).setAttribute('disabled', 'disabled');
     }
   },
 };
@@ -121,7 +220,7 @@ var Index = {
 */
 var Signup = {
   usersignup: function() {
-    Utility.show_spinner('signup_list');
+    Utility.show_spinner(ID.get_signup_ID().list_id);
 
     //mobile backendアプリとの連携
     var ncmb = Utility.get_ncmb();
@@ -131,18 +230,18 @@ var Signup = {
     var sex = Signup.get_sex();
 
     //ユーザー名・パスワードを設定
-    user.set('userName', document.getElementById('username').value)
-    .set('password', document.getElementById('password').value)
-    .set('birthday', Number(document.getElementById('birthday').value))
+    user.set('userName', document.getElementById(ID.get_signup_ID().username).value)
+    .set('password', document.getElementById(ID.get_signup_ID().password).value)
+    .set('birthday', Number(document.getElementById(ID.get_signup_ID().birthday).value))
     .set('sex', sex);
 
     // 新規登録
     user.signUpByAccount().then(function(){
       /*登録後処理*/
       //ローカルにユーザ名とパスワードを保存する。
-      var username = document.getElementById('username').value;
-      var password = document.getElementById('password').value;
-      var birthday = Number(document.getElementById('birthday').value);
+      var username = document.getElementById(ID.get_signup_ID().username).value;
+      var password = document.getElementById(ID.get_signup_ID().password).value;
+      var birthday = Number(document.getElementById(ID.get_signup_ID().birthday).value);
       var sex = Signup.get_sex();
 
       var storage = window.localStorage;
@@ -155,13 +254,14 @@ var Signup = {
       storage.setItem('signup_flag', true);
 
       Utility.stop_spinner();
-      document.getElementById('signup-alert-success').show();
+      document.getElementById(ID.get_signup_ID().success_alert).show();
     })
     .catch(function(err){
       // エラー処理
-      document.getElementById('signup-alert-error').show();
+      Utility.stop_spinner();
+      document.getElementById(ID.get_signup_ID().error_alert).show();
 
-      var info = document.getElementById('error-message');
+      var info = document.getElementById(ID.get_signup_ID().error_message);
       var textNode;
 
       if (err.name == "NoUserNameError") {
@@ -179,10 +279,10 @@ var Signup = {
 
   alert_hide: function(id) {
     //成功時にはindex.htmlへ遷移
-    if (id == 'signup-alert-success') {
+    if (id == ID.get_signup_ID().success_alert) {
       var pushpage_tabbar = function(){
         function autoLink(){
-            location.href='index.html';
+            location.href= ID.get_index_ID().tmp_id;
         }
        setTimeout(autoLink(),0);
       };
@@ -190,9 +290,9 @@ var Signup = {
       document.getElementById(id).hide(pushpage_tabbar());
 
     //追加したエラーメッセージ(子ノード)を削除する
-    }else if (id == 'signup-alert-error') {
+    }else if (id == ID.get_signup_ID().error_alert) {
       document.getElementById(id).hide();
-      var info = document.getElementById('error-message');
+      var info = document.getElementById(ID.get_signup_ID().error_message);
       var childNode = info.firstChild;
       info.removeChild(childNode);
     }
@@ -204,7 +304,7 @@ var Signup = {
   birthday_pickerview: function(){
     cordova.plugins.Keyboard.close();
     //今年から100年前までの年テキストをオブジェクトとして生成する
-    var birthday = document.getElementById('birthday');
+    var birthday = document.getElementById(ID.get_signup_ID().birthday);
     var time = new Date();
     var year = time.getFullYear();
     var items_array = [];
@@ -247,7 +347,7 @@ var Signup = {
    * @return {[string]} [M or F]
    */
   get_sex: function(){
-    var M = document.getElementById('radio_m').checked;
+    var M = document.getElementById(ID.get_signup_ID().radio).checked;
     if (M === true) {
       return 'M';
     }else{
@@ -280,10 +380,10 @@ var Movies = {
     //ユーザ情報が存在する場合はローディング画面を表示する
     var callback = function(){
       if (signup_flag == 'true') {
-        document.getElementById('index').innerHTML = '<img  src="img/splash.gif" alt="" / width="100%" height="100%">';
+        document.getElementById(ID.get_index_ID().page_id).innerHTML = '<img  src="img/splash.gif" alt="" / width="100%" height="100%">';
       }
     };
-    Utility.check_page_init('index',callback);
+    Utility.check_page_init(ID.get_index_ID().page_id,callback);
     
 
     ncmb.User.login(username, password).then(function(data){
@@ -300,10 +400,10 @@ var Movies = {
         draw_content = function(){
           var nodata_message_p = document.createElement('p');
           nodata_message_p.classList.add('center_message');
-          nodata_message_p.setAttribute('id', 'nodata_message_p');
+          nodata_message_p.setAttribute('id', ID.get_movies_ID().nodata_message_p);
           nodata_message_p.innerHTML = '登録された映画はありません';
 
-          var nodata_message_div = document.getElementById('nodata_message');
+          var nodata_message_div = document.getElementById(ID.get_movies_ID().nodata_message);
           nodata_message_div.appendChild(nodata_message_p);
         };
       }else {
@@ -311,10 +411,10 @@ var Movies = {
         draw_content = Movies.update_movies;
       }
 
-      Utility.check_page_init('movies',draw_content);
+      Utility.check_page_init(ID.get_movies_ID().page_id,draw_content);
     })
     .then(function() {
-      Utility.push_page('tab.html','fade',0, '');
+      Utility.push_page(ID.get_tab_ID().tmp_id,'fade',0, '');
     })
     .catch(function(err) {
       //ログインエラー or レコード件数取得エラー
@@ -329,14 +429,14 @@ var Movies = {
     if (Global_variable.movie_update_flag) {
       Global_variable.movie_update_flag = false;
 
-      var movie_collection_list = document.getElementById('movie_collection_list');
+      var movie_collection_list = document.getElementById(ID.get_movies_ID().list);
       movie_collection_list.innerHTML = '';
 
       // 映画データがない旨のメッセージが存在する場合は削除する
-      var nodata_message = document.getElementById('nodata_message');
+      var nodata_message = document.getElementById(ID.get_movies_ID().nodata_message);
 
       if (nodata_message.hasChildNodes()) {
-        var nodata_message_p = document.getElementById('nodata_message_p');
+        var nodata_message_p = document.getElementById(ID.get_movies_ID().nodata_message_p);
         nodata_message.removeChild(nodata_message_p);
       }
 
@@ -373,7 +473,7 @@ var Movies = {
         //result[1]：genre
         //result[2]：onomatopoeia
 
-         var movie_collection_list = document.getElementById('movie_collection_list');
+         var movie_collection_list = document.getElementById(ID.get_movies_ID().list);
          movie_count = result[0].rows.length;
 
         var lists_html = '';
@@ -548,8 +648,8 @@ var Movies_detail = {
         var movie_record = result_movie.rows.item(0);
         var callback = Movies_detail.create_show_contents_callback(movie_record, result_onomatopoeia);
 
-        Utility.check_page_init('movies_detail', callback);
-        Utility.push_page('movies_detail.html', '', 0, '');
+        Utility.check_page_init(ID.get_movies_detail_ID().page_id, callback);
+        Utility.push_page(ID.get_movies_detail_ID().tmp_id, '', 0, '');
       });
     });
   },
@@ -597,11 +697,11 @@ var Movies_detail = {
 
     var callback = function(){
     var poster_html = '<img class="poster" src="' + movie_record.poster + '">';
-    document.getElementById('detail_poster_area').innerHTML = poster_html;
+    document.getElementById(ID.get_movies_detail_ID().poster).innerHTML = poster_html;
 
     var movie_detail_html = '<ons-list modifier="inset">'+
                             '<ons-list-header>ステータス</ons-list-header>'+
-                            '<ons-list-item modifier="chevron" tappable>'+
+                            '<ons-list-item onclick="Movies_detail.push_page_feeling(\''+onomatopoeia_text+'\')" modifier="chevron" tappable>'+
                             onomatopoeia_text+
                             '</ons-list-item>'+
 
@@ -627,11 +727,23 @@ var Movies_detail = {
                             '追加日: ' + movie_record.add_year + '-' + ('00' + movie_record.add_month).slice(-2) + '-' + ('00' + movie_record.add_day).slice(-2)+
                             '</ons-list-item>'+
                             '</ons-list>';
-    document.getElementById('movie_detail_area').innerHTML = movie_detail_html;
+    document.getElementById(ID.get_movies_detail_ID().detail).innerHTML = movie_detail_html;
     };
 
     return callback;
-  }
+  },
+
+  push_page_feeling: function(onomatopoeia_text) {
+    var onomatopoeia_name_list = onomatopoeia_text.split('、');
+    Movieadd.userdata.feeling_name_list = onomatopoeia_name_list;
+
+    var callback = function() {
+      Global_variable.feeling_flag = 1;
+      Feeling.show_contents();
+    };
+    Utility.check_page_init(ID.get_feeling_ID().page_id, callback);
+    Utility.push_page(ID.get_feeling_ID().tmp_id, 'slide', 0, '');
+  },
 };
 
 
@@ -647,7 +759,7 @@ var Movieadd_search = {
     //console.log('click_done');
     cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 
-    document.getElementById('search_movie_title').blur();
+    document.getElementById(ID.get_movieadd_search_ID().form).blur();
     Movieadd_search.get_search_movie_title_val();
   },
 
@@ -657,20 +769,20 @@ var Movieadd_search = {
    */
   tap_reset: function(){
     //formのテキストを初期化、バツボタンの削除、検索結果なしメッセージの削除
-    document.getElementById('search_movie_title').value = '';
+    document.getElementById(ID.get_movieadd_search_ID().form).value = '';
     Movieadd_search.show_hide_reset_button();
-    document.getElementById('movieadd_no_match_message').innerHTML = '';
+    document.getElementById(ID.get_movieadd_search_ID().nodata_message).innerHTML = '';
     Movieadd_search.not_show_list();
 
     //テキスト未確定入力時にリセットボタンを押した時
     var element = document.activeElement;
-    if (element.getAttribute('id') == 'search_movie_title') {
-      document.getElementById('search_movie_title').blur();
-      document.getElementById('search_movie_title').focus();
+    if (element.getAttribute('id') == ID.get_movieadd_search_ID().form) {
+      document.getElementById(ID.get_movieadd_search_ID().form).blur();
+      document.getElementById(ID.get_movieadd_search_ID().form).focus();
 
       //テキスト入力確定後にリセットボタンを押した時
     }else {
-      document.getElementById('search_movie_title').focus();
+      document.getElementById(ID.get_movieadd_search_ID().form).focus();
     }
   },
 
@@ -681,16 +793,16 @@ var Movieadd_search = {
    */
   set_animation_movieadd_search_input: function(event_name) {
     if (event_name == 'focus') {
-      document.getElementById('search_movie_title').addEventListener('input', Movieadd_search.show_hide_reset_button, false);
+      document.getElementById(ID.get_movieadd_search_ID().form).addEventListener('input', Movieadd_search.show_hide_reset_button, false);
 
     } else if (event_name == 'blur') {
-      document.getElementById('search_movie_title').removeEventListener('input', Movieadd_search.show_hide_reset_button, false);
+      document.getElementById(ID.get_movieadd_search_ID().form).removeEventListener('input', Movieadd_search.show_hide_reset_button, false);
     }
   },
 
   show_hide_reset_button: function() {
-    var text = document.getElementById('search_movie_title').value;
-    var reset_button = document.getElementById('movieadd_reset_button');
+    var text = document.getElementById(ID.get_movieadd_search_ID().form).value;
+    var reset_button = document.getElementById(ID.get_movieadd_search_ID().reset);
 
     if (text.length > 0) {
       reset_button.style.visibility = 'visible';
@@ -707,13 +819,13 @@ var Movieadd_search = {
    * 検索窓の文字数が1以上ならリセットボタンを表示させる
    */
   get_search_movie_title_val: function(){
-    var text = document.getElementById('search_movie_title').value;
-    var no_match_message = document.getElementById('movieadd_no_match_message');
+    var text = document.getElementById(ID.get_movieadd_search_ID().form).value;
+    var no_match_message = document.getElementById(ID.get_movieadd_search_ID().nodata_message);
     no_match_message.innerHTML = '';
 
     if (text.length > 0) {
       //テキストエリアのスピナー表示
-      Utility.show_spinner('movieadd_no_match_message');
+      Utility.show_spinner(ID.get_movieadd_search_ID().nodata_message);
 
       //日本語と英語のリクエスト、ローカルDBから記録した映画リストの取得を行う
       var query = 'SELECT tmdb_id, dvd FROM movie';
@@ -743,7 +855,7 @@ var Movieadd_search = {
           var list_data_poster = Movieadd_search.get_poster(list_data);
 
           //サムネイル取得後にリストを表示する
-          var movieadd_SearchList = document.getElementById('movieadd_search_list');
+          var movieadd_SearchList = document.getElementById(ID.get_movieadd_search_ID().list);
           var list_doc = '';
 
           for(i = 0; i < list_data.length; i++) {
@@ -921,7 +1033,7 @@ var Movieadd_search = {
    * リストのコンテンツを非表示にする
    */
   not_show_list: function(){
-    var movieadd_search_list = document.getElementById('movieadd_search_list');
+    var movieadd_search_list = document.getElementById(ID.get_movieadd_search_ID().list);
     movieadd_search_list.innerHTML = '';
   },
 
@@ -938,20 +1050,20 @@ var Movieadd_search = {
     var callback = function(){
       Movieadd.show_contents(list_data,tap_id);
     };
-    Utility.check_page_init('movieadd',callback);
+    Utility.check_page_init(ID.get_moveadd_ID().page_id,callback);
 
     Movieadd.current_movie = list_data[tap_id];
 
     //映画追加画面へ遷移
-    Utility.push_page('movieadd.html', '', 0,'');
+    Utility.push_page(ID.get_moveadd_ID().tmp_id, '', 0,'');
   },
 
   exist_movie_list_alert_hide: function() {
-    document.getElementById('tap_exist_movie_list').hide();
+    document.getElementById(ID.get_movieadd_search_ID().exist_alert).hide();
   },
 
   exist_movie_list_alert_show: function() {
-    document.getElementById('tap_exist_movie_list').show();
+    document.getElementById(ID.get_movieadd_search_ID().exist_alert).show();
   }
 };
 
@@ -977,7 +1089,7 @@ var Movieadd = {
     Movieadd.userdata.fav = false;
 
     //card部分に表示する画像を取得して表示
-    var card = document.getElementById('movieadd_card');
+    var card = document.getElementById(ID.get_moveadd_ID().poster);
     var tap_list_obj = document.getElementById(tap_id+'_img');
     var img_url = tap_list_obj.getAttribute('src');
 
@@ -995,16 +1107,16 @@ var Movieadd = {
     var overview = list_data[tap_id].overview;
     var release_date = list_data[tap_id].release_date;
     var rating_html = '<div class="rating">'+
-                      '<div class="rating-num" id="movieadd_rating">'+
+                      '<div class="rating-num">'+
                       Movieadd.show_vote_average(list_data[tap_id].vote_average)+
                       '</div></div>';
     
-    card.innerHTML = '<div class="modal card_modal_prev" id="movie_detail_info"><div class="modal__content"><p>'+ title +'</p><p>'+ overview +'</p><p>'+ release_date +'</p>' + rating_html + '</div></div>';
+    card.innerHTML = '<div class="modal card_modal_prev" id="'+ID.get_moveadd_ID().detail_info+'"><div class="modal__content"><p>'+ title +'</p><p>'+ overview +'</p><p>'+ release_date +'</p>' + rating_html + '</div></div>';
 
     //overviewが長すぎて範囲内に収まらない場合に文字列をカットする処理を開始
     var flag = false;
     var copy_overview = overview;
-    var info = document.getElementById('movie_detail_info');
+    var info = document.getElementById(ID.get_moveadd_ID().detail_info);
     var info_clone = info.cloneNode(true);
     info_clone.innerHTML = '<div class="modal__content"><p>'+ title +'</p><p>'+ copy_overview +'</p><p>'+ release_date +'</p>' + rating_html + '</div></div>';
     card.appendChild(info_clone);
@@ -1022,14 +1134,14 @@ var Movieadd = {
     }
 
     // カット後の文字列でhtmlを上書きする
-    card.innerHTML = '<div class="modal card_modal" id="movie_detail_info"><div class="modal__content"><p>'+ title +'</p><p>'+ copy_overview +'</p><p>'+ release_date +'</p>' + rating_html + '</div></div>';
+    card.innerHTML = '<div class="modal card_modal" id="'+ID.get_moveadd_ID().detail_info+'"><div class="modal__content"><p>'+ title +'</p><p>'+ copy_overview +'</p><p>'+ release_date +'</p>' + rating_html + '</div></div>';
   },
 
   /**
    * 映画追加画面上部のツールバーにあるバックボタンをタップした際にpopPageを行う
    */
   tap_backbutton: function(){
-    document.getElementById('myNavigator').popPage();
+    document.getElementById(ID.get_utility_ID().navigator).popPage();
   },
 
 
@@ -1037,7 +1149,7 @@ var Movieadd = {
    * card部分や吹き出しタップ時にアニメーション表示を行う
    */
   fadeTo_detail_info: function(){
-    var movie_detail_info = document.getElementById('movie_detail_info');
+    var movie_detail_info = document.getElementById(ID.get_moveadd_ID().detail_info);
     movie_detail_info.style.transition = 'opacity 0.5s';
 
     if (movie_detail_info.style.opacity == 1) {
@@ -1113,7 +1225,7 @@ var Movieadd = {
   add_movie: function(){
     var userdata = Movieadd.userdata;
 
-    document.getElementById('movieadd_add_button').style.opacity = '';
+    document.getElementById(ID.get_moveadd_ID().add_button).style.opacity = '';
 
     if (userdata.feeling_name_list.length === 0) {
       ons.notification.alert(
@@ -1125,12 +1237,12 @@ var Movieadd = {
     }else {
       //ツールバーとユーザアクション部分のボタンを無効にする
       //気分リストへの登録件数の表示を透過させる
-      var button_list = [document.getElementById('movieadd_add_button'),document.getElementById('movieadd_pushfeeling_button'),document.getElementById('movieadd_pushdvd_button'),document.getElementById('movieadd_share_button'),document.getElementById('movieadd_show_info_button'),document.getElementById('movieadd_back_button')];
+      var button_list = [document.getElementById(ID.get_moveadd_ID().add_button),document.getElementById(ID.get_moveadd_ID().feeling_button),document.getElementById(ID.get_moveadd_ID().dvd_button),document.getElementById(ID.get_moveadd_ID().share_button),document.getElementById(ID.get_moveadd_ID().show_info_button),document.getElementById(ID.get_moveadd_ID().back_button)];
       Utility.setAttribute_list_object(button_list, 'disabled');
 
-      document.getElementById('list_number').style.opacity = '.4';
+      document.getElementById(ID.get_moveadd_ID().feeling_number).style.opacity = '.4';
 
-      Utility.show_spinner('movieadd_card');
+      Utility.show_spinner(ID.get_moveadd_ID().poster);
 
       //オノマトペをuserdataから取得
       var user_onomatopoeia_list = Movieadd.userdata.feeling_name_list;
@@ -1273,7 +1385,7 @@ var Movieadd = {
           .then(function(result) {
             console.log(result);
             Utility.stop_spinner();
-            document.getElementById('success_movieadd_alert').show();
+            document.getElementById(ID.get_moveadd_ID().success_alert).show();
             Global_variable.movie_update_flag = true;
           })
           .catch(function(err) {
@@ -1789,11 +1901,12 @@ var Movieadd = {
    */
   pushpage_feeling: function(){
     var callback = function(){
-      Movieadd_feeling.show_contents();
+      Global_variable.feeling_flag = 0;
+      Feeling.show_contents();
     };
 
-    Utility.check_page_init('movieadd_feeling', callback);
-    Utility.push_page('movieadd_feeling.html', 'lift', 0, '');
+    Utility.check_page_init(ID.get_feeling_ID().page_id, callback);
+    Utility.push_page(ID.get_feeling_ID().tmp_id, 'lift', 0, '');
   },
 
 
@@ -1805,8 +1918,8 @@ var Movieadd = {
       Movieadd_status.show_contents();
     };
 
-    Utility.check_page_init('movieadd_status', callback);
-    Utility.push_page('movieadd_status.html', 'lift', 0, '');
+    Utility.check_page_init(ID.get_movieadd_status_ID().page_id, callback);
+    Utility.push_page(ID.get_movieadd_status_ID().tmp_id, 'lift', 0, '');
   },
 
   /**
@@ -1814,11 +1927,11 @@ var Movieadd = {
    */
   update_labels: function(){
     var list_length = Movieadd.userdata.feeling_name_list.length;
-    var list_number = document.getElementById('list_number');
+    var list_number = document.getElementById(ID.get_moveadd_ID().feeling_number);
 
     list_number.innerHTML = list_length;
 
-    var movieadd_add_button = document.getElementById('movieadd_add_button');
+    var movieadd_add_button = document.getElementById(ID.get_moveadd_ID().add_button);
     if (list_length === 0) {
       movieadd_add_button.style.opacity = '.4';
     }else {
@@ -1831,7 +1944,7 @@ var Movieadd = {
    * 映画追加が完了した後に表示するアラートのOKボタンをタップして動作
    */
   success_movieadd_alert_hide: function() {
-    document.getElementById('success_movieadd_alert').hide().then(function(){
+    document.getElementById(ID.get_moveadd_ID().success_alert).hide().then(function(){
       //追加した結果を反映させるために検索を行う
       Movieadd_search.get_search_movie_title_val();
       
@@ -1853,10 +1966,10 @@ var Movieadd = {
 
     var onSuccess = function(result) {
       if (result.completed === true && result.app != 'com.apple.UIKit.activity.PostToFacebook') {
-        document.getElementById('success_sns_alert').show();
+        document.getElementById(ID.get_moveadd_ID().success_sns_alert).show();
 
         //映画追加画面のボタンオブジェクト
-          var button_list = [document.getElementById('movieadd_add_button'),document.getElementById('movieadd_pushfeeling_button'),document.getElementById('movieadd_pushdvd_button'),document.getElementById('movieadd_share_button'),document.getElementById('movieadd_show_info_button'),document.getElementById('movieadd_back_button')];
+          var button_list = [document.getElementById(ID.get_moveadd_ID().add_button),document.getElementById(ID.get_moveadd_ID().feeling_button),document.getElementById(ID.get_moveadd_ID().dvd_button),document.getElementById(ID.get_moveadd_ID().share_button),document.getElementById(ID.get_moveadd_ID().show_info_button),document.getElementById(ID.get_moveadd_ID().back_button)];
 
           Utility.setAttribute_list_object(button_list, 'disabled');
       }
@@ -1866,7 +1979,7 @@ var Movieadd = {
       Utility.show_error_alert('投稿エラー',msg,'OK');
 
       //映画追加画面のボタンオブジェクト
-        var button_list = [document.getElementById('movieadd_add_button'),document.getElementById('movieadd_pushfeeling_button'),document.getElementById('movieadd_pushdvd_button'),document.getElementById('movieadd_share_button'),document.getElementById('movieadd_show_info_button'),document.getElementById('movieadd_back_button')];
+        var button_list = [document.getElementById(ID.get_moveadd_ID().add_button),document.getElementById(ID.get_moveadd_ID().feeling_button),document.getElementById(ID.get_moveadd_ID().dvd_button),document.getElementById(ID.get_moveadd_ID().share_button),document.getElementById(ID.get_moveadd_ID().show_info_button),document.getElementById(ID.get_moveadd_ID().back_button)];
 
         Utility.setAttribute_list_object(button_list, 'disabled');
     };
@@ -1879,9 +1992,9 @@ var Movieadd = {
    */
   sns_alert_hide: function() {
     //映画追加画面のボタンオブジェクト
-    var button_list = [document.getElementById('movieadd_add_button'),document.getElementById('movieadd_pushfeeling_button'),document.getElementById('movieadd_pushdvd_button'),document.getElementById('movieadd_share_button'),document.getElementById('movieadd_show_info_button'),document.getElementById('movieadd_back_button')];
+    var button_list = [document.getElementById(ID.get_moveadd_ID().add_button),document.getElementById(ID.get_moveadd_ID().feeling_button),document.getElementById(ID.get_moveadd_ID().dvd_button),document.getElementById(ID.get_moveadd_ID().share_button),document.getElementById(ID.get_moveadd_ID().show_info_button),document.getElementById(ID.get_moveadd_ID().back_button)];
 
-    document.getElementById('success_sns_alert').hide();
+    document.getElementById(ID.get_moveadd_ID().success_sns_alert).hide();
     Utility.removeAttribute_list_object(button_list, 'disabled');
   },
 };
@@ -1889,19 +2002,26 @@ var Movieadd = {
 
 
 /************************************************************
-                    movieadd_feeling.html
+                        feeling.html
  ************************************************************/
-var Movieadd_feeling = {
+var Feeling = {
 
   // タップしたリストのidを保存する
   data: {tap_id: 0},
 
   show_contents: function(){
-    //アラート表示後に自動フォーカスするためのイベントを登録する
-    Movieadd_feeling.feeling_input_name_addEvent();
 
-    var nodata_message = document.getElementById('movieadd_feeling_nodata_message');
-    var feeling_list = document.getElementById('feeling_list');
+    //flagに応じてツールバーの戻る・閉じるボタンを動的に変える
+    var toolbar_left = document.getElementById(ID.get_feeling_ID().toolbar);
+    toolbar_left.innerHTML = '';
+    toolbar_left.innerHTML = Global_variable.get_toolbar(Global_variable.feeling_flag);
+    
+    
+    //アラート表示後に自動フォーカスするためのイベントを登録する
+    Feeling.feeling_input_name_addEvent();
+
+    var nodata_message = document.getElementById(ID.get_feeling_ID().nodata_message);
+    var feeling_list = document.getElementById(ID.get_feeling_ID().list);
     var length = Movieadd.userdata.feeling_name_list.length;
 
     feeling_list.innerHTML = '';
@@ -1923,11 +2043,11 @@ var Movieadd_feeling = {
                                   '</div>'+
 
                                   '<div class="right">'+
-                                  '<ons-button class="brown_bg_color_quiet" modifier="quiet" onclick="Movieadd_feeling.tap_edit('+ i +')">'+
+                                  '<ons-button class="brown_bg_color_quiet" modifier="quiet" onclick="Feeling.tap_edit('+ i +')">'+
                                   '<ons-icon size="25px" icon="ion-edit"></ons-icon>'+
                                   '</ons-button>'+
 
-                                  '<ons-button class="brown_bg_color_quiet" modifier="quiet" onclick="Movieadd_feeling.tap_delete('+ i +')">'+
+                                  '<ons-button class="brown_bg_color_quiet" modifier="quiet" onclick="Feeling.tap_delete('+ i +')">'+
                                   '<ons-icon size="25px" icon="ion-trash-a"></ons-icon>'+
                                   '</ons-button>'+
                                   '</div>'+
@@ -1941,11 +2061,11 @@ var Movieadd_feeling = {
    */
   feeling_input_name_addEvent: function(){
     document.addEventListener('postshow', function(event) {
-      if (event.target.id == 'feeling_add_dialog') {
-        document.getElementById('feeling_add_button').setAttribute('disabled', 'disabled');
-        document.getElementById('feeling_input_name').focus();
-      }else if (event.target.id == 'feeling_edit_dialog') {
-        document.getElementById('feeling_edit_input_name').focus();
+      if (event.target.id == ID.get_feeling_ID().add_dialog) {
+        document.getElementById(ID.get_feeling_ID().add_button).setAttribute('disabled', 'disabled');
+        document.getElementById(ID.get_feeling_ID().input).focus();
+      }else if (event.target.id == ID.get_feeling_ID().edit_dialog) {
+        document.getElementById(ID.get_feeling_ID().edit_input).focus();
       }
     });
   },
@@ -1954,11 +2074,11 @@ var Movieadd_feeling = {
    * 気分を入力するアラートを表示してinputのvalueを初期化する
    */
   show_input_alert: function(){
-    document.getElementById('feeling_add_dialog').show();
+    document.getElementById(ID.get_feeling_ID().add_dialog).show();
 
-    var input_form = document.getElementById('feeling_input_name');
+    var input_form = document.getElementById(ID.get_feeling_ID().input);
     input_form.value = '';
-    input_form.addEventListener('keyup', Movieadd_feeling.check_add_input_form);
+    input_form.addEventListener('keyup', Feeling.check_add_input_form);
   },
 
   /**
@@ -1966,8 +2086,8 @@ var Movieadd_feeling = {
    * @return {[type]} [description]
    */
   check_add_input_form: function(){
-    var value = document.getElementById('feeling_input_name').value;
-    var add_button = document.getElementById('feeling_add_button');
+    var value = document.getElementById(ID.get_feeling_ID().input).value;
+    var add_button = document.getElementById(ID.get_feeling_ID().add_button);
 
     if (value.replace(/\s+/g, '') !== '') {
       add_button.removeAttribute('disabled');
@@ -1981,8 +2101,8 @@ var Movieadd_feeling = {
    * @return {[type]} [description]
    */
   check_edit_input_form: function(){
-    var value = document.getElementById('feeling_edit_input_name').value;
-    var change_button = document.getElementById('feeling_edit_button');
+    var value = document.getElementById(ID.get_feeling_ID().edit_input).value;
+    var change_button = document.getElementById(ID.get_feeling_ID().edit_button);
 
     if (value.replace(/\s+/g, '') !== '') {
       change_button.removeAttribute('disabled');
@@ -2000,17 +2120,19 @@ var Movieadd_feeling = {
     if (func_id == 'cancel') {
       document.getElementById(dialog_id).hide();
     }else if (func_id == 'add' ){
-      var feeling_name = document.getElementById('feeling_input_name').value;
+      var feeling_name = document.getElementById(ID.get_feeling_ID().input).value;
       feeling_name = feeling_name.replace(/\s+/g, '');
 
       //既出でない場合
       if (Movieadd.userdata.feeling_name_list.indexOf(feeling_name) == -1) {
         //リスト追加と表示
         Movieadd.userdata.feeling_name_list.push(feeling_name);
-        Movieadd_feeling.show_contents();
+        Feeling.show_contents();
 
-        //ラベルの更新
-        Movieadd.update_labels();
+        //ラベルの更新(映画の追加画面からの気分リストの表示時はラベルの更新を行う)
+        if (Global_variable.feeling_flag === 0) {
+          Movieadd.update_labels();
+        }
 
         document.getElementById(dialog_id).hide();
 
@@ -2021,11 +2143,11 @@ var Movieadd_feeling = {
       }
     }else {
       // changeの場合
-      var value = document.getElementById('feeling_edit_input_name').value;
+      var value = document.getElementById(ID.get_feeling_ID().edit_input).value;
       if (Movieadd.userdata.feeling_name_list.indexOf(value) == -1) {
-        Movieadd.userdata.feeling_name_list[Movieadd_feeling.data.tap_id] = value;
-        document.getElementById('feeling_edit_dialog').hide();
-        Movieadd_feeling.show_contents();
+        Movieadd.userdata.feeling_name_list[Feeling.data.tap_id] = value;
+        document.getElementById(ID.get_feeling_ID().edit_dialog).hide();
+        Feeling.show_contents();
       }else {
         document.getElementById(dialog_id).hide();
         Utility.show_error_alert('登録エラー','既に登録済みです','OK');
@@ -2038,18 +2160,18 @@ var Movieadd_feeling = {
    * @param  {[number]} i [タップしたリストの配列の添え字]
    */
   tap_edit: function(i) {
-    Movieadd_feeling.data.tap_id = i;
+    Feeling.data.tap_id = i;
 
     var feeling_name_list = Movieadd.userdata.feeling_name_list;
-    var edit_input = document.getElementById('feeling_edit_input_name');
+    var edit_input = document.getElementById(ID.get_feeling_ID().edit_input);
     edit_input.value= feeling_name_list[i];
 
-    document.getElementById('feeling_edit_dialog').show();
-    edit_input.addEventListener('keyup', Movieadd_feeling.check_edit_input_form);
+    document.getElementById(ID.get_feeling_ID().edit_dialog).show();
+    edit_input.addEventListener('keyup', Feeling.check_edit_input_form);
 
     document.addEventListener('preshow', function(event) {
-      if (event.target.id == 'feeling_edit_dialog') {
-        document.getElementById('feeling_edit_input_name').value = feeling_name_list[Movieadd_feeling.data.tap_id];
+      if (event.target.id == ID.get_feeling_ID().edit_dialog) {
+        document.getElementById(ID.get_feeling_ID().edit_input).value = feeling_name_list[Feeling.data.tap_id];
       }
     });
   },
@@ -2059,7 +2181,7 @@ var Movieadd_feeling = {
    * @param  {[number]} i [タップしたリストの配列の添え字]
    */
   tap_delete: function(i) {
-    Movieadd_feeling.data.tap_id = i;
+    Feeling.data.tap_id = i;
 
     var feeling_name_list = Movieadd.userdata.feeling_name_list;
     var message = '「' + feeling_name_list[i] + '」を削除します';
@@ -2067,7 +2189,7 @@ var Movieadd_feeling = {
     var func_cancel = function() {};
     var func_delete = function() {
       feeling_name_list.splice(i, 1);
-      Movieadd_feeling.show_contents();
+      Feeling.show_contents();
       Movieadd.update_labels();
     };
     
@@ -2087,7 +2209,7 @@ var Movieadd_status = {
    */
   show_contents: function(){
     var check_list = [Movieadd.userdata.dvd, Movieadd.userdata.fav];
-    var id_list = ['dvd_switch', 'fav_switch'];
+    var id_list = [ID.get_movieadd_status_ID().dvd, ID.get_movieadd_status_ID().fav];
 
     for(var i = 0; i < id_list.length; i++) {
       var switch_dom = document.getElementById(id_list[i]);
@@ -2106,8 +2228,8 @@ var Movieadd_status = {
    */
   close_movieadd_status: function(){
     //スイッチボタンの状態を保存する
-    var dvd_switch_status = document.getElementById('dvd_switch').checked;
-    var fav_switch_status = document.getElementById('fav_switch').checked;
+    var dvd_switch_status = document.getElementById(ID.get_movieadd_status_ID().dvd).checked;
+    var fav_switch_status = document.getElementById(ID.get_movieadd_status_ID().fav).checked;
 
     if (dvd_switch_status === true) {
       Movieadd.userdata.dvd = true;
@@ -2213,7 +2335,7 @@ var Utility = {
    */
   push_page: function(html_name, animation_name, delaytime, callback) {
     var showpage = function(){
-      document.getElementById('myNavigator').pushPage(html_name,
+      document.getElementById(ID.get_utility_ID().navigator).pushPage(html_name,
         { animation: animation_name,
           callback: callback 
         }
@@ -2227,7 +2349,7 @@ var Utility = {
    * onsen uiのpopPageを実行する関数
    */
   pop_page: function(){
-    document.getElementById('myNavigator').popPage();
+    document.getElementById(ID.get_utility_ID().navigator).popPage();
   },
 
 
@@ -2237,21 +2359,21 @@ var Utility = {
    */
   browser_signup: function(){
     var callback = function(){
-      document.getElementById('username').value = 'ブラウザユーザ';
-      document.getElementById('password').value = 'password';
-      document.getElementById('birthday').value = '1994';
+      document.getElementById(ID.get_signup_ID().username).value = 'ブラウザユーザ';
+      document.getElementById(ID.get_signup_ID().password).value = 'password';
+      document.getElementById(ID.get_signup_ID().birthday).value = '1994';
 
       Index.formcheck[0] = true;
       Index.formcheck[1] = true;
 
       var storage = window.localStorage;
-      storage.setItem('username', document.getElementById('username').value);
-      storage.setItem('password', document.getElementById('password').value);
-      storage.setItem('birthday', Number(document.getElementById('birthday').value));
+      storage.setItem('username', document.getElementById(ID.get_signup_ID().username).value);
+      storage.setItem('password', document.getElementById(ID.get_signup_ID().password).value);
+      storage.setItem('birthday', Number(document.getElementById(ID.get_signup_ID().birthday).value));
       storage.setItem('sex', 'M');
       storage.setItem('signup_flag', true);
     };
-    Utility.check_page_init('signup',callback);
+    Utility.check_page_init(ID.get_signup_ID().page_id,callback);
   },
 
 

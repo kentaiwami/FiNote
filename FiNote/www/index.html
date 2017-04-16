@@ -131,7 +131,7 @@
   <!-- ●●●●●●●●● ここまでsignup.html ●●●●●●●●● -->
 
 
-  <!-- ●ここからmovies.html -->
+  <!-- ●●●●●●●●● ここからmovies.html ●●●●●●●●● -->
   <ons-template id="movies.html">
     <ons-page id="movies">
       <!-- ツールバー -->
@@ -151,7 +151,7 @@
     	<div id="nodata_message"></div>
     </ons-page>
   </ons-template>
-  <!-- ●ここまでmovies.html -->
+  <!-- ●●●●●●●●● ここまでmovies.html ●●●●●●●●● -->
 
 
 	<!-- ●●●●●●●●● ここからmovies_detail.html ●●●●●●●●● -->
@@ -285,21 +285,17 @@
   <!-- ●●●●●●●●● ここまでmovieadd.html ●●●●●●●●● -->
 
 
-  <!-- ●●●●●●●●● ここからmovieadd_feeling.html ●●●●●●●●● -->
-  <ons-template id="movieadd_feeling.html">
-    <ons-page id="movieadd_feeling">
+  <!-- ●●●●●●●●● ここからfeeling.html ●●●●●●●●● -->
+  <ons-template id="feeling.html">
+    <ons-page id="feeling">
       <!-- ツールバー -->
       <ons-toolbar>
-        <div class="left">
-          <ons-toolbar-button class="brown_color" onClick="Utility.pop_page()">
-          	<ons-icon class="brown_color" icon="ion-close-round"></ons-icon>
-          </ons-toolbar-button>
-        </div>
+        <div class="left" id="feeling_toolbar_left" onClick="Utility.pop_page()"></div>
 
         <div class="center brown_color">気分リスト</div>
 
         <div class="right">
-					<ons-toolbar-button onClick="Movieadd_feeling.show_input_alert()">
+					<ons-toolbar-button onClick="Feeling.show_input_alert()">
 			    	<ons-icon class="brown_color" icon="ion-plus-round"></ons-icon>
 			  	</ons-toolbar-button>
 				</div>
@@ -309,7 +305,7 @@
       <ons-list id="feeling_list"></ons-list>
 
       <!-- 気分の登録件数が0件の場合に表示するメッセージ -->
-			<div id="movieadd_feeling_nodata_message" class="feeling_no_message"></div>
+			<div id="feeling_nodata_message" class="feeling_no_message"></div>
 
       <!-- 気分を入力するためのアラート -->
       <ons-dialog id="feeling_add_dialog">
@@ -317,8 +313,8 @@
           <p>映画を観た気分を6文字以内で入力</p>
           <ons-input input-id="feeling_input_name" placeholder="例) ドキドキ、ワクワクなど" modifier="underbar" maxlength="6" float></ons-input>
           <p>
-            <ons-button class="brown_bg_color" onclick="Movieadd_feeling.hide_input_alert('cancel', 'feeling_add_dialog')">キャンセル</ons-button>
-            <ons-button class="brown_bg_color" id="feeling_add_button" onclick="Movieadd_feeling.hide_input_alert('add', 'feeling_add_dialog')" disabled>登  　　録</ons-button>
+            <ons-button class="brown_bg_color" onclick="Feeling.hide_input_alert('cancel', 'feeling_add_dialog')">キャンセル</ons-button>
+            <ons-button class="brown_bg_color" id="feeling_add_button" onclick="Feeling.hide_input_alert('add', 'feeling_add_dialog')" disabled>登  　　録</ons-button>
           </p>
         </div>
       </ons-dialog>
@@ -329,14 +325,14 @@
           <p>映画を観た気分を6文字以内で入力</p>
           <ons-input input-id="feeling_edit_input_name" modifier="underbar" maxlength="6" float></ons-input>
           <p>
-            <ons-button class="brown_bg_color" onclick="Movieadd_feeling.hide_input_alert('cancel', 'feeling_edit_dialog')">キャンセル</ons-button>
-            <ons-button class="brown_bg_color" id="feeling_edit_button" onclick="Movieadd_feeling.hide_input_alert('change', 'feeling_edit_dialog')">変  　　更</ons-button>
+            <ons-button class="brown_bg_color" onclick="Feeling.hide_input_alert('cancel', 'feeling_edit_dialog')">キャンセル</ons-button>
+            <ons-button class="brown_bg_color" id="feeling_edit_button" onclick="Feeling.hide_input_alert('change', 'feeling_edit_dialog')">変  　　更</ons-button>
           </p>
         </div>
       </ons-dialog>
     </ons-page>
   </ons-template>
-  <!-- ●●●●●●●●● ここまでmovieadd_feeling.html ●●●●●●●●● -->
+  <!-- ●●●●●●●●● ここまでfeeling.html ●●●●●●●●● -->
 
 
   <!-- ●●●●●●●●● ここからmovieadd_status.html ●●●●●●●●● -->
