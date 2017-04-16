@@ -23,7 +23,7 @@ var app = {
     var db = Utility.get_database();
 
     db.transaction(function(tx) {
-      tx.executeSql('CREATE TABLE IF NOT EXISTS movie (id integer primary key, title text unique, tmdb_id integer unique, genre_id text, onomatopoeia_id text, poster text, overview text, dvd integer, fav integer, add_year integer, add_month integer, add_day integer)');
+      tx.executeSql('CREATE TABLE IF NOT EXISTS movie (id integer primary key AUTOINCREMENT, title text unique, tmdb_id integer unique, genre_id text, onomatopoeia_id text, poster text, overview text, dvd integer, fav integer, add_year integer, add_month integer, add_day integer)');
       tx.executeSql('CREATE TABLE IF NOT EXISTS genre (id integer primary key, name text unique)');
       tx.executeSql('CREATE TABLE IF NOT EXISTS onomatopoeia (id integer primary Key, name text)');
     }, function(err) {
@@ -1179,13 +1179,11 @@ var Movieadd = {
         var image = new Image();
         image.src = base_url + movie.poster_path;
         var image_b64 = '';
-        var movie_record_count = 0;
 
         var promises = [DB_method.count_record('movie'),Movieadd.set_genre_local(genre_obj_list),Movieadd.set_onomatopoeia_local(onomatopoeia_obj_list),Utility.image_to_base64(image, 'image/jpeg')];
 
         Promise.all(promises).then(function(results) {
           image_b64 = results[3];
-          movie_record_count = results[0];
           
           //ローカルDBにユーザが追加したオノマトペオブジェクトを問い合わせるpromisesを作成
           var promises = [];
@@ -1229,14 +1227,14 @@ var Movieadd = {
               fav = 0;
             }
 
-            var query = 'INSERT INTO movie(id,title,tmdb_id,genre_id,onomatopoeia_id,poster, overview, dvd,fav, add_year, add_month, add_day) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)';
+            var query = 'INSERT INTO movie(title,tmdb_id,genre_id,onomatopoeia_id,poster, overview, dvd,fav, add_year, add_month, add_day) VALUES(?,?,?,?,?,?,?,?,?,?,?)';
             
             var today = new Date();
             var year = today.getFullYear();
             var month = today.getMonth()+1;
             var day = today.getDate();
 
-            var data = [movie_record_count,movie_result.Title, movie_result.TMDB_ID, genre_csv, onomatopoeia_csv, image_b64, movie.overview, dvd, fav, year, month, day];
+            var data = [movie_result.Title, movie_result.TMDB_ID, genre_csv, onomatopoeia_csv, image_b64, movie.overview, dvd, fav, year, month, day];
 
             return DB_method.single_statement_execute(query, data);
           })
