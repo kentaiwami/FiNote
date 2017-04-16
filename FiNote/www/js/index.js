@@ -1800,7 +1800,7 @@ var Movieadd = {
   /**
    * 映画の詳細を表示している画面のDVDをタップした際に画面遷移する
    */
-  pushpage_dvd: function(){
+  pushpage_status: function(){
     var callback = function(){
       Movieadd_status.show_contents();
     };
