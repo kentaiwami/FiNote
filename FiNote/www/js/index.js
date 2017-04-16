@@ -117,7 +117,20 @@ var ID = {
   },
 
   get_moveadd_ID: function() {
-    var id_obj = {tmp_id: 'movieadd.html', page_id: 'movieadd'};
+    var id_obj = {tmp_id: 'movieadd.html', page_id: 'movieadd', poster: 'movieadd_card',
+                  detail_info: 'movie_detail_info', add_button: 'movieadd_add_button',
+                  feeling_button: 'movieadd_pushfeeling_button',
+                  dvd_button: 'movieadd_pushdvd_button',
+                  share_button: 'movieadd_share_button',
+                  show_info_button: 'movieadd_show_info_button',
+                  back_button: 'movieadd_back_button', feeling_number: 'list_number',
+                  success_alert: 'success_movieadd_alert',
+                  success_sns_alert: 'success_sns_alert'};
+    return id_obj;
+  },
+
+  get_movieadd_status_ID: function() {
+    var id_obj = {tmp_id: 'movieadd_status.html', page_id: 'movieadd_status'};
     return id_obj;
   }
 };
@@ -1065,7 +1078,7 @@ var Movieadd = {
     Movieadd.userdata.fav = false;
 
     //card部分に表示する画像を取得して表示
-    var card = document.getElementById('movieadd_card');
+    var card = document.getElementById(ID.get_moveadd_ID().poster);
     var tap_list_obj = document.getElementById(tap_id+'_img');
     var img_url = tap_list_obj.getAttribute('src');
 
@@ -1083,16 +1096,16 @@ var Movieadd = {
     var overview = list_data[tap_id].overview;
     var release_date = list_data[tap_id].release_date;
     var rating_html = '<div class="rating">'+
-                      '<div class="rating-num" id="movieadd_rating">'+
+                      '<div class="rating-num">'+
                       Movieadd.show_vote_average(list_data[tap_id].vote_average)+
                       '</div></div>';
     
-    card.innerHTML = '<div class="modal card_modal_prev" id="movie_detail_info"><div class="modal__content"><p>'+ title +'</p><p>'+ overview +'</p><p>'+ release_date +'</p>' + rating_html + '</div></div>';
+    card.innerHTML = '<div class="modal card_modal_prev" id="'+ID.get_moveadd_ID().detail_info+'"><div class="modal__content"><p>'+ title +'</p><p>'+ overview +'</p><p>'+ release_date +'</p>' + rating_html + '</div></div>';
 
     //overviewが長すぎて範囲内に収まらない場合に文字列をカットする処理を開始
     var flag = false;
     var copy_overview = overview;
-    var info = document.getElementById('movie_detail_info');
+    var info = document.getElementById(ID.get_moveadd_ID().detail_info);
     var info_clone = info.cloneNode(true);
     info_clone.innerHTML = '<div class="modal__content"><p>'+ title +'</p><p>'+ copy_overview +'</p><p>'+ release_date +'</p>' + rating_html + '</div></div>';
     card.appendChild(info_clone);
@@ -1110,7 +1123,7 @@ var Movieadd = {
     }
 
     // カット後の文字列でhtmlを上書きする
-    card.innerHTML = '<div class="modal card_modal" id="movie_detail_info"><div class="modal__content"><p>'+ title +'</p><p>'+ copy_overview +'</p><p>'+ release_date +'</p>' + rating_html + '</div></div>';
+    card.innerHTML = '<div class="modal card_modal" id="'+ID.get_moveadd_ID().detail_info+'"><div class="modal__content"><p>'+ title +'</p><p>'+ copy_overview +'</p><p>'+ release_date +'</p>' + rating_html + '</div></div>';
   },
 
   /**
@@ -1125,7 +1138,7 @@ var Movieadd = {
    * card部分や吹き出しタップ時にアニメーション表示を行う
    */
   fadeTo_detail_info: function(){
-    var movie_detail_info = document.getElementById('movie_detail_info');
+    var movie_detail_info = document.getElementById(ID.get_moveadd_ID().detail_info);
     movie_detail_info.style.transition = 'opacity 0.5s';
 
     if (movie_detail_info.style.opacity == 1) {
@@ -1201,7 +1214,7 @@ var Movieadd = {
   add_movie: function(){
     var userdata = Movieadd.userdata;
 
-    document.getElementById('movieadd_add_button').style.opacity = '';
+    document.getElementById(ID.get_moveadd_ID().add_button).style.opacity = '';
 
     if (userdata.feeling_name_list.length === 0) {
       ons.notification.alert(
@@ -1213,12 +1226,12 @@ var Movieadd = {
     }else {
       //ツールバーとユーザアクション部分のボタンを無効にする
       //気分リストへの登録件数の表示を透過させる
-      var button_list = [document.getElementById('movieadd_add_button'),document.getElementById('movieadd_pushfeeling_button'),document.getElementById('movieadd_pushdvd_button'),document.getElementById('movieadd_share_button'),document.getElementById('movieadd_show_info_button'),document.getElementById('movieadd_back_button')];
+      var button_list = [document.getElementById(ID.get_moveadd_ID().add_button),document.getElementById(ID.get_moveadd_ID().feeling_button),document.getElementById(ID.get_moveadd_ID().dvd_button),document.getElementById(ID.get_moveadd_ID().share_button),document.getElementById(ID.get_moveadd_ID().show_info_button),document.getElementById(ID.get_moveadd_ID().back_button)];
       Utility.setAttribute_list_object(button_list, 'disabled');
 
-      document.getElementById('list_number').style.opacity = '.4';
+      document.getElementById(ID.get_moveadd_ID().feeling_number).style.opacity = '.4';
 
-      Utility.show_spinner('movieadd_card');
+      Utility.show_spinner(ID.get_moveadd_ID().poster);
 
       //オノマトペをuserdataから取得
       var user_onomatopoeia_list = Movieadd.userdata.feeling_name_list;
@@ -1361,7 +1374,7 @@ var Movieadd = {
           .then(function(result) {
             console.log(result);
             Utility.stop_spinner();
-            document.getElementById('success_movieadd_alert').show();
+            document.getElementById(ID.get_moveadd_ID().success_alert).show();
             Global_variable.movie_update_flag = true;
           })
           .catch(function(err) {
@@ -1881,8 +1894,8 @@ var Movieadd = {
       Feeling.show_contents();
     };
 
-    Utility.check_page_init('feeling', callback);
-    Utility.push_page('feeling.html', 'lift', 0, '');
+    Utility.check_page_init(ID.get_feeling_ID().page_id, callback);
+    Utility.push_page(ID.get_feeling_ID().tmp_id, 'lift', 0, '');
   },
 
 
@@ -1894,8 +1907,8 @@ var Movieadd = {
       Movieadd_status.show_contents();
     };
 
-    Utility.check_page_init('movieadd_status', callback);
-    Utility.push_page('movieadd_status.html', 'lift', 0, '');
+    Utility.check_page_init(ID.get_movieadd_status_ID().page_id, callback);
+    Utility.push_page(ID.get_movieadd_status_ID().tmp_id, 'lift', 0, '');
   },
 
   /**
@@ -1903,11 +1916,11 @@ var Movieadd = {
    */
   update_labels: function(){
     var list_length = Movieadd.userdata.feeling_name_list.length;
-    var list_number = document.getElementById('list_number');
+    var list_number = document.getElementById(ID.get_moveadd_ID().feeling_number);
 
     list_number.innerHTML = list_length;
 
-    var movieadd_add_button = document.getElementById('movieadd_add_button');
+    var movieadd_add_button = document.getElementById(ID.get_moveadd_ID().add_button);
     if (list_length === 0) {
       movieadd_add_button.style.opacity = '.4';
     }else {
@@ -1920,7 +1933,7 @@ var Movieadd = {
    * 映画追加が完了した後に表示するアラートのOKボタンをタップして動作
    */
   success_movieadd_alert_hide: function() {
-    document.getElementById('success_movieadd_alert').hide().then(function(){
+    document.getElementById(ID.get_moveadd_ID().success_alert).hide().then(function(){
       //追加した結果を反映させるために検索を行う
       Movieadd_search.get_search_movie_title_val();
       
@@ -1942,10 +1955,10 @@ var Movieadd = {
 
     var onSuccess = function(result) {
       if (result.completed === true && result.app != 'com.apple.UIKit.activity.PostToFacebook') {
-        document.getElementById('success_sns_alert').show();
+        document.getElementById(ID.get_moveadd_ID().success_sns_alert).show();
 
         //映画追加画面のボタンオブジェクト
-          var button_list = [document.getElementById('movieadd_add_button'),document.getElementById('movieadd_pushfeeling_button'),document.getElementById('movieadd_pushdvd_button'),document.getElementById('movieadd_share_button'),document.getElementById('movieadd_show_info_button'),document.getElementById('movieadd_back_button')];
+          var button_list = [document.getElementById(ID.get_moveadd_ID().add_button),document.getElementById(ID.get_moveadd_ID().feeling_button),document.getElementById(ID.get_moveadd_ID().dvd_button),document.getElementById(ID.get_moveadd_ID().share_button),document.getElementById(ID.get_moveadd_ID().show_info_button),document.getElementById(ID.get_moveadd_ID().back_button)];
 
           Utility.setAttribute_list_object(button_list, 'disabled');
       }
@@ -1955,7 +1968,7 @@ var Movieadd = {
       Utility.show_error_alert('投稿エラー',msg,'OK');
 
       //映画追加画面のボタンオブジェクト
-        var button_list = [document.getElementById('movieadd_add_button'),document.getElementById('movieadd_pushfeeling_button'),document.getElementById('movieadd_pushdvd_button'),document.getElementById('movieadd_share_button'),document.getElementById('movieadd_show_info_button'),document.getElementById('movieadd_back_button')];
+        var button_list = [document.getElementById(ID.get_moveadd_ID().add_button),document.getElementById(ID.get_moveadd_ID().feeling_button),document.getElementById(ID.get_moveadd_ID().dvd_button),document.getElementById(ID.get_moveadd_ID().share_button),document.getElementById(ID.get_moveadd_ID().show_info_button),document.getElementById(ID.get_moveadd_ID().back_button)];
 
         Utility.setAttribute_list_object(button_list, 'disabled');
     };
@@ -1968,9 +1981,9 @@ var Movieadd = {
    */
   sns_alert_hide: function() {
     //映画追加画面のボタンオブジェクト
-    var button_list = [document.getElementById('movieadd_add_button'),document.getElementById('movieadd_pushfeeling_button'),document.getElementById('movieadd_pushdvd_button'),document.getElementById('movieadd_share_button'),document.getElementById('movieadd_show_info_button'),document.getElementById('movieadd_back_button')];
+    var button_list = [document.getElementById(ID.get_moveadd_ID().add_button),document.getElementById(ID.get_moveadd_ID().feeling_button),document.getElementById(ID.get_moveadd_ID().dvd_button),document.getElementById(ID.get_moveadd_ID().share_button),document.getElementById(ID.get_moveadd_ID().show_info_button),document.getElementById(ID.get_moveadd_ID().back_button)];
 
-    document.getElementById('success_sns_alert').hide();
+    document.getElementById(ID.get_moveadd_ID().success_sns_alert).hide();
     Utility.removeAttribute_list_object(button_list, 'disabled');
   },
 };
