@@ -1074,7 +1074,10 @@ var Movieadd = {
     return innerHTML_string;
   },
 
-  //映画追加ボタンを押したら動作
+
+  /**
+   * 映画追加ボタンを押したらローカルDBへ保存する
+   */
   add_movie: function(){
     var userdata = Movieadd.userdata;
 
