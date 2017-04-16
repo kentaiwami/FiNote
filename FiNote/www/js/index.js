@@ -1802,11 +1802,11 @@ var Movieadd = {
    */
   pushpage_dvd: function(){
     var callback = function(){
-      Movieadd_dvd.show_contents();
+      Movieadd_status.show_contents();
     };
 
-    Utility.check_page_init('movieadd_dvd', callback);
-    Utility.push_page('movieadd_dvd.html', 'lift', 0, '');
+    Utility.check_page_init('movieadd_status', callback);
+    Utility.push_page('movieadd_status.html', 'lift', 0, '');
   },
 
   /**
@@ -2078,9 +2078,9 @@ var Movieadd_feeling = {
 
 
 /************************************************************
-                      movieadd_dvd.html
+                      movieadd_status.html
  ************************************************************/
-var Movieadd_dvd = {
+var Movieadd_status = {
 
   /**
    * 保存しているスイッチボタンの状態をもとにチェックをつける
@@ -2102,9 +2102,9 @@ var Movieadd_dvd = {
 
 
   /**
-   * movieadd_dvd.html(DVDの所持確認画面)を閉じる時にスイッチボタンの状態を一時保存する
+   * movieadd_status.html(DVDの所持、お気に入り画面)を閉じる時にスイッチボタンの状態を一時保存する
    */
-  close_movieadd_dvd: function(){
+  close_movieadd_status: function(){
     //スイッチボタンの状態を保存する
     var dvd_switch_status = document.getElementById('dvd_switch').checked;
     var fav_switch_status = document.getElementById('fav_switch').checked;
