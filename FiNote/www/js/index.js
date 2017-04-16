@@ -49,6 +49,11 @@ var Global_variable = {
   //0なら映画追加画面からの気分リスト、1なら映画詳細画面からの気分リスト
   feeling_flag: 0,
 
+  /**
+   * 気分リストのツールバー左に表示するボタンを動的に変える
+   * @param  {[integer]} flag [0なら映画追加画面、1なら映画詳細画面からの気分リスト]
+   * @return {[string]}       [ボタンのhtml]
+   */
   get_toolbar: function(flag) {
     if (flag === 0) {
       return '<ons-toolbar-button class="brown_color"><ons-icon class="brown_color" icon="ion-close-round"></ons-icon></ons-toolbar-button>';
