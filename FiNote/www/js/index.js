@@ -138,7 +138,12 @@ var ID = {
     var id_obj = {tmp_id: 'movieadd_status.html', page_id: 'movieadd_status',
                   dvd: 'dvd_switch', fav: 'fav_switch'};
     return id_obj;
-  }
+  },
+
+  get_utility_ID: function() {
+    var id_obj = {navigator: 'myNavigator'};
+    return id_obj;
+  },
 };
 
 
@@ -1136,7 +1141,7 @@ var Movieadd = {
    * 映画追加画面上部のツールバーにあるバックボタンをタップした際にpopPageを行う
    */
   tap_backbutton: function(){
-    document.getElementById('myNavigator').popPage();
+    document.getElementById(ID.get_utility_ID().navigator).popPage();
   },
 
 
@@ -2330,7 +2335,7 @@ var Utility = {
    */
   push_page: function(html_name, animation_name, delaytime, callback) {
     var showpage = function(){
-      document.getElementById('myNavigator').pushPage(html_name,
+      document.getElementById(ID.get_utility_ID().navigator).pushPage(html_name,
         { animation: animation_name,
           callback: callback 
         }
@@ -2344,7 +2349,7 @@ var Utility = {
    * onsen uiのpopPageを実行する関数
    */
   pop_page: function(){
-    document.getElementById('myNavigator').popPage();
+    document.getElementById(ID.get_utility_ID().navigator).popPage();
   },
 
 
@@ -2368,7 +2373,7 @@ var Utility = {
       storage.setItem('sex', 'M');
       storage.setItem('signup_flag', true);
     };
-    Utility.check_page_init('signup',callback);
+    Utility.check_page_init(ID.get_signup_ID().page_id,callback);
   },
 
 
