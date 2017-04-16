@@ -107,6 +107,18 @@ var ID = {
   get_feeling_ID: function() {
     var id_obj = {tmp_id: 'feeling.html', page_id: 'feeling'};
     return id_obj;
+  },
+
+  get_movieadd_search_ID: function() {
+    var id_obj = {form: 'search_movie_title', nodata_message: 'movieadd_no_match_message',
+                  reset: 'movieadd_reset_button', list: 'movieadd_search_list',
+                  exist_alert: 'tap_exist_movie_list'};
+    return id_obj;
+  },
+
+  get_moveadd_ID: function() {
+    var id_obj = {tmp_id: 'movieadd.html', page_id: 'movieadd'};
+    return id_obj;
   }
 };
 
@@ -723,7 +735,7 @@ var Movieadd_search = {
     //console.log('click_done');
     cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 
-    document.getElementById('search_movie_title').blur();
+    document.getElementById(ID.get_movieadd_search_ID().form).blur();
     Movieadd_search.get_search_movie_title_val();
   },
 
@@ -733,20 +745,20 @@ var Movieadd_search = {
    */
   tap_reset: function(){
     //formのテキストを初期化、バツボタンの削除、検索結果なしメッセージの削除
-    document.getElementById('search_movie_title').value = '';
+    document.getElementById(ID.get_movieadd_search_ID().form).value = '';
     Movieadd_search.show_hide_reset_button();
-    document.getElementById('movieadd_no_match_message').innerHTML = '';
+    document.getElementById(ID.get_movieadd_search_ID().nodata_message).innerHTML = '';
     Movieadd_search.not_show_list();
 
     //テキスト未確定入力時にリセットボタンを押した時
     var element = document.activeElement;
-    if (element.getAttribute('id') == 'search_movie_title') {
-      document.getElementById('search_movie_title').blur();
-      document.getElementById('search_movie_title').focus();
+    if (element.getAttribute('id') == ID.get_movieadd_search_ID().form) {
+      document.getElementById(ID.get_movieadd_search_ID().form).blur();
+      document.getElementById(ID.get_movieadd_search_ID().form).focus();
 
       //テキスト入力確定後にリセットボタンを押した時
     }else {
-      document.getElementById('search_movie_title').focus();
+      document.getElementById(ID.get_movieadd_search_ID().form).focus();
     }
   },
 
@@ -757,16 +769,16 @@ var Movieadd_search = {
    */
   set_animation_movieadd_search_input: function(event_name) {
     if (event_name == 'focus') {
-      document.getElementById('search_movie_title').addEventListener('input', Movieadd_search.show_hide_reset_button, false);
+      document.getElementById(ID.get_movieadd_search_ID().form).addEventListener('input', Movieadd_search.show_hide_reset_button, false);
 
     } else if (event_name == 'blur') {
-      document.getElementById('search_movie_title').removeEventListener('input', Movieadd_search.show_hide_reset_button, false);
+      document.getElementById(ID.get_movieadd_search_ID().form).removeEventListener('input', Movieadd_search.show_hide_reset_button, false);
     }
   },
 
   show_hide_reset_button: function() {
-    var text = document.getElementById('search_movie_title').value;
-    var reset_button = document.getElementById('movieadd_reset_button');
+    var text = document.getElementById(ID.get_movieadd_search_ID().form).value;
+    var reset_button = document.getElementById(ID.get_movieadd_search_ID().reset);
 
     if (text.length > 0) {
       reset_button.style.visibility = 'visible';
@@ -783,13 +795,13 @@ var Movieadd_search = {
    * 検索窓の文字数が1以上ならリセットボタンを表示させる
    */
   get_search_movie_title_val: function(){
-    var text = document.getElementById('search_movie_title').value;
-    var no_match_message = document.getElementById('movieadd_no_match_message');
+    var text = document.getElementById(ID.get_movieadd_search_ID().form).value;
+    var no_match_message = document.getElementById(ID.get_movieadd_search_ID().nodata_message);
     no_match_message.innerHTML = '';
 
     if (text.length > 0) {
       //テキストエリアのスピナー表示
-      Utility.show_spinner('movieadd_no_match_message');
+      Utility.show_spinner(ID.get_movieadd_search_ID().nodata_message);
 
       //日本語と英語のリクエスト、ローカルDBから記録した映画リストの取得を行う
       var query = 'SELECT tmdb_id, dvd FROM movie';
@@ -819,7 +831,7 @@ var Movieadd_search = {
           var list_data_poster = Movieadd_search.get_poster(list_data);
 
           //サムネイル取得後にリストを表示する
-          var movieadd_SearchList = document.getElementById('movieadd_search_list');
+          var movieadd_SearchList = document.getElementById(ID.get_movieadd_search_ID().list);
           var list_doc = '';
 
           for(i = 0; i < list_data.length; i++) {
@@ -997,7 +1009,7 @@ var Movieadd_search = {
    * リストのコンテンツを非表示にする
    */
   not_show_list: function(){
-    var movieadd_search_list = document.getElementById('movieadd_search_list');
+    var movieadd_search_list = document.getElementById(ID.get_movieadd_search_ID().list);
     movieadd_search_list.innerHTML = '';
   },
 
@@ -1014,20 +1026,20 @@ var Movieadd_search = {
     var callback = function(){
       Movieadd.show_contents(list_data,tap_id);
     };
-    Utility.check_page_init('movieadd',callback);
+    Utility.check_page_init(ID.get_moveadd_ID().page_id,callback);
 
     Movieadd.current_movie = list_data[tap_id];
 
     //映画追加画面へ遷移
-    Utility.push_page('movieadd.html', '', 0,'');
+    Utility.push_page(ID.get_moveadd_ID().tmp_id, '', 0,'');
   },
 
   exist_movie_list_alert_hide: function() {
-    document.getElementById('tap_exist_movie_list').hide();
+    document.getElementById(ID.get_movieadd_search_ID().exist_alert).hide();
   },
 
   exist_movie_list_alert_show: function() {
-    document.getElementById('tap_exist_movie_list').show();
+    document.getElementById(ID.get_movieadd_search_ID().exist_alert).show();
   }
 };
 
