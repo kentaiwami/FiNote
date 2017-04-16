@@ -543,7 +543,36 @@ var Movies_detail = {
     .then(function(result) {
       var movie_record = result.rows.item(0);
       var callback = function(){
-        console.log(movie_record.title);
+
+        var poster_html = '<img class="poster" src="' + movie_record.poster + '">';
+        document.getElementById('detail_poster_area').innerHTML = poster_html;
+
+        var movie_detail_html = '<ons-list modifier="inset">'+
+                         '<ons-list-header>ステータス</ons-list-header>'+
+                         '<ons-list-item modifier="chevron" tappable>'+
+                         movie_record.onomatopoeia_id+
+                         '</ons-list-item>'+
+
+                         '<ons-list-item modifier="chevron" tappable>'+
+                         'DVD: Yes, お気に入り: No'+
+                         '</ons-list-item>'+
+                         '</ons-list>'+
+
+                         '<ons-list modifier="inset">'+
+                         '<ons-list-header>映画情報</ons-list-header>'+
+                         '<ons-list-item>'+
+                        movie_record.title+
+                         '</ons-list-item>'+
+
+                         '<ons-list-item>'+
+                         '概要ホゲホゲホゲホゲホゲホゲホゲホゲ'+
+                         '</ons-list-item>'+
+
+                         '<ons-list-item>'+
+                         '追加日: ' + movie_record.add_year + '-' + ('00' + movie_record.add_month).slice(-2) + '-' + ('00' + movie_record.add_day).slice(-2)+
+                         '</ons-list-item>'+
+                         '</ons-list>';
+        document.getElementById('movie_detail_area').innerHTML = movie_detail_html;
       };
       
       Utility.check_page_init('movies_detail', callback);
