@@ -51,9 +51,9 @@ var Global_variable = {
 
   get_toolbar: function(flag) {
     if (flag === 0) {
-      return '<ons-toolbar-button class="brown_color" onClick="Utility.pop_page()"><ons-icon class="brown_color" icon="ion-close-round"></ons-icon></ons-toolbar-button>';
+      return '<ons-toolbar-button class="brown_color"><ons-icon class="brown_color" icon="ion-close-round"></ons-icon></ons-toolbar-button>';
     }else {
-      return '';
+      return '<ons-back-button class="brown_color"></ons-back-button>';
     }
   }
 };
