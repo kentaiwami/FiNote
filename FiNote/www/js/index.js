@@ -612,7 +612,7 @@ var Movies_detail = {
 
     var movie_detail_html = '<ons-list modifier="inset">'+
                             '<ons-list-header>ステータス</ons-list-header>'+
-                            '<ons-list-item modifier="chevron" tappable>'+
+                            '<ons-list-item onclick="Movies_detail.push_page_feeling(\''+onomatopoeia_text+'\')" modifier="chevron" tappable>'+
                             onomatopoeia_text+
                             '</ons-list-item>'+
 
@@ -642,7 +642,19 @@ var Movies_detail = {
     };
 
     return callback;
-  }
+  },
+
+  push_page_feeling: function(onomatopoeia_text) {
+    var onomatopoeia_name_list = onomatopoeia_text.split('、');
+    Movieadd.userdata.feeling_name_list = onomatopoeia_name_list;
+
+    var callback = function() {
+      Global_variable.feeling_flag = 1;
+      Movieadd_feeling.show_contents();
+    };
+    Utility.check_page_init('movieadd_feeling', callback);
+    Utility.push_page('movieadd_feeling.html', 'slide', 0, '');
+  },
 };
 
 
@@ -2028,8 +2040,10 @@ var Movieadd_feeling = {
         Movieadd.userdata.feeling_name_list.push(feeling_name);
         Movieadd_feeling.show_contents();
 
-        //ラベルの更新
-        Movieadd.update_labels();
+        //ラベルの更新(映画の追加画面からの気分リストの表示時はラベルの更新を行う)
+        if (Global_variable.feeling_flag === 0) {
+          Movieadd.update_labels();
+        }
 
         document.getElementById(dialog_id).hide();
 
