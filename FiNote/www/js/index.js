@@ -650,10 +650,10 @@ var Movies_detail = {
 
     var callback = function() {
       Global_variable.feeling_flag = 1;
-      Movieadd_feeling.show_contents();
+      Feeling.show_contents();
     };
-    Utility.check_page_init('movieadd_feeling', callback);
-    Utility.push_page('movieadd_feeling.html', 'slide', 0, '');
+    Utility.check_page_init('feeling', callback);
+    Utility.push_page('feeling.html', 'slide', 0, '');
   },
 };
 
@@ -1813,11 +1813,11 @@ var Movieadd = {
   pushpage_feeling: function(){
     var callback = function(){
       Global_variable.feeling_flag = 0;
-      Movieadd_feeling.show_contents();
+      Feeling.show_contents();
     };
 
-    Utility.check_page_init('movieadd_feeling', callback);
-    Utility.push_page('movieadd_feeling.html', 'lift', 0, '');
+    Utility.check_page_init('feeling', callback);
+    Utility.push_page('feeling.html', 'lift', 0, '');
   },
 
 
@@ -1913,9 +1913,9 @@ var Movieadd = {
 
 
 /************************************************************
-                    movieadd_feeling.html
+                        feeling.html
  ************************************************************/
-var Movieadd_feeling = {
+var Feeling = {
 
   // タップしたリストのidを保存する
   data: {tap_id: 0},
@@ -1923,15 +1923,15 @@ var Movieadd_feeling = {
   show_contents: function(){
 
     //flagに応じてツールバーの戻る・閉じるボタンを動的に変える
-    var toolbar_left = document.getElementById('movieadd_feeling_toolbar_left');
+    var toolbar_left = document.getElementById('feeling_toolbar_left');
     toolbar_left.innerHTML = '';
     toolbar_left.innerHTML = Global_variable.get_toolbar(Global_variable.feeling_flag);
     
     
     //アラート表示後に自動フォーカスするためのイベントを登録する
-    Movieadd_feeling.feeling_input_name_addEvent();
+    Feeling.feeling_input_name_addEvent();
 
-    var nodata_message = document.getElementById('movieadd_feeling_nodata_message');
+    var nodata_message = document.getElementById('feeling_nodata_message');
     var feeling_list = document.getElementById('feeling_list');
     var length = Movieadd.userdata.feeling_name_list.length;
 
@@ -1954,11 +1954,11 @@ var Movieadd_feeling = {
                                   '</div>'+
 
                                   '<div class="right">'+
-                                  '<ons-button class="brown_bg_color_quiet" modifier="quiet" onclick="Movieadd_feeling.tap_edit('+ i +')">'+
+                                  '<ons-button class="brown_bg_color_quiet" modifier="quiet" onclick="Feeling.tap_edit('+ i +')">'+
                                   '<ons-icon size="25px" icon="ion-edit"></ons-icon>'+
                                   '</ons-button>'+
 
-                                  '<ons-button class="brown_bg_color_quiet" modifier="quiet" onclick="Movieadd_feeling.tap_delete('+ i +')">'+
+                                  '<ons-button class="brown_bg_color_quiet" modifier="quiet" onclick="Feeling.tap_delete('+ i +')">'+
                                   '<ons-icon size="25px" icon="ion-trash-a"></ons-icon>'+
                                   '</ons-button>'+
                                   '</div>'+
@@ -1989,7 +1989,7 @@ var Movieadd_feeling = {
 
     var input_form = document.getElementById('feeling_input_name');
     input_form.value = '';
-    input_form.addEventListener('keyup', Movieadd_feeling.check_add_input_form);
+    input_form.addEventListener('keyup', Feeling.check_add_input_form);
   },
 
   /**
@@ -2038,7 +2038,7 @@ var Movieadd_feeling = {
       if (Movieadd.userdata.feeling_name_list.indexOf(feeling_name) == -1) {
         //リスト追加と表示
         Movieadd.userdata.feeling_name_list.push(feeling_name);
-        Movieadd_feeling.show_contents();
+        Feeling.show_contents();
 
         //ラベルの更新(映画の追加画面からの気分リストの表示時はラベルの更新を行う)
         if (Global_variable.feeling_flag === 0) {
@@ -2056,9 +2056,9 @@ var Movieadd_feeling = {
       // changeの場合
       var value = document.getElementById('feeling_edit_input_name').value;
       if (Movieadd.userdata.feeling_name_list.indexOf(value) == -1) {
-        Movieadd.userdata.feeling_name_list[Movieadd_feeling.data.tap_id] = value;
+        Movieadd.userdata.feeling_name_list[Feeling.data.tap_id] = value;
         document.getElementById('feeling_edit_dialog').hide();
-        Movieadd_feeling.show_contents();
+        Feeling.show_contents();
       }else {
         document.getElementById(dialog_id).hide();
         Utility.show_error_alert('登録エラー','既に登録済みです','OK');
@@ -2071,18 +2071,18 @@ var Movieadd_feeling = {
    * @param  {[number]} i [タップしたリストの配列の添え字]
    */
   tap_edit: function(i) {
-    Movieadd_feeling.data.tap_id = i;
+    Feeling.data.tap_id = i;
 
     var feeling_name_list = Movieadd.userdata.feeling_name_list;
     var edit_input = document.getElementById('feeling_edit_input_name');
     edit_input.value= feeling_name_list[i];
 
     document.getElementById('feeling_edit_dialog').show();
-    edit_input.addEventListener('keyup', Movieadd_feeling.check_edit_input_form);
+    edit_input.addEventListener('keyup', Feeling.check_edit_input_form);
 
     document.addEventListener('preshow', function(event) {
       if (event.target.id == 'feeling_edit_dialog') {
-        document.getElementById('feeling_edit_input_name').value = feeling_name_list[Movieadd_feeling.data.tap_id];
+        document.getElementById('feeling_edit_input_name').value = feeling_name_list[Feeling.data.tap_id];
       }
     });
   },
@@ -2092,7 +2092,7 @@ var Movieadd_feeling = {
    * @param  {[number]} i [タップしたリストの配列の添え字]
    */
   tap_delete: function(i) {
-    Movieadd_feeling.data.tap_id = i;
+    Feeling.data.tap_id = i;
 
     var feeling_name_list = Movieadd.userdata.feeling_name_list;
     var message = '「' + feeling_name_list[i] + '」を削除します';
@@ -2100,7 +2100,7 @@ var Movieadd_feeling = {
     var func_cancel = function() {};
     var func_delete = function() {
       feeling_name_list.splice(i, 1);
-      Movieadd_feeling.show_contents();
+      Feeling.show_contents();
       Movieadd.update_labels();
     };
     
