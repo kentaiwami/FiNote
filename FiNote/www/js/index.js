@@ -74,7 +74,12 @@ var Global_variable = {
  */
 var ID = {
   get_index_ID: function() {
-    var id_obj = {tmp_id: 'index.html'};
+    var id_obj = {tmp_id: 'index.html', page_id: 'index'};
+    return id_obj;
+  },
+
+  get_tab_ID: function() {
+    var id_obj = {tmp_id: 'tab.html', page_id: 'tab'};
     return id_obj;
   },
 
@@ -84,6 +89,12 @@ var ID = {
                   birthday: 'birthday', success_alert: 'signup-alert-success',
                   error_alert: 'signup-alert-error', error_message: 'error-message',
                   radio: 'radio_m'};
+    return id_obj;
+  },
+
+  get_movies_ID: function() {
+    var id_obj = {tmp_id: 'movies.html', page_id: 'movies', nodata_message: 'nodata_message',
+                  nodata_message_p: 'nodata_message_p', list: 'movie_collection_list'};
     return id_obj;
   }
 };
@@ -322,10 +333,10 @@ var Movies = {
     //ユーザ情報が存在する場合はローディング画面を表示する
     var callback = function(){
       if (signup_flag == 'true') {
-        document.getElementById('index').innerHTML = '<img  src="img/splash.gif" alt="" / width="100%" height="100%">';
+        document.getElementById(ID.get_index_ID().page_id).innerHTML = '<img  src="img/splash.gif" alt="" / width="100%" height="100%">';
       }
     };
-    Utility.check_page_init('index',callback);
+    Utility.check_page_init(ID.get_index_ID().page_id,callback);
     
 
     ncmb.User.login(username, password).then(function(data){
@@ -342,10 +353,10 @@ var Movies = {
         draw_content = function(){
           var nodata_message_p = document.createElement('p');
           nodata_message_p.classList.add('center_message');
-          nodata_message_p.setAttribute('id', 'nodata_message_p');
+          nodata_message_p.setAttribute('id', ID.get_movies_ID().nodata_message_p);
           nodata_message_p.innerHTML = '登録された映画はありません';
 
-          var nodata_message_div = document.getElementById('nodata_message');
+          var nodata_message_div = document.getElementById(ID.get_movies_ID().nodata_message);
           nodata_message_div.appendChild(nodata_message_p);
         };
       }else {
@@ -353,10 +364,10 @@ var Movies = {
         draw_content = Movies.update_movies;
       }
 
-      Utility.check_page_init('movies',draw_content);
+      Utility.check_page_init(ID.get_movies_ID().page_id,draw_content);
     })
     .then(function() {
-      Utility.push_page('tab.html','fade',0, '');
+      Utility.push_page(ID.get_tab_ID().tmp_id,'fade',0, '');
     })
     .catch(function(err) {
       //ログインエラー or レコード件数取得エラー
@@ -371,14 +382,14 @@ var Movies = {
     if (Global_variable.movie_update_flag) {
       Global_variable.movie_update_flag = false;
 
-      var movie_collection_list = document.getElementById('movie_collection_list');
+      var movie_collection_list = document.getElementById(ID.get_movies_ID().list);
       movie_collection_list.innerHTML = '';
 
       // 映画データがない旨のメッセージが存在する場合は削除する
-      var nodata_message = document.getElementById('nodata_message');
+      var nodata_message = document.getElementById(ID.get_movies_ID().nodata_message);
 
       if (nodata_message.hasChildNodes()) {
-        var nodata_message_p = document.getElementById('nodata_message_p');
+        var nodata_message_p = document.getElementById(ID.get_movies_ID().nodata_message_p);
         nodata_message.removeChild(nodata_message_p);
       }
 
@@ -415,7 +426,7 @@ var Movies = {
         //result[1]：genre
         //result[2]：onomatopoeia
 
-         var movie_collection_list = document.getElementById('movie_collection_list');
+         var movie_collection_list = document.getElementById(ID.get_movies_ID().list);
          movie_count = result[0].rows.length;
 
         var lists_html = '';
