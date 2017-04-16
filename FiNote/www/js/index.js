@@ -540,12 +540,17 @@ var Movies_detail = {
   show_contents: function(id) {
     var query = 'SELECT * from movie WHERE id = ?';
     return DB_method.single_statement_execute(query,[id])
-    .then(function(result) {
-      var movie_record = result.rows.item(0);
-      var callback = Movies_detail.create_show_contents_callback(movie_record);
+    .then(function(result_movie) {
+      query = 'SELECT * from onomatopoeia';
 
-      Utility.check_page_init('movies_detail', callback);
-      Utility.push_page('movies_detail.html', '', 0, '');
+      return DB_method.single_statement_execute(query,[])
+      .then(function(result_onomatopoeia) {
+        var movie_record = result_movie.rows.item(0);
+        var callback = Movies_detail.create_show_contents_callback(movie_record, result_onomatopoeia);
+
+        Utility.check_page_init('movies_detail', callback);
+        Utility.push_page('movies_detail.html', '', 0, '');
+      });
     });
   },
 
@@ -553,19 +558,35 @@ var Movies_detail = {
   /**
    * 詳細画面の初期化が完了した後に描画を実行するコールバック関数を作成する
    * @param  {[object]} movie_record [ローカルに保存されているタップされた映画オブジェクト]
+   * @param  {[object]} result_onomatopoeia [ローカルに保存されているオノマトペオブジェクト]
    * @return {[function]}            [描画を行うコールバック関数]
    */
-  create_show_contents_callback: function(movie_record) {
+  create_show_contents_callback: function(movie_record, result_onomatopoeia) {
+    // 画面に表示するオノマトペのテキストを生成する
+    var onomatopoeia_text = '';
+    var onomatopoeia_name_list = [];
+    var onomatopoeia_id_list = movie_record.onomatopoeia_id.split(',');
+
+    for (var i = 0; i < result_onomatopoeia.rows.length; i++) {
+      var onomatopoeia_obj = result_onomatopoeia.rows.item(i);
+      if (onomatopoeia_id_list.indexOf(String(onomatopoeia_obj.id)) != -1) {
+        onomatopoeia_name_list.push(onomatopoeia_obj.name);
+      }
+    }
+
+    onomatopoeia_text = onomatopoeia_name_list.join('、');
+
+    // 画面に表示する概要と指定するクラスを決定
     var overview = movie_record.overview;
     var class_name = 'small_overview';
-    var dvd = 'No';
-    var fav = 'No';
-
     if (movie_record.overview === null || movie_record.overview === '') {
       overview = '詳細データなし';
       class_name = 'small_overview_opacity';
     }
 
+    // DVDの所持とお気に入りの登録状況に応じて表示するテキストを変更する
+    var dvd = 'No';
+    var fav = 'No';
     if (movie_record.dvd === 1) {
       dvd = 'Yes';
     }
@@ -581,7 +602,7 @@ var Movies_detail = {
     var movie_detail_html = '<ons-list modifier="inset">'+
                             '<ons-list-header>ステータス</ons-list-header>'+
                             '<ons-list-item modifier="chevron" tappable>'+
-                            movie_record.onomatopoeia_id+
+                            onomatopoeia_text+
                             '</ons-list-item>'+
 
                             '<ons-list-item modifier="chevron" tappable>'+
