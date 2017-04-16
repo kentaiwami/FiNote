@@ -556,14 +556,22 @@ var Movies_detail = {
    * @return {[function]}            [描画を行うコールバック関数]
    */
   create_show_contents_callback: function(movie_record) {
-    var overview = '';
-    var class_name = '';
+    var overview = movie_record.overview;
+    var class_name = 'small_overview';
+    var dvd = 'No';
+    var fav = 'No';
+
     if (movie_record.overview === null || movie_record.overview === '') {
       overview = '詳細データなし';
       class_name = 'small_overview_opacity';
-    }else {
-      overview = movie_record.overview;
-      class_name = 'small_overview';
+    }
+
+    if (movie_record.dvd === 1) {
+      dvd = 'Yes';
+    }
+
+    if (movie_record.fav === 1) {
+      fav = 'Yes';
     }
 
     var callback = function(){
@@ -577,7 +585,10 @@ var Movies_detail = {
                             '</ons-list-item>'+
 
                             '<ons-list-item modifier="chevron" tappable>'+
-                            'DVD: Yes, お気に入り: No'+
+                            '<ons-icon icon="ion-disc" class="list-item__icon brown_bg_color_quiet"></ons-icon>'+
+                            dvd+
+                            '<ons-icon icon="ion-android-favorite" class="list-item__icon brown_bg_color_quiet"></ons-icon>'+
+                            fav+
                             '</ons-list-item>'+
                             '</ons-list>'+
 
