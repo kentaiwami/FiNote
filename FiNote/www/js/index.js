@@ -44,7 +44,18 @@ var app = {
 */
 var Global_variable = {
   //Movies.update_movieとMovieadd.add_movieにて使用
-  movie_update_flag: false
+  movie_update_flag: false,
+
+  //0なら映画追加画面からの気分リスト、1なら映画詳細画面からの気分リスト
+  feeling_flag: 0,
+
+  get_toolbar: function(flag) {
+    if (flag === 0) {
+      return '<ons-toolbar-button class="brown_color" onClick="Utility.pop_page()"><ons-icon class="brown_color" icon="ion-close-round"></ons-icon></ons-toolbar-button>';
+    }else {
+      return '';
+    }
+  }
 };
 
 
@@ -1789,6 +1800,7 @@ var Movieadd = {
    */
   pushpage_feeling: function(){
     var callback = function(){
+      Global_variable.feeling_flag = 0;
       Movieadd_feeling.show_contents();
     };
 
@@ -1897,6 +1909,13 @@ var Movieadd_feeling = {
   data: {tap_id: 0},
 
   show_contents: function(){
+
+    //flagに応じてツールバーの戻る・閉じるボタンを動的に変える
+    var toolbar_left = document.getElementById('movieadd_feeling_toolbar_left');
+    toolbar_left.innerHTML = '';
+    toolbar_left.innerHTML = Global_variable.get_toolbar(Global_variable.feeling_flag);
+    
+    
     //アラート表示後に自動フォーカスするためのイベントを登録する
     Movieadd_feeling.feeling_input_name_addEvent();
 
