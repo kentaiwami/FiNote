@@ -96,6 +96,17 @@ var ID = {
     var id_obj = {tmp_id: 'movies.html', page_id: 'movies', nodata_message: 'nodata_message',
                   nodata_message_p: 'nodata_message_p', list: 'movie_collection_list'};
     return id_obj;
+  },
+
+  get_movies_detail_ID: function() {
+    var id_obj = {tmp_id: 'movies_detail.html', page_id: 'movies_detail',
+                  poster: 'detail_poster_area', detail: 'movie_detail_area'};
+    return id_obj;
+  },
+
+  get_feeling_ID: function() {
+    var id_obj = {tmp_id: 'feeling.html', page_id: 'feeling'};
+    return id_obj;
   }
 };
 
@@ -601,8 +612,8 @@ var Movies_detail = {
         var movie_record = result_movie.rows.item(0);
         var callback = Movies_detail.create_show_contents_callback(movie_record, result_onomatopoeia);
 
-        Utility.check_page_init('movies_detail', callback);
-        Utility.push_page('movies_detail.html', '', 0, '');
+        Utility.check_page_init(ID.get_movies_detail_ID().page_id, callback);
+        Utility.push_page(ID.get_movies_detail_ID().tmp_id, '', 0, '');
       });
     });
   },
@@ -650,7 +661,7 @@ var Movies_detail = {
 
     var callback = function(){
     var poster_html = '<img class="poster" src="' + movie_record.poster + '">';
-    document.getElementById('detail_poster_area').innerHTML = poster_html;
+    document.getElementById(ID.get_movies_detail_ID().poster).innerHTML = poster_html;
 
     var movie_detail_html = '<ons-list modifier="inset">'+
                             '<ons-list-header>ステータス</ons-list-header>'+
@@ -680,7 +691,7 @@ var Movies_detail = {
                             '追加日: ' + movie_record.add_year + '-' + ('00' + movie_record.add_month).slice(-2) + '-' + ('00' + movie_record.add_day).slice(-2)+
                             '</ons-list-item>'+
                             '</ons-list>';
-    document.getElementById('movie_detail_area').innerHTML = movie_detail_html;
+    document.getElementById(ID.get_movies_detail_ID().detail).innerHTML = movie_detail_html;
     };
 
     return callback;
@@ -694,8 +705,8 @@ var Movies_detail = {
       Global_variable.feeling_flag = 1;
       Feeling.show_contents();
     };
-    Utility.check_page_init('feeling', callback);
-    Utility.push_page('feeling.html', 'slide', 0, '');
+    Utility.check_page_init(ID.get_feeling_ID().page_id, callback);
+    Utility.push_page(ID.get_feeling_ID().tmp_id, 'slide', 0, '');
   },
 };
 
