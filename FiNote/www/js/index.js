@@ -23,7 +23,7 @@ var app = {
     var db = Utility.get_database();
 
     db.transaction(function(tx) {
-      tx.executeSql('CREATE TABLE IF NOT EXISTS movie (id integer primary key, title text unique, tmdb_id integer unique, genre_id text, onomatopoeia_id text, poster text, dvd integer, fav integer, add_year integer, add_month integer, add_day integer)');
+      tx.executeSql('CREATE TABLE IF NOT EXISTS movie (id integer primary key, title text unique, tmdb_id integer unique, genre_id text, onomatopoeia_id text, poster text, overview text, dvd integer, fav integer, add_year integer, add_month integer, add_day integer)');
       tx.executeSql('CREATE TABLE IF NOT EXISTS genre (id integer primary key, name text unique)');
       tx.executeSql('CREATE TABLE IF NOT EXISTS onomatopoeia (id integer primary Key, name text)');
     }, function(err) {
@@ -542,43 +542,64 @@ var Movies_detail = {
     return DB_method.single_statement_execute(query,[id])
     .then(function(result) {
       var movie_record = result.rows.item(0);
-      var callback = function(){
+      var callback = Movies_detail.create_show_contents_callback(movie_record);
 
-        var poster_html = '<img class="poster" src="' + movie_record.poster + '">';
-        document.getElementById('detail_poster_area').innerHTML = poster_html;
-
-        var movie_detail_html = '<ons-list modifier="inset">'+
-                         '<ons-list-header>ステータス</ons-list-header>'+
-                         '<ons-list-item modifier="chevron" tappable>'+
-                         movie_record.onomatopoeia_id+
-                         '</ons-list-item>'+
-
-                         '<ons-list-item modifier="chevron" tappable>'+
-                         'DVD: Yes, お気に入り: No'+
-                         '</ons-list-item>'+
-                         '</ons-list>'+
-
-                         '<ons-list modifier="inset">'+
-                         '<ons-list-header>映画情報</ons-list-header>'+
-                         '<ons-list-item>'+
-                        movie_record.title+
-                         '</ons-list-item>'+
-
-                         '<ons-list-item>'+
-                         '概要ホゲホゲホゲホゲホゲホゲホゲホゲ'+
-                         '</ons-list-item>'+
-
-                         '<ons-list-item>'+
-                         '追加日: ' + movie_record.add_year + '-' + ('00' + movie_record.add_month).slice(-2) + '-' + ('00' + movie_record.add_day).slice(-2)+
-                         '</ons-list-item>'+
-                         '</ons-list>';
-        document.getElementById('movie_detail_area').innerHTML = movie_detail_html;
-      };
-      
       Utility.check_page_init('movies_detail', callback);
       Utility.push_page('movies_detail.html', '', 0, '');
     });
   },
+
+
+  /**
+   * 詳細画面の初期化が完了した後に描画を実行するコールバック関数を作成する
+   * @param  {[object]} movie_record [ローカルに保存されているタップされた映画オブジェクト]
+   * @return {[function]}            [描画を行うコールバック関数]
+   */
+  create_show_contents_callback: function(movie_record) {
+    var overview = '';
+    var class_name = '';
+    if (movie_record.overview === null || movie_record.overview === '') {
+      overview = '詳細データなし';
+      class_name = 'small_overview_opacity';
+    }else {
+      overview = movie_record.overview;
+      class_name = 'small_overview';
+    }
+
+    var callback = function(){
+    var poster_html = '<img class="poster" src="' + movie_record.poster + '">';
+    document.getElementById('detail_poster_area').innerHTML = poster_html;
+
+    var movie_detail_html = '<ons-list modifier="inset">'+
+                            '<ons-list-header>ステータス</ons-list-header>'+
+                            '<ons-list-item modifier="chevron" tappable>'+
+                            movie_record.onomatopoeia_id+
+                            '</ons-list-item>'+
+
+                            '<ons-list-item modifier="chevron" tappable>'+
+                            'DVD: Yes, お気に入り: No'+
+                            '</ons-list-item>'+
+                            '</ons-list>'+
+
+                            '<ons-list modifier="inset">'+
+                            '<ons-list-header>映画情報</ons-list-header>'+
+                            '<ons-list-item>'+
+                            movie_record.title+
+                            '</ons-list-item>'+
+
+                            '<ons-list-item class="'+ class_name +'">'+
+                            overview+
+                            '</ons-list-item>'+
+
+                            '<ons-list-item class="small_overview">'+
+                            '追加日: ' + movie_record.add_year + '-' + ('00' + movie_record.add_month).slice(-2) + '-' + ('00' + movie_record.add_day).slice(-2)+
+                            '</ons-list-item>'+
+                            '</ons-list>';
+    document.getElementById('movie_detail_area').innerHTML = movie_detail_html;
+    };
+
+    return callback;
+  }
 };
 
 
@@ -780,7 +801,7 @@ var Movieadd_search = {
     return new Promise(function(resolve, reject) {
       var request = new XMLHttpRequest();
       var api_key = Utility.get_tmdb_apikey();
-      var request_url = 'http://api.themoviedb.org/3/search/movie?query=' +movie_title +'&api_key=' + api_key + '&language=' +language;
+      var request_url = 'https://api.themoviedb.org/3/search/movie?query=' +movie_title +'&api_key=' + api_key + '&language=' +language;
 
       request.open('GET', request_url);
 
@@ -1205,14 +1226,14 @@ var Movieadd = {
               fav = 0;
             }
 
-            var query = 'INSERT INTO movie(id,title,tmdb_id,genre_id,onomatopoeia_id,poster,dvd,fav, add_year, add_month, add_day) VALUES(?,?,?,?,?,?,?,?,?,?,?)';
+            var query = 'INSERT INTO movie(id,title,tmdb_id,genre_id,onomatopoeia_id,poster, overview, dvd,fav, add_year, add_month, add_day) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)';
             
             var today = new Date();
             var year = today.getFullYear();
             var month = today.getMonth()+1;
             var day = today.getDate();
 
-            var data = [movie_record_count,movie_result.Title, movie_result.TMDB_ID, genre_csv, onomatopoeia_csv, image_b64, dvd, fav, year, month, day];
+            var data = [movie_record_count,movie_result.Title, movie_result.TMDB_ID, genre_csv, onomatopoeia_csv, image_b64, movie.overview, dvd, fav, year, month, day];
 
             return DB_method.single_statement_execute(query, data);
           })

@@ -151,6 +151,14 @@ input[type=password] {
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
 }
 
+.small_overview, .small_overview_opacity {
+  font-size: 0.75rem;
+}
+
+.small_overview_opacity {
+  opacity: .5;
+}
+
 /************************************************************
                        Movie Add Search
 ************************************************************/
@@ -324,7 +332,7 @@ input[type=password] {
 }
 
 /************************************************************
-                          Movie Add DVD
+                        Movie Add Status
 ************************************************************/
 .center_button {
   margin-top: 2.5vh;
