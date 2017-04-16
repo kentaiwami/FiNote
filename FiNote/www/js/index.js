@@ -105,7 +105,12 @@ var ID = {
   },
 
   get_feeling_ID: function() {
-    var id_obj = {tmp_id: 'feeling.html', page_id: 'feeling'};
+    var id_obj = {tmp_id: 'feeling.html', page_id: 'feeling',
+                  toolbar: 'feeling_toolbar_left', nodata_message: 'feeling_nodata_message',
+                  list: 'feeling_list', add_dialog: 'feeling_add_dialog',
+                  edit_dialog: 'feeling_edit_dialog', add_button: 'feeling_add_button',
+                  edit_button: 'feeling_edit_button',
+                  input: 'feeling_input_name', edit_input: 'feeling_edit_input_name'};
     return id_obj;
   },
 
@@ -2001,7 +2006,7 @@ var Feeling = {
   show_contents: function(){
 
     //flagに応じてツールバーの戻る・閉じるボタンを動的に変える
-    var toolbar_left = document.getElementById('feeling_toolbar_left');
+    var toolbar_left = document.getElementById(ID.get_feeling_ID().toolbar);
     toolbar_left.innerHTML = '';
     toolbar_left.innerHTML = Global_variable.get_toolbar(Global_variable.feeling_flag);
     
@@ -2009,8 +2014,8 @@ var Feeling = {
     //アラート表示後に自動フォーカスするためのイベントを登録する
     Feeling.feeling_input_name_addEvent();
 
-    var nodata_message = document.getElementById('feeling_nodata_message');
-    var feeling_list = document.getElementById('feeling_list');
+    var nodata_message = document.getElementById(ID.get_feeling_ID().nodata_message);
+    var feeling_list = document.getElementById(ID.get_feeling_ID().list);
     var length = Movieadd.userdata.feeling_name_list.length;
 
     feeling_list.innerHTML = '';
@@ -2050,11 +2055,11 @@ var Feeling = {
    */
   feeling_input_name_addEvent: function(){
     document.addEventListener('postshow', function(event) {
-      if (event.target.id == 'feeling_add_dialog') {
-        document.getElementById('feeling_add_button').setAttribute('disabled', 'disabled');
-        document.getElementById('feeling_input_name').focus();
-      }else if (event.target.id == 'feeling_edit_dialog') {
-        document.getElementById('feeling_edit_input_name').focus();
+      if (event.target.id == ID.get_feeling_ID().add_dialog) {
+        document.getElementById(ID.get_feeling_ID().add_button).setAttribute('disabled', 'disabled');
+        document.getElementById(ID.get_feeling_ID().input).focus();
+      }else if (event.target.id == ID.get_feeling_ID().edit_dialog) {
+        document.getElementById(ID.get_feeling_ID().edit_input).focus();
       }
     });
   },
@@ -2063,9 +2068,9 @@ var Feeling = {
    * 気分を入力するアラートを表示してinputのvalueを初期化する
    */
   show_input_alert: function(){
-    document.getElementById('feeling_add_dialog').show();
+    document.getElementById(ID.get_feeling_ID().add_dialog).show();
 
-    var input_form = document.getElementById('feeling_input_name');
+    var input_form = document.getElementById(ID.get_feeling_ID().input);
     input_form.value = '';
     input_form.addEventListener('keyup', Feeling.check_add_input_form);
   },
@@ -2075,8 +2080,8 @@ var Feeling = {
    * @return {[type]} [description]
    */
   check_add_input_form: function(){
-    var value = document.getElementById('feeling_input_name').value;
-    var add_button = document.getElementById('feeling_add_button');
+    var value = document.getElementById(ID.get_feeling_ID().input).value;
+    var add_button = document.getElementById(ID.get_feeling_ID().add_button);
 
     if (value.replace(/\s+/g, '') !== '') {
       add_button.removeAttribute('disabled');
@@ -2090,8 +2095,8 @@ var Feeling = {
    * @return {[type]} [description]
    */
   check_edit_input_form: function(){
-    var value = document.getElementById('feeling_edit_input_name').value;
-    var change_button = document.getElementById('feeling_edit_button');
+    var value = document.getElementById(ID.get_feeling_ID().edit_input).value;
+    var change_button = document.getElementById(ID.get_feeling_ID().edit_button);
 
     if (value.replace(/\s+/g, '') !== '') {
       change_button.removeAttribute('disabled');
@@ -2109,7 +2114,7 @@ var Feeling = {
     if (func_id == 'cancel') {
       document.getElementById(dialog_id).hide();
     }else if (func_id == 'add' ){
-      var feeling_name = document.getElementById('feeling_input_name').value;
+      var feeling_name = document.getElementById(ID.get_feeling_ID().input).value;
       feeling_name = feeling_name.replace(/\s+/g, '');
 
       //既出でない場合
@@ -2132,10 +2137,10 @@ var Feeling = {
       }
     }else {
       // changeの場合
-      var value = document.getElementById('feeling_edit_input_name').value;
+      var value = document.getElementById(ID.get_feeling_ID().edit_input).value;
       if (Movieadd.userdata.feeling_name_list.indexOf(value) == -1) {
         Movieadd.userdata.feeling_name_list[Feeling.data.tap_id] = value;
-        document.getElementById('feeling_edit_dialog').hide();
+        document.getElementById(ID.get_feeling_ID().edit_dialog).hide();
         Feeling.show_contents();
       }else {
         document.getElementById(dialog_id).hide();
@@ -2152,15 +2157,15 @@ var Feeling = {
     Feeling.data.tap_id = i;
 
     var feeling_name_list = Movieadd.userdata.feeling_name_list;
-    var edit_input = document.getElementById('feeling_edit_input_name');
+    var edit_input = document.getElementById(ID.get_feeling_ID().edit_input);
     edit_input.value= feeling_name_list[i];
 
-    document.getElementById('feeling_edit_dialog').show();
+    document.getElementById(ID.get_feeling_ID().edit_dialog).show();
     edit_input.addEventListener('keyup', Feeling.check_edit_input_form);
 
     document.addEventListener('preshow', function(event) {
-      if (event.target.id == 'feeling_edit_dialog') {
-        document.getElementById('feeling_edit_input_name').value = feeling_name_list[Feeling.data.tap_id];
+      if (event.target.id == ID.get_feeling_ID().edit_dialog) {
+        document.getElementById(ID.get_feeling_ID().edit_input).value = feeling_name_list[Feeling.data.tap_id];
       }
     });
   },
