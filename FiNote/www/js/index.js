@@ -135,7 +135,8 @@ var ID = {
   },
 
   get_movieadd_status_ID: function() {
-    var id_obj = {tmp_id: 'movieadd_status.html', page_id: 'movieadd_status'};
+    var id_obj = {tmp_id: 'movieadd_status.html', page_id: 'movieadd_status',
+                  dvd: 'dvd_switch', fav: 'fav_switch'};
     return id_obj;
   }
 };
@@ -2203,7 +2204,7 @@ var Movieadd_status = {
    */
   show_contents: function(){
     var check_list = [Movieadd.userdata.dvd, Movieadd.userdata.fav];
-    var id_list = ['dvd_switch', 'fav_switch'];
+    var id_list = [ID.get_movieadd_status_ID().dvd, ID.get_movieadd_status_ID().fav];
 
     for(var i = 0; i < id_list.length; i++) {
       var switch_dom = document.getElementById(id_list[i]);
@@ -2222,8 +2223,8 @@ var Movieadd_status = {
    */
   close_movieadd_status: function(){
     //スイッチボタンの状態を保存する
-    var dvd_switch_status = document.getElementById('dvd_switch').checked;
-    var fav_switch_status = document.getElementById('fav_switch').checked;
+    var dvd_switch_status = document.getElementById(ID.get_movieadd_status_ID().dvd).checked;
+    var fav_switch_status = document.getElementById(ID.get_movieadd_status_ID().fav).checked;
 
     if (dvd_switch_status === true) {
       Movieadd.userdata.dvd = true;
