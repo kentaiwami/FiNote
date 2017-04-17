@@ -2161,19 +2161,13 @@ var Feeling = {
    */
   tap_edit: function(i) {
     Feeling.data.tap_id = i;
-
+    
     var feeling_name_list = Movieadd.userdata.feeling_name_list;
     var edit_input = document.getElementById(ID.get_feeling_ID().edit_input);
-    edit_input.value= feeling_name_list[i];
+    edit_input.value= feeling_name_list[Feeling.data.tap_id];
 
     document.getElementById(ID.get_feeling_ID().edit_dialog).show();
     edit_input.addEventListener('keyup', Feeling.check_edit_input_form);
-
-    document.addEventListener('preshow', function(event) {
-      if (event.target.id == ID.get_feeling_ID().edit_dialog) {
-        document.getElementById(ID.get_feeling_ID().edit_input).value = feeling_name_list[Feeling.data.tap_id];
-      }
-    });
   },
 
   /**
