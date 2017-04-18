@@ -749,6 +749,11 @@ var Movies_detail = {
     return callback;
   },
 
+
+  /**
+   * 既に登録されている気分を読み込んだ気分リストを表示させる
+   * @param  {[string]} onomatopoeia_text [画面表示用になっているオノマトペのテキスト]
+   */
   push_page_feeling: function(onomatopoeia_text) {
     var onomatopoeia_name_list = onomatopoeia_text.split('、');
     Movieadd.userdata.feeling_name_list = onomatopoeia_name_list;
@@ -761,6 +766,10 @@ var Movies_detail = {
     Utility.push_page(ID.get_feeling_ID().tmp_id, 'slide', 0, '');
   },
 
+
+  /**
+   * Twitter、Facebook、LINE等のSNSにシェアするための関数
+   */
   sns_share: function() {
     var options = {
       message: '「' + Movies_detail.current_movie.movie_record.title + '」' + '\n' + Movies_detail.current_movie.feeling_list + '\n' + '#FiNote',
@@ -790,6 +799,11 @@ var Movies_detail = {
     document.getElementById(ID.get_movies_detail_ID().alert).hide();
   },
 
+
+  /**
+   * 詳細画面の映画ポスター部分がタップされた際に、表示中のポスターをモーダルで表示する関数
+   * @param  {[html object]} poster_img [img要素]
+   */
   tap_img: function(poster_img) {
     var src = poster_img.getAttribute('src');
     var modal_poster = document.getElementById(ID.get_movies_detail_ID().modal_poster);
@@ -799,6 +813,10 @@ var Movies_detail = {
     modal.show();
   },
 
+
+  /**
+   * モーダルを閉じる関数
+   */
   hide_modal: function() {
     var modal = document.getElementById(ID.get_movies_detail_ID().modal);
     modal.hide();
