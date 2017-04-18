@@ -109,9 +109,9 @@ var ID = {
   get_feeling_ID: function() {
     var id_obj = {tmp_id: 'feeling.html', page_id: 'feeling',
                   toolbar: 'feeling_toolbar_left', nodata_message: 'feeling_nodata_message',
-                  list: 'feeling_list', add_dialog: 'feeling_add_dialog',
-                  edit_dialog: 'feeling_edit_dialog', add_button: 'feeling_add_button',
-                  edit_button: 'feeling_edit_button',
+                  caution_message: 'feeling_caution_message',list: 'feeling_list',
+                  add_dialog: 'feeling_add_dialog', edit_dialog: 'feeling_edit_dialog',
+                  add_button: 'feeling_add_button', edit_button: 'feeling_edit_button',
                   input: 'feeling_input_name', edit_input: 'feeling_edit_input_name'};
     return id_obj;
   },
@@ -761,6 +761,7 @@ var Movies_detail = {
     var callback = function() {
       Global_variable.feeling_flag = 1;
       Feeling.show_contents();
+      document.getElementById(ID.get_feeling_ID().caution_message).innerHTML = '※ この画面から戻る際に気分リストが保存されます。';
     };
     Utility.check_page_init(ID.get_feeling_ID().page_id, callback);
     Utility.push_page(ID.get_feeling_ID().tmp_id, 'slide', 0, '');
