@@ -1999,8 +1999,15 @@ var Movieadd = {
    * Twitter、FaceBook、LINEなどのSNSに投稿する
    */
   sns_share: function() {
+    var message_text = '';
+    if (Movieadd.userdata.feeling_name_list.length === 0 ) {
+      message_text = '「' + Movieadd.current_movie.title + '」' + '\n' + '#FiNote';
+    }else {
+      message_text = '「' + Movieadd.current_movie.title + '」' + '\n' + Movieadd.userdata.feeling_name_list + '\n' + '#FiNote';
+    }
+
     var options = {
-      message: Movieadd.current_movie.title + ' #FiNote',
+      message: message_text,
       subject: '',
       files: ['', ''],
       url: 'https://www.themoviedb.org/movie/' + Movieadd.current_movie.id,
