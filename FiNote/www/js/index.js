@@ -101,7 +101,8 @@ var ID = {
   get_movies_detail_ID: function() {
     var id_obj = {tmp_id: 'movies_detail.html', page_id: 'movies_detail',
                   poster: 'detail_poster_area', detail: 'movie_detail_area',
-                  alert: 'success_sns_alert_detail'};
+                  alert: 'success_sns_alert_detail', modal: 'modal_detail',
+                  modal_poster: 'modal_poster'};
     return id_obj;
   },
 
@@ -703,7 +704,7 @@ var Movies_detail = {
     }
 
     var callback = function(){
-    var poster_html = '<img class="poster" src="' + movie_record.poster + '">';
+    var poster_html = '<img onclick="Movies_detail.tap_img(this)" class="poster" src="' + movie_record.poster + '">';
     document.getElementById(ID.get_movies_detail_ID().poster).innerHTML = poster_html;
 
     var movie_detail_html = '<ons-list modifier="inset">'+
@@ -788,6 +789,20 @@ var Movies_detail = {
   sns_alert_hide: function() {
     document.getElementById(ID.get_movies_detail_ID().alert).hide();
   },
+
+  tap_img: function(poster_img) {
+    var src = poster_img.getAttribute('src');
+    var modal_poster = document.getElementById(ID.get_movies_detail_ID().modal_poster);
+    modal_poster.setAttribute('src', src);    
+    
+    var modal = document.getElementById(ID.get_movies_detail_ID().modal);
+    modal.show();
+  },
+
+  hide_modal: function() {
+    var modal = document.getElementById(ID.get_movies_detail_ID().modal);
+    modal.hide();
+  }
 };
 
 

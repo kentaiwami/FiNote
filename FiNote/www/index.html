@@ -167,12 +167,17 @@
     <div id="movie_detail_area"></div>
 
     <!-- SNS投稿完了のアラート -->
-      <ons-dialog id="success_sns_alert_detail">
-        <div class="alert">
-          <p>投稿が完了しました</p>
-          <p><ons-button class="brown_bg_color" onclick="Movies_detail.sns_alert_hide()">OK</ons-button></p>
-        </div>
-      </ons-dialog>
+    <ons-dialog id="success_sns_alert_detail">
+      <div class="alert">
+        <p>投稿が完了しました</p>
+        <p><ons-button class="brown_bg_color" onclick="Movies_detail.sns_alert_hide()">OK</ons-button></p>
+      </div>
+    </ons-dialog>
+
+    <!-- ポスターを画面いっぱいに表示させるmodal -->
+    <ons-modal id="modal_detail" onclick="Movies_detail.hide_modal()" animation="fade">
+      <img id="modal_poster" src="">
+    </ons-modal>
 	</ons-page>
 	</ons-template>
 
