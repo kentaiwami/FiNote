@@ -1,0 +1,4 @@
+oche__/
+*.py[cod]
+db.sqlite3
+settings.py
