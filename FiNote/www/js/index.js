@@ -759,9 +759,17 @@ var Movies_detail = {
     Movieadd.userdata.feeling_name_list = onomatopoeia_name_list;
 
     var callback = function() {
+      // 詳細画面から表示した気分リストであることを登録
       Global_variable.feeling_flag = 1;
+
+      // 映画追加画面と同様に気分リストを描画する
       Feeling.show_contents();
+
+      // 詳細画面から表示した気分リストのみ注意メッセージを表示する
       document.getElementById(ID.get_feeling_ID().caution_message).innerHTML = '※ この画面から戻る際に気分リストが保存されます。';
+
+      // 詳細画面から表示した気分リストのみ、onclickを設定する
+      document.getElementById(ID.get_feeling_ID().toolbar).setAttribute('onClick', 'Movies_detail.tap_feeling_button()');
     };
     Utility.check_page_init(ID.get_feeling_ID().page_id, callback);
     Utility.push_page(ID.get_feeling_ID().tmp_id, 'slide', 0, '');
@@ -821,6 +829,10 @@ var Movies_detail = {
   hide_modal: function() {
     var modal = document.getElementById(ID.get_movies_detail_ID().modal);
     modal.hide();
+  },
+
+  tap_feeling_button: function() {
+    console.log('tap button !!');
   }
 };
 
