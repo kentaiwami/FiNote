@@ -1974,6 +1974,7 @@ var Movieadd = {
           Utility.setAttribute_list_object(button_list, 'disabled');
 
           document.getElementById(ID.get_moveadd_ID().feeling_number).style.opacity = '.4';
+          document.getElementById(ID.get_moveadd_ID().add_button).style.opacity = '.4';
       }
     };
 
@@ -1985,6 +1986,7 @@ var Movieadd = {
 
         Utility.setAttribute_list_object(button_list, 'disabled');
         document.getElementById(ID.get_moveadd_ID().feeling_number).style.opacity = '.4';
+        document.getElementById(ID.get_moveadd_ID().add_button).style.opacity = '.4';
     };
 
     window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
@@ -2000,6 +2002,12 @@ var Movieadd = {
     document.getElementById(ID.get_moveadd_ID().success_sns_alert).hide();
     Utility.removeAttribute_list_object(button_list, 'disabled');
     document.getElementById(ID.get_moveadd_ID().feeling_number).style.opacity = '';
+
+    if (Movieadd.userdata.feeling_name_list.length === 0) {
+      document.getElementById(ID.get_moveadd_ID().add_button).style.opacity = '.4';
+    }else {
+      document.getElementById(ID.get_moveadd_ID().add_button).style.opacity = '1';
+    }
   },
 };
 
