@@ -100,7 +100,8 @@ var ID = {
 
   get_movies_detail_ID: function() {
     var id_obj = {tmp_id: 'movies_detail.html', page_id: 'movies_detail',
-                  poster: 'detail_poster_area', detail: 'movie_detail_area'};
+                  poster: 'detail_poster_area', detail: 'movie_detail_area',
+                  alert: 'success_sns_alert_detail'};
     return id_obj;
   },
 
@@ -770,7 +771,7 @@ var Movies_detail = {
 
     var onSuccess = function(result) {
       if (result.completed === true && result.app != 'com.apple.UIKit.activity.PostToFacebook') {
-        document.getElementById(ID.get_moveadd_ID().success_sns_alert).show();
+        document.getElementById(ID.get_movies_detail_ID().alert).show();
       }
     };
 
@@ -785,7 +786,7 @@ var Movies_detail = {
    * SNSの投稿が完了した後に表示されるアラートを閉じるボタンが押された時に動作する
    */
   sns_alert_hide: function() {
-    
+    document.getElementById(ID.get_movies_detail_ID().alert).hide();
   },
 };
 
