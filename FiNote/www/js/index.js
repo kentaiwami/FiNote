@@ -833,6 +833,13 @@ var Movies_detail = {
 
   tap_feeling_button: function() {
     console.log('tap button !!');
+    // スピナーの表示
+
+    // 気分リストの内容を取得
+    // ローカルのオノマトペを*で取得
+    // ローカルのオノマトペと気分リストを照合
+      // 新規なら、INSERTして新しく付与されたidを取得
+      // 既存なら、既存のidを取得
   }
 };
 
