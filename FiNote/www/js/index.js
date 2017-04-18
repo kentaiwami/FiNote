@@ -632,6 +632,7 @@ var Movies = {
                         movie_detail.html
  ************************************************************/
 var Movies_detail = {
+  current_movie: {movie_record: {}, feeling_list: []},
 
   /**
    * moviesのinfoボタンを押した際に詳細画面へと遷移させる
@@ -646,6 +647,8 @@ var Movies_detail = {
       return DB_method.single_statement_execute(query,[])
       .then(function(result_onomatopoeia) {
         var movie_record = result_movie.rows.item(0);
+        Movies_detail.current_movie.movie_record = {};
+        Movies_detail.current_movie.movie_record = movie_record;
         var callback = Movies_detail.create_show_contents_callback(movie_record, result_onomatopoeia);
 
         Utility.check_page_init(ID.get_movies_detail_ID().page_id, callback);
@@ -673,6 +676,9 @@ var Movies_detail = {
         onomatopoeia_name_list.push(onomatopoeia_obj.name);
       }
     }
+
+    Movies_detail.current_movie.feeling_list = [];
+    Movies_detail.current_movie.feeling_list = onomatopoeia_name_list;
 
     onomatopoeia_text = onomatopoeia_name_list.join('、');
 
@@ -726,6 +732,14 @@ var Movies_detail = {
                             '<ons-list-item class="small_overview">'+
                             '追加日: ' + movie_record.add_year + '-' + ('00' + movie_record.add_month).slice(-2) + '-' + ('00' + movie_record.add_day).slice(-2)+
                             '</ons-list-item>'+
+                            '</ons-list>'+
+
+                            '<ons-list modifier="inset">'+
+                            '<ons-list-header>SNS</ons-list-header>'+
+                            '<ons-list-item tappable onclick="Movies_detail.sns_share()">'+
+                            '<ons-icon icon="ion-share" class="list-item__icon brown_bg_color_quiet"></ons-icon>'+
+                            'この映画をシェアする'+
+                            '</ons-list-item>'+
                             '</ons-list>';
     document.getElementById(ID.get_movies_detail_ID().detail).innerHTML = movie_detail_html;
     };
@@ -743,6 +757,35 @@ var Movies_detail = {
     };
     Utility.check_page_init(ID.get_feeling_ID().page_id, callback);
     Utility.push_page(ID.get_feeling_ID().tmp_id, 'slide', 0, '');
+  },
+
+  sns_share: function() {
+    var options = {
+      message: '「' + Movies_detail.current_movie.movie_record.title + '」' + '\n' + Movies_detail.current_movie.feeling_list + '\n' + '#FiNote',
+      subject: '',
+      files: ['', ''],
+      url: 'https://www.themoviedb.org/movie/' + String(Movies_detail.current_movie.movie_record.tmdb_id),
+      chooserTitle: 'Pick an app'
+    };
+
+    var onSuccess = function(result) {
+      if (result.completed === true && result.app != 'com.apple.UIKit.activity.PostToFacebook') {
+        document.getElementById(ID.get_moveadd_ID().success_sns_alert).show();
+      }
+    };
+
+    var onError = function(msg) {
+      Utility.show_error_alert('投稿エラー',msg,'OK');
+    };
+
+    window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
+  },
+
+  /**
+   * SNSの投稿が完了した後に表示されるアラートを閉じるボタンが押された時に動作する
+   */
+  sns_alert_hide: function() {
+    
   },
 };
 
