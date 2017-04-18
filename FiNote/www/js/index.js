@@ -1972,6 +1972,8 @@ var Movieadd = {
           var button_list = [document.getElementById(ID.get_moveadd_ID().add_button),document.getElementById(ID.get_moveadd_ID().feeling_button),document.getElementById(ID.get_moveadd_ID().dvd_button),document.getElementById(ID.get_moveadd_ID().share_button),document.getElementById(ID.get_moveadd_ID().show_info_button),document.getElementById(ID.get_moveadd_ID().back_button)];
 
           Utility.setAttribute_list_object(button_list, 'disabled');
+
+          document.getElementById(ID.get_moveadd_ID().feeling_number).style.opacity = '.4';
       }
     };
 
@@ -1982,6 +1984,7 @@ var Movieadd = {
         var button_list = [document.getElementById(ID.get_moveadd_ID().add_button),document.getElementById(ID.get_moveadd_ID().feeling_button),document.getElementById(ID.get_moveadd_ID().dvd_button),document.getElementById(ID.get_moveadd_ID().share_button),document.getElementById(ID.get_moveadd_ID().show_info_button),document.getElementById(ID.get_moveadd_ID().back_button)];
 
         Utility.setAttribute_list_object(button_list, 'disabled');
+        document.getElementById(ID.get_moveadd_ID().feeling_number).style.opacity = '.4';
     };
 
     window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
@@ -1996,6 +1999,7 @@ var Movieadd = {
 
     document.getElementById(ID.get_moveadd_ID().success_sns_alert).hide();
     Utility.removeAttribute_list_object(button_list, 'disabled');
+    document.getElementById(ID.get_moveadd_ID().feeling_number).style.opacity = '';
   },
 };
 
