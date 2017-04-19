@@ -2,8 +2,8 @@ from django.db import models
 
 
 class User(models.Model):
-    name = models.CharField(max_length=30, unique=True)
-    password = models.CharField(max_length=300)
+    name = models.CharField(max_length=30, unique=True, blank=False)
+    password = models.CharField(max_length=300, blank=False)
 
     def __str__(self):
         return self.name

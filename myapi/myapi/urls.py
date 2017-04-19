@@ -18,7 +18,6 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from FiNote_API.urls import router as FiNote_API_router
 
-
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(FiNote_API_router.urls)),

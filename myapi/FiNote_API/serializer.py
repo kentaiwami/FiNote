@@ -7,6 +7,9 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('name',)
 
+    def validate(self, attrs):
+        print('unko')
+
 
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,3 +33,8 @@ class OnomatopoeiaCountSerializer(serializers.ModelSerializer):
     class Meta:
         model = OnomatopoeiaCount
         fields = ('count', 'onomatopoeia', 'movie')
+
+
+class MovieAddSerializer(serializers.Serializer):
+    id = serializers.IntegerField(allow_null=False)
+    name = serializers.CharField(max_length=256 ,allow_blank=False)
