@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import User, Genre, Onomatopoeia, Movie, OnomatopoeiaCount
+from .models import *
 
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('name', 'password')
+    list_display = ('username', 'email', 'birthday', 'sex', 'password')
 
 
 class GenreAdmin(admin.ModelAdmin):
@@ -31,7 +31,7 @@ class OnomatopoeiaCountAdmin(admin.ModelAdmin):
     list_display = ('pk', 'count', 'onomatopoeia', 'movie')
 
 
-admin.site.register(User, UserAdmin)
+admin.site.register(AuthUser, UserAdmin)
 admin.site.register(Genre, GenreAdmin)
 admin.site.register(Onomatopoeia, OnomatopoeiaAdmin)
 admin.site.register(Movie, MovieAdmin)

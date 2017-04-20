@@ -1,14 +1,29 @@
 from rest_framework import serializers
-from .models import User, Genre, Onomatopoeia, Movie, OnomatopoeiaCount
+from .models import *
+
+
+class SignInSerializer(serializers.Serializer):
+    username = serializers.CharField(max_length=256, allow_blank=False, required=True)
+    password = serializers.CharField(max_length=256, allow_blank=False, required=True)
+    email = serializers.EmailField(max_length=100, allow_blank=False, required=True)
+    birthday = serializers.IntegerField(allow_null=False, required=True)
+    sex = serializers.CharField(max_length=1, allow_blank=False, allow_null=False, required=True)
+
+
+class SignUpWithTokenSerializer(serializers.Serializer):
+    username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
+    token = serializers.CharField(allow_blank=False, allow_null=False, required=True)
+
+
+class MovieAddSerializer(serializers.Serializer):
+    id = serializers.IntegerField(allow_null=False)
+    name = serializers.CharField(max_length=256, allow_blank=False)
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = AuthUser
         fields = ('name',)
-
-    def validate(self, attrs):
-        print('unko')
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -33,8 +48,3 @@ class OnomatopoeiaCountSerializer(serializers.ModelSerializer):
     class Meta:
         model = OnomatopoeiaCount
         fields = ('count', 'onomatopoeia', 'movie')
-
-
-class MovieAddSerializer(serializers.Serializer):
-    id = serializers.IntegerField(allow_null=False)
-    name = serializers.CharField(max_length=256 ,allow_blank=False)

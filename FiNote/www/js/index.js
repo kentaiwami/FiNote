@@ -86,7 +86,7 @@ var ID = {
   get_signup_ID: function() {
     var id_obj = {tmp_id: 'signup.html', page_id: 'signup', signup_button: 'signup_button', 
                   list_id: 'signup_list', username: 'username', password: 'password',
-                  birthday: 'birthday', success_alert: 'signup-alert-success',
+                  email: 'email', birthday: 'birthday', success_alert: 'signup-alert-success',
                   error_alert: 'signup-alert-error', error_message: 'error-message',
                   radio: 'radio_m'};
     return id_obj;
@@ -158,7 +158,7 @@ var ID = {
 * @type {Object}
 */
 var Index = {
-  formcheck: [false,false],                 //[0]はユーザ名とパスワード、[1]は生年月日に対応している
+  formcheck: [false,false],                 //[0]入力項目、[1]は生年月日に対応している
   
   /**
    * サインアップしているかを確認する
@@ -178,6 +178,7 @@ var Index = {
       var addevent = function(){
         document.getElementById(ID.get_signup_ID().username).addEventListener('keyup',Index.check_usernameAndpassword_form);
         document.getElementById(ID.get_signup_ID().password).addEventListener('keyup',Index.check_usernameAndpassword_form);
+        document.getElementById(ID.get_signup_ID().email).addEventListener('keyup',Index.check_usernameAndpassword_form);
       };
       Utility.check_page_init(ID.get_signup_ID().page_id,addevent);
     }
@@ -189,8 +190,9 @@ var Index = {
   check_usernameAndpassword_form: function(){
     var username = document.getElementById(ID.get_signup_ID().username).value;
     var password = document.getElementById(ID.get_signup_ID().password).value;
+    var email = document.getElementById(ID.get_signup_ID().email).value;
 
-    if (username.length === 0 || password.length < 6) {
+    if (username.length === 0 || email.length === 0 || password.length < 6) {
       Index.formcheck[0] = false;
     }else{
       Index.formcheck[0] = true;
@@ -224,33 +226,33 @@ var Signup = {
   usersignup: function() {
     Utility.show_spinner(ID.get_signup_ID().list_id);
 
-    //mobile backendアプリとの連携
-    var ncmb = Utility.get_ncmb();
-    var user = new ncmb.User();
-
-    //性別のチェック状態を確認
+    var username = document.getElementById(ID.get_signup_ID().username).value;
+    var password = document.getElementById(ID.get_signup_ID().password).value;
+    var email = document.getElementById(ID.get_signup_ID().email).value;
+    var birthday = Number(document.getElementById(ID.get_signup_ID().birthday).value);
     var sex = Signup.get_sex();
 
-    //ユーザー名・パスワードを設定
-    user.set('userName', document.getElementById(ID.get_signup_ID().username).value)
-    .set('password', document.getElementById(ID.get_signup_ID().password).value)
-    .set('birthday', Number(document.getElementById(ID.get_signup_ID().birthday).value))
-    .set('sex', sex);
+    var data ={
+        "username": username,
+        "password": password,
+        "email": email,
+        "birthday": birthday,
+        "sex": sex
+    };
 
     // 新規登録
-    user.signUpByAccount().then(function(){
+    Utility.FiNote_API('signin', data, 'POST').then(function(result) {
       /*登録後処理*/
-      //ローカルにユーザ名とパスワードを保存する。
-      var username = document.getElementById(ID.get_signup_ID().username).value;
-      var password = document.getElementById(ID.get_signup_ID().password).value;
-      var birthday = Number(document.getElementById(ID.get_signup_ID().birthday).value);
-      var sex = Signup.get_sex();
+      var json_data = JSON.parse(result);
 
+      //ローカルに個人情報を保存
       var storage = window.localStorage;
       storage.setItem('username', username);
       storage.setItem('password', password);
+      storage.setItem('email', birthday);
       storage.setItem('birthday', birthday);
       storage.setItem('sex', sex);
+      storage.setItem('token', json_data.token);
 
       //同時にこれらの情報が記録されているかを判断するフラグも保存する
       storage.setItem('signup_flag', true);
@@ -261,21 +263,22 @@ var Signup = {
     .catch(function(err){
       // エラー処理
       Utility.stop_spinner();
-      document.getElementById(ID.get_signup_ID().error_alert).show();
+      Utility.show_error_alert('登録エラー', err, 'OK');
+      // document.getElementById(ID.get_signup_ID().error_alert).show();
 
-      var info = document.getElementById(ID.get_signup_ID().error_message);
-      var textNode;
+      // var info = document.getElementById(ID.get_signup_ID().error_message);
+      // var textNode;
 
-      if (err.name == "NoUserNameError") {
-        textNode = document.createTextNode('ユーザ名を入力してください');
-      }else if (err.name == "NoPasswordError") {
-        textNode = document.createTextNode('パスワードを入力してください');
-      }else if (err.message.indexOf('cannot POST') > -1) {
-        textNode = document.createTextNode('入力したユーザ名は既に使用されています');
-      }else if (err.message.indexOf('Request has been terminated') > -1) {
-        textNode = document.createTextNode('ネットワーク接続がオフラインのため登録ができません');
-      }
-      info.appendChild(textNode);
+      // if (err.name == "NoUserNameError") {
+      //   textNode = document.createTextNode('ユーザ名を入力してください');
+      // }else if (err.name == "NoPasswordError") {
+      //   textNode = document.createTextNode('パスワードを入力してください');
+      // }else if (err.message.indexOf('cannot POST') > -1) {
+      //   textNode = document.createTextNode('入力したユーザ名は既に使用されています');
+      // }else if (err.message.indexOf('Request has been terminated') > -1) {
+      //   textNode = document.createTextNode('ネットワーク接続がオフラインのため登録ができません');
+      // }
+      // info.appendChild(textNode);
     });
   },
 
@@ -372,12 +375,12 @@ var Movies = {
    * 自動ログイン後に映画一覧画面の表示を行う
    */
   draw_movie_content: function() {
+
     //自動ログイン
-    var ncmb = Utility.get_ncmb();
     var storage = window.localStorage;
     var username = storage.getItem('username');
-    var password = storage.getItem('password');
     var signup_flag = storage.getItem('signup_flag');
+    var token = storage.getItem('token');
 
     //ユーザ情報が存在する場合はローディング画面を表示する
     var callback = function(){
@@ -386,9 +389,14 @@ var Movies = {
       }
     };
     Utility.check_page_init(ID.get_index_ID().page_id,callback);
+
+    var data = {
+      "username": username,
+      "token": token
+    };
     
 
-    ncmb.User.login(username, password).then(function(data){
+    Utility.FiNote_API('signupwithtoken', data, 'POST').then(function(result){
       // ログイン後に映画情報をデータベースから取得
       var query = 'SELECT tmdb_id FROM movie';
       return DB_method.single_statement_execute(query,[]);
@@ -2657,6 +2665,27 @@ var Utility = {
   hideKeyboardAccessoryBar:function(bool) {
     cordova.plugins.Keyboard.hideKeyboardAccessoryBar(bool);
   },
+
+  FiNote_API: function(api_name, data, method) {
+    return new Promise(function(resolve, reject) {
+      var request = new XMLHttpRequest();
+      var request_url = 'http://kentaiwami.jp/FiNote/api/' + api_name + '/';
+      request.open(method, request_url);
+      request.setRequestHeader("Content-type", "application/json");
+
+      request.onreadystatechange = function () {
+        if (this.readyState === 4) {
+          if(this.status === 200) {
+            resolve(this.responseText);
+          }else {
+            reject(this.responseText);
+          }
+        }
+      };
+
+      request.send(JSON.stringify(data));
+    });
+  }
 };
 
 

@@ -17,8 +17,10 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from FiNote_API.urls import router as FiNote_API_router
+from rest_framework_jwt.views import obtain_jwt_token
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(FiNote_API_router.urls)),
+    url(r'^api-token-auth/', obtain_jwt_token),
 ]
