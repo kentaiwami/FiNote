@@ -24,8 +24,8 @@ var app = {
 
     db.transaction(function(tx) {
       tx.executeSql('CREATE TABLE IF NOT EXISTS movie (id integer primary key AUTOINCREMENT, title text unique, tmdb_id integer unique, genre_id text, onomatopoeia_id text, poster text, overview text, dvd integer, fav integer, add_year integer, add_month integer, add_day integer)');
-      tx.executeSql('CREATE TABLE IF NOT EXISTS genre (id integer primary key, name text unique)');
-      tx.executeSql('CREATE TABLE IF NOT EXISTS onomatopoeia (id integer primary Key, name text)');
+      tx.executeSql('CREATE TABLE IF NOT EXISTS genre (id integer primary key AUTOINCREMENT, genre_id integer, name text unique)');
+      tx.executeSql('CREATE TABLE IF NOT EXISTS onomatopoeia (id integer primary Key AUTOINCREMENT, name text)');
     }, function(err) {
       console.log('Open database ERROR: ' +JSON.stringify(err) +' ' + err.message);
     });
@@ -991,6 +991,8 @@ var Movieadd_search = {
               movie_releasedate += list_data[i].release_date;
             }
 
+            var title = Utility.get_movie_ja_title(list_data[i]);
+
             var list_item_doc =
             '<ons-list-item id="'+ i +'" modifier="' + modifier + '"'+' ' + tappable + '>'+
             '<div class="left">'+
@@ -998,7 +1000,7 @@ var Movieadd_search = {
             '</div>'+
 
             '<div class="center">'+
-            '<span class="list_title_bold">'+ list_data[i].title +'</span>'+
+            '<span class="list_title_bold">'+ title +'</span>'+
             '<span id="overview_'+i +'" class="list_sub_title_small">'+ list_data[i].overview +'</span>'+
             '<span class="list_sub_title_small">'+ movie_releasedate +'</span>'+
             '</div>'+
@@ -1327,9 +1329,8 @@ var Movieadd = {
   /**
    * 映画追加ボタンを押したらローカルDBへ保存する
    */
-  add_movie: function(){
+  add_movie_new: function(){
     var userdata = Movieadd.userdata;
-
     document.getElementById(ID.get_moveadd_ID().add_button).style.opacity = '';
 
     if (userdata.feeling_name_list.length === 0) {
@@ -1340,20 +1341,77 @@ var Movieadd = {
         buttonLabel: 'OK'
       });
     }else {
+      // スピナーの表示
+      // Utility.show_spinner(ID.get_moveadd_ID().poster);
+
+      // ローカルからユーザ名の取得
+      var storage = window.localStorage;
+      var username = storage.getItem('username');
+
+      // ツールバーとユーザアクション部分のボタンを無効にする
+      // 気分リストへの登録件数の表示を透過させる
+      // var button_list = [document.getElementById(ID.get_moveadd_ID().add_button),document.getElementById(ID.get_moveadd_ID().feeling_button),document.getElementById(ID.get_moveadd_ID().dvd_button),document.getElementById(ID.get_moveadd_ID().share_button),document.getElementById(ID.get_moveadd_ID().show_info_button),document.getElementById(ID.get_moveadd_ID().back_button)];
+      // Utility.setAttribute_list_object(button_list, 'disabled');
+      // document.getElementById(ID.get_moveadd_ID().feeling_number).style.opacity = '.4';
+
+      var user_onomatopoeia_list = Movieadd.userdata.feeling_name_list;
+      var movie = Movieadd.current_movie;
+      // ユーザ名、映画のタイトル、映画のTMDB_ID、ジャンル(1,2,3)、オノマトペ("ドキドキ","ワクワク")」
+      console.log(movie);
+      console.log('***************************************');
+      console.log(user_onomatopoeia_list);
+      console.log('***************************************');
+      console.log(username);
+      var data = {
+        "username": username,
+        "movie_title": "",
+        "movie_id": "",
+        "genre_id": "",
+        "onomatopoeia": ""
+      };
+
+      // var promises = [Utility.FiNote_API('movieadd', data, 'POST')];
+      Utility.FiNote_API('movieadd', data, 'POST').then(function(result) {
+        // console.log(result);
+      });
+    }
+
+    
+    
+    
+  },
+
+  add_server_new: function(){
+
+  },
+
+  add_movie: function(){
+    // var userdata = Movieadd.userdata;
+
+    // document.getElementById(ID.get_moveadd_ID().add_button).style.opacity = '';
+
+    if (userdata.feeling_name_list.length === 0) {
+      // ons.notification.alert(
+      // {
+      //   title: '映画追加エラー',
+      //   message: '気分リストに気分が追加されていません',
+      //   buttonLabel: 'OK'
+      // });
+    }else {
       //ツールバーとユーザアクション部分のボタンを無効にする
       //気分リストへの登録件数の表示を透過させる
-      var button_list = [document.getElementById(ID.get_moveadd_ID().add_button),document.getElementById(ID.get_moveadd_ID().feeling_button),document.getElementById(ID.get_moveadd_ID().dvd_button),document.getElementById(ID.get_moveadd_ID().share_button),document.getElementById(ID.get_moveadd_ID().show_info_button),document.getElementById(ID.get_moveadd_ID().back_button)];
-      Utility.setAttribute_list_object(button_list, 'disabled');
+      // var button_list = [document.getElementById(ID.get_moveadd_ID().add_button),document.getElementById(ID.get_moveadd_ID().feeling_button),document.getElementById(ID.get_moveadd_ID().dvd_button),document.getElementById(ID.get_moveadd_ID().share_button),document.getElementById(ID.get_moveadd_ID().show_info_button),document.getElementById(ID.get_moveadd_ID().back_button)];
+      // Utility.setAttribute_list_object(button_list, 'disabled');
 
-      document.getElementById(ID.get_moveadd_ID().feeling_number).style.opacity = '.4';
+      // document.getElementById(ID.get_moveadd_ID().feeling_number).style.opacity = '.4';
 
-      Utility.show_spinner(ID.get_moveadd_ID().poster);
+      // Utility.show_spinner(ID.get_moveadd_ID().poster);
 
       //オノマトペをuserdataから取得
-      var user_onomatopoeia_list = Movieadd.userdata.feeling_name_list;
+      // var user_onomatopoeia_list = Movieadd.userdata.feeling_name_list;
 
       //表示中の映画オブジェクトを取得
-      var movie = Movieadd.current_movie;
+      // var movie = Movieadd.current_movie;
 
       var promises = [Movieadd.genre_ncmb(movie.genre_ids),Movieadd.onomatopoeia_ncmb(user_onomatopoeia_list)];
 
@@ -2666,6 +2724,13 @@ var Utility = {
     cordova.plugins.Keyboard.hideKeyboardAccessoryBar(bool);
   },
 
+
+  /**
+   * FiNoteのAPIを実行してpromiseを受け取る
+   * @param {[string]} api_name [利用するAPIの名前]
+   * @param {[json]} data       [postする場合のデータ]
+   * @param {[string]} method   [postなどのメソッド名]
+   */
   FiNote_API: function(api_name, data, method) {
     return new Promise(function(resolve, reject) {
       var request = new XMLHttpRequest();
@@ -2685,6 +2750,28 @@ var Utility = {
 
       request.send(JSON.stringify(data));
     });
+  },
+
+
+  /**
+   * できるだけ日本語の映画タイトルを返す関数
+   * @param  {[json]} movie_json [TMDBから取得した映画データ]
+   * @return {[string]}            [映画のタイトル]
+   */
+  get_movie_ja_title: function(movie_json) {
+    if (movie_json.original_language == 'ja') {
+      if (movie_json.original_title !== '') {
+        return movie_json.original_title;
+      }else {
+        return movie_json.title;
+      }
+    }else {
+      if (movie_json.title !== '' ) {
+        return movie_json.title;
+      }else {
+        return movie_json.original_title;
+      }
+    }
   }
 };
 
