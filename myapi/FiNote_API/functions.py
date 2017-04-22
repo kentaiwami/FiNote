@@ -4,6 +4,14 @@ import requests
 import json
 
 class MovieAdd():
+    def conversion_str_to_list(self, str_list):
+        str_list = str_list.replace('[', '')
+        str_list = str_list.replace(']', '')
+        list = str_list.split(',')
+        list = [int(i) for i in list]
+
+        return list
+
     def genre(self, r_genre_id_list):
         # TMDBへのリクエストを生成
         url = 'https://api.themoviedb.org/3/genre/movie/list'

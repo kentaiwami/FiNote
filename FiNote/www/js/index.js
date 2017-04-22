@@ -1367,6 +1367,10 @@ var Movieadd = {
 
       Utility.FiNote_API('movieadd', data, 'POST').then(function(result) {
         var json_result = JSON.parse(result);
+
+        for(var key in json_result) {
+          console.log(key + ':' + json_result[key]);
+        }
       })
       .catch(function(err) {
         console.log(err);
