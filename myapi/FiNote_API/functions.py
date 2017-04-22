@@ -4,11 +4,14 @@ import requests
 import json
 
 class MovieAdd():
-    def conversion_str_to_list(self, str_list):
+    def conversion_str_to_list(self, str_list, type):
         str_list = str_list.replace('[', '')
         str_list = str_list.replace(']', '')
+        str_list = str_list.replace('"', '')
         list = str_list.split(',')
-        list = [int(i) for i in list]
+
+        if type == 'int':
+            list = [int(i) for i in list]
 
         return list
 
@@ -36,14 +39,17 @@ class MovieAdd():
         # リクエストされたジャンルidをDB検索して追加・取得 or 取得
         genre_obj_list = []
         for r_genre_id in r_genre_id_list:
-            index = genre_value_id.index(r_genre_id)
+            try:
+                index = genre_value_id.index(r_genre_id)
+                obj, created = Genre.objects.get_or_create(
+                    genre_id=r_genre_id,
+                    defaults={'genre_id': r_genre_id, 'name': genre_value_name[index]},
+                )
 
-            obj, created = Genre.objects.get_or_create(
-                genre_id=r_genre_id,
-                defaults={'genre_id': r_genre_id, 'name': genre_value_name[index]},
-            )
+                genre_obj_list.append(obj)
+            except ValueError:
+                pass
 
-            genre_obj_list.append(obj)
 
         # dictの作成
         genre_obj_dict = {}
@@ -51,3 +57,16 @@ class MovieAdd():
             genre_obj_dict[genre_obj.genre_id] = genre_obj.name
 
         return (genre_obj_dict,genre_obj_list)
+
+    def onomatopoeia(self, r_onomatopoeia_list):
+        onomatopoeia_obj_list = []
+
+        for onomatopoeia in r_onomatopoeia_list:
+            obj, created = Onomatopoeia.objects.get_or_create(
+                name=onomatopoeia,
+                defaults={'name': onomatopoeia}
+            )
+
+            onomatopoeia_obj_list.append(obj)
+
+        return onomatopoeia_obj_list

@@ -83,16 +83,25 @@ class MovieAddViewSet(viewsets.ModelViewSet):
             # movie_title = request.data['movie_title']
             # movie_id = request.data['movie_id']
             r_genre_id_list = request.data['genre_id_list']
-            # onomatopoeia = request.data['onomatopoeia']
+            r_onomatopoeia_list = request.data['onomatopoeia']
 
             # ジャンルの登録とpkの取得
             if type(r_genre_id_list) is str:
-                r_genre_id_list = MovieAdd.conversion_str_to_list(self, r_genre_id_list)
+                r_genre_id_list = MovieAdd.conversion_str_to_list(self, r_genre_id_list, 'int')
             elif type(r_genre_id_list) is not list:
                 raise ValidationError('不正な形式です')
 
             genre_obj_dict, genre_obj_list = MovieAdd.genre(self, r_genre_id_list)
-            return JsonResponse(genre_obj_dict)
+
+            # オノマトペの登録とpkの取得
+            if type(r_onomatopoeia_list) is str:
+                r_onomatopoeia_list = MovieAdd.conversion_str_to_list(self, r_onomatopoeia_list, 'str')
+            elif type(r_onomatopoeia_list) is not list:
+                raise ValidationError('不正な形式です')
+
+            onomatopoeia_obj_list = MovieAdd.onomatopoeia(self, r_onomatopoeia_list)
+            # return JsonResponse(genre_obj_dict)
+            return Response('OK')
 
 
 class UserViewSet(viewsets.ModelViewSet):
