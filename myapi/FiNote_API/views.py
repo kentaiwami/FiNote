@@ -85,7 +85,7 @@ class MovieAddViewSet(viewsets.ModelViewSet):
             r_genre_id_list = request.data['genre_id_list']
             # onomatopoeia = request.data['onomatopoeia']
 
-            genre_obj_dict = MovieAdd.genre(self, r_genre_id_list)
+            genre_obj_dict,genre_obj_list = MovieAdd.genre(self, r_genre_id_list)
 
             return JsonResponse(genre_obj_dict)
 

@@ -42,5 +42,4 @@ class MovieAdd():
         for genre_obj in genre_obj_list:
             genre_obj_dict[genre_obj.genre_id] = genre_obj.name
 
-
-        return genre_obj_dict
+        return (genre_obj_dict,genre_obj_list)
