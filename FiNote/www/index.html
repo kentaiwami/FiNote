@@ -72,9 +72,13 @@
 			<ons-list id="signup_list">
         <div class="formarea">
           <!-- ユーザ名とパスワードのフォーム -->
-          <ons-list-header class="brown_color">ユーザ名とパスワード</ons-list-header>
+          <ons-list-header class="brown_color">入力項目</ons-list-header>
           <div class="form-row">
             <input type="text" id="username" class="text-input--underbar width-full" placeholder="ユーザ名" value="">
+          </div>
+
+          <div class="form-row">
+            <input type="text" id="email" class="text-input--underbar width-full" placeholder="メールアドレス" value="">
           </div>
 
           <div class="form-row">
@@ -245,7 +249,7 @@
 
             <ons-col class="action-col">
               <div class="action-icon">
-                <ons-button class="btn_disable" onClick="Movieadd.add_movie()" id="movieadd_add_button" modifier="quiet">
+                <ons-button class="btn_disable" onClick="Movieadd.add_movie_new()" id="movieadd_add_button" modifier="quiet">
                   <ons-icon icon="ion-plus-circled"></ons-icon>
                 </ons-button>
               </div>

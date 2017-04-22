@@ -24,8 +24,8 @@ var app = {
 
     db.transaction(function(tx) {
       tx.executeSql('CREATE TABLE IF NOT EXISTS movie (id integer primary key AUTOINCREMENT, title text unique, tmdb_id integer unique, genre_id text, onomatopoeia_id text, poster text, overview text, dvd integer, fav integer, add_year integer, add_month integer, add_day integer)');
-      tx.executeSql('CREATE TABLE IF NOT EXISTS genre (id integer primary key, name text unique)');
-      tx.executeSql('CREATE TABLE IF NOT EXISTS onomatopoeia (id integer primary Key, name text)');
+      tx.executeSql('CREATE TABLE IF NOT EXISTS genre (id integer primary key AUTOINCREMENT, genre_id integer, name text unique)');
+      tx.executeSql('CREATE TABLE IF NOT EXISTS onomatopoeia (id integer primary Key AUTOINCREMENT, name text)');
     }, function(err) {
       console.log('Open database ERROR: ' +JSON.stringify(err) +' ' + err.message);
     });
@@ -86,7 +86,7 @@ var ID = {
   get_signup_ID: function() {
     var id_obj = {tmp_id: 'signup.html', page_id: 'signup', signup_button: 'signup_button', 
                   list_id: 'signup_list', username: 'username', password: 'password',
-                  birthday: 'birthday', success_alert: 'signup-alert-success',
+                  email: 'email', birthday: 'birthday', success_alert: 'signup-alert-success',
                   error_alert: 'signup-alert-error', error_message: 'error-message',
                   radio: 'radio_m'};
     return id_obj;
@@ -158,7 +158,7 @@ var ID = {
 * @type {Object}
 */
 var Index = {
-  formcheck: [false,false],                 //[0]はユーザ名とパスワード、[1]は生年月日に対応している
+  formcheck: [false,false],                 //[0]入力項目、[1]は生年月日に対応している
   
   /**
    * サインアップしているかを確認する
@@ -178,6 +178,7 @@ var Index = {
       var addevent = function(){
         document.getElementById(ID.get_signup_ID().username).addEventListener('keyup',Index.check_usernameAndpassword_form);
         document.getElementById(ID.get_signup_ID().password).addEventListener('keyup',Index.check_usernameAndpassword_form);
+        document.getElementById(ID.get_signup_ID().email).addEventListener('keyup',Index.check_usernameAndpassword_form);
       };
       Utility.check_page_init(ID.get_signup_ID().page_id,addevent);
     }
@@ -189,8 +190,9 @@ var Index = {
   check_usernameAndpassword_form: function(){
     var username = document.getElementById(ID.get_signup_ID().username).value;
     var password = document.getElementById(ID.get_signup_ID().password).value;
+    var email = document.getElementById(ID.get_signup_ID().email).value;
 
-    if (username.length === 0 || password.length < 6) {
+    if (username.length === 0 || email.length === 0 || password.length < 6) {
       Index.formcheck[0] = false;
     }else{
       Index.formcheck[0] = true;
@@ -224,33 +226,33 @@ var Signup = {
   usersignup: function() {
     Utility.show_spinner(ID.get_signup_ID().list_id);
 
-    //mobile backendアプリとの連携
-    var ncmb = Utility.get_ncmb();
-    var user = new ncmb.User();
-
-    //性別のチェック状態を確認
+    var username = document.getElementById(ID.get_signup_ID().username).value;
+    var password = document.getElementById(ID.get_signup_ID().password).value;
+    var email = document.getElementById(ID.get_signup_ID().email).value;
+    var birthday = Number(document.getElementById(ID.get_signup_ID().birthday).value);
     var sex = Signup.get_sex();
 
-    //ユーザー名・パスワードを設定
-    user.set('userName', document.getElementById(ID.get_signup_ID().username).value)
-    .set('password', document.getElementById(ID.get_signup_ID().password).value)
-    .set('birthday', Number(document.getElementById(ID.get_signup_ID().birthday).value))
-    .set('sex', sex);
+    var data ={
+        "username": username,
+        "password": password,
+        "email": email,
+        "birthday": birthday,
+        "sex": sex
+    };
 
     // 新規登録
-    user.signUpByAccount().then(function(){
+    Utility.FiNote_API('signin', data, 'POST').then(function(result) {
       /*登録後処理*/
-      //ローカルにユーザ名とパスワードを保存する。
-      var username = document.getElementById(ID.get_signup_ID().username).value;
-      var password = document.getElementById(ID.get_signup_ID().password).value;
-      var birthday = Number(document.getElementById(ID.get_signup_ID().birthday).value);
-      var sex = Signup.get_sex();
+      var json_data = JSON.parse(result);
 
+      //ローカルに個人情報を保存
       var storage = window.localStorage;
       storage.setItem('username', username);
       storage.setItem('password', password);
+      storage.setItem('email', birthday);
       storage.setItem('birthday', birthday);
       storage.setItem('sex', sex);
+      storage.setItem('token', json_data.token);
 
       //同時にこれらの情報が記録されているかを判断するフラグも保存する
       storage.setItem('signup_flag', true);
@@ -261,21 +263,22 @@ var Signup = {
     .catch(function(err){
       // エラー処理
       Utility.stop_spinner();
-      document.getElementById(ID.get_signup_ID().error_alert).show();
+      Utility.show_error_alert('登録エラー', err, 'OK');
+      // document.getElementById(ID.get_signup_ID().error_alert).show();
 
-      var info = document.getElementById(ID.get_signup_ID().error_message);
-      var textNode;
+      // var info = document.getElementById(ID.get_signup_ID().error_message);
+      // var textNode;
 
-      if (err.name == "NoUserNameError") {
-        textNode = document.createTextNode('ユーザ名を入力してください');
-      }else if (err.name == "NoPasswordError") {
-        textNode = document.createTextNode('パスワードを入力してください');
-      }else if (err.message.indexOf('cannot POST') > -1) {
-        textNode = document.createTextNode('入力したユーザ名は既に使用されています');
-      }else if (err.message.indexOf('Request has been terminated') > -1) {
-        textNode = document.createTextNode('ネットワーク接続がオフラインのため登録ができません');
-      }
-      info.appendChild(textNode);
+      // if (err.name == "NoUserNameError") {
+      //   textNode = document.createTextNode('ユーザ名を入力してください');
+      // }else if (err.name == "NoPasswordError") {
+      //   textNode = document.createTextNode('パスワードを入力してください');
+      // }else if (err.message.indexOf('cannot POST') > -1) {
+      //   textNode = document.createTextNode('入力したユーザ名は既に使用されています');
+      // }else if (err.message.indexOf('Request has been terminated') > -1) {
+      //   textNode = document.createTextNode('ネットワーク接続がオフラインのため登録ができません');
+      // }
+      // info.appendChild(textNode);
     });
   },
 
@@ -372,12 +375,12 @@ var Movies = {
    * 自動ログイン後に映画一覧画面の表示を行う
    */
   draw_movie_content: function() {
+
     //自動ログイン
-    var ncmb = Utility.get_ncmb();
     var storage = window.localStorage;
     var username = storage.getItem('username');
-    var password = storage.getItem('password');
     var signup_flag = storage.getItem('signup_flag');
+    var token = storage.getItem('token');
 
     //ユーザ情報が存在する場合はローディング画面を表示する
     var callback = function(){
@@ -386,9 +389,14 @@ var Movies = {
       }
     };
     Utility.check_page_init(ID.get_index_ID().page_id,callback);
+
+    var data = {
+      "username": username,
+      "token": token
+    };
     
 
-    ncmb.User.login(username, password).then(function(data){
+    Utility.FiNote_API('signupwithtoken', data, 'POST').then(function(result){
       // ログイン後に映画情報をデータベースから取得
       var query = 'SELECT tmdb_id FROM movie';
       return DB_method.single_statement_execute(query,[]);
@@ -983,6 +991,8 @@ var Movieadd_search = {
               movie_releasedate += list_data[i].release_date;
             }
 
+            var title = Utility.get_movie_ja_title(list_data[i]);
+
             var list_item_doc =
             '<ons-list-item id="'+ i +'" modifier="' + modifier + '"'+' ' + tappable + '>'+
             '<div class="left">'+
@@ -990,7 +1000,7 @@ var Movieadd_search = {
             '</div>'+
 
             '<div class="center">'+
-            '<span class="list_title_bold">'+ list_data[i].title +'</span>'+
+            '<span class="list_title_bold">'+ title +'</span>'+
             '<span id="overview_'+i +'" class="list_sub_title_small">'+ list_data[i].overview +'</span>'+
             '<span class="list_sub_title_small">'+ movie_releasedate +'</span>'+
             '</div>'+
@@ -1319,9 +1329,8 @@ var Movieadd = {
   /**
    * 映画追加ボタンを押したらローカルDBへ保存する
    */
-  add_movie: function(){
+  add_movie_new: function(){
     var userdata = Movieadd.userdata;
-
     document.getElementById(ID.get_moveadd_ID().add_button).style.opacity = '';
 
     if (userdata.feeling_name_list.length === 0) {
@@ -1332,20 +1341,78 @@ var Movieadd = {
         buttonLabel: 'OK'
       });
     }else {
+      // スピナーの表示
+      // Utility.show_spinner(ID.get_moveadd_ID().poster);
+
+      // ローカルからユーザ名の取得
+      var storage = window.localStorage;
+      var username = storage.getItem('username');
+
+      // ツールバーとユーザアクション部分のボタンを無効にする
+      // 気分リストへの登録件数の表示を透過させる
+      // var button_list = [document.getElementById(ID.get_moveadd_ID().add_button),document.getElementById(ID.get_moveadd_ID().feeling_button),document.getElementById(ID.get_moveadd_ID().dvd_button),document.getElementById(ID.get_moveadd_ID().share_button),document.getElementById(ID.get_moveadd_ID().show_info_button),document.getElementById(ID.get_moveadd_ID().back_button)];
+      // Utility.setAttribute_list_object(button_list, 'disabled');
+      // document.getElementById(ID.get_moveadd_ID().feeling_number).style.opacity = '.4';
+
+      var user_onomatopoeia_list = Movieadd.userdata.feeling_name_list;
+      var movie = Movieadd.current_movie;
+
+      var data = {
+        "username": username,
+        "movie_title": Utility.get_movie_ja_title(movie),
+        "movie_id": movie.id,
+        "genre_id_list": movie.genre_ids,
+        "onomatopoeia": user_onomatopoeia_list
+      };
+
+      Utility.FiNote_API('movieadd', data, 'POST').then(function(result) {
+        var json_result = JSON.parse(result);
+
+        for(var key in json_result) {
+          console.log(key + ':' + json_result[key]);
+        }
+      })
+      .catch(function(err) {
+        console.log(err);
+      });
+    }
+
+    
+    
+    
+  },
+
+  add_server_new: function(){
+
+  },
+
+  add_movie: function(){
+    // var userdata = Movieadd.userdata;
+
+    // document.getElementById(ID.get_moveadd_ID().add_button).style.opacity = '';
+
+    if (userdata.feeling_name_list.length === 0) {
+      // ons.notification.alert(
+      // {
+      //   title: '映画追加エラー',
+      //   message: '気分リストに気分が追加されていません',
+      //   buttonLabel: 'OK'
+      // });
+    }else {
       //ツールバーとユーザアクション部分のボタンを無効にする
       //気分リストへの登録件数の表示を透過させる
-      var button_list = [document.getElementById(ID.get_moveadd_ID().add_button),document.getElementById(ID.get_moveadd_ID().feeling_button),document.getElementById(ID.get_moveadd_ID().dvd_button),document.getElementById(ID.get_moveadd_ID().share_button),document.getElementById(ID.get_moveadd_ID().show_info_button),document.getElementById(ID.get_moveadd_ID().back_button)];
-      Utility.setAttribute_list_object(button_list, 'disabled');
+      // var button_list = [document.getElementById(ID.get_moveadd_ID().add_button),document.getElementById(ID.get_moveadd_ID().feeling_button),document.getElementById(ID.get_moveadd_ID().dvd_button),document.getElementById(ID.get_moveadd_ID().share_button),document.getElementById(ID.get_moveadd_ID().show_info_button),document.getElementById(ID.get_moveadd_ID().back_button)];
+      // Utility.setAttribute_list_object(button_list, 'disabled');
 
-      document.getElementById(ID.get_moveadd_ID().feeling_number).style.opacity = '.4';
+      // document.getElementById(ID.get_moveadd_ID().feeling_number).style.opacity = '.4';
 
-      Utility.show_spinner(ID.get_moveadd_ID().poster);
+      // Utility.show_spinner(ID.get_moveadd_ID().poster);
 
       //オノマトペをuserdataから取得
-      var user_onomatopoeia_list = Movieadd.userdata.feeling_name_list;
+      // var user_onomatopoeia_list = Movieadd.userdata.feeling_name_list;
 
       //表示中の映画オブジェクトを取得
-      var movie = Movieadd.current_movie;
+      // var movie = Movieadd.current_movie;
 
       var promises = [Movieadd.genre_ncmb(movie.genre_ids),Movieadd.onomatopoeia_ncmb(user_onomatopoeia_list)];
 
@@ -2657,6 +2724,56 @@ var Utility = {
   hideKeyboardAccessoryBar:function(bool) {
     cordova.plugins.Keyboard.hideKeyboardAccessoryBar(bool);
   },
+
+
+  /**
+   * FiNoteのAPIを実行してpromiseを受け取る
+   * @param {[string]} api_name [利用するAPIの名前]
+   * @param {[json]} data       [postする場合のデータ]
+   * @param {[string]} method   [postなどのメソッド名]
+   */
+  FiNote_API: function(api_name, data, method) {
+    return new Promise(function(resolve, reject) {
+      var request = new XMLHttpRequest();
+      var request_url = 'http://kentaiwami.jp/FiNote/api/' + api_name + '/';
+      request.open(method, request_url);
+      request.setRequestHeader("Content-type", "application/json");
+
+      request.onreadystatechange = function () {
+        if (this.readyState === 4) {
+          if(this.status === 200) {
+            resolve(this.responseText);
+          }else {
+            reject(this.responseText);
+          }
+        }
+      };
+
+      request.send(JSON.stringify(data));
+    });
+  },
+
+
+  /**
+   * できるだけ日本語の映画タイトルを返す関数
+   * @param  {[json]} movie_json [TMDBから取得した映画データ]
+   * @return {[string]}            [映画のタイトル]
+   */
+  get_movie_ja_title: function(movie_json) {
+    if (movie_json.original_language == 'ja') {
+      if (movie_json.original_title !== '') {
+        return movie_json.original_title;
+      }else {
+        return movie_json.title;
+      }
+    }else {
+      if (movie_json.title !== '' ) {
+        return movie_json.title;
+      }else {
+        return movie_json.original_title;
+      }
+    }
+  }
 };
 
 
