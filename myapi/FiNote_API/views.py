@@ -36,8 +36,13 @@ class SignInViewSet(viewsets.ViewSet):
             if User.objects.filter(email=data['email']).exists():
                 raise serializers.ValidationError('このメールアドレスは既に使われています')
 
-            user = User.objects.create_user(username=data['username'], email=data['email'], password=data['password'],
-                                     birthday=data['birthday'], sex=data['sex'])
+            user = User.objects.create_user(
+                username=data['username'],
+                email=data['email'],
+                password=data['password'],
+                birthday=data['birthday'],
+                sex=data['sex']
+            )
 
             get_user = User.objects.get(username=str(user))
             token = Token.objects.get(user_id=get_user.pk)
@@ -100,8 +105,13 @@ class MovieAddViewSet(viewsets.ModelViewSet):
                 raise ValidationError('不正な形式です')
 
             onomatopoeia_obj_list = MovieAdd.onomatopoeia(self, r_onomatopoeia_list)
-            # return JsonResponse(genre_obj_dict)
-            return Response('OK')
+
+            data = {'username': request.data['username'],
+                    'movie_title': request.data['movie_title'],
+                    'movie_id': request.data['movie_id']}
+
+            MovieAdd.movie(self, genre_obj_list, onomatopoeia_obj_list, data)
+            return JsonResponse(genre_obj_dict)
 
 
 class UserViewSet(viewsets.ModelViewSet):

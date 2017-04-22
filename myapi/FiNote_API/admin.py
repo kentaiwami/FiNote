@@ -15,16 +15,16 @@ class OnomatopoeiaAdmin(admin.ModelAdmin):
 
 
 class MovieAdmin(admin.ModelAdmin):
-    list_display = ('title', 'tmdb_id', 'get_genres', 'get_users', 'get_onomatopoeias')
+    list_display = ('title', 'tmdb_id', 'genres', 'users', 'onomatopoeias')
 
-    def get_genres(self, obj):
-        return "\n".join([g.genres for g in obj.genre.all()])
+    def genres(self, obj):
+        return "\n".join([g.name for g in obj.genre.all()])
 
-    def get_users(self, obj):
-        return "\n".join([u.users for u in obj.user.all()])
+    def users(self, obj):
+        return "\n".join([u.username for u in obj.user.all()])
 
-    def get_onomatopoeias(self, obj):
-        return "\n".join([o.onomatopoeias for o in obj.onomatopoeia.all()])
+    def onomatopoeias(self, obj):
+        return "\n".join([o.name for o in obj.onomatopoeia.all()])
 
 
 class OnomatopoeiaCountAdmin(admin.ModelAdmin):

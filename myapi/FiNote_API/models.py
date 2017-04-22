@@ -81,4 +81,4 @@ class OnomatopoeiaCount(models.Model):
     movie = models.ForeignKey(Movie)
 
     def __str__(self):
-        return self.onomatopoeia + '_' + self.count
+        return self.onomatopoeia.name + '_' + str(self.count)
