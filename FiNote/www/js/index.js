@@ -1419,6 +1419,8 @@ var Movieadd = {
             Utility.stop_spinner();
             Utility.show_error_alert('映画追加エラー','映画追加時にエラーが発生しました','OK');
             Utility.removeAttribute_list_object(button_list, 'disabled');
+            document.getElementById(ID.get_moveadd_ID().feeling_number).style.opacity = '';
+            document.getElementById(ID.get_moveadd_ID().add_button).style.opacity = '1';
           });
       })
       .catch(function(err) {
@@ -1426,6 +1428,8 @@ var Movieadd = {
         Utility.stop_spinner();
         Utility.show_error_alert('映画追加前処理エラー','映画追加の前処理でエラーが発生しました','OK');
         Utility.removeAttribute_list_object(button_list, 'disabled');
+        document.getElementById(ID.get_moveadd_ID().feeling_number).style.opacity = '';
+        document.getElementById(ID.get_moveadd_ID().add_button).style.opacity = '1';
       });
     }
   },
