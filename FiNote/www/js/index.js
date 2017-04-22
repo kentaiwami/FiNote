@@ -264,21 +264,6 @@ var Signup = {
       // エラー処理
       Utility.stop_spinner();
       Utility.show_error_alert('登録エラー', err, 'OK');
-      // document.getElementById(ID.get_signup_ID().error_alert).show();
-
-      // var info = document.getElementById(ID.get_signup_ID().error_message);
-      // var textNode;
-
-      // if (err.name == "NoUserNameError") {
-      //   textNode = document.createTextNode('ユーザ名を入力してください');
-      // }else if (err.name == "NoPasswordError") {
-      //   textNode = document.createTextNode('パスワードを入力してください');
-      // }else if (err.message.indexOf('cannot POST') > -1) {
-      //   textNode = document.createTextNode('入力したユーザ名は既に使用されています');
-      // }else if (err.message.indexOf('Request has been terminated') > -1) {
-      //   textNode = document.createTextNode('ネットワーク接続がオフラインのため登録ができません');
-      // }
-      // info.appendChild(textNode);
     });
   },
 
