@@ -1356,23 +1356,20 @@ var Movieadd = {
 
       var user_onomatopoeia_list = Movieadd.userdata.feeling_name_list;
       var movie = Movieadd.current_movie;
-      // ユーザ名、映画のタイトル、映画のTMDB_ID、ジャンル(1,2,3)、オノマトペ("ドキドキ","ワクワク")」
-      console.log(movie);
-      console.log('***************************************');
-      console.log(user_onomatopoeia_list);
-      console.log('***************************************');
-      console.log(username);
+
       var data = {
         "username": username,
-        "movie_title": "",
-        "movie_id": "",
-        "genre_id": "",
-        "onomatopoeia": ""
+        "movie_title": Utility.get_movie_ja_title(movie),
+        "movie_id": movie.id,
+        "genre_id_list": movie.genre_ids,
+        "onomatopoeia": user_onomatopoeia_list
       };
 
-      // var promises = [Utility.FiNote_API('movieadd', data, 'POST')];
       Utility.FiNote_API('movieadd', data, 'POST').then(function(result) {
-        // console.log(result);
+        var json_result = JSON.parse(result);
+      })
+      .catch(function(err) {
+        console.log(err);
       });
     }
 

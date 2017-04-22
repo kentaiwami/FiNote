@@ -16,8 +16,11 @@ class SignUpWithTokenSerializer(serializers.Serializer):
 
 
 class MovieAddSerializer(serializers.Serializer):
-    id = serializers.IntegerField(allow_null=False)
-    name = serializers.CharField(max_length=256, allow_blank=False)
+    username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
+    movie_title = serializers.CharField(allow_blank=False, allow_null=False, required=True)
+    movie_id = serializers.IntegerField(allow_null=False, required=True)
+    genre_id_list = serializers.CharField(allow_blank=True, allow_null=True)
+    onomatopoeia = serializers.CharField(allow_blank=False, allow_null=False)
 
 
 class UserSerializer(serializers.ModelSerializer):

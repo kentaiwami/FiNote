@@ -50,6 +50,7 @@ class AuthUser(AbstractBaseUser, PermissionsMixin):
 
 
 class Genre(models.Model):
+    genre_id = models.IntegerField(unique=True, default=0)
     name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):

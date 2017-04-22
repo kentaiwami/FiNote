@@ -7,7 +7,7 @@ class UserAdmin(admin.ModelAdmin):
 
 
 class GenreAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'name')
+    list_display = ('genre_id', 'name')
 
 
 class OnomatopoeiaAdmin(admin.ModelAdmin):

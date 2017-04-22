@@ -1,7 +1,10 @@
+from django.http import JsonResponse
 from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework_jwt.serializers import User
+
+from FiNote_API.functions import MovieAdd
 from .serializer import *
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -76,18 +79,15 @@ class MovieAddViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         if request.method == 'POST':
-            # user = AuthUserManager.create_user(username='kenta', email='kenta@fun.ac.jp', password='kenta')
-            # Token.objects.create(user=request.user)
+            # username = request.data['username']
+            # movie_title = request.data['movie_title']
+            # movie_id = request.data['movie_id']
+            r_genre_id_list = request.data['genre_id_list']
+            # onomatopoeia = request.data['onomatopoeia']
 
-            # user = User.objects.create_user(username='kenta', email='kenta@fun.ac.jp',password='kenta')
+            genre_obj_dict = MovieAdd.genre(self, r_genre_id_list)
 
-            return Response(request.data)
-            # serializer = MovieAddSerializer(data={'id': request.POST['id'], 'name': request.POST['name']})
-            #
-            # if serializer.is_valid():
-            #     return Response(request.data)
-            # else:
-            #     return Response('Error !!')
+            return JsonResponse(genre_obj_dict)
 
 
 class UserViewSet(viewsets.ModelViewSet):
