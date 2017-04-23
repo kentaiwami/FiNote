@@ -69,7 +69,7 @@ var Global_variable = {
     if (flag === 0) {
       return '<ons-toolbar-button onClick="Utility.pop_page(Movieadd_status.close_movieadd_status())"><ons-icon id="status_toolbar_left_icon" class="brown_color" icon="ion-close-round"></ons-icon></ons-toolbar-button>';
     }else {
-      return '<ons-back-button onClick="Movieadd_status.close_movieadd_status()" class="brown_color"></ons-back-button>';
+      return '<ons-back-button onClick="Movies_detail.tap_status_back_button()" class="brown_color"></ons-back-button>';
     }
   }
 };
@@ -858,6 +858,7 @@ var Movies_detail = {
    */
   tap_feeling_back_button: function() {
     Global_variable.movie_update_flag = true;
+    
     document.addEventListener('postpop', function(event) {
       if (event.enterPage.pushedOptions.page == 'movies_detail.html') {
         Utility.show_spinner(ID.get_movies_detail_ID().page_id);
@@ -941,6 +942,77 @@ var Movies_detail = {
         });
       }
       document.removeEventListener('postpop', arguments.callee);
+    });
+  },
+
+
+  /**
+   * 詳細画面から表示させたステータスの戻るボタンをタップした際に、
+   * ステータスの変更をローカル・詳細画面へ反映させる関数
+   */
+  tap_status_back_button: function() {
+    Global_variable.movie_update_flag = true;
+
+    document.addEventListener('prepop', function(event) {
+      if (event.enterPage.pushedOptions.page == 'movies_detail.html') {
+        Utility.show_spinner(ID.get_movieadd_status_ID().page_id);
+
+        //スイッチボタンの状態を保存する
+        var dvd_switch_status = document.getElementById(ID.get_movieadd_status_ID().dvd).checked;
+        var fav_switch_status = document.getElementById(ID.get_movieadd_status_ID().fav).checked;
+        var dvd_status = 0;
+        var fav_status = 0;
+        if (dvd_switch_status === true) {
+          Movieadd.userdata.dvd = true;
+          dvd_status = 1;
+        }else {
+          Movieadd.userdata.dvd = false;
+          dvd_status = 0;
+        }
+
+        if (fav_switch_status === true) {
+          Movieadd.userdata.fav = true;
+          fav_status = 1;
+        }else {
+          Movieadd.userdata.fav = false;
+          fav_status = 0;
+        }
+
+        var movie_pk = Movies_detail.current_movie.movie_record.id;
+
+        
+        var query = 'UPDATE movie SET dvd = ?, fav = ? WHERE id = ?';
+        DB_method.single_statement_execute(query, [dvd_status, fav_status, movie_pk]).then(function(result) {
+          var query_movie = 'SELECT * from movie WHERE id = ?';
+          var query_onomatopoeia = 'SELECT * from onomatopoeia';
+          var promises = [
+            DB_method.single_statement_execute(query_movie,[movie_pk]),
+            DB_method.single_statement_execute(query_onomatopoeia, [])
+          ];
+
+          return promises;
+        })
+        .then(function(promises) {
+          Promise.all(promises).then(function(results) {
+            var movie_record = results[0].rows.item(0);
+            var result_onomatopoeia = results[1];
+
+            return new Promise(function(resolve, reject) {
+              var callback = Movies_detail.create_show_contents_callback(movie_record, result_onomatopoeia);
+              callback();
+              resolve('resolve');
+            });
+          })
+          .then(function(result) {
+            Utility.stop_spinner();
+          });
+        })
+        .catch(function(err) {
+          console.log(err);
+          Utility.show_error_alert('エラー発生', err, 'OK');
+        });
+      }
+      document.removeEventListener('prepop', arguments.callee);
     });
   }
 };
@@ -2064,21 +2136,6 @@ var Movieadd_status = {
       fav_status = 0;
     }
 
-    if (Global_variable.status_flag === 1) {
-      var movie_pk = Movies_detail.current_movie.movie_record.id;
-
-      Utility.show_spinner(ID.get_movieadd_status_ID().page_id);
-      var query = 'UPDATE movie SET dvd = ?, fav = ? WHERE id = ?';
-      DB_method.single_statement_execute(query, [dvd_status, fav_status, movie_pk]).then(function(result) {
-        Utility.stop_spinner();
-        console.log(result);
-      })
-      .catch(function(err) {
-        console.log(err);
-        Utility.show_error_alert('エラー発生', 'ステータスの保存時にエラーが発生しました', 'OK');
-      });
-    }
-    
     Utility.pop_page();
   },
 };
