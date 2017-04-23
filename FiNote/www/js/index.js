@@ -1314,7 +1314,7 @@ var Movieadd = {
   /**
    * 映画追加ボタンを押したらローカルDBへ保存する
    */
-  add_movie_new: function(){
+  add_movie: function(){
     var userdata = Movieadd.userdata;
     document.getElementById(ID.get_moveadd_ID().add_button).style.opacity = '';
 
