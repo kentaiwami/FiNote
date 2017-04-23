@@ -49,6 +49,9 @@ var Global_variable = {
   //0なら映画追加画面からの気分リスト、1なら映画詳細画面からの気分リスト
   feeling_flag: 0,
 
+  // 0なら映画追加画面からのステータス画面、1なら映画詳細画面からのステータス画面
+  status_flag: 0,
+
   /**
    * 気分リストのツールバー左に表示するボタンを動的に変える
    * @param  {[integer]} flag [0なら映画追加画面、1なら映画詳細画面からの気分リスト]
@@ -59,6 +62,14 @@ var Global_variable = {
       return '<ons-toolbar-button class="brown_color"><ons-icon class="brown_color" icon="ion-close-round"></ons-icon></ons-toolbar-button>';
     }else {
       return '<ons-back-button class="brown_color"></ons-back-button>';
+    }
+  },
+
+  get_toolbar_status: function(flag) {
+    if (flag === 0) {
+      return '<ons-toolbar-button onClick="Utility.pop_page(Movieadd_status.close_movieadd_status())"><ons-icon id="status_toolbar_left_icon" class="brown_color" icon="ion-close-round"></ons-icon></ons-toolbar-button>';
+    }else {
+      return '<ons-back-button onClick="Movieadd_status.close_movieadd_status()" class="brown_color"></ons-back-button>';
     }
   }
 };
@@ -138,7 +149,8 @@ var ID = {
 
   get_movieadd_status_ID: function() {
     var id_obj = {tmp_id: 'movieadd_status.html', page_id: 'movieadd_status',
-                  dvd: 'dvd_switch', fav: 'fav_switch'};
+                  dvd: 'dvd_switch', fav: 'fav_switch',
+                  toolbar: 'status_toolbar_left'};
     return id_obj;
   },
 
@@ -689,11 +701,17 @@ var Movies_detail = {
     var dvd = 'No';
     var fav = 'No';
     if (movie_record.dvd === 1) {
+      Movieadd.userdata.dvd = true;
       dvd = 'Yes';
+    }else {
+      Movieadd.userdata.dvd = false;
     }
 
     if (movie_record.fav === 1) {
+      Movieadd.userdata.fav = true;
       fav = 'Yes';
+    }else {
+      Movieadd.userdata.fav = false;
     }
 
     var callback = function(){
@@ -706,7 +724,7 @@ var Movies_detail = {
                             onomatopoeia_text+
                             '</ons-list-item>'+
 
-                            '<ons-list-item modifier="chevron" tappable>'+
+                            '<ons-list-item onclick="Movies_detail.push_page_status()" modifier="chevron" tappable>'+
                             '<ons-icon icon="ion-disc" class="list-item__icon brown_bg_color_quiet"></ons-icon>'+
                             dvd+
                             '<ons-icon icon="ion-android-favorite" class="list-item__icon brown_bg_color_quiet"></ons-icon>'+
@@ -766,6 +784,19 @@ var Movies_detail = {
     };
     Utility.check_page_init(ID.get_feeling_ID().page_id, callback);
     Utility.push_page(ID.get_feeling_ID().tmp_id, 'slide', 0, '');
+  },
+
+
+  push_page_status: function() {
+    console.log('taped !!');
+
+    var callback = function() {
+      Global_variable.status_flag = 1;
+
+      Movieadd_status.show_contents();
+    };
+    Utility.check_page_init(ID.get_movieadd_status_ID().page_id, callback);
+    Utility.push_page(ID.get_movieadd_status_ID().tmp_id, 'slide', 0, '');
   },
 
 
@@ -1672,6 +1703,7 @@ var Movieadd = {
    */
   pushpage_status: function(){
     var callback = function(){
+      Global_variable.status_flag = 0;
       Movieadd_status.show_contents();
     };
 
@@ -1978,6 +2010,11 @@ var Movieadd_status = {
    * 保存しているスイッチボタンの状態をもとにチェックをつける
    */
   show_contents: function(){
+    //flagに応じてツールバーの戻る・閉じるボタンを動的に変える
+    var toolbar_left = document.getElementById(ID.get_movieadd_status_ID().toolbar);
+    toolbar_left.innerHTML = '';
+    toolbar_left.innerHTML = Global_variable.get_toolbar_status(Global_variable.status_flag);
+
     var check_list = [Movieadd.userdata.dvd, Movieadd.userdata.fav];
     var id_list = [ID.get_movieadd_status_ID().dvd, ID.get_movieadd_status_ID().fav];
 
