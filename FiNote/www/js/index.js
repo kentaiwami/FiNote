@@ -697,7 +697,10 @@ var Movies_detail = {
       class_name = 'small_overview_opacity';
     }
 
-    // DVDの所持とお気に入りの登録状況に応じて表示するテキストを変更する
+    /* DVDの所持とお気に入りの登録状況に応じて、以下の2点を変える
+     * ・表示するテキスト
+     * ・ステータス画面の描画に使用するフラグ
+    */
     var dvd = 'No';
     var fav = 'No';
     if (movie_record.dvd === 1) {
