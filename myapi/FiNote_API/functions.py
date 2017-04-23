@@ -20,6 +20,9 @@ class MovieAdd():
         str_list = str_list.replace('"', '')
         converted_list = str_list.split(',')
 
+        if len(str_list) == 0:
+            return []
+
         if type == 'int':
             converted_list = [int(i) for i in converted_list]
 

@@ -78,19 +78,19 @@ class SignUpWithTokenViewSet(viewsets.ViewSet):
                 raise ValidationError('ログインに失敗しました', 404)
 
 
-class MovieAddViewSet(viewsets.ModelViewSet):
+class MovieAddViewSet(viewsets.ViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieAddSerializer
 
     def create(self, request, *args, **kwargs):
         if request.method == 'POST':
-            # username = request.data['username']
-            # movie_title = request.data['movie_title']
-            # movie_id = request.data['movie_id']
             r_genre_id_list = request.data['genre_id_list']
             r_onomatopoeia_list = request.data['onomatopoeia']
 
             # ジャンルの登録とpkの取得
+            if not r_genre_id_list:
+                r_genre_id_list = []
+
             if type(r_genre_id_list) is str:
                 r_genre_id_list = MovieAdd.conversion_str_to_list(self, r_genre_id_list, 'int')
             elif type(r_genre_id_list) is not list:
