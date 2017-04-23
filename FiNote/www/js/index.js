@@ -778,12 +778,6 @@ var Movies_detail = {
 
       // 映画追加画面と同様に気分リストを描画する
       Feeling.show_contents();
-
-      // 詳細画面から表示した気分リストのみ注意メッセージを表示する
-      
-
-      // 詳細画面から表示した気分リストのみ、onclickを設定する
-      
     };
     Utility.check_page_init(ID.get_feeling_ID().page_id, callback);
     Utility.push_page(ID.get_feeling_ID().tmp_id, 'slide', 0, '');
@@ -791,9 +785,8 @@ var Movies_detail = {
 
 
   push_page_status: function() {
-    console.log('taped !!');
-
     var callback = function() {
+      // 詳細画面からの遷移であることを登録
       Global_variable.status_flag = 1;
 
       Movieadd_status.show_contents();
@@ -1706,6 +1699,7 @@ var Movieadd = {
    */
   pushpage_status: function(){
     var callback = function(){
+      // 映画追加画面からの遷移であることを登録
       Global_variable.status_flag = 0;
       Movieadd_status.show_contents();
     };
@@ -1827,6 +1821,7 @@ var Feeling = {
     toolbar_left.innerHTML = '';
     toolbar_left.innerHTML = Global_variable.get_toolbar(Global_variable.feeling_flag);
     
+    // 詳細画面から表示した場合
     if (Global_variable.feeling_flag === 1) {
       document.getElementById(ID.get_feeling_ID().caution_message).innerHTML = '※ この画面から戻る際に気分リストが保存されます。';
       document.getElementById(ID.get_feeling_ID().toolbar).setAttribute('onClick', 'Movies_detail.tap_feeling_back_button()');
