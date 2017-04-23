@@ -762,7 +762,7 @@ var Movies_detail = {
       document.getElementById(ID.get_feeling_ID().caution_message).innerHTML = '※ この画面から戻る際に気分リストが保存されます。';
 
       // 詳細画面から表示した気分リストのみ、onclickを設定する
-      document.getElementById(ID.get_feeling_ID().toolbar).setAttribute('onClick', 'Movies_detail.tap_feeling_button()');
+      document.getElementById(ID.get_feeling_ID().toolbar).setAttribute('onClick', 'Movies_detail.tap_feeling_back_button()');
     };
     Utility.check_page_init(ID.get_feeling_ID().page_id, callback);
     Utility.push_page(ID.get_feeling_ID().tmp_id, 'slide', 0, '');
@@ -824,7 +824,7 @@ var Movies_detail = {
     modal.hide();
   },
 
-  tap_feeling_button: function() {
+  tap_feeling_back_button: function() {
     console.log('tap button !!');
     // スピナーの表示
 
