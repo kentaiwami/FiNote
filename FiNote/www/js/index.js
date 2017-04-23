@@ -150,7 +150,7 @@ var ID = {
   get_movieadd_status_ID: function() {
     var id_obj = {tmp_id: 'movieadd_status.html', page_id: 'movieadd_status',
                   dvd: 'dvd_switch', fav: 'fav_switch',
-                  toolbar: 'status_toolbar_left'};
+                  toolbar: 'status_toolbar_left', small_message: 'small_message'};
     return id_obj;
   },
 
@@ -780,10 +780,10 @@ var Movies_detail = {
       Feeling.show_contents();
 
       // 詳細画面から表示した気分リストのみ注意メッセージを表示する
-      document.getElementById(ID.get_feeling_ID().caution_message).innerHTML = '※ この画面から戻る際に気分リストが保存されます。';
+      
 
       // 詳細画面から表示した気分リストのみ、onclickを設定する
-      document.getElementById(ID.get_feeling_ID().toolbar).setAttribute('onClick', 'Movies_detail.tap_feeling_back_button()');
+      
     };
     Utility.check_page_init(ID.get_feeling_ID().page_id, callback);
     Utility.push_page(ID.get_feeling_ID().tmp_id, 'slide', 0, '');
@@ -1827,6 +1827,10 @@ var Feeling = {
     toolbar_left.innerHTML = '';
     toolbar_left.innerHTML = Global_variable.get_toolbar(Global_variable.feeling_flag);
     
+    if (Global_variable.feeling_flag === 1) {
+      document.getElementById(ID.get_feeling_ID().caution_message).innerHTML = '※ この画面から戻る際に気分リストが保存されます。';
+      document.getElementById(ID.get_feeling_ID().toolbar).setAttribute('onClick', 'Movies_detail.tap_feeling_back_button()');
+    }
     
     //アラート表示後に自動フォーカスするためのイベントを登録する
     Feeling.feeling_input_name_addEvent();
@@ -2017,6 +2021,13 @@ var Movieadd_status = {
     var toolbar_left = document.getElementById(ID.get_movieadd_status_ID().toolbar);
     toolbar_left.innerHTML = '';
     toolbar_left.innerHTML = Global_variable.get_toolbar_status(Global_variable.status_flag);
+
+    var small_message = document.getElementById(ID.get_movieadd_status_ID().small_message);
+    if (Global_variable.status_flag === 0) {
+      small_message.innerHTML = '初期状態は「No」で登録されます。';
+    }else {
+      small_message.innerHTML = '※ この画面から戻る際にステータスが保存されます。';
+    }
 
     var check_list = [Movieadd.userdata.dvd, Movieadd.userdata.fav];
     var id_list = [ID.get_movieadd_status_ID().dvd, ID.get_movieadd_status_ID().fav];
