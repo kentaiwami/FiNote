@@ -830,6 +830,7 @@ var Movies_detail = {
    * 気分リストの変更をローカル・サーバ・詳細画面へ反映させる関数
    */
   tap_feeling_back_button: function() {
+    Global_variable.movie_update_flag = true;
     document.addEventListener('postpop', function(event) {
       if (event.enterPage.pushedOptions.page == 'movies_detail.html') {
         Utility.show_spinner(ID.get_movies_detail_ID().page_id);
