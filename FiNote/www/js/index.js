@@ -2046,17 +2046,37 @@ var Movieadd_status = {
     //スイッチボタンの状態を保存する
     var dvd_switch_status = document.getElementById(ID.get_movieadd_status_ID().dvd).checked;
     var fav_switch_status = document.getElementById(ID.get_movieadd_status_ID().fav).checked;
-
+    var dvd_status = 0;
+    var fav_status = 0;
     if (dvd_switch_status === true) {
       Movieadd.userdata.dvd = true;
+      dvd_status = 1;
     }else {
       Movieadd.userdata.dvd = false;
+      dvd_status = 0;
     }
 
     if (fav_switch_status === true) {
       Movieadd.userdata.fav = true;
+      fav_status = 1;
     }else {
       Movieadd.userdata.fav = false;
+      fav_status = 0;
+    }
+
+    if (Global_variable.status_flag === 1) {
+      var movie_pk = Movies_detail.current_movie.movie_record.id;
+
+      Utility.show_spinner(ID.get_movieadd_status_ID().page_id);
+      var query = 'UPDATE movie SET dvd = ?, fav = ? WHERE id = ?';
+      DB_method.single_statement_execute(query, [dvd_status, fav_status, movie_pk]).then(function(result) {
+        Utility.stop_spinner();
+        console.log(result);
+      })
+      .catch(function(err) {
+        console.log(err);
+        Utility.show_error_alert('エラー発生', 'ステータスの保存時にエラーが発生しました', 'OK');
+      });
     }
     
     Utility.pop_page();
