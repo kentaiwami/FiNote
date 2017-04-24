@@ -404,15 +404,7 @@ var Movies = {
 
       //ローカルに保存されている映画情報の件数で表示内容を変える
       if (movie_count === 0) {
-        draw_content = function(){
-          var nodata_message_p = document.createElement('p');
-          nodata_message_p.classList.add('center_message');
-          nodata_message_p.setAttribute('id', ID.get_movies_ID().nodata_message_p);
-          nodata_message_p.innerHTML = '登録された映画はありません';
-
-          var nodata_message_div = document.getElementById(ID.get_movies_ID().nodata_message);
-          nodata_message_div.appendChild(nodata_message_p);
-        };
+        draw_content = Movies.draw_no_data_message;
       }else {
         Global_variable.movie_update_flag = true;
         draw_content = Movies.update_movies;
@@ -560,12 +552,31 @@ var Movies = {
           lists_html += list;
         }
 
-        movie_collection_list.innerHTML = '<ons-list>' + 
-                                          '<ons-list-header>全て</ons-list-header>' + 
-                                          lists_html + 
-                                          '</ons-list>';
+        // 映画の登録件数が0の場合は、メッセージの表示とリスト表示エリアの初期化をする
+        if (movie_count === 0) {
+          movie_collection_list.innerHTML = '';
+          Movies.draw_no_data_message();
+        }else {
+          movie_collection_list.innerHTML = '<ons-list>' + 
+                                            '<ons-list-header>全て</ons-list-header>' + 
+                                            lists_html + 
+                                            '</ons-list>';
+        }
       });
     }
+  },
+
+  /**
+   * 登録済みの映画がないメッセージを表示する関数
+   */
+  draw_no_data_message: function() {
+    var nodata_message_p = document.createElement('p');
+    nodata_message_p.classList.add('center_message');
+    nodata_message_p.setAttribute('id', ID.get_movies_ID().nodata_message_p);
+    nodata_message_p.innerHTML = '登録された映画はありません';
+
+    var nodata_message_div = document.getElementById(ID.get_movies_ID().nodata_message);
+    nodata_message_div.appendChild(nodata_message_p);
   },
 
 
