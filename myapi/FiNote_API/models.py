@@ -82,3 +82,12 @@ class OnomatopoeiaCount(models.Model):
 
     def __str__(self):
         return self.onomatopoeia.name + '_' + str(self.count)
+
+
+class BackUp(models.Model):
+    username = models.ForeignKey(AuthUser)
+    movie = models.ForeignKey(Movie)
+    onomatopoeia = models.ManyToManyField(Onomatopoeia)
+
+    def __str__(self):
+        return str(self.username)

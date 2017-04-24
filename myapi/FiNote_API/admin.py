@@ -31,8 +31,16 @@ class OnomatopoeiaCountAdmin(admin.ModelAdmin):
     list_display = ('pk', 'count', 'onomatopoeia', 'movie')
 
 
+class BackUpAdmin(admin.ModelAdmin):
+    list_display = ('username', 'movie', 'onomatopoeias')
+
+    def onomatopoeias(self, obj):
+        return "\n".join([o.name for o in obj.onomatopoeia.all()])
+
+
 admin.site.register(AuthUser, UserAdmin)
 admin.site.register(Genre, GenreAdmin)
 admin.site.register(Onomatopoeia, OnomatopoeiaAdmin)
 admin.site.register(Movie, MovieAdmin)
 admin.site.register(OnomatopoeiaCount, OnomatopoeiaCountAdmin)
+admin.site.register(BackUp, BackUpAdmin)
