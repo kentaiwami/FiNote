@@ -758,7 +758,7 @@ var Movies_detail = {
                             '</ons-list-item>'+
                             '</ons-list>'+
 
-                            '<ons-button class="delete_button" modifier="large">'+
+                            '<ons-button onclick="Movies_detail.tap_delete_button()" class="delete_button" modifier="large">'+
                             '削除'+
                             '</ons-button>';
     document.getElementById(ID.get_movies_detail_ID().detail).innerHTML = movie_detail_html;
@@ -1018,6 +1018,40 @@ var Movies_detail = {
       }
       document.removeEventListener('prepop', arguments.callee);
     });
+  },
+
+
+  /**
+   * 削除ボタンを押した際に動作
+   * 削除の確認をさせるアラートの表示、削除、画面のpopと更新を行う
+   */
+  tap_delete_button: function() {
+    var movie_id = Movies_detail.current_movie.movie_record.id;
+
+    var func_after_deleted = function() {
+      Utility.pop_page();
+      Global_variable.movie_update_flag = true;
+      Movies.update_movies();
+    };
+
+    var func_none = function() {};
+    var func_delete = function() {
+      var query = 'DELETE FROM movie WHERE id = ?';
+
+      Utility.show_spinner(ID.get_movies_detail_ID().page_id);
+
+      DB_method.single_statement_execute(query, [movie_id]).then(function(result) {
+        Utility.stop_spinner();
+
+        Utility.show_confirm_alert('削除の完了', '映画の削除が完了しました', ['OK'], func_after_deleted, func_none);
+      })
+      .catch(function(err) {
+        console.log(err);
+        Utility.show_error_alert('エラー発生', '削除中にエラーが発生しました', 'OK');
+      });
+    };
+
+    Utility.show_confirm_alert('映画の削除', 'この映画を削除します', ['キャンセル', '削除'], func_none, func_delete);
   }
 };
 
