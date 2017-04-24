@@ -13,20 +13,6 @@
   color: #A5A5A5;
 }
 
-.orange_color {
-  color: #FFA500;
-}
-.orange_color:active {
-  color: #FFA500;
-}
-
-.red_color {
-  color: #FF1D00;
-}
-.red_color:active {
-  color: #FF1D00;
-}
-
 .brown_color, .brown_bg_color_quiet, .brown_bg_color_quiet:active, .btn_disable {
   color: #462401;
 }

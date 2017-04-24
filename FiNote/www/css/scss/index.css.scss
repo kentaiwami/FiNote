@@ -4,8 +4,6 @@
 $color-base: #1f1f21;
 $color-white: #FFF;
 $color-gray: #A5A5A5;
-$color-orange: #FFA500;
-$color-red: #FF1D00;
 $color-brown: #462401;
 $color-brown-sub: #BE956A;
 $font-small: .75rem;
@@ -20,22 +18,6 @@ $font-small: .75rem;
 
   &:active {
     color: $color-gray;
-  }
-}
-
-.orange_color {
-  color: $color-orange;
-
-  &:active {
-    color: $color-orange;
-  }
-}
-
-.red_color {
-  color: $color-red;
-
-  &:active {
-    color: $color-red;
   }
 }
 

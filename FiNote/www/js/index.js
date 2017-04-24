@@ -489,13 +489,13 @@ var Movies = {
           var button_class = {dvd:'', fav:''};
 
           if (movie_record.dvd == 1) {
-            button_class.dvd = 'orange_color';
+            button_class.dvd = 'brown_color';
           }else {
             button_class.dvd = 'gray_color';
           }
 
           if (movie_record.fav == 1) {
-            button_class.fav = 'red_color';
+            button_class.fav = 'brown_color';
           }else {
             button_class.fav = 'gray_color';
           }
@@ -605,14 +605,14 @@ var Movies = {
       /*** 更新後にボタンの色を変更する ***/
 
       var lead_id = '';
-      var class_name = '';
+      var class_name = 'brown_color';
 
       if (flag === 0) {
         lead_id = 'dvd';
-        class_name = 'orange_color';
+        // class_name = 'brown_color';
       }else {
         lead_id = 'fav';
-        class_name = 'red_color';
+        // class_name = 'brown_color';
       }
 
       var element = document.getElementById(lead_id + '_' + pk);
