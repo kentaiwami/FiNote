@@ -756,7 +756,11 @@ var Movies_detail = {
                             '<ons-icon icon="ion-share" class="list-item__icon brown_bg_color_quiet"></ons-icon>'+
                             'この映画をシェアする'+
                             '</ons-list-item>'+
-                            '</ons-list>';
+                            '</ons-list>'+
+
+                            '<ons-button class="delete_button" modifier="large">'+
+                            '削除'+
+                            '</ons-button>';
     document.getElementById(ID.get_movies_detail_ID().detail).innerHTML = movie_detail_html;
     };
 

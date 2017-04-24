@@ -21,6 +21,11 @@ $font-small: .75rem;
   }
 }
 
+.red_bg_color {
+  background-color: #FF1D00;
+}
+
+
 .brown_color {
   color: $color-brown;
 
@@ -167,6 +172,19 @@ input[type=password] {
 .small_overview_opacity {
   @extend .small_overview;
   opacity: .5;
+}
+
+.delete_button {
+  @extend .red_bg_color;
+  width: 96vw;
+  margin-top: 3rem;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 3rem;
+
+  &:active {
+    @extend .red_bg_color;
+  }
 }
 
 

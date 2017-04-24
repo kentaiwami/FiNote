@@ -13,6 +13,10 @@
   color: #A5A5A5;
 }
 
+.red_bg_color, .delete_button, .delete_button:active {
+  background-color: #FF1D00;
+}
+
 .brown_color, .brown_bg_color_quiet, .brown_bg_color_quiet:active, .btn_disable {
   color: #462401;
 }
@@ -143,6 +147,14 @@ input[type=password] {
 
 .small_overview_opacity {
   opacity: .5;
+}
+
+.delete_button {
+  width: 96vw;
+  margin-top: 3rem;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 3rem;
 }
 
 /************************************************************
