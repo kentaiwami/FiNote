@@ -15,7 +15,7 @@ class SignUpViewSet(viewsets.ViewSet):
 
     def create(self, request):
         """
-        When SignIn api access, run this method.
+        When SignUp api access, run this method.
         This method is check sign in form data, create new user and response token.
         :param request: User request data.(username, email, password, birthday year and sex)
         :return content: Username and token.
@@ -69,7 +69,7 @@ class SignInWithTokenViewSet(viewsets.ViewSet):
 
     def create(self, request):
         """
-        When SignUpWithToken api access, run this method.
+        When SignInWithToken api access, run this method.
         This method is check username and token. If success signup, response username.
         :param request: Request user's data.(username and token)
         :return: Username
