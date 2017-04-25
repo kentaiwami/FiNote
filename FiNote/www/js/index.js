@@ -581,35 +581,59 @@ var Movies = {
 
 
   /**
-   * moviesのDVDやFAVボタンを押した際にデータベースの値を更新する関数
+   * moviesのDVDやFAVボタンを押した際にデータベースとサーバのバックアップの値を更新する関数
    * @param  {[string]} id [dvdorfav + タップした映画のprimary key]
    * @param  {[number]} flag    [0:DVD, 1:FAV]
    */
   tap_dvd_fav: function(id,flag) {
+    Utility.show_spinner(ID.get_movies_ID().page_id);
+
+    var button = document.getElementById(id);
+    button.setAttribute('disabled', 'disabled');
+
     var pk = Number(id.substring(id.indexOf('_')+1,id.length));
 
     /*** タップしたボタンに該当する項目の更新をする ***/
-    var query = 'SELECT dvd,fav FROM movie WHERE id = ?';
+    var query = 'SELECT dvd,fav,tmdb_id FROM movie WHERE id = ?';
     DB_method.single_statement_execute(query,[pk]).then(function(result) {
       var query_obj = {query:'', data:[]};
+      var dvd_status = result.rows.item(0).dvd;
+      var fav_status = result.rows.item(0).fav;
 
       if (flag === 0) {
         query_obj.query = 'UPDATE movie SET dvd = ? WHERE id = ?';
 
         if (result.rows.item(0).dvd === 0) {
           query_obj.data = [1,pk];
+          dvd_status = 1;
         }else {
           query_obj.data = [0,pk];
+          dvd_status = 0;
         }
       }else {
         query_obj.query = 'UPDATE movie SET fav = ? WHERE id = ?';
 
         if (result.rows.item(0).fav === 0) {
           query_obj.data = [1,pk];
+          fav_status = 1;
         }else {
           query_obj.data = [0,pk];
+          fav_status = 0;
         }
       }
+
+      var storage = window.localStorage;
+      var username = storage.getItem('username');
+      var request_data = {
+        "username": username,
+        "movie_id": result.rows.item(0).tmdb_id,
+        "dvd": dvd_status,
+        "fav": fav_status
+      };
+      var promises = [
+        DB_method.single_statement_execute(query_obj.query,query_obj.data),
+        Utility.FiNote_API('statusupdate', request_data, 'POST')
+      ];
 
     return DB_method.single_statement_execute(query_obj.query,query_obj.data);
     }).then(function(result) {
@@ -620,10 +644,8 @@ var Movies = {
 
       if (flag === 0) {
         lead_id = 'dvd';
-        // class_name = 'brown_color';
       }else {
         lead_id = 'fav';
-        // class_name = 'brown_color';
       }
 
       var element = document.getElementById(lead_id + '_' + pk);
@@ -636,10 +658,15 @@ var Movies = {
         element.classList.remove(class_name);
         element.classList.add('gray_color');
       }
+
+      Utility.stop_spinner();
+      button.removeAttribute('disabled');
     })
     .catch(function(err) {
       console.log(err);
       Utility.show_error_alert('更新エラー','更新時にエラーが発生しました','OK');
+      Utility.stop_spinner();
+      button.removeAttribute('disabled');
     });
   },
 };
