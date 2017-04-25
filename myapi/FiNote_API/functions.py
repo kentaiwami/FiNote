@@ -179,3 +179,20 @@ class Backup():
                 backup_obj.onomatopoeia.add(onomatopoeia_obj)
 
         backup_obj.save()
+
+
+class OnomatopoeiaUpdate():
+
+    def movie_update_onomatopoeia(self, request_data, onomatopoeia_list):
+        movie_obj = Movie.objects.get(tmdb_id=request_data['movie_id'])
+
+        for onomatopoeia_name in onomatopoeia_list:
+            onomatopoeia_obj, created = Onomatopoeia.objects.get_or_create(
+                name=onomatopoeia_name,
+                defaults={'name': onomatopoeia_name}
+            )
+
+            if movie_obj.onomatopoeia.all().filter(name=onomatopoeia_obj.name).exists():
+                pass
+            else:
+                movie_obj.onomatopoeia.add(onomatopoeia_obj)

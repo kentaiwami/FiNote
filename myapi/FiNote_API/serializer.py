@@ -25,6 +25,13 @@ class MovieAddSerializer(serializers.Serializer):
     dvd = serializers.IntegerField(default=0)
     fav = serializers.IntegerField(default=0)
 
+
+class OnomatopoeiaUpdateSerializer(serializers.Serializer):
+    username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
+    movie_id = serializers.IntegerField(allow_null=False, required=True)
+    onomatopoeia = serializers.CharField(allow_blank=False, allow_null=False)
+
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = AuthUser

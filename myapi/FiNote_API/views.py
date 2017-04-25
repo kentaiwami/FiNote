@@ -4,7 +4,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework_jwt.serializers import User
 
-from FiNote_API.functions import MovieAdd, Backup
+from FiNote_API.functions import *
 from .serializer import *
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -117,15 +117,33 @@ class MovieAddViewSet(viewsets.ViewSet):
 
             # バックアップの保存
             backup_data = {'username': request.data['username'],
-                         'movie_id': request.data['movie_id'],
-                         'onomatopoeia_obj_list': onomatopoeia_obj_list,
-                         'dvd': request.data['dvd'],
-                         'fav': request.data['fav']
-                         }
+                           'movie_id': request.data['movie_id'],
+                           'onomatopoeia_obj_list': onomatopoeia_obj_list,
+                           'dvd': request.data['dvd'],
+                           'fav': request.data['fav']
+                           }
 
             Backup.movieadd_backup(self, backup_data)
 
             return JsonResponse(genre_obj_dict)
+
+
+class OnomatopoeiaUpdateViewSet(viewsets.ViewSet):
+    queryset = Onomatopoeia.objects.all()
+    serializer_class = OnomatopoeiaUpdateSerializer
+
+    def create(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            r_onomatopoeia_list = request.data['onomatopoeia']
+
+            if type(r_onomatopoeia_list) is str:
+                r_onomatopoeia_list = MovieAdd.conversion_str_to_list(self, r_onomatopoeia_list, 'str')
+            elif type(request.data['onomatopoeia']) is not list:
+                raise ValidationError('不正な形式です')
+
+            OnomatopoeiaUpdate.movie_update_onomatopoeia(self, request.data, r_onomatopoeia_list)
+
+            return Response(request.data['username'])
 
 
 class UserViewSet(viewsets.ModelViewSet):

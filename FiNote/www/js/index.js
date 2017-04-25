@@ -903,13 +903,10 @@ var Movies_detail = {
 
           var request_data = {
             "username": username,
-            "movie_title": movie.title,
-            "overview": movie.overview,
-            "movie_id": String(movie.tmdb_id),
-            "genre_id_list": movie.genre_id,
+            "movie_id": movie.tmdb_id,
             "onomatopoeia": request_feeling_name_list
           };
-          promises = [Movieadd.set_onomatopoeia_local(feeling_name_list), Utility.FiNote_API('movieadd', request_data, 'POST')];
+          promises = [Movieadd.set_onomatopoeia_local(feeling_name_list), Utility.FiNote_API('onomatopoeiaupdate', request_data, 'POST')];
         }
 
         Promise.all(promises).then(function(results) {
