@@ -32,6 +32,11 @@ class OnomatopoeiaUpdateSerializer(serializers.Serializer):
     onomatopoeia = serializers.CharField(allow_blank=False, allow_null=False)
 
 
+class DeleteBackupSerializer(serializers.Serializer):
+    username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
+    movie_id = serializers.IntegerField(allow_null=False, required=True)
+
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = AuthUser

@@ -1024,7 +1024,8 @@ var Movies_detail = {
    * 削除の確認をさせるアラートの表示、削除、画面のpopと更新を行う
    */
   tap_delete_button: function() {
-    var movie_id = Movies_detail.current_movie.movie_record.id;
+    var movie_pk = Movies_detail.current_movie.movie_record.id;
+    var movie_tmdb_id = Movies_detail.current_movie.movie_record.tmdb_id;
 
     var func_after_deleted = function() {
       Utility.pop_page();
@@ -1034,13 +1035,23 @@ var Movies_detail = {
 
     var func_none = function() {};
     var func_delete = function() {
-      var query = 'DELETE FROM movie WHERE id = ?';
-
       Utility.show_spinner(ID.get_movies_detail_ID().page_id);
 
-      DB_method.single_statement_execute(query, [movie_id]).then(function(result) {
-        Utility.stop_spinner();
+      var query = 'DELETE FROM movie WHERE id = ?';
+      var storage = window.localStorage;
+      var username = storage.getItem('username');
+      var request_data = {
+        "username": username,
+        "movie_id": movie_tmdb_id
+      };
+      
+      var promises = [
+        DB_method.single_statement_execute(query, [movie_pk]),
+        Utility.FiNote_API('deletebackup', request_data, 'POST')
+      ];
 
+      Promise.all(promises).then(function(result) {
+        Utility.stop_spinner();
         Utility.show_confirm_alert('削除の完了', '映画の削除が完了しました', ['OK'], func_after_deleted, func_none);
       })
       .catch(function(err) {

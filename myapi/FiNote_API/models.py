@@ -69,7 +69,7 @@ class Movie(models.Model):
     tmdb_id = models.CharField(max_length=100, unique=True)
     overview = models.CharField(max_length=1000, default='')
     genre = models.ManyToManyField(Genre)
-    user = models.ManyToManyField(AuthUser)
+    user = models.ManyToManyField(AuthUser, blank=True)
     onomatopoeia = models.ManyToManyField(Onomatopoeia)
 
     def __str__(self):

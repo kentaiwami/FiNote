@@ -150,6 +150,25 @@ class OnomatopoeiaUpdateViewSet(viewsets.ViewSet):
             return Response(request.data['username'])
 
 
+class DeleteBackupViewSet(viewsets.ViewSet):
+    queryset = Onomatopoeia.objects.all()
+    serializer_class = DeleteBackupSerializer
+
+    def create(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            # バックアップの削除
+            usr_obj = AuthUser.objects.get(username=request.data['username'])
+            movie_obj = Movie.objects.get(tmdb_id=request.data['movie_id'])
+            backup_obj = BackUp.objects.filter(username=usr_obj, movie=movie_obj)
+            backup_obj.delete()
+
+            # Movieテーブルの該当レコードのuserカラムからユーザとの関連を削除
+            if movie_obj.user.all().filter(username=usr_obj).exists():
+                movie_obj.user.remove(usr_obj)
+
+            return Response(request.data['username'])
+
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset = AuthUser.objects.all()
     serializer_class = UserSerializer
