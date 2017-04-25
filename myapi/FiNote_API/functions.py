@@ -154,3 +154,28 @@ class MovieAdd():
             else:
                 onomatopoeia_count_obj.count += 1
                 onomatopoeia_count_obj.save()
+
+
+class Backup():
+
+    def movieadd_backup(self, backup_data):
+        """
+        Run movie add api back up user data
+        :param backup_data: Back up dictionary data
+        """
+
+        user_obj = AuthUser.objects.get(username=backup_data['username'])
+        movie_obj = Movie.objects.get(tmdb_id=backup_data['movie_id'])
+
+        backup_obj, created_backup = BackUp.objects.get_or_create(
+            username=user_obj, movie=movie_obj,
+            defaults={'username': user_obj, 'movie': movie_obj, 'dvd': backup_data['dvd'], 'fav': backup_data['fav']}
+        )
+
+        for onomatopoeia_obj in backup_data['onomatopoeia_obj_list']:
+            if backup_obj.onomatopoeia.all().filter(name=onomatopoeia_obj.name).exists():
+                pass
+            else:
+                backup_obj.onomatopoeia.add(onomatopoeia_obj)
+
+        backup_obj.save()

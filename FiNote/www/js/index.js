@@ -1573,13 +1573,30 @@ var Movieadd = {
       var user_onomatopoeia_list = Movieadd.userdata.feeling_name_list;
       var movie = Movieadd.current_movie;
 
+      //dvd所持情報を作成
+      var dvd = 0;
+      if (Movieadd.userdata.dvd === true) {
+        dvd = 1;
+      }else {
+        dvd = 0;
+      }
+      // お気に入り情報を作成
+      var fav = 0;
+      if (Movieadd.userdata.fav === true) {
+        fav = 1;
+      }else {
+        fav = 0;
+      }
+
       var data = {
         "username": username,
         "movie_title": Utility.get_movie_ja_title(movie),
         "overview": movie.overview,
         "movie_id": movie.id,
         "genre_id_list": movie.genre_ids,
-        "onomatopoeia": user_onomatopoeia_list
+        "onomatopoeia": user_onomatopoeia_list,
+        "dvd": dvd,
+        "fav": fav
       };
 
       Utility.FiNote_API('movieadd', data, 'POST').then(function(result) {
@@ -1615,21 +1632,6 @@ var Movieadd = {
             onomatopoeia_csv += onomatopoeia_pk_array[i] + ',';
           }
           onomatopoeia_csv = onomatopoeia_csv.substr(0, onomatopoeia_csv.length-1);
-
-          //dvd所持情報を作成
-          var dvd = 0;
-          if (Movieadd.userdata.dvd === true) {
-            dvd = 1;
-          }else {
-            dvd = 0;
-          }
-          // お気に入り情報を作成
-          var fav = 0;
-          if (Movieadd.userdata.fav === true) {
-            fav = 1;
-          }else {
-            fav = 0;
-          }
 
           var query = 'INSERT INTO movie(title, tmdb_id, genre_id, onomatopoeia_id, poster, overview, dvd, fav, add_year, add_month, add_day) VALUES(?,?,?,?,?,?,?,?,?,?,?)';
           var today = new Date();

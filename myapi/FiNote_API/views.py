@@ -4,7 +4,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework_jwt.serializers import User
 
-from FiNote_API.functions import MovieAdd
+from FiNote_API.functions import MovieAdd, Backup
 from .serializer import *
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -106,6 +106,7 @@ class MovieAddViewSet(viewsets.ViewSet):
 
             onomatopoeia_obj_list = MovieAdd.onomatopoeia(self, r_onomatopoeia_list)
 
+            # 映画の保存
             data = {'username': request.data['username'],
                     'movie_title': request.data['movie_title'],
                     'movie_id': request.data['movie_id'],
@@ -113,6 +114,17 @@ class MovieAddViewSet(viewsets.ViewSet):
                     }
 
             MovieAdd.movie(self, genre_obj_list, onomatopoeia_obj_list, data)
+
+            # バックアップの保存
+            backup_data = {'username': request.data['username'],
+                         'movie_id': request.data['movie_id'],
+                         'onomatopoeia_obj_list': onomatopoeia_obj_list,
+                         'dvd': request.data['dvd'],
+                         'fav': request.data['fav']
+                         }
+
+            Backup.movieadd_backup(self, backup_data)
+
             return JsonResponse(genre_obj_dict)
 
 

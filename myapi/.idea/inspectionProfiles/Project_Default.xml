@@ -9,6 +9,7 @@
           <option value="FiNote_API.models.Movie.objects" />
           <option value="FiNote_API.models.Onomatopoeia.objects" />
           <option value="FiNote_API.models.OnomatopoeiaCount.objects" />
+          <option value="FiNote_API.models.BackUp.objects" />
         </list>
       </option>
     </inspection_tool>
