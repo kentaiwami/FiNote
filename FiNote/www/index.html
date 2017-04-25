@@ -1,49 +1,425 @@
 <!DOCTYPE html>
-<!--
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
 <html>
-    <head>
-        <!--
-        Customize this policy to fit your own app's needs. For more guidance, see:
-            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
-        Some notes:
-            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
-            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
-            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
-                * Enable inline JS: add 'unsafe-inline' to default-src
-        -->
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
-        <meta name="format-detection" content="telephone=no">
-        <meta name="msapplication-tap-highlight" content="no">
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-        <link rel="stylesheet" type="text/css" href="css/index.css">
-        <title>Hello World</title>
-    </head>
-    <body>
-        <div class="app">
-            <h1>Apache Cordova</h1>
-            <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
-            </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="msapplication-tap-highlight" content="no">
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, minimum-scale=1, width=device-width" />
+
+  <link rel="stylesheet" href="onsen/css/onsenui.css">
+  <link rel="stylesheet" href="onsen/css/onsen-css-components.css">
+  <link rel="stylesheet" href="css/scss/index.css">
+
+	<script src="js/jquery-3.1.0.min.js"></script>
+  <script src="onsen/js/onsenui.js"></script>
+  <script src="cordova.js"></script>
+  <script src="js/spin.min.js"></script>
+  <script type="text/javascript" src="js/SocialSharing.js"></script>
+  <script type="text/javascript" src="js/rgbcolor.js"></script>
+  <script src="js/index.js"></script>
+</head>
+
+<body>
+  <script>
+   // DB_method.delete_all_record();
+
+   //ブラウザでの確認のため強制的に遷移させるテストコード
+   // Utility.check_page_init('index',function(){Utility.push_page('movieadd_search.html', 'push', 0, '');});
+
+
+   //エラー表示用
+   window.onerror = function(msg, url, line, col, error) {  
+   	console.log(line);
+    console.log(msg);
+   };
+
+   //サインアップしているかどうかをチェックする
+   Index.check_signup();
+   // Utility.browser_signup();
+  </script>
+
+  <!-- ページ管理をするnavigatorを設置 -->
+  <ons-navigator id="myNavigator" page="index.html"></ons-navigator>
+
+  <!-- ●ここからindex.html -->
+  <ons-template id="index.html">
+    <ons-page id="index"></ons-page>
+  </ons-template>
+  <!-- ●ここまでindex.html -->
+
+
+  <!-- ●●●●●●●●● ここからtab.html ●●●●●●●●● -->
+  <ons-template id="tab.html">
+    <ons-page id="tab">
+      <ons-tabbar position="bottom">
+        <ons-tab page="movies.html" label="映画の一覧" icon="ion-android-film" active="true"></ons-tab>
+        <ons-tab page="search.html" label="検索" icon="ion-android-search"></ons-tab>
+        <ons-tab page="action.html" label="アクション" icon="fa-square"></ons-tab>
+      </ons-tabbar>
+    </ons-page>
+  </ons-template>
+  <!-- ●●●●●●●●● ここまでtab.html ●●●●●●●●● -->
+
+  <!-- ●●●●●●●●● ここからsignin.html ●●●●●●●●● -->
+  <ons-template id="signin.html">
+    <ons-page id="signin">
+      <ons-toolbar>
+        <div class="center brown_color">ユーザ登録</div>
+      </ons-toolbar>
+
+			<ons-list id="signin_list">
+        <div class="formarea">
+          <!-- ユーザ名とパスワードのフォーム -->
+          <ons-list-header class="brown_color">入力項目</ons-list-header>
+          <div class="form-row">
+            <input type="text" id="username" class="text-input--underbar width-full" placeholder="ユーザ名" value="">
+          </div>
+
+          <div class="form-row">
+            <input type="text" id="email" class="text-input--underbar width-full" placeholder="メールアドレス" value="">
+          </div>
+
+          <div class="form-row">
+            <input type="password" id="password" class="text-input--underbar width-full" placeholder="パスワード" value="">
+          </div>
+
+          <div>
+            <p class="note brown_color">Password - 6 characters or more</p>
+          </div>
+
+          <!-- 性別を選択させるラジオボタン -->
+          <ons-list-header class="brown_color">性別</ons-list-header>
+          <ons-list-item tappable>
+            <label class="left"><ons-input name="color" type="radio" input-id="radio_m" checked></ons-input></label>
+            <label for="radio_m" class="center">男性</label>
+          </ons-list-item>
+
+          <ons-list-item tappable>
+            <label class="left"><ons-input name="color" type="radio" input-id="radio_f"></ons-input></label>
+            <label for="radio_f" class="center">女性</label>
+          </ons-list-item>
+          
+          <!-- 生年選択のフォーム -->
+          <ons-list-header class="brown_color">生年</ons-list-header>
+          <div class="form-row">
+            <input onfocus="Signin.birthday_pickerview()" type="text" id="birthday" class="text-input--underbar width-full" placeholder="生年を選択する" value="">
+          </div>
+         
+          <!-- 登録ボタン -->
+          <div class="vspc form-row">
+            <ons-button class="brown_bg_color" modifier="large--cta" id="signin_button" onclick="Signin.usersignin()" disabled>登録</ons-button>
+          </div>
+      	</div>
+    	</ons-list>
+
+      <!-- 会員登録成功時のアラート -->
+      <ons-dialog id="signin-alert-success">
+        <div class="alert">
+          <p>会員登録が完了しました</p>
+          <p><ons-button class="brown_bg_color" onclick="Signin.alert_hide('signin-alert-success')">OK</ons-button></p>
         </div>
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
-    </body>
+      </ons-dialog>
+
+      <!-- 会員登録失敗時のアラート -->
+      <ons-alert-dialog id="signin-alert-error">
+        <div class="alert-dialog-title">エラー</div>
+        <div class="alert-dialog-content" id="error-message"></div>
+        <div class="alert-dialog-footer">
+          <button class="alert-dialog-button" onclick="Signin.alert_hide('signin-alert-error')">OK</button>
+        </div>
+      </ons-alert-dialog>
+    </ons-page>
+  </ons-template>
+  <!-- ●●●●●●●●● ここまでsignin.html ●●●●●●●●● -->
+
+
+  <!-- ●●●●●●●●● ここからmovies.html ●●●●●●●●● -->
+  <ons-template id="movies.html">
+    <ons-page id="movies">
+      <!-- ツールバー -->
+      <ons-toolbar>
+	      <div class="center brown_color">映画の一覧</div>
+	      <div class="right">
+          <ons-toolbar-button onClick="Utility.push_page('movieadd_search.html', '', 0, function(){Utility.hideKeyboardAccessoryBar(true)})">
+            <ons-icon class="brown_color" icon="ion-plus-round"></ons-icon>
+          </ons-toolbar-button>
+	      </div>
+      </ons-toolbar>
+      
+      <!-- 登録済み映画を表示するリスト -->
+      <div id="movie_collection_list"></div>
+
+			<!-- 登録データがない場合のメッセージ表示 -->
+    	<div id="nodata_message"></div>
+    </ons-page>
+  </ons-template>
+  <!-- ●●●●●●●●● ここまでmovies.html ●●●●●●●●● -->
+
+
+	<!-- ●●●●●●●●● ここからmovies_detail.html ●●●●●●●●● -->
+	<ons-template id="movies_detail.html">
+	<ons-page id="movies_detail">
+		<!-- ツールバー -->
+    <ons-toolbar>
+		  <div class="left" onclick="Utility.pop_page(Movies.update_movies())" id="movieadd_search_backbutton"><ons-back-button class="brown_color"></ons-back-button></div>
+      <div class="center brown_color">詳細画面</div>
+    </ons-toolbar>
+
+    <div class="poster_area" id="detail_poster_area"></div>
+    <div id="movie_detail_area"></div>
+
+    <!-- SNS投稿完了のアラート -->
+    <ons-dialog id="success_sns_alert_detail">
+      <div class="alert">
+        <p>投稿が完了しました</p>
+        <p><ons-button class="brown_bg_color" onclick="Movies_detail.sns_alert_hide()">OK</ons-button></p>
+      </div>
+    </ons-dialog>
+
+    <!-- ポスターを画面いっぱいに表示させるmodal -->
+    <ons-modal id="modal_detail" onclick="Movies_detail.hide_modal()" animation="fade">
+      <img id="modal_poster" src="">
+    </ons-modal>
+	</ons-page>
+	</ons-template>
+
+  <!-- ●●●●●●●●● ここからmovies_detail.html ●●●●●●●●● -->
+
+
+  <!-- ●●●●●●●●● ここからmovieadd_search.html ●●●●●●●●● -->
+  <ons-template id="movieadd_search.html">
+	  <ons-page id="movieadd_search">
+      <!-- ツールバー -->
+      <ons-toolbar>
+        <div class="left" onclick="Utility.pop_page(Movies.update_movies())" id="movieadd_search_backbutton"><ons-back-button class="brown_color"></ons-back-button></div>
+
+        <div class="center toolbar_center_search_form" id="movieadd_search_input">
+          <form action="javascript:Movieadd_search.click_done()">
+              <input onfocus="Movieadd_search.set_animation_movieadd_search_input('focus')" onblur="Movieadd_search.set_animation_movieadd_search_input('blur')" type="search" id="search_movie_title" value="" placeholder="追加する映画を検索" class="search-input search_form">
+          </form>
+
+          <ons-button id="movieadd_reset_button" onclick="Movieadd_search.tap_reset()" class="reset_button" modifier="quiet"><ons-icon class="brown_color" icon="ion-close-circled"></ons-icon></ons-button>
+        </div>
+      </ons-toolbar>
+
+      <!-- ローディング表示、検索結果なしメッセージ用 -->
+      <div id="movieadd_no_match_message" class="all_center_message"></div>
+
+      <!-- 検索結果を表示するリスト -->
+      <ons-list id="movieadd_search_list"></ons-list>
+
+      <!-- 追加済みの映画リストをタップした時のアラート -->
+      <ons-dialog id="tap_exist_movie_list">
+        <div class="alert">
+          <p>追加済みの映画を編集するには映画の一覧から行ってください</p>
+          <p><ons-button class="brown_bg_color" onclick="Movieadd_search.exist_movie_list_alert_hide()">OK</ons-button></p>
+        </div>
+      </ons-dialog>
+    </ons-page>
+  </ons-template>
+  <!-- ●●●●●●●●● ここまでmovieadd_search.html ●●●●●●●●● -->
+
+
+  <!-- ●●●●●●●●● ここからmovieadd.html ●●●●●●●●● -->
+  <ons-template id="movieadd.html">
+    <ons-page modifier="shop-details" id="movieadd" ontouchmove="event.preventDefault()">
+
+    	<!-- ツールバー -->
+      <ons-toolbar id="movieadd_toolbar" modifier="transparent" class="brown_bg_color">
+        <div class="left">
+          <ons-toolbar-button id="movieadd_back_button" onClick="Movieadd.tap_backbutton()"><ons-icon icon="ion-arrow-left-c" class="white_color" fixed-width="false"></ons-icon></ons-toolbar-button>
+        </div>
+
+        <div class="right">
+          <ons-toolbar-button id="movieadd_show_info_button" onClick="Movieadd.fadeTo_detail_info()">
+            <ons-icon icon="ion-chatbox-working" class="white_color"></ons-icon>
+          </ons-toolbar-button>
+        </div>
+      </ons-toolbar>
+
+      <!-- 映画のポスター表示 -->
+      <div class="card card_back_image" id="movieadd_card" onclick="Movieadd.fadeTo_detail_info()"></div>
+
+      <!-- ユーザアクション部分 -->
+      <ons-list>
+        <ons-list-item>
+          <ons-row class="action">
+
+            <ons-col class="action-col">
+              <div class="action-icon">
+                <ons-button class="btn_disable" onClick="Movieadd.add_movie()" id="movieadd_add_button" modifier="quiet">
+                  <ons-icon icon="ion-plus-circled"></ons-icon>
+                </ons-button>
+              </div>
+              <div class="action-label">追加</div>
+            </ons-col>
+
+            <ons-col class="action-col">
+              <div class="action-icon">
+                <ons-button class="brown_color" onClick="Movieadd.pushpage_feeling()" id="movieadd_pushfeeling_button" modifier="quiet">
+                  <ons-icon icon="ion-edit"></ons-icon>
+                </ons-button>
+              </div>
+              <div class="action-label">気分リスト</div>
+
+              <span class="notification notification_space_small" id="list_number">0</span>
+            </ons-col>
+            
+            <ons-col class="action-col">
+              <div class="action-icon"><ons-button class="brown_color" onClick="Movieadd.pushpage_status()" id="movieadd_pushdvd_button" modifier="quiet"><ons-icon icon="ion-ios-toggle"></ons-icon></ons-button></div>
+              <div class="action-label">ステータス</div>
+
+            </ons-col>
+
+            <ons-col class="action-col">
+              <div class="action-icon"><ons-button class="brown_color" onClick="Movieadd.sns_share()" id="movieadd_share_button" modifier="quiet"><ons-icon icon="ion-share"></ons-icon></ons-button></div>
+              <div class="action-label">シェア</div>
+            </ons-col>
+
+          </ons-row>
+        </ons-list-item>
+      </ons-list>
+
+      <!-- 映画追加完了のアラート -->
+      <ons-dialog id="success_movieadd_alert">
+        <div class="alert">
+          <p>映画の追加が完了しました</p>
+          <p><ons-button class="brown_bg_color" onclick="Movieadd.success_movieadd_alert_hide()">OK</ons-button></p>
+        </div>
+      </ons-dialog>
+
+      <!-- SNS投稿完了のアラート -->
+      <ons-dialog id="success_sns_alert">
+        <div class="alert">
+          <p>投稿が完了しました</p>
+          <p><ons-button class="brown_bg_color" onclick="Movieadd.sns_alert_hide()">OK</ons-button></p>
+        </div>
+      </ons-dialog>
+    </ons-page>
+  </ons-template>
+  <!-- ●●●●●●●●● ここまでmovieadd.html ●●●●●●●●● -->
+
+
+  <!-- ●●●●●●●●● ここからfeeling.html ●●●●●●●●● -->
+  <ons-template id="feeling.html">
+    <ons-page id="feeling">
+      <!-- ツールバー -->
+      <ons-toolbar>
+        <div class="left" id="feeling_toolbar_left" onClick="Utility.pop_page()"></div>
+
+        <div class="center brown_color">気分リスト</div>
+
+        <div class="right">
+					<ons-toolbar-button onClick="Feeling.show_input_alert()">
+			    	<ons-icon class="brown_color" icon="ion-plus-round"></ons-icon>
+			  	</ons-toolbar-button>
+				</div>
+      </ons-toolbar>
+
+      <!-- ユーザが入力した気分を表示する領域 -->
+      <ons-list id="feeling_list"></ons-list>
+
+      <!-- 気分の登録件数が0件の場合に表示するメッセージ -->
+			<div id="feeling_nodata_message" class="feeling_no_message"></div>
+
+      <!-- 気分リストの下にメッセージを出す領域 -->
+      <div id="feeling_caution_message" class="small_message"></div>
+
+      <!-- 気分を入力するためのアラート -->
+      <ons-dialog id="feeling_add_dialog">
+        <div class="alert">
+          <p>映画を観た気分を6文字以内で入力</p>
+          <ons-input input-id="feeling_input_name" placeholder="例) ドキドキ、ワクワクなど" modifier="underbar" maxlength="6" float></ons-input>
+          <p>
+            <ons-button class="brown_bg_color" onclick="Feeling.hide_input_alert('cancel', 'feeling_add_dialog')">キャンセル</ons-button>
+            <ons-button class="brown_bg_color" id="feeling_add_button" onclick="Feeling.hide_input_alert('add', 'feeling_add_dialog')" disabled>登  　　録</ons-button>
+          </p>
+        </div>
+      </ons-dialog>
+
+      <!-- 気分を編集するためのアラート -->
+      <ons-dialog id="feeling_edit_dialog">
+        <div class="alert">
+          <p>映画を観た気分を6文字以内で入力</p>
+          <ons-input input-id="feeling_edit_input_name" modifier="underbar" maxlength="6" float></ons-input>
+          <p>
+            <ons-button class="brown_bg_color" onclick="Feeling.hide_input_alert('cancel', 'feeling_edit_dialog')">キャンセル</ons-button>
+            <ons-button class="brown_bg_color" id="feeling_edit_button" onclick="Feeling.hide_input_alert('change', 'feeling_edit_dialog')">変  　　更</ons-button>
+          </p>
+        </div>
+      </ons-dialog>
+    </ons-page>
+  </ons-template>
+  <!-- ●●●●●●●●● ここまでfeeling.html ●●●●●●●●● -->
+
+
+  <!-- ●●●●●●●●● ここからmovieadd_status.html ●●●●●●●●● -->
+  <ons-template id="movieadd_status.html">
+  	<ons-page id="movieadd_status" ontouchmove="event.preventDefault()">
+  		<!-- ツールバー -->
+  		<ons-toolbar>
+	  		<div class="left" id="status_toolbar_left">
+          <!-- <ons-toolbar-button onClick="Utility.pop_page(Movieadd_status.close_movieadd_status())">
+          	<ons-icon id="status_toolbar_left_icon" class="brown_color" icon="ion-close-round"></ons-icon>
+          </ons-toolbar-button> -->
+        </div>
+  			<div class="center brown_color">ステータスの登録</div>
+  		</ons-toolbar>
+
+  		<!-- switchボタン -->
+  		<ons-list>
+		    <ons-list-item>
+			    <div class="left">
+		        <ons-icon icon="ion-disc" class="list-item__icon brown_bg_color_quiet"></ons-icon>
+		      </div>
+		      <div class="center">DVDを所持している</div>
+		      <div class="right">
+		        <ons-switch id="dvd_switch"></ons-switch>
+		      </div>
+		    </ons-list-item>
+
+		    <ons-list-item>
+			    <div class="left">
+		        <ons-icon icon="ion-android-favorite" class="list-item__icon brown_bg_color_quiet"></ons-icon>
+		      </div>
+		      <div class="center">お気に入りにする</div>
+		      <div class="right">
+		        <ons-switch id="fav_switch"></ons-switch>
+		      </div>
+		    </ons-list-item>
+			</ons-list>
+
+			<div class="small_message" id="small_message"></div>
+		</ons-page>
+	</ons-template>
+  <!-- ●●●●●●●●● ここまでmovieadd_status.html ●●●●●●●●● -->
+
+
+  <!-- ●●●●●●●●● ここからsearch.html ●●●●●●●●● -->
+  <ons-template id="search.html">
+	  <ons-page id="search">
+      <!--ツールバー-->
+      <ons-toolbar>
+        <div class="center">検索</div>
+      </ons-toolbar>
+
+      <p style="text-align: center; opacity: 0.6; padding-top: 20px;">Search.html</p>
+	  </ons-page>
+  </ons-template>
+  <!-- ●●●●●●●●● ここまでsearch.html ●●●●●●●●● -->
+
+
+  <!-- ●●●●●●●●● ここからaction.html ●●●●●●●●● -->
+  <ons-template id="action.html">
+    <ons-page id="action">
+      <!--ツールバー-->
+      <ons-toolbar>
+        <div class="center">アクション</div>
+      </ons-toolbar>
+
+      <p style="text-align: center; opacity: 0.6; padding-top: 20px;">Actions.html</p>
+    </ons-page>
+  </ons-template>
+  <!-- ●●●●●●●●● ここまでaction.html ●●●●●●●●● -->
+</body>
 </html>

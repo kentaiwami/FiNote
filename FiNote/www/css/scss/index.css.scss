@@ -1,0 +1,393 @@
+/************************************************************
+                          	Base
+ ************************************************************/
+$color-base: #1f1f21;
+$color-white: #FFF;
+$color-gray: #A5A5A5;
+$color-brown: #462401;
+$color-brown-sub: #BE956A;
+$font-small: .75rem;
+
+
+.white_color {
+  color:  $color-white;
+}
+
+.gray_color {
+  color: $color-gray;
+
+  &:active {
+    color: $color-gray;
+  }
+}
+
+.red_bg_color {
+  background-color: #FF1D00;
+}
+
+
+.brown_color {
+  color: $color-brown;
+
+  &:active {
+    color: $color-brown;
+  }
+}
+
+.brown_bg_color {
+  background-color: $color-brown;
+  color: $color-white;
+
+  &:active {
+    background-color: $color-brown;
+    color: $color-white;
+  }
+}
+
+.brown_bg_color_quiet {
+  @extend .brown_color;
+
+  &:active {
+    @extend .brown_color;
+  }
+}
+
+
+/************************************************************
+                      Onsen UI Override
+ ************************************************************/
+/* タブバーのボタンがactiveになっている時の色を指定 */
+:checked + .tabbar__button {
+  color: $color-brown;
+}
+
+/* ラジオボタンのチェックをした方の色を指定 */
+.radio-button__checkmark:after {
+  border: 2px solid $color-brown;
+  border-top: none;
+  border-right: none;
+  border-radius: 0;
+}
+
+/* switchボタンのチェックをした際の色を指定 */
+:checked + .switch__toggle {
+  box-shadow: inset 0 0 0 2px $color-brown;
+  background-color: $color-brown;
+}
+
+
+/************************************************************
+                          	Signin
+ ************************************************************/
+.form-row {
+  margin: .8rem;
+}
+
+.width-full {
+  width: 100%;
+}
+
+.note {
+  margin: .6rem;
+  font-size: $font-small;
+  opacity: .8;
+}
+
+.vspc {
+  margin-top: 1.5rem;
+}
+
+.formarea {
+  margin: 3rem auto;
+  height: 78.5vh;
+}
+
+input[type=text],
+input[type=password] {
+	padding: 10px 0px;
+	height: 3rem;
+}
+
+
+/************************************************************
+		                       Movies
+************************************************************/
+.center_message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 5vh;
+  opacity: .6;
+}
+
+.list_img {
+  box-shadow: 0px 2px 4px 0px rgba(0,0,0,.5);
+  width: 15vw;
+  height: auto;
+  background: url(../../img/loading.gif) no-repeat center;
+  object-fit: contain;
+}
+
+.list_title {
+  font-weight: 500;
+}
+
+.list_sub_title {
+  margin-top: .3rem;
+  font-size: 1rem;
+}
+
+.list_sub_title_small {
+  margin-top: 1rem;
+}
+
+.list_button_row {
+  position: absolute;
+  bottom: 3.5%;
+  right: 2%;
+  width: 40vw;
+}
+
+
+
+/************************************************************
+                        Movie Detail
+************************************************************/
+.poster_area {
+  margin: 1rem 0rem;
+}
+
+.poster {
+  display: block;
+  margin: 0 auto;
+  width: 40vw;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
+}
+
+.small_overview {
+  font-size: $font-small;
+}
+
+.small_overview_opacity {
+  @extend .small_overview;
+  opacity: .5;
+}
+
+.delete_button {
+  @extend .red_bg_color;
+  width: 96vw;
+  margin-top: 3rem;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 3rem;
+
+  &:active {
+    @extend .red_bg_color;
+  }
+}
+
+
+/************************************************************
+                       Movie Add Search
+************************************************************/
+.search_form {
+  width: 80vw;
+}
+
+.toolbar_center_search_form {
+	position: absolute;
+  left: 0;
+  margin-left: 12vw;
+  padding: .4rem 0rem;
+}
+
+.reset_button {
+	position: absolute;
+  top: 0;
+  margin-left: 100%;
+  visibility: hidden;
+}
+
+.all_center_message {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  opacity: .6;
+}
+
+.list_img_large {
+  @extend .list_img;
+  width: 25vw;
+}
+
+.list_title_bold {
+  font-weight: 500;
+}
+
+.list_sub_title_small {
+  font-size: 3.5vw;
+  line-height: 1rem;
+}
+
+.exist_message {
+  position: absolute;
+  bottom: 6%;
+  right: 2%;
+  color: $color-brown-sub;
+  font-size: .9rem;
+  font-weight: 500;
+}
+
+.exist_message:after {
+  position: relative;
+  bottom: -0.16em;
+  margin-left: 0.1em;
+  margin-right: 0.3em;
+  content: '追加済み';
+}
+
+
+/************************************************************
+                          Movie Add
+ ************************************************************/
+.btn_disable {
+	@extend .brown_color;
+  opacity: .4;
+
+  &:active {
+  	color: $color-brown;
+  }
+}
+
+.notification_space_small {
+  position: relative;
+  margin-top: -15vw;
+  margin-left: 13vw;
+  background-color: $color-brown;
+  font-size: .75rem;
+}
+
+.notification_space_large {
+	@extend .notification_space_small;
+  margin-left: 15vw;
+}
+
+.card {
+	height: 80vh;
+  background-color: $color-white;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: $color-white;
+}
+
+.modal__content {
+ font-size: 4vmin;
+}
+
+.card_modal_prev {
+  height: 80vh;
+  z-index: 0;
+  opacity: 0;
+}
+
+.card_modal {
+  @extend .card_modal_prev;
+  position: fixed;
+  height: 87%;
+}
+
+.card_back_image {
+	width: 100%;
+	height: 80vh;
+  background-image: url('../../img/noimage.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.rating {
+	position: relative;
+  text-align: center;
+}
+
+.rating-num {
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  bottom: 100;
+  right: 0;
+  margin: 0 auto 0 auto;
+  padding: 0 6px;
+  width: auto;
+  height: 24px;
+  border-radius: 4px 4px 0 0;
+  text-align: center;
+  color: white;
+  font-size: .8rem;
+  font-weight: 600;
+}
+
+.rating-num ons-icon {
+  font-size: 11px;
+  vertical-align: 0px;
+}
+
+.action-col {
+  text-align: center;
+  padding: 10px 0 8px;
+}
+
+.action-col:active {
+  opacity: .7;
+}
+
+.action-col ons-button {
+  padding: 0;
+  line-height: 1;
+}
+
+.action-icon {
+  padding: 0 0 4px 0;
+}
+
+.action-icon ons-icon {
+  font-size: 28px;
+}
+
+.action-label {
+  font-size: 12px;
+}
+
+.alert {
+  text-align: center;
+  padding: 10px;
+}
+
+
+/************************************************************
+                        Movie Add Status
+************************************************************/
+.center_button {
+  margin-top: 2.5vh;
+  padding: 2.5vh;
+}
+
+.small_message {
+  opacity: .5;
+  font-size: $font-small;
+}
+
+
+/************************************************************
+                        Movie Add Feeling
+************************************************************/
+.feeling_no_message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  opacity: .6;
+}

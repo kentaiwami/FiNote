@@ -1,0 +1,17 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="FiNote_API.models.User.objects" />
+          <option value="FiNote_API.models.Genre.objects" />
+          <option value="FiNote_API.models.Movie.objects" />
+          <option value="FiNote_API.models.Onomatopoeia.objects" />
+          <option value="FiNote_API.models.OnomatopoeiaCount.objects" />
+          <option value="FiNote_API.models.BackUp.objects" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
