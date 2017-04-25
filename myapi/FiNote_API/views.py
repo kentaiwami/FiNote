@@ -13,7 +13,16 @@ class SignInViewSet(viewsets.ViewSet):
     queryset = User.objects.all()
     serializer_class = SignInSerializer
 
-    def create(self, request, *args, **kwargs):
+    def create(self, request):
+        """
+        When SignIn api access, run this method.
+        This method is check sign in form data, create new user and response token.
+        :param request: User request data.(username, email, password, birthday year and sex)
+        :return content: Username and token.
+        
+        :type request: object
+        """
+
         if request.method == 'POST':
             data = request.data
 
@@ -58,7 +67,16 @@ class SignUpWithTokenViewSet(viewsets.ViewSet):
     queryset = User.objects.all()
     serializer_class = SignUpWithTokenSerializer
 
-    def create(self, request, *args, **kwargs):
+    def create(self, request):
+        """
+        When SignUpWithToken api access, run this method.
+        This method is check username and token. If success signup, response username.
+        :param request: Request user's data.(username and token)
+        :return: Username
+        
+        :type request object
+        """
+
         if request.method == 'POST':
             data = request.data
             if not data['username']:
@@ -82,7 +100,16 @@ class MovieAddViewSet(viewsets.ViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieAddSerializer
 
-    def create(self, request, *args, **kwargs):
+    def create(self, request):
+        """
+        When MovieAdd api access, run this method.
+        This method is add movie, onomatopoeia and genre. If success all process, response genre id and name.
+        :param request: Request user's data.(username, movie_title, overview, movie_id(tmdb_id), genre_id_list, onomatopoeia, dvd and fav)
+        :return: Genre id and name json data.
+        
+        :type request object
+        """
+
         if request.method == 'POST':
             r_genre_id_list = request.data['genre_id_list']
             r_onomatopoeia_list = request.data['onomatopoeia']
@@ -132,7 +159,17 @@ class OnomatopoeiaUpdateViewSet(viewsets.ViewSet):
     queryset = Onomatopoeia.objects.all()
     serializer_class = OnomatopoeiaUpdateSerializer
 
-    def create(self, request, *args, **kwargs):
+    def create(self, request):
+        """
+        When OnomatopoeiaUpdate api access, run this method.
+        This method is update movie and back up table onomatopoeia column or add onomatopoeia.
+        If success all process, response user name.
+        :param request: Request user's data.(username, movie_id(tmdb_id) and onomatopoeia list)
+        :return: User name.
+        
+        :type request object
+        """
+
         if request.method == 'POST':
             r_onomatopoeia_list = request.data['onomatopoeia']
 
@@ -154,7 +191,16 @@ class DeleteBackupViewSet(viewsets.ViewSet):
     queryset = Onomatopoeia.objects.all()
     serializer_class = DeleteBackupSerializer
 
-    def create(self, request, *args, **kwargs):
+    def create(self, request):
+        """
+        When DeleteBackup api access, run this method.
+        This method is delete backup data, remove movie table's user column.
+        :param request: Request user's data.(username and movie_id(tmdb_id))
+        :return: User name.
+        
+        :type request object
+        """
+
         if request.method == 'POST':
             # バックアップの削除
             usr_obj = AuthUser.objects.get(username=request.data['username'])
@@ -173,7 +219,16 @@ class StatusUpdateViewSet(viewsets.ViewSet):
     queryset = Onomatopoeia.objects.all()
     serializer_class = StatusUpdateSerializer
 
-    def create(self, request, *args, **kwargs):
+    def create(self, request):
+        """
+        When StatusUpdate api access, run this method.
+        This method is update dvd and favorite status.
+        :param request: Request user's data.(username, movie_id(tmdb_id), dvd and fav)
+        :return: User name.
+        
+        :type request object
+        """
+
         if request.method == 'POST':
             usr_obj = AuthUser.objects.get(username=request.data['username'])
             movie_obj = Movie.objects.get(tmdb_id=request.data['movie_id'])
