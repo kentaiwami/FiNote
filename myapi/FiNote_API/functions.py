@@ -18,6 +18,8 @@ class MovieAdd():
         str_list = str_list.replace('[', '')
         str_list = str_list.replace(']', '')
         str_list = str_list.replace('"', '')
+        str_list = str_list.replace(' ', '')
+        str_list = str_list.replace('　', '')
         converted_list = str_list.split(',')
 
         if len(str_list) == 0:
@@ -180,19 +182,34 @@ class Backup():
 
         backup_obj.save()
 
+    def onomatopoeia_update_backup(self, request_data, onomatopoeia_obj_list):
+        user_obj = AuthUser.objects.get(username=request_data['username'])
+        movie_obj = Movie.objects.get(tmdb_id=request_data['movie_id'])
+
+        backup_obj = BackUp.objects.get(username=user_obj, movie=movie_obj)
+
+        backup_obj.onomatopoeia.clear()
+
+        for onomatopoeia_obj in onomatopoeia_obj_list:
+            backup_obj.onomatopoeia.add(onomatopoeia_obj)
+
 
 class OnomatopoeiaUpdate():
 
     def movie_update_onomatopoeia(self, request_data, onomatopoeia_list):
         movie_obj = Movie.objects.get(tmdb_id=request_data['movie_id'])
 
+        onomatopoeia_obj_list = []
         for onomatopoeia_name in onomatopoeia_list:
             onomatopoeia_obj, created = Onomatopoeia.objects.get_or_create(
                 name=onomatopoeia_name,
                 defaults={'name': onomatopoeia_name}
             )
+            onomatopoeia_obj_list.append(onomatopoeia_obj)
 
             if movie_obj.onomatopoeia.all().filter(name=onomatopoeia_obj.name).exists():
                 pass
             else:
                 movie_obj.onomatopoeia.add(onomatopoeia_obj)
+
+        return onomatopoeia_obj_list

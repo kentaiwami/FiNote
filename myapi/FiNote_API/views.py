@@ -141,7 +141,11 @@ class OnomatopoeiaUpdateViewSet(viewsets.ViewSet):
             elif type(request.data['onomatopoeia']) is not list:
                 raise ValidationError('不正な形式です')
 
-            OnomatopoeiaUpdate.movie_update_onomatopoeia(self, request.data, r_onomatopoeia_list)
+            # Movieテーブルのオノマトペカラムに新規追加(削除はしない)
+            onomatopoeia_obj_list = OnomatopoeiaUpdate.movie_update_onomatopoeia(self, request.data, r_onomatopoeia_list)
+
+            # BackUpテーブルのオノマトペカラムに上書き(削除と追加)
+            Backup.onomatopoeia_update_backup(self, request.data, onomatopoeia_obj_list)
 
             return Response(request.data['username'])
 

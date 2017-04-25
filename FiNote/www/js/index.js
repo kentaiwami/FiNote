@@ -881,21 +881,10 @@ var Movies_detail = {
         // 編集済みの気分リスト
         var feeling_name_list = Movieadd.userdata.feeling_name_list;
 
-        // ローカルに保存してある気分リスト
-        var feeling_name_list_local = Movies_detail.current_movie.feeling_list;
-
         var movie = Movies_detail.current_movie.movie_record;
 
-        // 気分リストの差分を求める
-        var request_feeling_name_list = [];
-        for(var i = 0; i < feeling_name_list.length; i++) {
-          if (feeling_name_list_local.indexOf(feeling_name_list[i]) == -1) {
-            request_feeling_name_list.push(feeling_name_list[i]);
-          }
-        }
-
         var promises = [];
-        if (request_feeling_name_list.length === 0) {
+        if (feeling_name_list.length === 0) {
           promises = [Movieadd.set_onomatopoeia_local(feeling_name_list)];
         }else {
           var storage = window.localStorage;
@@ -904,7 +893,7 @@ var Movies_detail = {
           var request_data = {
             "username": username,
             "movie_id": movie.tmdb_id,
-            "onomatopoeia": request_feeling_name_list
+            "onomatopoeia": feeling_name_list
           };
           promises = [Movieadd.set_onomatopoeia_local(feeling_name_list), Utility.FiNote_API('onomatopoeiaupdate', request_data, 'POST')];
         }
