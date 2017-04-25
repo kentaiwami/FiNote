@@ -393,7 +393,7 @@ var Movies = {
     };
     
 
-    Utility.FiNote_API('signupwithtoken', data, 'POST').then(function(result){
+    Utility.FiNote_API('signinwithtoken', data, 'POST').then(function(result){
       // ログイン後に映画情報をデータベースから取得
       var query = 'SELECT tmdb_id FROM movie';
       return DB_method.single_statement_execute(query,[]);

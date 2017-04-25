@@ -9,9 +9,9 @@ from .serializer import *
 from django.core.exceptions import ObjectDoesNotExist
 
 
-class SignInViewSet(viewsets.ViewSet):
+class SignUpViewSet(viewsets.ViewSet):
     queryset = User.objects.all()
-    serializer_class = SignInSerializer
+    serializer_class = SignUpSerializer
 
     def create(self, request):
         """
@@ -63,9 +63,9 @@ class SignInViewSet(viewsets.ViewSet):
             return Response(content)
 
 
-class SignUpWithTokenViewSet(viewsets.ViewSet):
+class SignInWithTokenViewSet(viewsets.ViewSet):
     queryset = User.objects.all()
-    serializer_class = SignUpWithTokenSerializer
+    serializer_class = SignInWithTokenSerializer
 
     def create(self, request):
         """
