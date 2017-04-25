@@ -904,6 +904,7 @@ var Movies_detail = {
           var request_data = {
             "username": username,
             "movie_title": movie.title,
+            "overview": movie.overview,
             "movie_id": String(movie.tmdb_id),
             "genre_id_list": movie.genre_id,
             "onomatopoeia": request_feeling_name_list
@@ -1575,6 +1576,7 @@ var Movieadd = {
       var data = {
         "username": username,
         "movie_title": Utility.get_movie_ja_title(movie),
+        "overview": movie.overview,
         "movie_id": movie.id,
         "genre_id_list": movie.genre_ids,
         "onomatopoeia": user_onomatopoeia_list

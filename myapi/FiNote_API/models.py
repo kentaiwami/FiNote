@@ -5,7 +5,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 from myapi import settings
-
+import datetime
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
@@ -67,6 +67,7 @@ class Onomatopoeia(models.Model):
 class Movie(models.Model):
     title = models.CharField(max_length=200, unique=True)
     tmdb_id = models.CharField(max_length=100, unique=True)
+    overview = models.CharField(max_length=1000, default='')
     genre = models.ManyToManyField(Genre)
     user = models.ManyToManyField(AuthUser)
     onomatopoeia = models.ManyToManyField(Onomatopoeia)
@@ -85,9 +86,16 @@ class OnomatopoeiaCount(models.Model):
 
 
 class BackUp(models.Model):
+    today = datetime.date.today()
+
     username = models.ForeignKey(AuthUser)
     movie = models.ForeignKey(Movie)
     onomatopoeia = models.ManyToManyField(Onomatopoeia)
+    add_year = models.IntegerField(default=int(today.year))
+    add_month = models.IntegerField(default=int(today.month))
+    add_day = models.IntegerField(default=int(today.day))
+    dvd = models.IntegerField(default=0)
+    fav = models.IntegerField(default=0)
 
     def __str__(self):
         return str(self.username)

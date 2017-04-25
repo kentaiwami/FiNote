@@ -108,7 +108,9 @@ class MovieAddViewSet(viewsets.ViewSet):
 
             data = {'username': request.data['username'],
                     'movie_title': request.data['movie_title'],
-                    'movie_id': request.data['movie_id']}
+                    'movie_id': request.data['movie_id'],
+                    'overview': request.data['overview']
+                    }
 
             MovieAdd.movie(self, genre_obj_list, onomatopoeia_obj_list, data)
             return JsonResponse(genre_obj_dict)
