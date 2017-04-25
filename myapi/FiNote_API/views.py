@@ -169,6 +169,19 @@ class DeleteBackupViewSet(viewsets.ViewSet):
             return Response(request.data['username'])
 
 
+class StatusUpdateViewSet(viewsets.ViewSet):
+    queryset = Onomatopoeia.objects.all()
+    serializer_class = StatusUpdateSerializer
+
+    def create(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            usr_obj = AuthUser.objects.get(username=request.data['username'])
+            movie_obj = Movie.objects.get(tmdb_id=request.data['movie_id'])
+            BackUp.objects.filter(username=usr_obj, movie=movie_obj).update(dvd=request.data['dvd'], fav=request.data['fav'])
+
+            return Response(request.data['username'])
+
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset = AuthUser.objects.all()
     serializer_class = UserSerializer

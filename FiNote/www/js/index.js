@@ -875,7 +875,7 @@ var Movies_detail = {
     Global_variable.movie_update_flag = true;
     
     document.addEventListener('postpop', function(event) {
-      if (event.enterPage.pushedOptions.page == 'movies_detail.html') {
+      if (event.enterPage.pushedOptions.page == ID.get_movies_detail_ID().tmp_id) {
         Utility.show_spinner(ID.get_movies_detail_ID().page_id);
 
         // 編集済みの気分リスト
@@ -956,7 +956,7 @@ var Movies_detail = {
     Global_variable.movie_update_flag = true;
 
     document.addEventListener('prepop', function(event) {
-      if (event.enterPage.pushedOptions.page == 'movies_detail.html') {
+      if (event.enterPage.pushedOptions.page == ID.get_movies_detail_ID().tmp_id) {
         Utility.show_spinner(ID.get_movieadd_status_ID().page_id);
 
         //スイッチボタンの状態を保存する
@@ -981,10 +981,23 @@ var Movies_detail = {
         }
 
         var movie_pk = Movies_detail.current_movie.movie_record.id;
-
-        
         var query = 'UPDATE movie SET dvd = ?, fav = ? WHERE id = ?';
-        DB_method.single_statement_execute(query, [dvd_status, fav_status, movie_pk]).then(function(result) {
+
+        var storage = window.localStorage;
+        var username = storage.getItem('username');
+        var movie_tmdb_id = Movies_detail.current_movie.movie_record.tmdb_id;
+        var request_data = {
+          "username": username,
+          "movie_id": movie_tmdb_id,
+          "dvd": dvd_status,
+          "fav": fav_status
+        };
+
+        var promises = [
+          DB_method.single_statement_execute(query, [dvd_status, fav_status, movie_pk]),
+          Utility.FiNote_API('statusupdate', request_data, 'POST')
+        ];
+        Promise.all(promises).then(function(result) {
           var query_movie = 'SELECT * from movie WHERE id = ?';
           var query_onomatopoeia = 'SELECT * from onomatopoeia';
           var promises = [

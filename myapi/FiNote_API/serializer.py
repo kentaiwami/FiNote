@@ -37,6 +37,13 @@ class DeleteBackupSerializer(serializers.Serializer):
     movie_id = serializers.IntegerField(allow_null=False, required=True)
 
 
+class StatusUpdateSerializer(serializers.Serializer):
+    username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
+    movie_id = serializers.IntegerField(allow_null=False, required=True)
+    dvd = serializers.IntegerField(default=0)
+    fav = serializers.IntegerField(default=0)
+
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = AuthUser
