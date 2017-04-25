@@ -94,11 +94,11 @@ var ID = {
     return id_obj;
   },
 
-  get_signin_ID: function() {
-    var id_obj = {tmp_id: 'signin.html', page_id: 'signin', signin_button: 'signin_button', 
-                  list_id: 'signin_list', username: 'username', password: 'password',
-                  email: 'email', birthday: 'birthday', success_alert: 'signin-alert-success',
-                  error_alert: 'signin-alert-error', error_message: 'error-message',
+  get_signup_ID: function() {
+    var id_obj = {tmp_id: 'signup.html', page_id: 'signup', signup_button: 'signup_button', 
+                  list_id: 'signup_list', username: 'username', password: 'password',
+                  email: 'email', birthday: 'birthday', success_alert: 'signup-alert-success',
+                  error_alert: 'signup-alert-error', error_message: 'error-message',
                   radio: 'radio_m'};
     return id_obj;
   },
@@ -182,17 +182,17 @@ var Index = {
     //ユーザ情報が登録されている場合は自動ログインを行う
     if (signup_flag == 'true') {
       Movies.draw_movie_content();
-    //ユーザ情報が登録されていない場合はsigninへ遷移
+    //ユーザ情報が登録されていない場合はsignupへ遷移
     }else {
-      Utility.push_page(ID.get_signin_ID().tmp_id,'fade',1000, '');
+      Utility.push_page(ID.get_signup_ID().tmp_id,'fade',1000, '');
       
       //イベント登録
       var addevent = function(){
-        document.getElementById(ID.get_signin_ID().username).addEventListener('keyup',Index.check_usernameAndpassword_form);
-        document.getElementById(ID.get_signin_ID().password).addEventListener('keyup',Index.check_usernameAndpassword_form);
-        document.getElementById(ID.get_signin_ID().email).addEventListener('keyup',Index.check_usernameAndpassword_form);
+        document.getElementById(ID.get_signup_ID().username).addEventListener('keyup',Index.check_usernameAndpassword_form);
+        document.getElementById(ID.get_signup_ID().password).addEventListener('keyup',Index.check_usernameAndpassword_form);
+        document.getElementById(ID.get_signup_ID().email).addEventListener('keyup',Index.check_usernameAndpassword_form);
       };
-      Utility.check_page_init(ID.get_signin_ID().page_id,addevent);
+      Utility.check_page_init(ID.get_signup_ID().page_id,addevent);
     }
   },
 
@@ -200,9 +200,9 @@ var Index = {
    * ユーザ名とパスワード入力フォームのkeyupイベントが起きるたびに入力文字数を確認する
    */
   check_usernameAndpassword_form: function(){
-    var username = document.getElementById(ID.get_signin_ID().username).value;
-    var password = document.getElementById(ID.get_signin_ID().password).value;
-    var email = document.getElementById(ID.get_signin_ID().email).value;
+    var username = document.getElementById(ID.get_signup_ID().username).value;
+    var password = document.getElementById(ID.get_signup_ID().password).value;
+    var email = document.getElementById(ID.get_signup_ID().email).value;
 
     if (username.length === 0 || email.length === 0 || password.length < 6) {
       Index.formcheck[0] = false;
@@ -210,17 +210,17 @@ var Index = {
       Index.formcheck[0] = true;
     }
     
-    Index.change_abled_signin_button();
+    Index.change_abled_signup_button();
   },
 
   /**
    * formcheck配列を確認して全てtrueならボタンをabledに、そうでなければdisabledにする
    */
-  change_abled_signin_button: function(){
+  change_abled_signup_button: function(){
     if (Index.formcheck[0] === true && Index.formcheck[1] === true) {
-      document.getElementById(ID.get_signin_ID().signin_button).removeAttribute('disabled');
+      document.getElementById(ID.get_signup_ID().signup_button).removeAttribute('disabled');
     }else{
-      document.getElementById(ID.get_signin_ID().signin_button).setAttribute('disabled', 'disabled');
+      document.getElementById(ID.get_signup_ID().signup_button).setAttribute('disabled', 'disabled');
     }
   },
 };
@@ -228,21 +228,21 @@ var Index = {
 
 
 /************************************************************
-                         signin.html
+                         signup.html
  ************************************************************/
 /**
 * サインアップ画面で使用する関数をまとめたオブジェクト
 * @type {Object}
 */
-var Signin = {
-  usersignin: function() {
-    Utility.show_spinner(ID.get_signin_ID().list_id);
+var Signup = {
+  usersignup: function() {
+    Utility.show_spinner(ID.get_signup_ID().list_id);
 
-    var username = document.getElementById(ID.get_signin_ID().username).value;
-    var password = document.getElementById(ID.get_signin_ID().password).value;
-    var email = document.getElementById(ID.get_signin_ID().email).value;
-    var birthday = Number(document.getElementById(ID.get_signin_ID().birthday).value);
-    var sex = Signin.get_sex();
+    var username = document.getElementById(ID.get_signup_ID().username).value;
+    var password = document.getElementById(ID.get_signup_ID().password).value;
+    var email = document.getElementById(ID.get_signup_ID().email).value;
+    var birthday = Number(document.getElementById(ID.get_signup_ID().birthday).value);
+    var sex = Signup.get_sex();
 
     var data ={
         "username": username,
@@ -253,7 +253,7 @@ var Signin = {
     };
 
     // 新規登録
-    Utility.FiNote_API('signin', data, 'POST').then(function(result) {
+    Utility.FiNote_API('signup', data, 'POST').then(function(result) {
       /*登録後処理*/
       var json_data = JSON.parse(result);
 
@@ -270,7 +270,7 @@ var Signin = {
       storage.setItem('signup_flag', true);
 
       Utility.stop_spinner();
-      document.getElementById(ID.get_signin_ID().success_alert).show();
+      document.getElementById(ID.get_signup_ID().success_alert).show();
     })
     .catch(function(err){
       // エラー処理
@@ -281,7 +281,7 @@ var Signin = {
 
   alert_hide: function(id) {
     //成功時にはindex.htmlへ遷移
-    if (id == ID.get_signin_ID().success_alert) {
+    if (id == ID.get_signup_ID().success_alert) {
       var pushpage_tabbar = function(){
         function autoLink(){
             location.href= ID.get_index_ID().tmp_id;
@@ -292,9 +292,9 @@ var Signin = {
       document.getElementById(id).hide(pushpage_tabbar());
 
     //追加したエラーメッセージ(子ノード)を削除する
-    }else if (id == ID.get_signin_ID().error_alert) {
+    }else if (id == ID.get_signup_ID().error_alert) {
       document.getElementById(id).hide();
-      var info = document.getElementById(ID.get_signin_ID().error_message);
+      var info = document.getElementById(ID.get_signup_ID().error_message);
       var childNode = info.firstChild;
       info.removeChild(childNode);
     }
@@ -306,7 +306,7 @@ var Signin = {
   birthday_pickerview: function(){
     cordova.plugins.Keyboard.close();
     //今年から100年前までの年テキストをオブジェクトとして生成する
-    var birthday = document.getElementById(ID.get_signin_ID().birthday);
+    var birthday = document.getElementById(ID.get_signup_ID().birthday);
     var time = new Date();
     var year = time.getFullYear();
     var items_array = [];
@@ -336,7 +336,7 @@ var Signin = {
     window.plugins.listpicker.showPicker(config, function(item) { 
       birthday.value = item;
       Index.formcheck[1] = true;
-      Index.change_abled_signin_button();
+      Index.change_abled_signup_button();
     },
     function() { 
       console.log("You have cancelled");
@@ -349,7 +349,7 @@ var Signin = {
    * @return {[string]} [M or F]
    */
   get_sex: function(){
-    var M = document.getElementById(ID.get_signin_ID().radio).checked;
+    var M = document.getElementById(ID.get_signup_ID().radio).checked;
     if (M === true) {
       return 'M';
     }else{
@@ -2331,23 +2331,23 @@ var Utility = {
    * ブラウザで強制的にログインするための関数
    * @return {[type]} [description]
    */
-  browser_signin: function(){
+  browser_signup: function(){
     var callback = function(){
-      document.getElementById(ID.get_signin_ID().username).value = 'ブラウザユーザ';
-      document.getElementById(ID.get_signin_ID().password).value = 'password';
-      document.getElementById(ID.get_signin_ID().birthday).value = '1994';
+      document.getElementById(ID.get_signup_ID().username).value = 'ブラウザユーザ';
+      document.getElementById(ID.get_signup_ID().password).value = 'password';
+      document.getElementById(ID.get_signup_ID().birthday).value = '1994';
 
       Index.formcheck[0] = true;
       Index.formcheck[1] = true;
 
       var storage = window.localStorage;
-      storage.setItem('username', document.getElementById(ID.get_signin_ID().username).value);
-      storage.setItem('password', document.getElementById(ID.get_signin_ID().password).value);
-      storage.setItem('birthday', Number(document.getElementById(ID.get_signin_ID().birthday).value));
+      storage.setItem('username', document.getElementById(ID.get_signup_ID().username).value);
+      storage.setItem('password', document.getElementById(ID.get_signup_ID().password).value);
+      storage.setItem('birthday', Number(document.getElementById(ID.get_signup_ID().birthday).value));
       storage.setItem('sex', 'M');
       storage.setItem('signup_flag', true);
     };
-    Utility.check_page_init(ID.get_signin_ID().page_id,callback);
+    Utility.check_page_init(ID.get_signup_ID().page_id,callback);
   },
 
 
