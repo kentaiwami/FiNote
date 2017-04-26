@@ -35,6 +35,8 @@ var app = {
 
 
 
+
+
 /************************************************************
                       Global Variable
  ************************************************************/
@@ -75,6 +77,9 @@ var Global_variable = {
 };
 
 
+
+
+
 /************************************************************
                             ID
  ************************************************************/
@@ -89,8 +94,20 @@ var ID = {
     return id_obj;
   },
 
+  get_top_ID: function() {
+    var id_obj = {tmp_id: 'top.html', page_id: 'top',
+                  toolbar_center: 'carousel_toolbar_center', carousel: 'top_carousel'};
+    return id_obj;
+  },
+
   get_tab_ID: function() {
     var id_obj = {tmp_id: 'tab.html', page_id: 'tab'};
+    return id_obj;
+  },
+
+  get_signin_ID: function() {
+    var id_obj = {username: 'signin_username', password: 'signin_password',
+                  signin_button: 'signin_button'};
     return id_obj;
   },
 
@@ -162,6 +179,8 @@ var ID = {
 
 
 
+
+
 /************************************************************
                         index.html
  ************************************************************/
@@ -184,15 +203,26 @@ var Index = {
       Movies.draw_movie_content();
     //ユーザ情報が登録されていない場合はsignupへ遷移
     }else {
-      Utility.push_page(ID.get_signup_ID().tmp_id,'fade',1000, '');
+      Utility.push_page(ID.get_top_ID().tmp_id,'fade',1000, '');
       
       //イベント登録
       var addevent = function(){
+        // sign upのフォームにイベントを登録
         document.getElementById(ID.get_signup_ID().username).addEventListener('keyup',Index.check_usernameAndpassword_form);
         document.getElementById(ID.get_signup_ID().password).addEventListener('keyup',Index.check_usernameAndpassword_form);
         document.getElementById(ID.get_signup_ID().email).addEventListener('keyup',Index.check_usernameAndpassword_form);
+
+        // sign inのフォームにイベントを登録
+        document.getElementById(ID.get_signin_ID().username).addEventListener('keyup',Signin.check_usernameAndpassword_form);
+        document.getElementById(ID.get_signin_ID().password).addEventListener('keyup',Signin.check_usernameAndpassword_form);
+
       };
-      Utility.check_page_init(ID.get_signup_ID().page_id,addevent);
+
+      // inputフォームの監視イベントを追加
+      Utility.check_page_init(ID.get_top_ID().page_id,addevent);
+
+      // カルーセルのページ変更を監視するイベントを追加
+      Utility.check_page_init(ID.get_top_ID().page_id,Top.check_post_change);
     }
   },
 
@@ -224,6 +254,43 @@ var Index = {
     }
   },
 };
+
+
+
+
+
+/************************************************************
+                        top.html
+ ************************************************************/
+var Top = {
+  /**
+   * カルーセルの変更イベントをキャッチして、ツールバーのメッセージを変更する関数
+   */
+  check_post_change: function(){
+    document.addEventListener('postchange', function(event) {
+      console.log('active carousel is ' + event.activeIndex);
+
+      var toolbar_center = document.getElementById(ID.get_top_ID().toolbar_center);
+      if (event.activeIndex === 0) {
+        toolbar_center.innerHTML = 'ユーザ登録';
+      }else {
+        toolbar_center.innerHTML = 'ログイン';
+      }
+    });
+  },
+
+  prev: function() {
+    var carousel = document.getElementById(ID.get_top_ID().carousel);
+    carousel.prev();
+  },
+
+  next: function() {
+    var carousel = document.getElementById(ID.get_top_ID().carousel);
+    carousel.next();
+  }
+};
+
+
 
 
 
@@ -357,6 +424,38 @@ var Signup = {
     }
   },
 };
+
+
+
+
+
+/************************************************************
+                        Signin.html
+ ************************************************************/
+var Signin = {
+  /**
+   * ユーザ名とパスワード入力フォームのkeyupイベントが起きるたびに入力文字数を確認する
+   */
+  check_usernameAndpassword_form: function(){
+    var username = document.getElementById(ID.get_signin_ID().username).value;
+    var password = document.getElementById(ID.get_signin_ID().password).value;
+
+    var signin_button = document.getElementById(ID.get_signin_ID().signin_button);
+
+    if (username.length === 0 || password.length < 6) {
+      signin_button.setAttribute('disabled', 'disabled');
+    }else{
+      signin_button.removeAttribute('disabled');
+    }
+  },
+
+  tap_sign_in_button: function() {
+    var username = document.getElementById(ID.get_signin_ID().username).value;
+    var password = document.getElementById(ID.get_signin_ID().password).value;
+  }
+};
+
+
 
 
 
@@ -670,6 +769,8 @@ var Movies = {
     });
   },
 };
+
+
 
 
 
@@ -1106,6 +1207,8 @@ var Movies_detail = {
 
 
 
+
+
 /************************************************************
                     movieadd_search.html
  ************************************************************/
@@ -1426,6 +1529,8 @@ var Movieadd_search = {
     document.getElementById(ID.get_movieadd_search_ID().exist_alert).show();
   }
 };
+
+
 
 
 
@@ -1968,6 +2073,8 @@ var Movieadd = {
 
 
 
+
+
 /************************************************************
                         feeling.html
  ************************************************************/
@@ -2165,6 +2272,8 @@ var Feeling = {
 
 
 
+
+
 /************************************************************
                       movieadd_status.html
  ************************************************************/
@@ -2229,6 +2338,8 @@ var Movieadd_status = {
     Utility.pop_page();
   },
 };
+
+
 
 
 
@@ -2572,6 +2683,8 @@ var Utility = {
     }
   }
 };
+
+
 
 
 
