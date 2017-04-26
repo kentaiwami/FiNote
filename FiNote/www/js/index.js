@@ -105,6 +105,12 @@ var ID = {
     return id_obj;
   },
 
+  get_signin_ID: function() {
+    var id_obj = {username: 'signin_username', password: 'signin_password',
+                  signin_button: 'signin_button'};
+    return id_obj;
+  },
+
   get_signup_ID: function() {
     var id_obj = {tmp_id: 'signup.html', page_id: 'signup', signup_button: 'signup_button', 
                   list_id: 'signup_list', username: 'username', password: 'password',
@@ -201,9 +207,15 @@ var Index = {
       
       //イベント登録
       var addevent = function(){
+        // sign upのフォームにイベントを登録
         document.getElementById(ID.get_signup_ID().username).addEventListener('keyup',Index.check_usernameAndpassword_form);
         document.getElementById(ID.get_signup_ID().password).addEventListener('keyup',Index.check_usernameAndpassword_form);
         document.getElementById(ID.get_signup_ID().email).addEventListener('keyup',Index.check_usernameAndpassword_form);
+
+        // sign inのフォームにイベントを登録
+        document.getElementById(ID.get_signin_ID().username).addEventListener('keyup',Signin.check_usernameAndpassword_form);
+        document.getElementById(ID.get_signin_ID().password).addEventListener('keyup',Signin.check_usernameAndpassword_form);
+
       };
 
       // inputフォームの監視イベントを追加
@@ -420,8 +432,22 @@ var Signup = {
 /************************************************************
                         Signin.html
  ************************************************************/
-var SignIn = {
+var Signin = {
+  /**
+   * ユーザ名とパスワード入力フォームのkeyupイベントが起きるたびに入力文字数を確認する
+   */
+  check_usernameAndpassword_form: function(){
+    var username = document.getElementById(ID.get_signin_ID().username).value;
+    var password = document.getElementById(ID.get_signin_ID().password).value;
 
+    var signin_button = document.getElementById(ID.get_signin_ID().signin_button);
+
+    if (username.length === 0 || password.length < 6) {
+      signin_button.setAttribute('disabled', 'disabled');
+    }else{
+      signin_button.removeAttribute('disabled');
+    }
+  },
 };
 
 
