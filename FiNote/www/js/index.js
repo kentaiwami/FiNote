@@ -29,8 +29,6 @@ var app = {
     }, function(err) {
       console.log('Open database ERROR: ' +JSON.stringify(err) +' ' + err.message);
     });
-
-    // Index.check_signup();
     // DB_method.delete_all_record();
   },
 };
