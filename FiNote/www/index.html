@@ -158,82 +158,82 @@
             <ons-icon class="brown_color" icon="ion-ios-arrow-forward"></ons-icon>
           </ons-toolbar-button>
         </div>
-    </ons-toolbar>
+      </ons-toolbar>
 
-    <ons-carousel fullscreen swipeable auto-scroll overscrollable id="carousel">
-      <ons-carousel-item>
-        <ons-list id="signup_list">
-          <div class="formarea">
-            <!-- ユーザ名とパスワードのフォーム -->
-            <ons-list-header class="brown_color">入力項目</ons-list-header>
-            <div class="form-row">
-              <input type="text" id="username" class="text-input--underbar width-full signup_form_input" placeholder="ユーザ名" value="">
-            </div>
+      <ons-carousel fullscreen swipeable auto-scroll overscrollable id="carousel">
+        <ons-carousel-item>
+          <ons-list id="signup_list">
+            <div class="formarea">
+              <!-- ユーザ名とパスワードのフォーム -->
+              <ons-list-header class="brown_color">入力項目</ons-list-header>
+              <div class="form-row">
+                <input type="text" id="username" class="text-input--underbar width-full signup_form_input" placeholder="ユーザ名" value="">
+              </div>
 
-            <div class="form-row">
-              <input type="text" id="email" class="text-input--underbar width-full signup_form_input" placeholder="メールアドレス" value="">
-            </div>
+              <div class="form-row">
+                <input type="text" id="email" class="text-input--underbar width-full signup_form_input" placeholder="メールアドレス" value="">
+              </div>
 
-            <div class="form-row">
-              <input type="password" id="password" class="text-input--underbar width-full signup_form_input" placeholder="パスワード" value="">
-            </div>
+              <div class="form-row">
+                <input type="password" id="password" class="text-input--underbar width-full signup_form_input" placeholder="パスワード" value="">
+              </div>
 
-            <div>
-              <p class="note brown_color">Password - 6 characters or more</p>
-            </div>
+              <div>
+                <p class="note brown_color">Password - 6 characters or more</p>
+              </div>
 
-            <!-- 性別を選択させるラジオボタン -->
-            <ons-list-header class="brown_color">性別</ons-list-header>
-            <ons-list-item tappable>
-              <label class="left"><ons-input name="color" type="radio" input-id="radio_m" checked></ons-input></label>
-              <label for="radio_m" class="center">男性</label>
-            </ons-list-item>
+              <!-- 性別を選択させるラジオボタン -->
+              <ons-list-header class="brown_color">性別</ons-list-header>
+              <ons-list-item tappable>
+                <label class="left"><ons-input name="color" type="radio" input-id="radio_m" checked></ons-input></label>
+                <label for="radio_m" class="center">男性</label>
+              </ons-list-item>
 
-            <ons-list-item tappable>
-              <label class="left"><ons-input name="color" type="radio" input-id="radio_f"></ons-input></label>
-              <label for="radio_f" class="center">女性</label>
-            </ons-list-item>
-            
-            <!-- 生年選択のフォーム -->
-            <ons-list-header class="brown_color">生年</ons-list-header>
-            <div class="form-row">
-              <input onfocus="Signup.birthday_pickerview()" type="text" id="birthday" class="text-input--underbar width-full" placeholder="生年を選択する" value="">
+              <ons-list-item tappable>
+                <label class="left"><ons-input name="color" type="radio" input-id="radio_f"></ons-input></label>
+                <label for="radio_f" class="center">女性</label>
+              </ons-list-item>
+              
+              <!-- 生年選択のフォーム -->
+              <ons-list-header class="brown_color">生年</ons-list-header>
+              <div class="form-row">
+                <input onfocus="Signup.birthday_pickerview()" type="text" id="birthday" class="text-input--underbar width-full" placeholder="生年を選択する" value="">
+              </div>
+             
+              <!-- 登録ボタン -->
+              <div class="vspc form-row">
+                <ons-button class="brown_bg_color" modifier="large--cta" id="signup_button" onclick="Signup.usersignup()" disabled>登録</ons-button>
+              </div>
             </div>
-           
-            <!-- 登録ボタン -->
-            <div class="vspc form-row">
-              <ons-button class="brown_bg_color" modifier="large--cta" id="signup_button" onclick="Signup.usersignup()" disabled>登録</ons-button>
+          </ons-list>
+
+          <!-- 会員登録成功時のアラート -->
+          <ons-dialog id="signup-alert-success">
+            <div class="alert">
+              <p>会員登録が完了しました</p>
+              <p><ons-button class="brown_bg_color" onclick="Signup.alert_hide('signup-alert-success')">OK</ons-button></p>
             </div>
+          </ons-dialog>
+
+          <!-- 会員登録失敗時のアラート -->
+          <ons-alert-dialog id="signup-alert-error">
+            <div class="alert-dialog-title">エラー</div>
+            <div class="alert-dialog-content" id="error-message"></div>
+            <div class="alert-dialog-footer">
+              <button class="alert-dialog-button" onclick="Signup.alert_hide('signup-alert-error')">OK</button>
+            </div>
+          </ons-alert-dialog>
+        </ons-carousel-item>
+
+        <ons-carousel-item>
+          <div class="login-form">
+            <input type="text" class="text-input--underbar signin_form_input" placeholder="ユーザ名" value="">
+            <input type="password" class="text-input--underbar signin_form_input" placeholder="パスワード" value="">
+            <br><br>
+            <ons-button modifier="large" class="login-button" disabled>ログイン</ons-button>
           </div>
-        </ons-list>
-
-        <!-- 会員登録成功時のアラート -->
-        <ons-dialog id="signup-alert-success">
-          <div class="alert">
-            <p>会員登録が完了しました</p>
-            <p><ons-button class="brown_bg_color" onclick="Signup.alert_hide('signup-alert-success')">OK</ons-button></p>
-          </div>
-        </ons-dialog>
-
-        <!-- 会員登録失敗時のアラート -->
-        <ons-alert-dialog id="signup-alert-error">
-          <div class="alert-dialog-title">エラー</div>
-          <div class="alert-dialog-content" id="error-message"></div>
-          <div class="alert-dialog-footer">
-            <button class="alert-dialog-button" onclick="Signup.alert_hide('signup-alert-error')">OK</button>
-          </div>
-        </ons-alert-dialog>
-      </ons-carousel-item>
-
-      <ons-carousel-item>
-        <div class="login-form">
-          <input type="text" class="text-input--underbar signin_form_input" placeholder="ユーザ名" value="">
-          <input type="password" class="text-input--underbar signin_form_input" placeholder="パスワード" value="">
-          <br><br>
-          <ons-button modifier="large" class="login-button" disabled>ログイン</ons-button>
-        </div>
-      </ons-carousel-item>
-    </ons-carousel>
+        </ons-carousel-item>
+      </ons-carousel>
     </ons-page>
   </ons-template>
   <!-- ●●●●●●●●● ここからtop.html ●●●●●●●●● -->

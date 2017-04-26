@@ -97,11 +97,11 @@
 .signin_form_input {
   display: block;
   width: 100%;
-  margin: 0 auto;
-  outline: none;
   height: 100%;
+  margin: 0 auto;
   padding-top: 15px;
   padding-bottom: 16px;
+  outline: none;
 }
 
 .login-button {
