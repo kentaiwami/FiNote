@@ -101,11 +101,38 @@ $font-small: .75rem;
   height: 93vh;
 }
 
-input[type=text],
-input[type=password] {
-	padding: 10px 0px;
-	height: 3rem;
+.signup_form_input {
+  padding: 10px 0px;
+  height: 3rem;
 }
+
+
+
+/************************************************************
+                            Signin
+ ************************************************************/
+.login-form {
+  text-align: center;
+  width: 80%;
+  margin: 60px auto 0;
+}
+
+.signin_form_input{
+  display: block;
+  width: 100%;
+  margin: 0 auto;
+  outline: none;
+  height: 100%;
+  padding-top: 15px;
+  padding-bottom: 16px;
+}
+
+.login-button {
+  @extend .brown_bg_color;
+  width: 100%;
+  margin: 0 auto;
+}
+
 
 
 /************************************************************

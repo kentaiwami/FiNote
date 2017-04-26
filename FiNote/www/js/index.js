@@ -89,6 +89,11 @@ var ID = {
     return id_obj;
   },
 
+  get_top_ID: function() {
+    var id_obj = {tmp_id: 'top.html', page_id: 'top'};
+    return id_obj;
+  },
+
   get_tab_ID: function() {
     var id_obj = {tmp_id: 'tab.html', page_id: 'tab'};
     return id_obj;
@@ -184,7 +189,8 @@ var Index = {
       Movies.draw_movie_content();
     //ユーザ情報が登録されていない場合はsignupへ遷移
     }else {
-      Utility.push_page(ID.get_signup_ID().tmp_id,'fade',1000, '');
+      // Utility.push_page(ID.get_signup_ID().tmp_id,'fade',1000, '');
+      Utility.push_page(ID.get_top_ID().tmp_id,'fade',1000, '');
       
       //イベント登録
       var addevent = function(){
@@ -192,7 +198,8 @@ var Index = {
         document.getElementById(ID.get_signup_ID().password).addEventListener('keyup',Index.check_usernameAndpassword_form);
         document.getElementById(ID.get_signup_ID().email).addEventListener('keyup',Index.check_usernameAndpassword_form);
       };
-      Utility.check_page_init(ID.get_signup_ID().page_id,addevent);
+      // Utility.check_page_init(ID.get_signup_ID().page_id,addevent);
+      Utility.check_page_init(ID.get_top_ID().page_id,addevent);
     }
   },
 
