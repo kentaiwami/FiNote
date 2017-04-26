@@ -448,6 +448,11 @@ var Signin = {
       signin_button.removeAttribute('disabled');
     }
   },
+
+  tap_sign_in_button: function() {
+    var username = document.getElementById(ID.get_signin_ID().username).value;
+    var password = document.getElementById(ID.get_signin_ID().password).value;
+  }
 };
 
 
