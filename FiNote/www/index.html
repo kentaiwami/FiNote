@@ -146,21 +146,22 @@
     <ons-page id="top">
       <ons-toolbar>
         <div class="left">
-          <ons-toolbar-button onclick="prev()">
+          <ons-toolbar-button onclick="Top.prev()">
             <ons-icon class="brown_color" icon="ion-ios-arrow-back"></ons-icon>
           </ons-toolbar-button>
         </div>
 
-        <div class="center">Carousel</div>
+        <div class="center brown_color" id="carousel_toolbar_center">ユーザ登録</div>
 
         <div class="right">
-          <ons-toolbar-button onclick="next()">
+          <ons-toolbar-button onclick="Top.next()">
             <ons-icon class="brown_color" icon="ion-ios-arrow-forward"></ons-icon>
           </ons-toolbar-button>
         </div>
       </ons-toolbar>
 
-      <ons-carousel fullscreen swipeable auto-scroll overscrollable id="carousel">
+      <ons-carousel fullscreen swipeable auto-scroll overscrollable id="top_carousel">
+        <!-- ユーザ登録画面 -->
         <ons-carousel-item>
           <ons-list id="signup_list">
             <div class="formarea">
@@ -225,6 +226,7 @@
           </ons-alert-dialog>
         </ons-carousel-item>
 
+        <!-- ログイン画面 -->
         <ons-carousel-item>
           <div class="login-form">
             <input type="text" class="text-input--underbar signin_form_input" placeholder="ユーザ名" value="">
