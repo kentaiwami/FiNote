@@ -160,7 +160,7 @@
         </div>
       </ons-toolbar>
 
-      <ons-carousel fullscreen swipeable auto-scroll overscrollable id="top_carousel">
+      <ons-carousel auto-scroll-ratio="0.3" fullscreen swipeable auto-scroll overscrollable id="top_carousel">
         <!-- ユーザ登録画面 -->
         <ons-carousel-item>
           <ons-list id="signup_list">
@@ -227,7 +227,7 @@
         </ons-carousel-item>
 
         <!-- ログイン画面 -->
-        <ons-carousel-item>
+        <ons-carousel-item id="signin_carousel">
           <div class="login-form">
             <input id="signin_username" type="text" class="text-input--underbar signin_form_input" placeholder="ユーザ名" value="">
             <input id="signin_password" type="password" class="text-input--underbar signin_form_input" placeholder="パスワード" value="">

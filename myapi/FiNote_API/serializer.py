@@ -15,6 +15,11 @@ class SignInWithTokenSerializer(serializers.Serializer):
     token = serializers.CharField(allow_blank=False, allow_null=False, required=True)
 
 
+class SignInNoTokenSerializer(serializers.Serializer):
+    username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
+    password = serializers.CharField(allow_blank=False, required=True)
+
+
 class MovieAddSerializer(serializers.Serializer):
     username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
     movie_title = serializers.CharField(allow_blank=False, allow_null=False, required=True)

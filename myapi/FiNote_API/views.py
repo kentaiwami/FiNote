@@ -1,4 +1,6 @@
-from django.http import JsonResponse
+import json
+
+from django.http import JsonResponse, HttpResponse
 from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
@@ -85,7 +87,7 @@ class SignInWithTokenViewSet(viewsets.ViewSet):
                 raise ValidationError('リクエストに認証情報が含まれていません')
 
             try:
-                get_user = User.objects.get(username=data['username'])
+                get_user = AuthUser.objects.get(username=data['username'])
                 token = Token.objects.get(user_id=get_user.pk)
 
                 if str(token) == data['token']:
@@ -94,6 +96,44 @@ class SignInWithTokenViewSet(viewsets.ViewSet):
                     raise ValidationError('ログインに失敗しました', 404)
             except ObjectDoesNotExist:
                 raise ValidationError('ログインに失敗しました', 404)
+
+
+class SignInNoTokenViewSet(viewsets.ViewSet):
+    queryset = User.objects.all()
+    serializer_class = SignInNoTokenSerializer
+
+    def create(self, request):
+        if request.method == 'POST':
+            data = request.data
+
+            if not data['username']:
+                raise ValidationError('ユーザ名が含まれていません')
+            if not data['password']:
+                raise ValidationError('パスワードが含まれていません')
+
+            try:
+                get_user = AuthUser.objects.get(username=data['username'])
+                token = Token.objects.get(user_id=get_user.pk)
+
+                if get_user.check_password(data['password'].encode('utf-8')):
+                    backup_obj = BackUp.objects.filter(username=get_user).values(
+                        'movie__title', 'movie__tmdb_id', 'movie__overview',
+                        'movie__genre__name',
+                        'onomatopoeia__name',
+                        'dvd', 'fav',
+                        'add_year', 'add_month', 'add_day'
+                    )
+
+                    response_list = Backup.create_marged_backups(self, list(backup_obj))
+                    response_list.append({'token': str(token)})
+
+                    return JsonResponse({'results': response_list})
+
+                else:
+                    raise ValidationError('ユーザ名かパスワードが違います')
+
+            except ObjectDoesNotExist:
+                raise ValidationError('ユーザ名かパスワードが違います')
 
 
 class MovieAddViewSet(viewsets.ViewSet):

@@ -107,7 +107,7 @@ var ID = {
 
   get_signin_ID: function() {
     var id_obj = {username: 'signin_username', password: 'signin_password',
-                  signin_button: 'signin_button'};
+                  signin_button: 'signin_button', signin_carousel: 'signin_carousel'};
     return id_obj;
   },
 
@@ -450,8 +450,21 @@ var Signin = {
   },
 
   tap_sign_in_button: function() {
+    Utility.show_spinner(ID.get_signin_ID().signin_carousel);
     var username = document.getElementById(ID.get_signin_ID().username).value;
     var password = document.getElementById(ID.get_signin_ID().password).value;
+
+    var data = {"username": username, "password": password};
+
+    Utility.FiNote_API('signinnotoken', data, 'POST').then(function(result) {
+      Utility.stop_spinner();
+      var backup_json = JSON.parse(result);
+    })
+    .catch(function(err) {
+      Utility.stop_spinner();
+      console.log(err);
+      Utility.show_error_alert('ログインエラー', err, 'OK');
+    });
   }
 };
 
