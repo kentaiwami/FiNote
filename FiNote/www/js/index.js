@@ -609,6 +609,7 @@ var Signin = {
           genre_insert_flag_exist = create_genre_onomatopoeia_query.genre_flag;
           onomatopoeia_insert_flag_exist = create_genre_onomatopoeia_query.onomatopoeia_flag;
 
+          // 保存済みの映画のgenre_idとonomatopoeia_idを取得するクエリを生成して追加
           // result[2]
           query_exist = 'SELECT genre_id, onomatopoeia_id FROM movie WHERE tmdb_id = ?';
 
