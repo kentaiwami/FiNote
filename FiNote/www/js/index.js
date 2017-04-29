@@ -526,30 +526,15 @@ var Signin = {
 
             // result[0]
             promises.push(Utility.image_to_base64(image, 'image/jpeg'));
-            
-            // ローカルDBにジャンルが保存しているかに応じてクエリを変える
-            // result[1]
-            if (Signin.exist.genre_array.indexOf(movie.movie__genre__name) == -1) {
-              genre_insert_flag = true;
-              query = 'INSERT INTO genre(genre_id, name) VALUES(?,?)';
-              promises.push(DB_method.single_statement_execute(query, [movie.movie__genre__genre_id, movie.movie__genre__name]));
-            }else {
-              genre_insert_flag = false;
-              query = 'SELECT id from genre WHERE name = ?';
-              promises.push(DB_method.single_statement_execute(query, [movie.movie__genre__name]));
-            }
 
-            // ローカルDBにオノマトペが保存しているかに応じてクエリを変える
-            // result[2]
-            if (Signin.exist.onomatopoeia_array.indexOf(movie.onomatopoeia__name) == -1) {
-              onomatopoeia_insert_flag = true;
-              query = 'INSERT INTO onomatopoeia(name) VALUES(?)';
-              promises.push(DB_method.single_statement_execute(query, [movie.onomatopoeia__name]));
-            }else {
-              onomatopoeia_insert_flag = false;
-              query = 'SELECT id from onomatopoeia WHERE name = ?';
-              promises.push(DB_method.single_statement_execute(query, [movie.onomatopoeia__name]));
-            }
+            // ローカルDBにジャンルが保存しているかに応じてクエリを変える
+            var create_genre_onomatopoeia_query = Signin.create_genre_onomatopoeia_query(movie);
+            var genre_onomatopoeia_query = create_genre_onomatopoeia_query.promises;
+            Array.prototype.push.apply(promises, genre_onomatopoeia_query);
+
+            // フラグを取得
+            genre_insert_flag = create_genre_onomatopoeia_query.genre_flag;
+            onomatopoeia_insert_flag = create_genre_onomatopoeia_query.onomatopoeia_flag;
 
             // 画像のダウンロード、ジャンル・オノマトペの取得 or 挿入の処理が終了したら
             Promise.all(promises).then(function(result) {
@@ -617,28 +602,12 @@ var Signin = {
           var onomatopoeia_id = '';
 
           // ローカルDBにジャンルが保存しているかに応じてクエリを変える
-          // result[0]
-          if (Signin.exist.genre_array.indexOf(movie.movie__genre__name) == -1) {
-            genre_insert_flag_exist = true;
-            query_exist = 'INSERT INTO genre(genre_id, name) VALUES(?,?)';
-            promises_exist.push(DB_method.single_statement_execute(query_exist, [movie.movie__genre__genre_id, movie.movie__genre__name]));
-          }else {
-            genre_insert_flag_exist = false;
-            query_exist = 'SELECT id from genre WHERE name = ?';
-            promises_exist.push(DB_method.single_statement_execute(query_exist, [movie.movie__genre__name]));
-          }
+          var create_genre_onomatopoeia_query = Signin.create_genre_onomatopoeia_query(movie);
+          Array.prototype.push.apply(promises_exist, create_genre_onomatopoeia_query.promises);
 
-          // ローカルDBにオノマトペが保存しているかに応じてクエリを変える
-          // result[1]
-          if (Signin.exist.onomatopoeia_array.indexOf(movie.onomatopoeia__name) == -1) {
-            onomatopoeia_insert_flag_exist = true;
-            query_exist = 'INSERT INTO onomatopoeia(name) VALUES(?)';
-            promises_exist.push(DB_method.single_statement_execute(query_exist, [movie.onomatopoeia__name]));
-          }else {
-            onomatopoeia_insert_flag_exist = false;
-            query_exist = 'SELECT id from onomatopoeia WHERE name = ?';
-            promises_exist.push(DB_method.single_statement_execute(query_exist, [movie.onomatopoeia__name]));
-          }
+          // フラグを取得
+          genre_insert_flag_exist = create_genre_onomatopoeia_query.genre_flag;
+          onomatopoeia_insert_flag_exist = create_genre_onomatopoeia_query.onomatopoeia_flag;
 
           // result[2]
           query_exist = 'SELECT genre_id, onomatopoeia_id FROM movie WHERE tmdb_id = ?';
@@ -703,6 +672,45 @@ var Signin = {
         }
       });
     };
+  },
+
+
+
+  /**
+   * ローカルDBにジャンルが保存しているかに応じてクエリを変える
+   * @param  {[json]} movie [サーバから取得したBackUp1レコード]
+   * @return {[object]}     [DBへ問い合わせをするpromiseのarray,
+                             ジャンルのINSERTを行うかのフラグ,
+                             オノマトペのINSERTを行うかのフラグ]
+   */
+  create_genre_onomatopoeia_query: function(movie) {
+    var genre_insert_flag = false;
+    var onomatopoeia_insert_flag = false;
+    var query = '';
+    var promises = [];
+
+    if (Signin.exist.genre_array.indexOf(movie.movie__genre__name) == -1) {
+      genre_insert_flag = true;
+      query = 'INSERT INTO genre(genre_id, name) VALUES(?,?)';
+      promises.push(DB_method.single_statement_execute(query, [movie.movie__genre__genre_id, movie.movie__genre__name]));
+    }else {
+      genre_insert_flag = false;
+      query = 'SELECT id from genre WHERE name = ?';
+      promises.push(DB_method.single_statement_execute(query, [movie.movie__genre__name]));
+    }
+
+    // ローカルDBにオノマトペが保存しているかに応じてクエリを変える
+    if (Signin.exist.onomatopoeia_array.indexOf(movie.onomatopoeia__name) == -1) {
+      onomatopoeia_insert_flag = true;
+      query = 'INSERT INTO onomatopoeia(name) VALUES(?)';
+      promises.push(DB_method.single_statement_execute(query, [movie.onomatopoeia__name]));
+    }else {
+      onomatopoeia_insert_flag = false;
+      query = 'SELECT id from onomatopoeia WHERE name = ?';
+      promises.push(DB_method.single_statement_execute(query, [movie.onomatopoeia__name]));
+    }
+
+    return {'promises': promises, 'genre_flag': genre_insert_flag, 'onomatopoeia_flag': onomatopoeia_insert_flag};
   }
 };
 
