@@ -117,15 +117,20 @@ class SignInNoTokenViewSet(viewsets.ViewSet):
 
                 if get_user.check_password(data['password'].encode('utf-8')):
                     backup_obj = BackUp.objects.filter(username=get_user).values(
-                        'movie__title', 'movie__tmdb_id', 'movie__overview',
+                        'movie__title', 'movie__tmdb_id', 'movie__overview', 'movie__poster_path',
                         'movie__genre__name', 'movie__genre__genre_id',
                         'onomatopoeia__name',
                         'dvd', 'fav',
-                        'add_year', 'add_month', 'add_day'
+                        'add_year', 'add_month', 'add_day',
+                        'username__username', 'username__email', 'username__birthday', 'username__sex'
                     )
 
                     response_list = list(backup_obj)
                     response_list.append({'token': str(token)})
+                    response_list.append({'username': str(get_user.username)})
+                    response_list.append({'email': str(get_user.email)})
+                    response_list.append({'birthday': int(get_user.birthday)})
+                    response_list.append({'sex': str(get_user.sex)})
 
                     return JsonResponse({'results': response_list})
 
@@ -177,7 +182,8 @@ class MovieAddViewSet(viewsets.ViewSet):
             data = {'username': request.data['username'],
                     'movie_title': request.data['movie_title'],
                     'movie_id': request.data['movie_id'],
-                    'overview': request.data['overview']
+                    'overview': request.data['overview'],
+                    'poster_path': request.data['poster_path']
                     }
 
             MovieAdd.movie(self, genre_obj_list, onomatopoeia_obj_list, data)
