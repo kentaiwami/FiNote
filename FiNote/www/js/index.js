@@ -268,13 +268,15 @@ var Top = {
    */
   check_post_change: function(){
     document.addEventListener('postchange', function(event) {
-      console.log('active carousel is ' + event.activeIndex);
+      if (typeof event.activeIndex != 'undefined') {
+        console.log('active carousel is ' + event.activeIndex);
 
-      var toolbar_center = document.getElementById(ID.get_top_ID().toolbar_center);
-      if (event.activeIndex === 0) {
-        toolbar_center.innerHTML = 'ユーザ登録';
-      }else {
-        toolbar_center.innerHTML = 'ログイン';
+        var toolbar_center = document.getElementById(ID.get_top_ID().toolbar_center);
+        if (event.activeIndex === 0) {
+          toolbar_center.innerHTML = 'ユーザ登録';
+        }else {
+          toolbar_center.innerHTML = 'ログイン';
+        }
       }
     });
   },
