@@ -461,29 +461,6 @@ var Signin = {
     Utility.FiNote_API('signinnotoken', data, 'POST').then(function(result) {
       Utility.stop_spinner();
       var backup_json = JSON.parse(result).results;
-      
-      // Now Working !!
-      // listの要素を1つ取得
-      // 未出現の映画名ならば、
-        // 出現済みのジャンルならば、selectでpkを取得
-        // 未出現のジャンルならば、insertでpkを取得
-
-        // 出現済みのオノマトペならば、selectでpkを取得
-        // 未出現のオノマトペならば、insertでpkを取得
-
-        // posterを取得(APIは使わない)
-
-        // movieテーブルにinsertする
-        
-      // 出現済みの映画ならば、
-        // 出現済みのジャンルならば、selectでpkを取得
-        // 未出現のジャンルならば、insertでpkを取得
-
-        // 出現済みのオノマトペならば、selectでpkを取得
-        // 未出現のオノマトペならば、insertでpkを取得
-
-        // movieテーブルにupdateする
-
       var promises = [];
       for(var i = 0; i < backup_json.length - 1; i++) {
         promises.push(Signin.movie_restore(backup_json[i]));
@@ -590,14 +567,13 @@ var Signin = {
           if (onomatopoeia_insert_flag) {
             Signin.exist.onomatopoeia_array.push(movie.onomatopoeia__name);
           }
-          console.log('***********************');
-          console.log(movie.movie__title);
+
           Signin.exist.movie_title_array.push(movie.movie__title);
-          console.log(Signin.exist.movie_title_array);
           resolve();
         })
         .catch(function(err) {
           console.log(err);
+          Utility.show_error_alert('エラー発生', err, 'OK');
           reject();
         });
 
@@ -661,7 +637,6 @@ var Signin = {
           var new_genre_id = '';
           var new_onomatopoeia_id = '';
 
-          console.log(now_genre_id);
           if (now_genre_id.indexOf(genre_id) == -1) {
             new_genre_id = result[2].rows.item(0).genre_id + ',' + genre_id;
           }else {
@@ -692,6 +667,7 @@ var Signin = {
         })
         .catch(function(err) {
           console.log(err);
+          Utility.show_error_alert('エラー発生', err, 'OK');
           reject();
         });
       }
