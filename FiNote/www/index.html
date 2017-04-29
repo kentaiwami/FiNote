@@ -21,21 +21,18 @@
 
 <body>
   <script>
-   // DB_method.delete_all_record();
+    //ブラウザでの確認のため強制的に遷移させるテストコード
+    // Utility.check_page_init('index',function(){Utility.push_page('movieadd_search.html', 'push', 0, '');});
+    // Utility.browser_signup();
+    
+    //エラー表示用
+    window.onerror = function(msg, url, line, col, error) {
+     	console.log(line);
+      console.log(msg);
+    };
 
-   //ブラウザでの確認のため強制的に遷移させるテストコード
-   // Utility.check_page_init('index',function(){Utility.push_page('movieadd_search.html', 'push', 0, '');});
-
-
-   //エラー表示用
-   window.onerror = function(msg, url, line, col, error) {  
-   	console.log(line);
-    console.log(msg);
-   };
-
-   //サインアップしているかどうかをチェックする
-   Index.check_signup();
-   // Utility.browser_signup();
+    //サインアップしているかどうかをチェックする
+    Index.check_signup();
   </script>
 
   <!-- ページ管理をするnavigatorを設置 -->
@@ -46,6 +43,9 @@
     <ons-page id="index"></ons-page>
   </ons-template>
   <!-- ●ここまでindex.html -->
+
+
+
 
 
   <!-- ●●●●●●●●● ここからtab.html ●●●●●●●●● -->
@@ -60,77 +60,111 @@
   </ons-template>
   <!-- ●●●●●●●●● ここまでtab.html ●●●●●●●●● -->
 
-  <!-- ●●●●●●●●● ここからsignin.html ●●●●●●●●● -->
-  <ons-template id="signin.html">
-    <ons-page id="signin">
+
+
+
+
+  <!-- ●●●●●●●●● ここからtop.html ●●●●●●●●● -->
+  <ons-template id="top.html">
+    <ons-page id="top">
       <ons-toolbar>
-        <div class="center brown_color">ユーザ登録</div>
+        <div class="left">
+          <ons-toolbar-button onclick="Top.prev()">
+            <ons-icon class="brown_color" icon="ion-ios-arrow-back"></ons-icon>
+          </ons-toolbar-button>
+        </div>
+
+        <div class="center brown_color" id="carousel_toolbar_center">ユーザ登録</div>
+
+        <div class="right">
+          <ons-toolbar-button onclick="Top.next()">
+            <ons-icon class="brown_color" icon="ion-ios-arrow-forward"></ons-icon>
+          </ons-toolbar-button>
+        </div>
       </ons-toolbar>
 
-			<ons-list id="signin_list">
-        <div class="formarea">
-          <!-- ユーザ名とパスワードのフォーム -->
-          <ons-list-header class="brown_color">入力項目</ons-list-header>
-          <div class="form-row">
-            <input type="text" id="username" class="text-input--underbar width-full" placeholder="ユーザ名" value="">
+      <ons-carousel auto-scroll-ratio="0.3" fullscreen swipeable auto-scroll overscrollable id="top_carousel">
+        <!-- ユーザ登録画面 -->
+        <ons-carousel-item>
+          <ons-list id="signup_list">
+            <div class="formarea">
+              <!-- ユーザ名とパスワードのフォーム -->
+              <ons-list-header class="brown_color">入力項目</ons-list-header>
+              <div class="form-row">
+                <input type="text" id="username" class="text-input--underbar width-full signup_form_input" placeholder="ユーザ名" value="">
+              </div>
+
+              <div class="form-row">
+                <input type="text" id="email" class="text-input--underbar width-full signup_form_input" placeholder="メールアドレス" value="">
+              </div>
+
+              <div class="form-row">
+                <input type="password" id="password" class="text-input--underbar width-full signup_form_input" placeholder="パスワード" value="">
+              </div>
+
+              <div>
+                <p class="note brown_color">Password - 6 characters or more</p>
+              </div>
+
+              <!-- 性別を選択させるラジオボタン -->
+              <ons-list-header class="brown_color">性別</ons-list-header>
+              <ons-list-item tappable>
+                <label class="left"><ons-input name="color" type="radio" input-id="radio_m" checked></ons-input></label>
+                <label for="radio_m" class="center">男性</label>
+              </ons-list-item>
+
+              <ons-list-item tappable>
+                <label class="left"><ons-input name="color" type="radio" input-id="radio_f"></ons-input></label>
+                <label for="radio_f" class="center">女性</label>
+              </ons-list-item>
+              
+              <!-- 生年選択のフォーム -->
+              <ons-list-header class="brown_color">生年</ons-list-header>
+              <div class="form-row">
+                <input onfocus="Signup.birthday_pickerview()" type="text" id="birthday" class="text-input--underbar width-full" placeholder="生年を選択する" value="">
+              </div>
+             
+              <!-- 登録ボタン -->
+              <div class="vspc form-row">
+                <ons-button class="brown_bg_color" modifier="large--cta" id="signup_button" onclick="Signup.usersignup()" disabled>登録</ons-button>
+              </div>
+            </div>
+          </ons-list>
+
+          <!-- 会員登録成功時のアラート -->
+          <ons-dialog id="signup-alert-success">
+            <div class="alert">
+              <p>会員登録が完了しました</p>
+              <p><ons-button class="brown_bg_color" onclick="Signup.alert_hide('signup-alert-success')">OK</ons-button></p>
+            </div>
+          </ons-dialog>
+
+          <!-- 会員登録失敗時のアラート -->
+          <ons-alert-dialog id="signup-alert-error">
+            <div class="alert-dialog-title">エラー</div>
+            <div class="alert-dialog-content" id="error-message"></div>
+            <div class="alert-dialog-footer">
+              <button class="alert-dialog-button" onclick="Signup.alert_hide('signup-alert-error')">OK</button>
+            </div>
+          </ons-alert-dialog>
+        </ons-carousel-item>
+
+        <!-- ログイン画面 -->
+        <ons-carousel-item id="signin_carousel">
+          <div class="login-form">
+            <input id="signin_username" type="text" class="text-input--underbar signin_form_input" placeholder="ユーザ名" value="">
+            <input id="signin_password" type="password" class="text-input--underbar signin_form_input" placeholder="パスワード" value="">
+            <br><br>
+            <ons-button id="signin_button" modifier="large" class="login-button" onclick="Signin.tap_sign_in_button()" disabled>ログイン</ons-button>
           </div>
-
-          <div class="form-row">
-            <input type="text" id="email" class="text-input--underbar width-full" placeholder="メールアドレス" value="">
-          </div>
-
-          <div class="form-row">
-            <input type="password" id="password" class="text-input--underbar width-full" placeholder="パスワード" value="">
-          </div>
-
-          <div>
-            <p class="note brown_color">Password - 6 characters or more</p>
-          </div>
-
-          <!-- 性別を選択させるラジオボタン -->
-          <ons-list-header class="brown_color">性別</ons-list-header>
-          <ons-list-item tappable>
-            <label class="left"><ons-input name="color" type="radio" input-id="radio_m" checked></ons-input></label>
-            <label for="radio_m" class="center">男性</label>
-          </ons-list-item>
-
-          <ons-list-item tappable>
-            <label class="left"><ons-input name="color" type="radio" input-id="radio_f"></ons-input></label>
-            <label for="radio_f" class="center">女性</label>
-          </ons-list-item>
-          
-          <!-- 生年選択のフォーム -->
-          <ons-list-header class="brown_color">生年</ons-list-header>
-          <div class="form-row">
-            <input onfocus="Signin.birthday_pickerview()" type="text" id="birthday" class="text-input--underbar width-full" placeholder="生年を選択する" value="">
-          </div>
-         
-          <!-- 登録ボタン -->
-          <div class="vspc form-row">
-            <ons-button class="brown_bg_color" modifier="large--cta" id="signin_button" onclick="Signin.usersignin()" disabled>登録</ons-button>
-          </div>
-      	</div>
-    	</ons-list>
-
-      <!-- 会員登録成功時のアラート -->
-      <ons-dialog id="signin-alert-success">
-        <div class="alert">
-          <p>会員登録が完了しました</p>
-          <p><ons-button class="brown_bg_color" onclick="Signin.alert_hide('signin-alert-success')">OK</ons-button></p>
-        </div>
-      </ons-dialog>
-
-      <!-- 会員登録失敗時のアラート -->
-      <ons-alert-dialog id="signin-alert-error">
-        <div class="alert-dialog-title">エラー</div>
-        <div class="alert-dialog-content" id="error-message"></div>
-        <div class="alert-dialog-footer">
-          <button class="alert-dialog-button" onclick="Signin.alert_hide('signin-alert-error')">OK</button>
-        </div>
-      </ons-alert-dialog>
+        </ons-carousel-item>
+      </ons-carousel>
     </ons-page>
   </ons-template>
-  <!-- ●●●●●●●●● ここまでsignin.html ●●●●●●●●● -->
+  <!-- ●●●●●●●●● ここからtop.html ●●●●●●●●● -->
+
+
+
 
 
   <!-- ●●●●●●●●● ここからmovies.html ●●●●●●●●● -->
@@ -154,6 +188,9 @@
     </ons-page>
   </ons-template>
   <!-- ●●●●●●●●● ここまでmovies.html ●●●●●●●●● -->
+
+
+
 
 
 	<!-- ●●●●●●●●● ここからmovies_detail.html ●●●●●●●●● -->
@@ -184,6 +221,9 @@
 	</ons-template>
 
   <!-- ●●●●●●●●● ここからmovies_detail.html ●●●●●●●●● -->
+
+
+
 
 
   <!-- ●●●●●●●●● ここからmovieadd_search.html ●●●●●●●●● -->
@@ -218,6 +258,9 @@
     </ons-page>
   </ons-template>
   <!-- ●●●●●●●●● ここまでmovieadd_search.html ●●●●●●●●● -->
+
+
+
 
 
   <!-- ●●●●●●●●● ここからmovieadd.html ●●●●●●●●● -->
@@ -300,6 +343,9 @@
   <!-- ●●●●●●●●● ここまでmovieadd.html ●●●●●●●●● -->
 
 
+
+
+
   <!-- ●●●●●●●●● ここからfeeling.html ●●●●●●●●● -->
   <ons-template id="feeling.html">
     <ons-page id="feeling">
@@ -353,16 +399,15 @@
   <!-- ●●●●●●●●● ここまでfeeling.html ●●●●●●●●● -->
 
 
+
+
+
   <!-- ●●●●●●●●● ここからmovieadd_status.html ●●●●●●●●● -->
   <ons-template id="movieadd_status.html">
   	<ons-page id="movieadd_status" ontouchmove="event.preventDefault()">
   		<!-- ツールバー -->
   		<ons-toolbar>
-	  		<div class="left" id="status_toolbar_left">
-          <!-- <ons-toolbar-button onClick="Utility.pop_page(Movieadd_status.close_movieadd_status())">
-          	<ons-icon id="status_toolbar_left_icon" class="brown_color" icon="ion-close-round"></ons-icon>
-          </ons-toolbar-button> -->
-        </div>
+	  		<div class="left" id="status_toolbar_left"></div>
   			<div class="center brown_color">ステータスの登録</div>
   		</ons-toolbar>
 
@@ -395,6 +440,9 @@
   <!-- ●●●●●●●●● ここまでmovieadd_status.html ●●●●●●●●● -->
 
 
+
+
+
   <!-- ●●●●●●●●● ここからsearch.html ●●●●●●●●● -->
   <ons-template id="search.html">
 	  <ons-page id="search">
@@ -407,6 +455,9 @@
 	  </ons-page>
   </ons-template>
   <!-- ●●●●●●●●● ここまでsearch.html ●●●●●●●●● -->
+
+
+
 
 
   <!-- ●●●●●●●●● ここからaction.html ●●●●●●●●● -->

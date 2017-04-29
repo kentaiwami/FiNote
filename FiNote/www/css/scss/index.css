@@ -24,11 +24,11 @@
   color: #462401;
 }
 
-.brown_bg_color {
+.brown_bg_color, .login-button {
   background-color: #462401;
   color: #FFF;
 }
-.brown_bg_color:active {
+.brown_bg_color:active, .login-button:active {
   background-color: #462401;
   color: #FFF;
 }
@@ -56,7 +56,7 @@
 }
 
 /************************************************************
-                          	Signin
+                          	Signup
  ************************************************************/
 .form-row {
   margin: .8rem;
@@ -77,14 +77,36 @@
 }
 
 .formarea {
-  margin: 3rem auto;
-  height: 78.5vh;
+  height: 93vh;
 }
 
-input[type=text],
-input[type=password] {
+.signup_form_input {
   padding: 10px 0px;
   height: 3rem;
+}
+
+/************************************************************
+                            Signin
+ ************************************************************/
+.login-form {
+  text-align: center;
+  width: 80%;
+  margin: 60px auto 0;
+}
+
+.signin_form_input {
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  padding-top: 15px;
+  padding-bottom: 16px;
+  outline: none;
+}
+
+.login-button {
+  width: 100%;
+  margin: 0 auto;
 }
 
 /************************************************************

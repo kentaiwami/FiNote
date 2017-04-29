@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import *
 
 
-class SignInSerializer(serializers.Serializer):
+class SignUpSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=256, allow_blank=False, required=True)
     password = serializers.CharField(max_length=256, allow_blank=False, required=True)
     email = serializers.EmailField(max_length=100, allow_blank=False, required=True)
@@ -10,9 +10,14 @@ class SignInSerializer(serializers.Serializer):
     sex = serializers.CharField(max_length=1, allow_blank=False, allow_null=False, required=True)
 
 
-class SignUpWithTokenSerializer(serializers.Serializer):
+class SignInWithTokenSerializer(serializers.Serializer):
     username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
     token = serializers.CharField(allow_blank=False, allow_null=False, required=True)
+
+
+class SignInNoTokenSerializer(serializers.Serializer):
+    username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
+    password = serializers.CharField(allow_blank=False, required=True)
 
 
 class MovieAddSerializer(serializers.Serializer):

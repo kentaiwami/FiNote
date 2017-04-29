@@ -10,6 +10,9 @@
           <option value="FiNote_API.models.Onomatopoeia.objects" />
           <option value="FiNote_API.models.OnomatopoeiaCount.objects" />
           <option value="FiNote_API.models.BackUp.objects" />
+          <option value="object.method" />
+          <option value="object.data" />
+          <option value="object.__getitem__" />
         </list>
       </option>
     </inspection_tool>

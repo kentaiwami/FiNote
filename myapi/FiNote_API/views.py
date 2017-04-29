@@ -1,4 +1,6 @@
-from django.http import JsonResponse
+import json
+
+from django.http import JsonResponse, HttpResponse
 from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
@@ -9,11 +11,20 @@ from .serializer import *
 from django.core.exceptions import ObjectDoesNotExist
 
 
-class SignInViewSet(viewsets.ViewSet):
+class SignUpViewSet(viewsets.ViewSet):
     queryset = User.objects.all()
-    serializer_class = SignInSerializer
+    serializer_class = SignUpSerializer
 
-    def create(self, request, *args, **kwargs):
+    def create(self, request):
+        """
+        When SignUp api access, run this method.
+        This method is check sign in form data, create new user and response token.
+        :param request: User request data.(username, email, password, birthday year and sex)
+        :return content: Username and token.
+        
+        :type request: object
+        """
+
         if request.method == 'POST':
             data = request.data
 
@@ -54,11 +65,20 @@ class SignInViewSet(viewsets.ViewSet):
             return Response(content)
 
 
-class SignUpWithTokenViewSet(viewsets.ViewSet):
+class SignInWithTokenViewSet(viewsets.ViewSet):
     queryset = User.objects.all()
-    serializer_class = SignUpWithTokenSerializer
+    serializer_class = SignInWithTokenSerializer
 
-    def create(self, request, *args, **kwargs):
+    def create(self, request):
+        """
+        When SignInWithToken api access, run this method.
+        This method is check username and token. If success signup, response username.
+        :param request: Request user's data.(username and token)
+        :return: Username
+        
+        :type request object
+        """
+
         if request.method == 'POST':
             data = request.data
             if not data['username']:
@@ -67,7 +87,7 @@ class SignUpWithTokenViewSet(viewsets.ViewSet):
                 raise ValidationError('リクエストに認証情報が含まれていません')
 
             try:
-                get_user = User.objects.get(username=data['username'])
+                get_user = AuthUser.objects.get(username=data['username'])
                 token = Token.objects.get(user_id=get_user.pk)
 
                 if str(token) == data['token']:
@@ -78,11 +98,63 @@ class SignUpWithTokenViewSet(viewsets.ViewSet):
                 raise ValidationError('ログインに失敗しました', 404)
 
 
+class SignInNoTokenViewSet(viewsets.ViewSet):
+    queryset = User.objects.all()
+    serializer_class = SignInNoTokenSerializer
+
+    def create(self, request):
+        if request.method == 'POST':
+            data = request.data
+
+            if not data['username']:
+                raise ValidationError('ユーザ名が含まれていません')
+            if not data['password']:
+                raise ValidationError('パスワードが含まれていません')
+
+            try:
+                get_user = AuthUser.objects.get(username=data['username'])
+                token = Token.objects.get(user_id=get_user.pk)
+
+                if get_user.check_password(data['password'].encode('utf-8')):
+                    backup_obj = BackUp.objects.filter(username=get_user).values(
+                        'movie__title', 'movie__tmdb_id', 'movie__overview', 'movie__poster_path',
+                        'movie__genre__name', 'movie__genre__genre_id',
+                        'onomatopoeia__name',
+                        'dvd', 'fav',
+                        'add_year', 'add_month', 'add_day',
+                        'username__username', 'username__email', 'username__birthday', 'username__sex'
+                    )
+
+                    response_list = list(backup_obj)
+                    response_list.append({'token': str(token)})
+                    response_list.append({'username': str(get_user.username)})
+                    response_list.append({'email': str(get_user.email)})
+                    response_list.append({'birthday': int(get_user.birthday)})
+                    response_list.append({'sex': str(get_user.sex)})
+
+                    return JsonResponse({'results': response_list})
+
+                else:
+                    raise ValidationError('ユーザ名かパスワードが違います')
+
+            except ObjectDoesNotExist:
+                raise ValidationError('ユーザ名かパスワードが違います')
+
+
 class MovieAddViewSet(viewsets.ViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieAddSerializer
 
-    def create(self, request, *args, **kwargs):
+    def create(self, request):
+        """
+        When MovieAdd api access, run this method.
+        This method is add movie, onomatopoeia and genre. If success all process, response genre id and name.
+        :param request: Request user's data.(username, movie_title, overview, movie_id(tmdb_id), genre_id_list, onomatopoeia, dvd and fav)
+        :return: Genre id and name json data.
+        
+        :type request object
+        """
+
         if request.method == 'POST':
             r_genre_id_list = request.data['genre_id_list']
             r_onomatopoeia_list = request.data['onomatopoeia']
@@ -110,7 +182,8 @@ class MovieAddViewSet(viewsets.ViewSet):
             data = {'username': request.data['username'],
                     'movie_title': request.data['movie_title'],
                     'movie_id': request.data['movie_id'],
-                    'overview': request.data['overview']
+                    'overview': request.data['overview'],
+                    'poster_path': request.data['poster_path']
                     }
 
             MovieAdd.movie(self, genre_obj_list, onomatopoeia_obj_list, data)
@@ -132,7 +205,17 @@ class OnomatopoeiaUpdateViewSet(viewsets.ViewSet):
     queryset = Onomatopoeia.objects.all()
     serializer_class = OnomatopoeiaUpdateSerializer
 
-    def create(self, request, *args, **kwargs):
+    def create(self, request):
+        """
+        When OnomatopoeiaUpdate api access, run this method.
+        This method is update movie and back up table onomatopoeia column or add onomatopoeia.
+        If success all process, response user name.
+        :param request: Request user's data.(username, movie_id(tmdb_id) and onomatopoeia list)
+        :return: User name.
+        
+        :type request object
+        """
+
         if request.method == 'POST':
             r_onomatopoeia_list = request.data['onomatopoeia']
 
@@ -154,7 +237,16 @@ class DeleteBackupViewSet(viewsets.ViewSet):
     queryset = Onomatopoeia.objects.all()
     serializer_class = DeleteBackupSerializer
 
-    def create(self, request, *args, **kwargs):
+    def create(self, request):
+        """
+        When DeleteBackup api access, run this method.
+        This method is delete backup data, remove movie table's user column.
+        :param request: Request user's data.(username and movie_id(tmdb_id))
+        :return: User name.
+        
+        :type request object
+        """
+
         if request.method == 'POST':
             # バックアップの削除
             usr_obj = AuthUser.objects.get(username=request.data['username'])
@@ -173,7 +265,16 @@ class StatusUpdateViewSet(viewsets.ViewSet):
     queryset = Onomatopoeia.objects.all()
     serializer_class = StatusUpdateSerializer
 
-    def create(self, request, *args, **kwargs):
+    def create(self, request):
+        """
+        When StatusUpdate api access, run this method.
+        This method is update dvd and favorite status.
+        :param request: Request user's data.(username, movie_id(tmdb_id), dvd and fav)
+        :return: User name.
+        
+        :type request object
+        """
+
         if request.method == 'POST':
             usr_obj = AuthUser.objects.get(username=request.data['username'])
             movie_obj = Movie.objects.get(tmdb_id=request.data['movie_id'])
