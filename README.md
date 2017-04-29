@@ -27,16 +27,16 @@
 5. 映画の追加ボタンを押して映画を追加します。
 
 ## 使用しているプラグイン
-* cordova-plugin-console 1.0.6
-* cordova-plugin-device 1.1.5
-* cordova-plugin-listpicker 2.2.2
-* cordova-plugin-splashscreen 4.0.2
-* cordova-plugin-statusbar 2.2.2
-* cordova-plugin-whitelist 1.3.2
-* cordova-plugin-x-socialsharing 5.1.7
-* cordova-sqlite-legacy-build-support 1.3.5-pre1
+* [cordova-plugin-console 1.0.6](https://www.npmjs.com/package/cordova-plugin-console)
+* [cordova-plugin-device 1.1.5](https://www.npmjs.com/package/cordova-plugin-device)
+* [cordova-plugin-listpicker 2.2.2](https://www.npmjs.com/package/cordova-plugin-listpicker)
+* [cordova-plugin-splashscreen 4.0.2](https://www.npmjs.com/package/cordova-plugin-splashscreen)
+* [cordova-plugin-statusbar 2.2.2](https://www.npmjs.com/package/cordova-plugin-statusbar)
+* [cordova-plugin-whitelist 1.3.2](https://www.npmjs.com/package/cordova-plugin-whitelist)
+* [cordova-plugin-x-socialsharing 5.1.7](https://www.npmjs.com/package/cordova-plugin-x-socialsharing)
+* [cordova-sqlite-legacy-build-support 1.3.5-pre1](https://github.com/litehelpers/Cordova-sqlite-legacy-build-support)
 
 ## 使用している外部サービス
 * さくらサーバ
-* The Movie Database(https://www.themoviedb.org)
+* [The Movie Database](https://www.themoviedb.org)
 
