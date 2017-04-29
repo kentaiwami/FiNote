@@ -14,6 +14,7 @@
 * 他ユーザとの共有を行う機能は開発中です。
 
 ## デモ
+![demo](https://github.com/kentaiwami/FiNote/blob/master/demo.gif)
 
 ## サポート情報
 * iOS 10.3.1
