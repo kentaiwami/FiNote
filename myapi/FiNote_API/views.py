@@ -118,13 +118,13 @@ class SignInNoTokenViewSet(viewsets.ViewSet):
                 if get_user.check_password(data['password'].encode('utf-8')):
                     backup_obj = BackUp.objects.filter(username=get_user).values(
                         'movie__title', 'movie__tmdb_id', 'movie__overview',
-                        'movie__genre__name',
+                        'movie__genre__name', 'movie__genre__genre_id',
                         'onomatopoeia__name',
                         'dvd', 'fav',
                         'add_year', 'add_month', 'add_day'
                     )
 
-                    response_list = Backup.create_marged_backups(self, list(backup_obj))
+                    response_list = list(backup_obj)
                     response_list.append({'token': str(token)})
 
                     return JsonResponse({'results': response_list})

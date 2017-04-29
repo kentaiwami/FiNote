@@ -433,6 +433,8 @@ var Signup = {
                         Signin.html
  ************************************************************/
 var Signin = {
+  exist: {movie_title_array: [], genre_array: [], onomatopoeia_array: []},
+
   /**
    * ユーザ名とパスワード入力フォームのkeyupイベントが起きるたびに入力文字数を確認する
    */
@@ -458,13 +460,243 @@ var Signin = {
 
     Utility.FiNote_API('signinnotoken', data, 'POST').then(function(result) {
       Utility.stop_spinner();
-      var backup_json = JSON.parse(result);
+      var backup_json = JSON.parse(result).results;
+      
+      // Now Working !!
+      // listの要素を1つ取得
+      // 未出現の映画名ならば、
+        // 出現済みのジャンルならば、selectでpkを取得
+        // 未出現のジャンルならば、insertでpkを取得
+
+        // 出現済みのオノマトペならば、selectでpkを取得
+        // 未出現のオノマトペならば、insertでpkを取得
+
+        // posterを取得(APIは使わない)
+
+        // movieテーブルにinsertする
+        
+      // 出現済みの映画ならば、
+        // 出現済みのジャンルならば、selectでpkを取得
+        // 未出現のジャンルならば、insertでpkを取得
+
+        // 出現済みのオノマトペならば、selectでpkを取得
+        // 未出現のオノマトペならば、insertでpkを取得
+
+        // movieテーブルにupdateする
+
+      var promises = [];
+      for(var i = 0; i < backup_json.length - 1; i++) {
+        promises.push(Signin.movie_restore(backup_json[i]));
+      }
+
+      promises.reduce(function(prev, curr, index, array) {
+        return prev.then(curr);
+      }, Promise.resolve());
     })
     .catch(function(err) {
       Utility.stop_spinner();
       console.log(err);
-      Utility.show_error_alert('ログインエラー', err, 'OK');
+      Utility.show_error_alert('エラー', err, 'OK');
     });
+  },
+
+  movie_restore: function(movie) {
+    return function() {
+    return new Promise(function(resolve, reject) {
+
+      // ローカルDBに映画が未保存の場合
+      console.log(Signin.exist.movie_title_array);
+      console.log(movie.movie__title);
+      if (Signin.exist.movie_title_array.indexOf(movie.movie__title) == -1) {
+        // 画像のダウンロード
+        var base_url = 'https://image.tmdb.org/t/p/w300_and_h450_bestv2';
+        var image = new Image();
+        // FIX ME !!
+        image.src = base_url + movie.poster_path; 
+        var image_b64 = '';
+
+        var promises = [];
+        var query = '';
+
+        var genre_insert_flag = false;
+        var onomatopoeia_insert_flag = false;
+
+        promises.push(Utility.image_to_base64(image, 'image/jpeg'));
+        
+        // ローカルDBにジャンルが保存しているかに応じてクエリを変える
+        if (Signin.exist.genre_array.indexOf(movie.movie__genre__name) == -1) {
+          genre_insert_flag = true;
+          query = 'INSERT INTO genre(genre_id, name) VALUES(?,?)';
+          promises.push(DB_method.single_statement_execute(query, [movie.movie__genre__genre_id, movie.movie__genre__name]));
+        }else {
+          genre_insert_flag = false;
+          query = 'SELECT id from genre WHERE name = ?';
+          promises.push(DB_method.single_statement_execute(query, [movie.movie__genre__name]));
+        }
+
+        // ローカルDBにオノマトペが保存しているかに応じてクエリを変える
+        if (Signin.exist.onomatopoeia_array.indexOf(movie.onomatopoeia__name) == -1) {
+          onomatopoeia_insert_flag = true;
+          query = 'INSERT INTO onomatopoeia(name) VALUES(?)';
+          promises.push(DB_method.single_statement_execute(query, [movie.onomatopoeia__name]));
+        }else {
+          onomatopoeia_insert_flag = false;
+          query = 'SELECT id from onomatopoeia WHERE name = ?';
+          promises.push(DB_method.single_statement_execute(query, [movie.onomatopoeia__name]));
+        }
+
+        // 画像のダウンロード、ジャンル・オノマトペの取得 or 挿入の処理が終了したら
+        Promise.all(promises).then(function(result) {
+          var image_b64 = result[0];
+          var genre_id = '';
+          var onomatopoeia_id = '';
+
+          // ジャンルのクエリに応じて取得する値を合わせる
+          if (genre_insert_flag) {
+            genre_id = String(result[1].insertId);
+          }else {
+            genre_id = String(result[1].rows.item(0).id);
+          }
+
+          // オノマトペのクエリに応じて取得する値を合わせる
+          if (onomatopoeia_insert_flag) {
+            onomatopoeia_id = String(result[2].insertId);
+          }else {
+            onomatopoeia_id = String(result[2].rows.item(0).id);
+          }
+
+          var insert_data = [
+            movie.movie__title,
+            Number(movie.movie__tmdb_id),
+            genre_id,
+            onomatopoeia_id,
+            image_b64,
+            movie.movie__overview,
+            movie.dvd,
+            movie.fav,
+            movie.add_year,
+            movie.add_month,
+            movie.add_day
+          ];
+          query = 'INSERT INTO movie(title, tmdb_id, genre_id, onomatopoeia_id, poster, overview, dvd, fav, add_year, add_month, add_day) VALUES(?,?,?,?,?,?,?,?,?,?,?)';
+
+          return DB_method.single_statement_execute(query, insert_data);
+        }).then(function(insert_result) {
+          // 既に追加済みとして映画タイトル、ジャンル名、オノマトペ名を記録
+          if (genre_insert_flag) {
+            Signin.exist.genre_array.push(movie.movie__genre__name);
+          }
+
+          if (onomatopoeia_insert_flag) {
+            Signin.exist.onomatopoeia_array.push(movie.onomatopoeia__name);
+          }
+          console.log('***********************');
+          console.log(movie.movie__title);
+          Signin.exist.movie_title_array.push(movie.movie__title);
+          console.log(Signin.exist.movie_title_array);
+          resolve();
+        })
+        .catch(function(err) {
+          console.log(err);
+          reject();
+        });
+
+      // ローカルDBに映画が保存済みの場合
+      }else {
+        var genre_insert_flag_exist = false;
+        var onomatopoeia_insert_flag_exist = false;
+        var promises_exist = [];
+        var query_exist = '';
+        var genre_id = '';
+        var onomatopoeia_id = '';
+
+        // ローカルDBにジャンルが保存しているかに応じてクエリを変える
+        // result[0]
+        if (Signin.exist.genre_array.indexOf(movie.movie__genre__name) == -1) {
+          genre_insert_flag_exist = true;
+          query_exist = 'INSERT INTO genre(genre_id, name) VALUES(?,?)';
+          promises_exist.push(DB_method.single_statement_execute(query_exist, [movie.movie__genre__genre_id, movie.movie__genre__name]));
+        }else {
+          genre_insert_flag_exist = false;
+          query_exist = 'SELECT id from genre WHERE name = ?';
+          promises_exist.push(DB_method.single_statement_execute(query_exist, [movie.movie__genre__name]));
+        }
+
+        // ローカルDBにオノマトペが保存しているかに応じてクエリを変える
+        // result[1]
+        if (Signin.exist.onomatopoeia_array.indexOf(movie.onomatopoeia__name) == -1) {
+          onomatopoeia_insert_flag_exist = true;
+          query_exist = 'INSERT INTO onomatopoeia(name) VALUES(?)';
+          promises_exist.push(DB_method.single_statement_execute(query_exist, [movie.onomatopoeia__name]));
+        }else {
+          onomatopoeia_insert_flag_exist = false;
+          query_exist = 'SELECT id from onomatopoeia WHERE name = ?';
+          promises_exist.push(DB_method.single_statement_execute(query_exist, [movie.onomatopoeia__name]));
+        }
+
+        // result[2]
+        query_exist = 'SELECT genre_id, onomatopoeia_id FROM movie WHERE tmdb_id = ?';
+
+        promises_exist.push(DB_method.single_statement_execute(query_exist, [Number(movie.movie__tmdb_id)]));
+
+        // ジャンル・オノマトペの取得 or 挿入、映画レコードの取得が終了したら
+        Promise.all(promises_exist).then(function(result) {
+          // ジャンルのクエリに応じて取得する値を合わせる
+          if (genre_insert_flag_exist) {
+            genre_id = String(result[0].insertId);
+          }else {
+            genre_id = String(result[0].rows.item(0).id);
+          }
+
+          // オノマトペのクエリに応じて取得する値を合わせる
+          if (onomatopoeia_insert_flag_exist) {
+            onomatopoeia_id = String(result[1].insertId);
+          }else {
+            onomatopoeia_id = String(result[1].rows.item(0).id);
+          }
+
+          // ローカルに保存してあるgenre_idやonomatopoeia_idに同じidが含まれていない時のみ追加
+          var now_genre_id = result[2].rows.item(0).genre_id;
+          var now_onomatopoeia_id = result[2].rows.item(0).onomatopoeia_id;
+          var new_genre_id = '';
+          var new_onomatopoeia_id = '';
+
+          console.log(now_genre_id);
+          if (now_genre_id.indexOf(genre_id) == -1) {
+            new_genre_id = result[2].rows.item(0).genre_id + ',' + genre_id;
+          }else {
+            new_genre_id = now_genre_id;
+          }
+
+          if (now_onomatopoeia_id.indexOf(onomatopoeia_id) == -1) {
+            new_onomatopoeia_id = result[2].rows.item(0).onomatopoeia_id + ',' + onomatopoeia_id;
+          }else {
+            new_onomatopoeia_id = now_onomatopoeia_id;
+          }
+
+          query_exist = 'UPDATE movie SET genre_id = ?, onomatopoeia_id = ? WHERE tmdb_id = ?';
+
+          return DB_method.single_statement_execute(query_exist, [new_genre_id, new_onomatopoeia_id, Number(movie.movie__tmdb_id)]);
+        })
+        .then(function(update_result) {
+          // 既に追加済みとして映画タイトル、ジャンル名、オノマトペ名を記録
+          if (genre_insert_flag_exist) {
+            Signin.exist.genre_array.push(movie.movie__genre__name);
+          }
+
+          if (onomatopoeia_insert_flag_exist) {
+            Signin.exist.onomatopoeia_array.push(movie.onomatopoeia__name);
+          }
+
+          resolve();
+        })
+        .catch(function(err) {
+          console.log(err);
+          reject();
+        });
+      }
+    });
+};
   }
 };
 
@@ -2411,7 +2643,7 @@ var Utility = {
    * @return {[type]} [description]
    */
   get_database: function(){
-    var db = window.sqlitePlugin.openDatabase({name: 'my_db', location: 'default'});
+    var db = window.sqlitePlugin.openDatabase({name: 'my_db.db', location: 'default'});
     return db;
   },
 
