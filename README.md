@@ -26,6 +26,7 @@
 4. 必要に応じてDVD(Blu-ray)を所持しているか、お気に入りとしてマークするかを登録します。
 5. 映画の追加ボタンを押して映画を追加します。
 
+
 ## 使用しているプラグイン
 * [cordova-plugin-console 1.0.6](https://www.npmjs.com/package/cordova-plugin-console)
 * [cordova-plugin-device 1.1.5](https://www.npmjs.com/package/cordova-plugin-device)
@@ -37,6 +38,6 @@
 * [cordova-sqlite-legacy-build-support 1.3.5-pre1](https://github.com/litehelpers/Cordova-sqlite-legacy-build-support)
 
 ## 使用している外部サービス
-* さくらサーバ
+* さくらのレンタルサーバ
 * [The Movie Database](https://www.themoviedb.org)
 
