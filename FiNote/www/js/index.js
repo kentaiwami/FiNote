@@ -433,6 +433,7 @@ var Signup = {
                         Signin.html
  ************************************************************/
 var Signin = {
+  // 既に処理済みの映画タイトル、ジャンル名、オノマトペを保存
   exist: {movie_title_array: [], genre_array: [], onomatopoeia_array: []},
 
   /**
