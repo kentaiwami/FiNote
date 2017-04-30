@@ -1189,6 +1189,9 @@ var Movies_detail = {
   },
 
 
+  /**
+   * 詳細画面からステータス画面への遷移を行う関数
+   */
   push_page_status: function() {
     var callback = function() {
       // 詳細画面からの遷移であることを登録
