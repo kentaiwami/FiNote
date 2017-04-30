@@ -337,6 +337,7 @@ var Signup = {
       storage.setItem('email', email);
       storage.setItem('birthday', birthday);
       storage.setItem('sex', sex);
+      storage.setItem('adult', false);
       storage.setItem('token', json_data.token);
 
       //同時にこれらの情報が記録されているかを判断するフラグも保存する
@@ -478,6 +479,7 @@ var Signin = {
       storage.setItem('sex', backup_json[backup_json_length - 1].sex);
       storage.setItem('token', backup_json[backup_json_length - 5].token);
       storage.setItem('signup_flag', true);
+      storage.setItem('adult', false);
 
       // サーバから返ってきたレスポンスリストの1つ1つに対してpromiseを作成
       var promises = [];
@@ -1676,9 +1678,13 @@ var Movieadd_search = {
    */
   create_request_movie_search: function(movie_title, language){
     return new Promise(function(resolve, reject) {
+      var storage = window.localStorage;
+      var adult = storage.getItem('adult');
+      console.log(adult);
+
       var request = new XMLHttpRequest();
       var api_key = Utility.get_tmdb_apikey();
-      var request_url = 'https://api.themoviedb.org/3/search/movie?query=' +movie_title +'&api_key=' + api_key + '&language=' +language;
+      var request_url = 'https://api.themoviedb.org/3/search/movie?query=' +movie_title +'&api_key=' + api_key + '&language=' +language + '&include_adult=' + adult;
 
       request.open('GET', request_url);
 
@@ -2641,9 +2647,12 @@ var Utility = {
     var storage = window.localStorage;
     storage.removeItem('username');
     storage.removeItem('password');
+    storage.removeItem('email');
     storage.removeItem('birthday');
     storage.removeItem('sex');
     storage.removeItem('signup_flag');
+    storage.removeItem('adult');
+    storage.removeItem('token');
   },
 
   /**
@@ -2653,10 +2662,12 @@ var Utility = {
     var storage = window.localStorage;
     var username = storage.getItem('username');
     var password = storage.getItem('password');
+    var email = storage.getItem('email');
     var birthday = storage.getItem('birthday');
     var sex = storage.getItem('sex');
     var signup_flag = storage.getItem('signup_flag');
-    var obj = {'username':username, 'password':password, 'birthday':birthday, 'sex':sex, 'signup_flag':signup_flag};
+    var adult = storage.setItem('adult', false);
+    var obj = {'username':username, 'password':password, 'email': email, 'birthday':birthday, 'sex':sex, 'signup_flag':signup_flag, 'adult': adult};
     console.log(obj);
   },
 
@@ -2743,6 +2754,7 @@ var Utility = {
       storage.setItem('birthday', Number(document.getElementById(ID.get_signup_ID().birthday).value));
       storage.setItem('sex', 'M');
       storage.setItem('signup_flag', true);
+      storage.setItem('adult', false);
     };
     Utility.check_page_init(ID.get_signup_ID().page_id,callback);
   },
