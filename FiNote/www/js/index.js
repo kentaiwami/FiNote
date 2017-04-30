@@ -59,7 +59,7 @@ var Global_variable = {
    * @param  {[integer]} flag [0なら映画追加画面、1なら映画詳細画面からの気分リスト]
    * @return {[string]}       [ボタンのhtml]
    */
-  get_toolbar: function(flag) {
+  get_toolbar_feeling: function(flag) {
     if (flag === 0) {
       return '<ons-toolbar-button class="brown_color"><ons-icon class="brown_color" icon="ion-close-round"></ons-icon></ons-toolbar-button>';
     }else {
@@ -67,6 +67,12 @@ var Global_variable = {
     }
   },
 
+
+  /**
+   * ステータスのツールバー左に表示するボタンを動的に変える
+   * @param  {[integer]} flag [0なら映画追加画面、1なら映画詳細画面からのステータス画面]
+   * @return {[string]}      [ボタンのhtml]
+   */
   get_toolbar_status: function(flag) {
     if (flag === 0) {
       return '<ons-toolbar-button onClick="Utility.pop_page(Movieadd_status.close_movieadd_status())"><ons-icon id="status_toolbar_left_icon" class="brown_color" icon="ion-close-round"></ons-icon></ons-toolbar-button>';
@@ -2351,7 +2357,7 @@ var Feeling = {
     //flagに応じてツールバーの戻る・閉じるボタンを動的に変える
     var toolbar_left = document.getElementById(ID.get_feeling_ID().toolbar);
     toolbar_left.innerHTML = '';
-    toolbar_left.innerHTML = Global_variable.get_toolbar(Global_variable.feeling_flag);
+    toolbar_left.innerHTML = Global_variable.get_toolbar_feeling(Global_variable.feeling_flag);
     
     // 詳細画面から表示した場合
     if (Global_variable.feeling_flag === 1) {
