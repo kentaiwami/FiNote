@@ -38,6 +38,9 @@
 * [cordova-plugin-x-socialsharing 5.1.7](https://www.npmjs.com/package/cordova-plugin-x-socialsharing)
 * [cordova-sqlite-legacy-build-support 1.3.5-pre1](https://github.com/litehelpers/Cordova-sqlite-legacy-build-support)
 
+## 使用しているプラットフォーム
+* android 6.2.2
+* ios 4.4.0
 ## 使用している外部サービス
 * さくらのレンタルサーバ
 * [The Movie Database](https://www.themoviedb.org)

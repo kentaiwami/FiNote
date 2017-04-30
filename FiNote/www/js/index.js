@@ -59,7 +59,7 @@ var Global_variable = {
    * @param  {[integer]} flag [0なら映画追加画面、1なら映画詳細画面からの気分リスト]
    * @return {[string]}       [ボタンのhtml]
    */
-  get_toolbar: function(flag) {
+  get_toolbar_feeling: function(flag) {
     if (flag === 0) {
       return '<ons-toolbar-button class="brown_color"><ons-icon class="brown_color" icon="ion-close-round"></ons-icon></ons-toolbar-button>';
     }else {
@@ -67,6 +67,12 @@ var Global_variable = {
     }
   },
 
+
+  /**
+   * ステータスのツールバー左に表示するボタンを動的に変える
+   * @param  {[integer]} flag [0なら映画追加画面、1なら映画詳細画面からのステータス画面]
+   * @return {[string]}      [ボタンのhtml]
+   */
   get_toolbar_status: function(flag) {
     if (flag === 0) {
       return '<ons-toolbar-button onClick="Utility.pop_page(Movieadd_status.close_movieadd_status())"><ons-icon id="status_toolbar_left_icon" class="brown_color" icon="ion-close-round"></ons-icon></ons-toolbar-button>';
@@ -114,9 +120,7 @@ var ID = {
   get_signup_ID: function() {
     var id_obj = {tmp_id: 'signup.html', page_id: 'signup', signup_button: 'signup_button', 
                   list_id: 'signup_list', username: 'username', password: 'password',
-                  email: 'email', birthday: 'birthday', success_alert: 'signup-alert-success',
-                  error_alert: 'signup-alert-error', error_message: 'error-message',
-                  radio: 'radio_m'};
+                  email: 'email', birthday: 'birthday', success_alert: 'signup-alert-success', error_message: 'error-message', radio: 'radio_m'};
     return id_obj;
   },
 
@@ -348,9 +352,13 @@ var Signup = {
     });
   },
 
-  alert_hide: function(id) {
-    //成功時にはindex.htmlへ遷移
-    if (id == ID.get_signup_ID().success_alert) {
+
+  /**
+   * 会員登録成功時に表示されるアラートのOKボタンを押した際に、
+   * アラートを閉じて映画一覧へ遷移する関数
+   */
+  alert_hide: function() {
+    // 会員登録の成功時にはindex.htmlへ遷移
       var pushpage_tabbar = function(){
         function autoLink(){
             location.href= ID.get_index_ID().tmp_id;
@@ -358,15 +366,7 @@ var Signup = {
        setTimeout(autoLink(),0);
       };
 
-      document.getElementById(id).hide(pushpage_tabbar());
-
-    //追加したエラーメッセージ(子ノード)を削除する
-    }else if (id == ID.get_signup_ID().error_alert) {
-      document.getElementById(id).hide();
-      var info = document.getElementById(ID.get_signup_ID().error_message);
-      var childNode = info.firstChild;
-      info.removeChild(childNode);
-    }
+      document.getElementById(ID.get_signup_ID().success_alert).hide(pushpage_tabbar());
   },
 
   /**
@@ -1189,6 +1189,9 @@ var Movies_detail = {
   },
 
 
+  /**
+   * 詳細画面からステータス画面への遷移を行う関数
+   */
   push_page_status: function() {
     var callback = function() {
       // 詳細画面からの遷移であることを登録
@@ -1475,6 +1478,8 @@ var Movies_detail = {
                     movieadd_search.html
  ************************************************************/
 var Movieadd_search = {
+  show_list_data: [],     //listに表示中のデータを格納する
+
   /**
    * Searchボタン(改行)を押した際に動作
    */
@@ -1523,6 +1528,11 @@ var Movieadd_search = {
     }
   },
 
+
+  /**
+   * 映画タイトルの検索フォームに入力されている文字数に応じて、
+   * リセットボタンの表示・非表示を切り替える関数
+   */
   show_hide_reset_button: function() {
     var text = document.getElementById(ID.get_movieadd_search_ID().form).value;
     var reset_button = document.getElementById(ID.get_movieadd_search_ID().reset);
@@ -1533,8 +1543,6 @@ var Movieadd_search = {
       reset_button.style.visibility = 'hidden';
     }
   },
-
-  show_list_data: [],     //listに表示中のデータを格納する
 
 
   /**
@@ -2210,6 +2218,7 @@ var Movieadd = {
     });
   },
 
+
   /**
    * 映画の詳細を表示している画面の気分リストをタップした際に画面遷移する
    */
@@ -2237,6 +2246,7 @@ var Movieadd = {
     Utility.check_page_init(ID.get_movieadd_status_ID().page_id, callback);
     Utility.push_page(ID.get_movieadd_status_ID().tmp_id, 'lift', 0, '');
   },
+
 
   /**
    * 登録されたリストの件数をもとにボタン透過率とラベルを更新する関数
@@ -2267,6 +2277,7 @@ var Movieadd = {
       Utility.pop_page();
     });
   },
+
 
   /**
    * Twitter、FaceBook、LINEなどのSNSに投稿する
@@ -2315,6 +2326,7 @@ var Movieadd = {
     window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
   },
 
+
   /**
    * SNSの投稿が完了した後に表示されるアラートを閉じるボタンが押された時に動作する
    */
@@ -2346,12 +2358,15 @@ var Feeling = {
   // タップしたリストのidを保存する
   data: {tap_id: 0},
 
-  show_contents: function(){
 
+  /**
+   * 気分リストのコンテンツを表示する関数
+   */
+  show_contents: function(){
     //flagに応じてツールバーの戻る・閉じるボタンを動的に変える
     var toolbar_left = document.getElementById(ID.get_feeling_ID().toolbar);
     toolbar_left.innerHTML = '';
-    toolbar_left.innerHTML = Global_variable.get_toolbar(Global_variable.feeling_flag);
+    toolbar_left.innerHTML = Global_variable.get_toolbar_feeling(Global_variable.feeling_flag);
     
     // 詳細画面から表示した場合
     if (Global_variable.feeling_flag === 1) {
@@ -2398,6 +2413,7 @@ var Feeling = {
     }
   },
 
+
   /**
    * アラート表示後にフォーカスを当てる処理を行う
    */
@@ -2412,6 +2428,7 @@ var Feeling = {
     });
   },
 
+
   /**
    * 気分を入力するアラートを表示してinputのvalueを初期化する
    */
@@ -2423,9 +2440,9 @@ var Feeling = {
     input_form.addEventListener('keyup', Feeling.check_add_input_form);
   },
 
+
   /**
    * 気分の追加フォームの値を監視して登録ボタンの有効・無効を設定する関数
-   * @return {[type]} [description]
    */
   check_add_input_form: function(){
     var value = document.getElementById(ID.get_feeling_ID().input).value;
@@ -2438,9 +2455,9 @@ var Feeling = {
     }
   },
 
+
   /**
    * 気分の変更フォームの値を監視して変更ボタンの有効・無効を設定する関数
-   * @return {[type]} [description]
    */
   check_edit_input_form: function(){
     var value = document.getElementById(ID.get_feeling_ID().edit_input).value;
@@ -2452,6 +2469,7 @@ var Feeling = {
       change_button.setAttribute('disabled');
     }
   },
+
 
   /**
    * アラートを閉じるor閉じてリストへ追加する関数
@@ -2497,6 +2515,7 @@ var Feeling = {
     }
   },
 
+
   /**
    * リストの編集ボタンをタップした際に、入力用のアラートを表示する
    * @param  {[number]} i [タップしたリストの配列の添え字]
@@ -2511,6 +2530,7 @@ var Feeling = {
     document.getElementById(ID.get_feeling_ID().edit_dialog).show();
     edit_input.addEventListener('keyup', Feeling.check_edit_input_form);
   },
+
 
   /**
    * リストの削除ボタンをタップした際に、確認用のアラートを表示して削除を行う
@@ -2656,6 +2676,7 @@ var Utility = {
     });
   },
 
+
   /**
    * データベースのオブジェクトを返す    
    * @return {[type]} [description]
@@ -2673,6 +2694,7 @@ var Utility = {
   get_tmdb_apikey: function(){
     return 'dcf593b3416b09594c1f13fabd1b9802';
   },
+
 
   /**
    * htmlファイル、アニメーション、delay時間を指定するとアニメーションを行って画面遷移する
@@ -2692,6 +2714,7 @@ var Utility = {
 
     setTimeout(showpage, delaytime);
   },
+
 
   /**
    * onsen uiのpopPageを実行する関数
@@ -2765,6 +2788,7 @@ var Utility = {
     }
   },
 
+
   /**
    * [スピナーの表示を止める]
    */
@@ -2772,6 +2796,7 @@ var Utility = {
     Utility.spinner.spin();
     Utility.spinner = {};
   },
+
 
   /**
    * エラーのアラートを表示する
@@ -2787,6 +2812,7 @@ var Utility = {
         buttonLabel: buttonLabel
     });
   },
+
 
   /**
    * confirmアラートを表示する
@@ -2811,6 +2837,7 @@ var Utility = {
       }
     });
   },
+
 
   /**
    * TMDBに関するエラーアラートを表示する
@@ -2853,6 +2880,7 @@ var Utility = {
     });
   },
 
+
   /**
    * base64をデコードする
    * @param  {[string]}   base64img [base64の文字列]
@@ -2866,6 +2894,7 @@ var Utility = {
     img.src = base64img;
   },
 
+
   /**
    * 複数のオブジェクトに同じattributeをセットする
    * @param {[array]} object_list    [attributeをセットしたいオブジェクトを格納した配列]
@@ -2877,6 +2906,7 @@ var Utility = {
     }
   },
 
+
   /**
    * 複数のオブジェクトから同じattributeを取り除く
    * @param  {[array]} object_list    [attributeを取り除きたいオブジェクトを格納した配列]
@@ -2887,6 +2917,7 @@ var Utility = {
       object_list[i].removeAttribute(attribute_name);
     }
   },
+
 
   /**
    * キーボードのアクセサリーバーの表示・非表示を設定する
@@ -2977,6 +3008,7 @@ var DB_method = {
       });
     });
   },
+
 
   /**
    * データベースのレコードを全削除する
