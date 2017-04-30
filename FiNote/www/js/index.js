@@ -120,9 +120,7 @@ var ID = {
   get_signup_ID: function() {
     var id_obj = {tmp_id: 'signup.html', page_id: 'signup', signup_button: 'signup_button', 
                   list_id: 'signup_list', username: 'username', password: 'password',
-                  email: 'email', birthday: 'birthday', success_alert: 'signup-alert-success',
-                  error_alert: 'signup-alert-error', error_message: 'error-message',
-                  radio: 'radio_m'};
+                  email: 'email', birthday: 'birthday', success_alert: 'signup-alert-success', error_message: 'error-message', radio: 'radio_m'};
     return id_obj;
   },
 
@@ -354,9 +352,13 @@ var Signup = {
     });
   },
 
-  alert_hide: function(id) {
-    //成功時にはindex.htmlへ遷移
-    if (id == ID.get_signup_ID().success_alert) {
+
+  /**
+   * 会員登録成功時に表示されるアラートのOKボタンを押した際に、
+   * アラートを閉じて映画一覧へ遷移する関数
+   */
+  alert_hide: function() {
+    // 会員登録の成功時にはindex.htmlへ遷移
       var pushpage_tabbar = function(){
         function autoLink(){
             location.href= ID.get_index_ID().tmp_id;
@@ -364,15 +366,7 @@ var Signup = {
        setTimeout(autoLink(),0);
       };
 
-      document.getElementById(id).hide(pushpage_tabbar());
-
-    //追加したエラーメッセージ(子ノード)を削除する
-    }else if (id == ID.get_signup_ID().error_alert) {
-      document.getElementById(id).hide();
-      var info = document.getElementById(ID.get_signup_ID().error_message);
-      var childNode = info.firstChild;
-      info.removeChild(childNode);
-    }
+      document.getElementById(ID.get_signup_ID().success_alert).hide(pushpage_tabbar());
   },
 
   /**
