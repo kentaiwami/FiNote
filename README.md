@@ -45,3 +45,5 @@
 * さくらのレンタルサーバ
 * [The Movie Database](https://www.themoviedb.org)
 
+## 参考にしたサイト
+* [ひらがら、カタカナの変換を行うJavaScript関数](https://gist.github.com/kawanet/5553478)

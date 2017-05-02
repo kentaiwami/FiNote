@@ -175,6 +175,18 @@ $font-small: .75rem;
   width: 40vw;
 }
 
+.movies_search_input {
+  width: 90vw;
+  margin: 2vw 5vw;
+}
+
+.movies_reset_button {
+  position: absolute;
+  top: 0%;
+  left: 80%;
+  visibility: hidden;
+}
+
 
 
 /************************************************************

@@ -164,12 +164,21 @@
       <!-- ツールバー -->
       <ons-toolbar>
 	      <div class="center brown_color">映画の一覧</div>
-	      <div class="right">
+	      
+        <div class="right">
           <ons-toolbar-button onClick="Utility.push_page('movieadd_search.html', '', 0, function(){Utility.hideKeyboardAccessoryBar(true)})">
             <ons-icon class="brown_color" icon="ion-plus-round"></ons-icon>
           </ons-toolbar-button>
 	      </div>
       </ons-toolbar>
+
+      <div>
+        <form action="javascript:Movies.click_done()">
+          <input id="search_local_movies_input" type="search" value="" placeholder="タイトルや気分で絞り込む" class="search-input movies_search_input" onfocus="Movies.set_event_movies_search_input('focus')" onblur="Movies.set_event_movies_search_input('blur')">
+        </form>
+
+        <ons-button id="movies_reset_button" onclick="Movies.tap_reset_button()" class="movies_reset_button" modifier="quiet"><ons-icon class="brown_color" icon="ion-close-circled"></ons-icon></ons-button>
+      </div>
       
       <!-- 登録済み映画を表示するリスト -->
       <div id="movie_collection_list"></div>
@@ -226,7 +235,7 @@
 
         <div class="center toolbar_center_search_form" id="movieadd_search_input">
           <form action="javascript:Movieadd_search.click_done()">
-              <input onfocus="Movieadd_search.set_animation_movieadd_search_input('focus')" onblur="Movieadd_search.set_animation_movieadd_search_input('blur')" type="search" id="search_movie_title" value="" placeholder="追加する映画を検索" class="search-input search_form">
+              <input onfocus="Movieadd_search.set_event_movieadd_search_input('focus')" onblur="Movieadd_search.set_event_movieadd_search_input('blur')" type="search" id="search_movie_title" value="" placeholder="追加する映画を検索" class="search-input search_form">
           </form>
 
           <ons-button id="movieadd_reset_button" onclick="Movieadd_search.tap_reset()" class="reset_button" modifier="quiet"><ons-icon class="brown_color" icon="ion-close-circled"></ons-icon></ons-button>
