@@ -1129,9 +1129,14 @@ var Movies = {
         // 結果を描画関数に渡してリストを描画
         Movies.draw_movies_list(result);
 
-        // リストのヘッダーの表示文字を変える
-        var list_header = document.getElementById(ID.get_movies_ID().list_header);
-        list_header.innerHTML = '「' + origin_text + '」の検索結果';
+        // データなし、リストヘッダーの表示文字を上書き
+        if (result[0].rows.length === 0) {
+          var no_data_message = document.getElementById(ID.get_movies_ID().nodata_message_p);
+          no_data_message.innerHTML = '結果が見つかりませんでした';
+        }else {
+          var list_header = document.getElementById(ID.get_movies_ID().list_header);
+          list_header.innerHTML = '「' + origin_text + '」の検索結果';
+        }
         
         Utility.stop_spinner();
       });
