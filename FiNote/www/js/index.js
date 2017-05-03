@@ -1126,10 +1126,13 @@ var Movies = {
         });
       })
       .then(function(result) {
+        // 結果を描画関数に渡してリストを描画
         Movies.draw_movies_list(result);
 
+        // リストのヘッダーの表示文字を変える
         var list_header = document.getElementById(ID.get_movies_ID().list_header);
         list_header.innerHTML = '「' + origin_text + '」の検索結果';
+        
         Utility.stop_spinner();
       });
     });
