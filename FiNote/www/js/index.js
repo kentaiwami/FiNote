@@ -1064,56 +1064,74 @@ var Movies = {
   },
 
 
-  
+  /**
+   * 検索ボタンをタップした際に動作する関数。
+   * 検索フォームに入力された文字からカタカナバージョンとひらがなバージョンのテキストを生成し、
+   * 計3パターンで映画タイトルとオノマトペから検索を行い、リスト描画関数へ結果を渡す。
+   */
   click_done: function() {
+    // スピナー表示、フォーカス外し、リストの初期化
     Utility.show_spinner(ID.get_movies_ID().page_id);
     document.getElementById(ID.get_movies_ID().search_input).blur();
     document.getElementById(ID.get_movies_ID().list).innerHTML = '';
 
+    // オリジナルテキストの取得、テキストの変換
     var origin_text = document.getElementById(ID.get_movies_ID().search_input).value;
     var converted_katakana_text = Utility.hiraganaToKatagana(origin_text);
     var converted_hiragara_text = Utility.katakanaToHiragana(origin_text);
 
-    var select_query = "SELECT movie.* "+
-                       "FROM movie,onomatopoeia " +
-                       "WHERE movie.title LIKE '%" + origin_text + "%' OR movie.title LIKE '%" + converted_katakana_text + "%' OR movie.title LIKE '%" + converted_hiragara_text + "%' "+
-                       "ORDER BY movie.id DESC";
+    // オノマトペに入力された文字が含まれているかを検索
+    var onomatopoeia_query = "SELECT id from onomatopoeia WHERE name LIKE '%" + origin_text + "%' OR name LIKE '%" + converted_katakana_text + "%' OR name LIKE '%" + converted_hiragara_text + "%'";
 
-    return new Promise(function(resolve,reject) {
-      var result = [];
-      var db = Utility.get_database();
-      db.readTransaction(function(tx) {
-        tx.executeSql(select_query, [], function(tx, resultSet) {
-          result.push(resultSet);
+    return DB_method.single_statement_execute(onomatopoeia_query, []).then(function(onomatopoeia_result) {
+      // 検索結果のidからORで繋いだSQL文を生成
+      var onomatopoeia_OR_query = "";
+      for(var i = 0; i < onomatopoeia_result.rows.length; i++) {
+        onomatopoeia_OR_query += " OR onomatopoeia_id LIKE '%" + onomatopoeia_result.rows.item(i).id + "%' ";
+      }
 
-          tx.executeSql('SELECT * FROM genre', [], function(tx, resultSet) {
+      // movieテーブルを検索するSQL文を生成
+      var select_query = "SELECT * FROM movie " +
+                         "WHERE title LIKE '%" + origin_text + "%' OR title LIKE '%" + converted_katakana_text + "%' OR title LIKE '%" + converted_hiragara_text + "%'"+
+                         onomatopoeia_OR_query+
+                         "ORDER BY id DESC";
+
+      return new Promise(function(resolve,reject) {
+        var result = [];
+        var db = Utility.get_database();
+        db.readTransaction(function(tx) {
+          tx.executeSql(select_query, [], function(tx, resultSet) {
             result.push(resultSet);
 
-            tx.executeSql('SELECT * FROM onomatopoeia', [], function(tx, resultSet) {
+            tx.executeSql('SELECT * FROM genre', [], function(tx, resultSet) {
               result.push(resultSet);
-            },
-            function(tx, error) {
-              console.log('SELECT error: ' + error.message);
-              reject(error.message);
+
+              tx.executeSql('SELECT * FROM onomatopoeia', [], function(tx, resultSet) {
+                result.push(resultSet);
+              },
+              function(tx, error) {
+                console.log('SELECT error: ' + error.message);
+                reject(error.message);
+              });
             });
           });
+        },
+        function(error) {
+          console.log('transaction error: ' + error.message);
+          reject(error.message);
+          Utility.stop_spinner();
+        },
+        function() {
+          resolve(result);
         });
-      },
-      function(error) {
-        console.log('transaction error: ' + error.message);
-        reject(error.message);
-        Utility.stop_spinner();
-      },
-      function() {
-        resolve(result);
-      });
-    })
-    .then(function(result) {
-      Movies.draw_movies_list(result);
+      })
+      .then(function(result) {
+        Movies.draw_movies_list(result);
 
-      var list_header = document.getElementById(ID.get_movies_ID().list_header);
-      list_header.innerHTML = '「' + origin_text + '」の検索結果';
-      Utility.stop_spinner();
+        var list_header = document.getElementById(ID.get_movies_ID().list_header);
+        list_header.innerHTML = '「' + origin_text + '」の検索結果';
+        Utility.stop_spinner();
+      });
     });
   },
 
