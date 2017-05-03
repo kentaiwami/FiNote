@@ -931,7 +931,7 @@ var Movies = {
       lists_html += list;
     }
 
-    // 映画の登録件数が0の場合は、メッセージの表示とリスト表示エリアの初期化をする
+    // 映画の検索結果の件数が0の場合は、メッセージの表示とリスト表示エリアの初期化をする
     if (movie_count === 0) {
       movie_collection_list.innerHTML = '';
       Movies.draw_no_data_message();
