@@ -127,7 +127,8 @@ var ID = {
   get_movies_ID: function() {
     var id_obj = {tmp_id: 'movies.html', page_id: 'movies', nodata_message: 'nodata_message',
                   nodata_message_p: 'nodata_message_p', list: 'movie_collection_list',
-                  reset_button: 'movies_reset_button', search_input: 'search_local_movies_input', list_header: 'movies_list_header'};
+                  reset_button: 'movies_reset_button', search_input: 'search_local_movies_input', list_header: 'movies_list_header',
+                  search_area: 'movies_search_area'};
     return id_obj;
   },
 
@@ -795,16 +796,11 @@ var Movies = {
     if (Global_variable.movie_update_flag) {
       Global_variable.movie_update_flag = false;
 
+      // リストのコンテンツと映画データなしのメッセージを初期化
       var movie_collection_list = document.getElementById(ID.get_movies_ID().list);
+      var no_data_message = document.getElementById(ID.get_movies_ID().nodata_message_p);
       movie_collection_list.innerHTML = '';
-
-      // 映画データがない旨のメッセージが存在する場合は削除する
-      var nodata_message = document.getElementById(ID.get_movies_ID().nodata_message);
-
-      if (nodata_message.hasChildNodes()) {
-        var nodata_message_p = document.getElementById(ID.get_movies_ID().nodata_message_p);
-        nodata_message.removeChild(nodata_message_p);
-      }
+      no_data_message.innerHTML = '';
 
       return new Promise(function(resolve,reject) {
         var result = [];
@@ -847,100 +843,112 @@ var Movies = {
    * @param  {[array]} result [各テーブルの検索結果を格納した配列]
    */
   draw_movies_list: function(result) {
-    //result[0]：movie
-    //result[1]：genre
-    //result[2]：onomatopoeia
+    return new Promise(function(resolve,reject) {
+      DB_method.count_record('movie').then(function(movie_count_result) {
+        //result[0]：movie
+        //result[1]：genre
+        //result[2]：onomatopoeia
 
-    var movie_collection_list = document.getElementById(ID.get_movies_ID().list);
-    movie_count = result[0].rows.length;
+        var movie_collection_list = document.getElementById(ID.get_movies_ID().list);
+        movie_count = result[0].rows.length;
 
-    var lists_html = '';
-    for(var i = 0; i < movie_count; i++) {
-      var movie_record = result[0].rows.item(i);
-      var button_class = {dvd:'', fav:''};
+        var lists_html = '';
+        for(var i = 0; i < movie_count; i++) {
+          var movie_record = result[0].rows.item(i);
+          var button_class = {dvd:'', fav:''};
 
-      if (movie_record.dvd == 1) {
-        button_class.dvd = 'brown_color';
-      }else {
-        button_class.dvd = 'gray_color';
-      }
+          if (movie_record.dvd == 1) {
+            button_class.dvd = 'brown_color';
+          }else {
+            button_class.dvd = 'gray_color';
+          }
 
-      if (movie_record.fav == 1) {
-        button_class.fav = 'brown_color';
-      }else {
-        button_class.fav = 'gray_color';
-      }
+          if (movie_record.fav == 1) {
+            button_class.fav = 'brown_color';
+          }else {
+            button_class.fav = 'gray_color';
+          }
 
-      var onomatopoeia_id_list = movie_record.onomatopoeia_id.split(',');
-      var onomatopoeia_name_list = [];
-      var onomatopoeia_names = '';
-      for(var j = 0; j < result[2].rows.length; j++) {
-        var onomatopoeia = result[2].rows.item(j);
-        if (onomatopoeia_id_list.indexOf(String(onomatopoeia.id)) != -1) {
-          onomatopoeia_name_list.push(onomatopoeia.name);
+          var onomatopoeia_id_list = movie_record.onomatopoeia_id.split(',');
+          var onomatopoeia_name_list = [];
+          var onomatopoeia_names = '';
+          for(var j = 0; j < result[2].rows.length; j++) {
+            var onomatopoeia = result[2].rows.item(j);
+            if (onomatopoeia_id_list.indexOf(String(onomatopoeia.id)) != -1) {
+              onomatopoeia_name_list.push(onomatopoeia.name);
+            }
+          }
+
+          onomatopoeia_names = onomatopoeia_name_list.join('、');
+
+          var add_month = ('00' + movie_record.add_month).slice(-2);
+          var add_day = ('00' + movie_record.add_day).slice(-2);
+          var list = '<ons-list-item modifier="longdivider">'+
+                     '<div class="left">'+
+                     '<img class="list_img" src="' + movie_record.poster + '">'+
+                     '</div>'+
+
+                     '<div class="center">'+
+                     '<span class="list-item__title list_title">'+
+                     movie_record.title+
+                     '</span>'+
+                     '<span class="list-item__subtitle list_sub_title">'+
+                     onomatopoeia_names+
+                     '</span>'+
+                     '<span class="list-item__subtitle list_sub_title_small">'+
+                     '追加日:'+
+                     movie_record.add_year+'-'+
+                     add_month+'-'+
+                     add_day+
+                     '</span>'+
+                     '</div>'+
+
+                     '<div class="right">'+
+                     '<ons-row class="list_button_row">'+
+                     '<ons-col>'+
+                     '<ons-button class="' + button_class.dvd + '" id="dvd_'+ movie_record.id +'" onclick="Movies.tap_dvd_fav(this.id,0)" modifier="quiet">'+
+                     '<ons-icon icon="ion-disc" size="20px"></ons-icon>'+
+                     '</ons-button>'+
+                     '</ons-col>'+
+
+                     '<ons-col>'+
+                     '<ons-button class="' + button_class.fav + '" id="fav_' + movie_record.id + '" onclick="Movies.tap_dvd_fav(this.id,1)" modifier="quiet">'+
+                     '<ons-icon size="20px" icon="ion-android-favorite"></ons-icon>'+
+                     '</ons-button>'+
+                     '</ons-col>'+
+
+                     '<ons-col>'+
+                     '<ons-button class="brown_bg_color_quiet" id=' + movie_record.id + ' onclick="Movies_detail.show_contents(this.id)" modifier="quiet">'+
+                     '<ons-icon size="20px" icon="ion-more"></ons-icon>'+
+                     '</ons-button>'+
+                     '</ons-col>'+
+                     '</ons-row>'+
+                     '</div>'+
+                     '</ons-list-item>';
+
+          lists_html += list;
         }
-      }
 
-      onomatopoeia_names = onomatopoeia_name_list.join('、');
+        // 映画の検索結果の件数が0の場合は、メッセージの表示とリスト表示エリアの初期化をする
+        if (movie_count === 0) {
+          movie_collection_list.innerHTML = '';
+          Movies.draw_no_data_message();
+        }else {
+          movie_collection_list.innerHTML = '<ons-list>' + 
+                                            '<ons-list-header id="movies_list_header">全て</ons-list-header>' + 
+                                            lists_html + 
+                                            '</ons-list>';
+        }
 
-      var add_month = ('00' + movie_record.add_month).slice(-2);
-      var add_day = ('00' + movie_record.add_day).slice(-2);
-      var list = '<ons-list-item modifier="longdivider">'+
-                 '<div class="left">'+
-                 '<img class="list_img" src="' + movie_record.poster + '">'+
-                 '</div>'+
-
-                 '<div class="center">'+
-                 '<span class="list-item__title list_title">'+
-                 movie_record.title+
-                 '</span>'+
-                 '<span class="list-item__subtitle list_sub_title">'+
-                 onomatopoeia_names+
-                 '</span>'+
-                 '<span class="list-item__subtitle list_sub_title_small">'+
-                 '追加日:'+
-                 movie_record.add_year+'-'+
-                 add_month+'-'+
-                 add_day+
-                 '</span>'+
-                 '</div>'+
-
-                 '<div class="right">'+
-                 '<ons-row class="list_button_row">'+
-                 '<ons-col>'+
-                 '<ons-button class="' + button_class.dvd + '" id="dvd_'+ movie_record.id +'" onclick="Movies.tap_dvd_fav(this.id,0)" modifier="quiet">'+
-                 '<ons-icon icon="ion-disc" size="20px"></ons-icon>'+
-                 '</ons-button>'+
-                 '</ons-col>'+
-
-                 '<ons-col>'+
-                 '<ons-button class="' + button_class.fav + '" id="fav_' + movie_record.id + '" onclick="Movies.tap_dvd_fav(this.id,1)" modifier="quiet">'+
-                 '<ons-icon size="20px" icon="ion-android-favorite"></ons-icon>'+
-                 '</ons-button>'+
-                 '</ons-col>'+
-
-                 '<ons-col>'+
-                 '<ons-button class="brown_bg_color_quiet" id=' + movie_record.id + ' onclick="Movies_detail.show_contents(this.id)" modifier="quiet">'+
-                 '<ons-icon size="20px" icon="ion-more"></ons-icon>'+
-                 '</ons-button>'+
-                 '</ons-col>'+
-                 '</ons-row>'+
-                 '</div>'+
-                 '</ons-list-item>';
-
-      lists_html += list;
-    }
-
-    // 映画の検索結果の件数が0の場合は、メッセージの表示とリスト表示エリアの初期化をする
-    if (movie_count === 0) {
-      movie_collection_list.innerHTML = '';
-      Movies.draw_no_data_message();
-    }else {
-      movie_collection_list.innerHTML = '<ons-list>' + 
-                                        '<ons-list-header id="movies_list_header">全て</ons-list-header>' + 
-                                        lists_html + 
-                                        '</ons-list>';
-    }
+        var search_area = document.getElementById(ID.get_movies_ID().search_area);
+        if (movie_count_result === 0) {
+          search_area.style.display = 'none';
+        }else {
+          search_area.style.display = 'inline-block';
+        }
+        resolve();
+      });
+    });
   },
 
   
@@ -949,13 +957,7 @@ var Movies = {
    * 登録済みの映画がないメッセージを表示する関数
    */
   draw_no_data_message: function() {
-    var nodata_message_p = document.createElement('p');
-    nodata_message_p.classList.add('center_message');
-    nodata_message_p.setAttribute('id', ID.get_movies_ID().nodata_message_p);
     nodata_message_p.innerHTML = '登録された映画はありません';
-
-    var nodata_message_div = document.getElementById(ID.get_movies_ID().nodata_message);
-    nodata_message_div.appendChild(nodata_message_p);
   },
 
 
@@ -1126,18 +1128,22 @@ var Movies = {
         });
       })
       .then(function(result) {
-        // 結果を描画関数に渡してリストを描画
-        Movies.draw_movies_list(result);
-
-        // データなし、リストヘッダーの表示文字を上書き
-        if (result[0].rows.length === 0) {
-          var no_data_message = document.getElementById(ID.get_movies_ID().nodata_message_p);
-          no_data_message.innerHTML = '結果が見つかりませんでした';
-        }else {
-          var list_header = document.getElementById(ID.get_movies_ID().list_header);
-          list_header.innerHTML = '「' + origin_text + '」の検索結果';
-        }
-        
+        // 結果を描画関数に渡してリストを描画、その後に上書き
+        Movies.draw_movies_list(result).then(function(resolve) {
+          // データなし、リストヘッダーの表示文字を上書き
+          if (result[0].rows.length === 0) {
+            var no_data_message = document.getElementById(ID.get_movies_ID().nodata_message_p);
+            no_data_message.innerHTML = '結果が見つかりませんでした';
+          }else {
+            var list_header = document.getElementById(ID.get_movies_ID().list_header);
+            list_header.innerHTML = '「' + origin_text + '」の検索結果';
+          }
+          
+          Utility.stop_spinner();
+        });
+      })
+      .catch(function(err) {
+        console.log(err);
         Utility.stop_spinner();
       });
     });
@@ -3183,7 +3189,7 @@ var DB_method = {
       var db = Utility.get_database();
       var query = 'SELECT COUNT(*) AS count FROM ' + table_name;
       db.executeSql(query, [], function (resultSet) {
-        resolve(JSON.stringify(resultSet.rows.item(0).count));
+        resolve(Number(JSON.stringify(resultSet.rows.item(0).count)));
       }, 
       function(error) {
         console.log('COUNT RECORD ERROR: ' + error.message);

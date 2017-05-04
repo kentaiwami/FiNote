@@ -172,7 +172,7 @@
 	      </div>
       </ons-toolbar>
 
-      <div>
+      <div id="movies_search_area" style="display: none;">
         <form action="javascript:Movies.click_done()">
           <input id="search_local_movies_input" type="search" value="" placeholder="タイトルや気分で絞り込む" class="search-input movies_search_input" onfocus="Movies.set_event_movies_search_input('focus')" onblur="Movies.set_event_movies_search_input('blur')">
         </form>
@@ -184,7 +184,9 @@
       <div id="movie_collection_list"></div>
 
 			<!-- 登録データがない場合のメッセージ表示 -->
-    	<div id="nodata_message"></div>
+    	<div id="nodata_message">
+       <p class="center_message" id="nodata_message_p"></p> 
+      </div>
     </ons-page>
   </ons-template>
   <!-- ●●●●●●●●● ここまでmovies.html ●●●●●●●●● -->
