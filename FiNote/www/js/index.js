@@ -177,6 +177,14 @@ var ID = {
     return id_obj;
   },
 
+  get_user_ID: function() {
+    var id_obj = {tmp_id: 'user.html', page_id: 'user', movies_number: 'movies_count_number',
+                  dvds_number: 'dvds_count_number',
+                  favorites_number: 'favorites_count_number'};
+
+    return id_obj;
+  },
+
   get_utility_ID: function() {
     var id_obj = {navigator: 'myNavigator'};
     return id_obj;
@@ -3344,4 +3352,4 @@ var DB_method = {
 };
 
 app.initialize();
-User.show_event('user', function(){});
+User.show_event(ID.get_user_ID().page_id, function(){});
