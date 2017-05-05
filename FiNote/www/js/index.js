@@ -738,6 +738,94 @@ var Movies = {
    */
   draw_movie_content: function() {
 
+    var hoge = function() {
+      var intViewportWidth = window.innerWidth;
+      console.log(intViewportWidth);
+
+      var chart1 = new Chartist.Pie('#chart1', {series: [40, 30, 20, 10]}, {
+          donut: true,
+          donutWidth: 30,
+          donutSolid: true,
+          showLabel: true,
+          width: intViewportWidth * 0.45,
+          height: intViewportWidth * 0.45
+        });
+
+      chart1.on('draw', function(data) {
+        if(data.type === 'slice') {
+          var pathLength = data.element._node.getTotalLength();
+
+          data.element.attr({
+            'stroke-dasharray': pathLength + 'px ' + pathLength + 'px'
+          });
+
+          var animationDefinition = {
+            'stroke-dashoffset': {
+              id: 'anim' + data.index,
+              dur: 400,
+              from: -pathLength + 'px',
+              to:  '0px',
+              easing: Chartist.Svg.Easing.easeOutQuint,
+              fill: 'freeze'
+            }
+          };
+
+          if(data.index !== 0) {
+            animationDefinition['stroke-dashoffset'].begin = 'anim' + (data.index - 1) + '.end';
+          }
+
+          data.element.attr({
+            'stroke-dashoffset': -pathLength + 'px'
+          });
+
+          data.element.animate(animationDefinition, false);
+        }
+      });
+
+      var chart2 = new Chartist.Pie('#chart2', {series: [40, 30, 20, 10]}, {
+          donut: true,
+          donutWidth: 30,
+          donutSolid: true,
+          showLabel: true,
+          width: intViewportWidth * 0.45,
+          height: intViewportWidth * 0.45
+        });
+
+      chart2.on('draw', function(data) {
+        if(data.type === 'slice') {
+          var pathLength = data.element._node.getTotalLength();
+
+          data.element.attr({
+            'stroke-dasharray': pathLength + 'px ' + pathLength + 'px'
+          });
+
+          var animationDefinition = {
+            'stroke-dashoffset': {
+              id: 'anim' + data.index,
+              dur: 400,
+              from: -pathLength + 'px',
+              to:  '0px',
+              easing: Chartist.Svg.Easing.easeOutQuint,
+              fill: 'freeze'
+            }
+          };
+
+          if(data.index !== 0) {
+            animationDefinition['stroke-dashoffset'].begin = 'anim' + (data.index - 1) + '.end';
+          }
+
+          data.element.attr({
+            'stroke-dashoffset': -pathLength + 'px'
+          });
+
+          data.element.animate(animationDefinition, false);
+        }
+      });
+        console.log('******************');
+        // console.log(document.getElementById('hoge'));
+      };
+      Utility.check_page_init('user',hoge);
+
     //自動ログイン
     var storage = window.localStorage;
     var username = storage.getItem('username');

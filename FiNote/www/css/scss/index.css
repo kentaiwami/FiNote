@@ -387,4 +387,28 @@
   opacity: .6;
 }
 
+.hoge {
+  margin: .987rem 0rem;
+  height: 40vw;
+  padding: .987rem 0rem;
+}
+
+.info-col {
+  height: 60px;
+  line-height: 1;
+  padding: 12px 0 12px 4px;
+}
+
+.info-num {
+  font-size: 16px;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.info-unit {
+  margin-top: 6px;
+  font-size: 14px;
+  opacity: 0.4;
+}
+
 /*# sourceMappingURL=index.css.map */
