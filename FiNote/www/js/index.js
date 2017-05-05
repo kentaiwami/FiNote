@@ -2870,6 +2870,24 @@ var Movieadd_status = {
 
 
 /************************************************************
+                        user.html
+ ************************************************************/
+var User = {
+  show_event: function(page_id, callback) {
+    document.addEventListener('show', function(event) {
+      if (event.target.id == page_id) {
+        console.log(event.target.id + '');
+        callback();
+      }
+    });
+  }
+};
+
+
+
+
+
+/************************************************************
                           Utility
  ************************************************************/
 /**
@@ -3323,6 +3341,7 @@ var DB_method = {
       });
     });
   },
-}; 
+};
 
 app.initialize();
+User.show_event('user', function(){});
