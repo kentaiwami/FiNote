@@ -745,95 +745,6 @@ var Movies = {
    * 自動ログイン後に映画一覧画面の表示を行う
    */
   draw_movie_content: function() {
-
-    var hoge = function() {
-      var intViewportWidth = window.innerWidth;
-      console.log(intViewportWidth);
-
-      var chart1 = new Chartist.Pie('#chart1', {series: [40, 30, 20, 10]}, {
-          donut: true,
-          donutWidth: 30,
-          donutSolid: true,
-          showLabel: true,
-          width: intViewportWidth * 0.45,
-          height: intViewportWidth * 0.45
-        });
-
-      chart1.on('draw', function(data) {
-        if(data.type === 'slice') {
-          var pathLength = data.element._node.getTotalLength();
-
-          data.element.attr({
-            'stroke-dasharray': pathLength + 'px ' + pathLength + 'px'
-          });
-
-          var animationDefinition = {
-            'stroke-dashoffset': {
-              id: 'anim' + data.index,
-              dur: 400,
-              from: -pathLength + 'px',
-              to:  '0px',
-              easing: Chartist.Svg.Easing.easeOutQuint,
-              fill: 'freeze'
-            }
-          };
-
-          if(data.index !== 0) {
-            animationDefinition['stroke-dashoffset'].begin = 'anim' + (data.index - 1) + '.end';
-          }
-
-          data.element.attr({
-            'stroke-dashoffset': -pathLength + 'px'
-          });
-
-          data.element.animate(animationDefinition, false);
-        }
-      });
-
-      var chart2 = new Chartist.Pie('#chart2', {series: [40, 30, 20, 10]}, {
-          donut: true,
-          donutWidth: 30,
-          donutSolid: true,
-          showLabel: true,
-          width: intViewportWidth * 0.45,
-          height: intViewportWidth * 0.45
-        });
-
-      chart2.on('draw', function(data) {
-        if(data.type === 'slice') {
-          var pathLength = data.element._node.getTotalLength();
-
-          data.element.attr({
-            'stroke-dasharray': pathLength + 'px ' + pathLength + 'px'
-          });
-
-          var animationDefinition = {
-            'stroke-dashoffset': {
-              id: 'anim' + data.index,
-              dur: 400,
-              from: -pathLength + 'px',
-              to:  '0px',
-              easing: Chartist.Svg.Easing.easeOutQuint,
-              fill: 'freeze'
-            }
-          };
-
-          if(data.index !== 0) {
-            animationDefinition['stroke-dashoffset'].begin = 'anim' + (data.index - 1) + '.end';
-          }
-
-          data.element.attr({
-            'stroke-dashoffset': -pathLength + 'px'
-          });
-
-          data.element.animate(animationDefinition, false);
-        }
-      });
-        console.log('******************');
-        // console.log(document.getElementById('hoge'));
-      };
-      Utility.check_page_init('user',hoge);
-
     //自動ログイン
     var storage = window.localStorage;
     var username = storage.getItem('username');
@@ -847,6 +758,7 @@ var Movies = {
       }
     };
     Utility.check_page_init(ID.get_index_ID().page_id,callback);
+    Utility.check_page_init(ID.get_user_ID().page_id,User.show_contents);
 
     var data = {
       "username": username,
@@ -2881,12 +2793,170 @@ var Movieadd_status = {
                         user.html
  ************************************************************/
 var User = {
+
+  /**
+   * ユーザ情報画面が表示されるたびに発火するイベントを追加
+   * @param  {[String]}   page_id  [ページのID]
+   * @param  {Function} callback [該当ページが表示された後に実行する関数]
+   */
   show_event: function(page_id, callback) {
     document.addEventListener('show', function(event) {
       if (event.target.id == page_id) {
-        console.log(event.target.id + '');
+        console.log(event.target.id + 'is show');
         callback();
       }
+    });
+  },
+
+
+  /**
+   * データベースからデータを取得して、件数やグラフを描画する関数
+   * @return {[promise]} [空のresolve]
+   */
+  show_contents: function() {
+    return new Promise(function(resolve, reject) {
+      Utility.show_spinner(ID.get_user_ID().page_id);
+
+      var result = [];
+      var db = Utility.get_database();
+
+      db.readTransaction(function(tx) {
+        tx.executeSql('SELECT dvd,fav FROM movie', [], function(tx, resultSet) {
+          result.push(resultSet);
+
+          tx.executeSql('SELECT * FROM genre', [], function(tx, resultSet) {
+            result.push(resultSet);
+
+            tx.executeSql('SELECT * FROM onomatopoeia', [], function(tx, resultSet) {
+              result.push(resultSet);
+            },
+            function(tx, error) {
+              console.log('SELECT error: ' + error.message);
+              reject(error.message);
+            });
+          });
+        });
+      },
+      function(error) {
+        console.log('transaction error: ' + error.message);
+        reject(error.message);
+      },
+      function() {
+        resolve(result);
+      });
+    }).then(function(result) {
+      // result[0] movie
+      // result[1] genre
+      // result[2] onomatopoeia
+
+      // DVDとFAVの件数をカウント
+      var dvd_count = 0;
+      var fav_count = 0;
+      for(var i = 0; i < result[0].rows.length; i++) {
+        var movie_record = result[0].rows.item(i);
+        
+        if (movie_record.dvd == 1) {
+          dvd_count += 1;
+        }
+
+        if (movie_record.fav == 1) {
+          fav_count += 1;
+        }
+      }
+
+      // 映画、DVD、FAVの件数をhtmlに書き込む
+      var movies_count = document.getElementById(ID.get_user_ID().movies_number);
+      var dvds_count = document.getElementById(ID.get_user_ID().dvds_number);
+      var favorites_count = document.getElementById(ID.get_user_ID().favorites_number);
+      movies_count.innerHTML = String(result[0].rows.length);
+      dvds_count.innerHTML = String(dvd_count);
+      favorites_count.innerHTML = String(fav_count);
+
+      var intViewportWidth = window.innerWidth;
+      console.log(intViewportWidth);
+
+      var chart1 = new Chartist.Pie('#chart1', {series: [40, 30, 20, 10]}, {
+          donut: true,
+          donutWidth: 30,
+          donutSolid: true,
+          showLabel: true,
+          width: intViewportWidth * 0.45,
+          height: intViewportWidth * 0.45
+        });
+
+      chart1.on('draw', function(data) {
+        if(data.type === 'slice') {
+          var pathLength = data.element._node.getTotalLength();
+
+          data.element.attr({
+            'stroke-dasharray': pathLength + 'px ' + pathLength + 'px'
+          });
+
+          var animationDefinition = {
+            'stroke-dashoffset': {
+              id: 'anim' + data.index,
+              dur: 400,
+              from: -pathLength + 'px',
+              to:  '0px',
+              easing: Chartist.Svg.Easing.easeOutQuint,
+              fill: 'freeze'
+            }
+          };
+
+          if(data.index !== 0) {
+            animationDefinition['stroke-dashoffset'].begin = 'anim' + (data.index - 1) + '.end';
+          }
+
+          data.element.attr({
+            'stroke-dashoffset': -pathLength + 'px'
+          });
+
+          data.element.animate(animationDefinition, false);
+        }
+      });
+
+      var chart2 = new Chartist.Pie('#chart2', {series: [40, 30, 20, 10]}, {
+          donut: true,
+          donutWidth: 30,
+          donutSolid: true,
+          showLabel: true,
+          width: intViewportWidth * 0.45,
+          height: intViewportWidth * 0.45
+        });
+
+      chart2.on('draw', function(data) {
+        if(data.type === 'slice') {
+          var pathLength = data.element._node.getTotalLength();
+
+          data.element.attr({
+            'stroke-dasharray': pathLength + 'px ' + pathLength + 'px'
+          });
+
+          var animationDefinition = {
+            'stroke-dashoffset': {
+              id: 'anim' + data.index,
+              dur: 400,
+              from: -pathLength + 'px',
+              to:  '0px',
+              easing: Chartist.Svg.Easing.easeOutQuint,
+              fill: 'freeze'
+            }
+          };
+
+          if(data.index !== 0) {
+            animationDefinition['stroke-dashoffset'].begin = 'anim' + (data.index - 1) + '.end';
+          }
+
+          data.element.attr({
+            'stroke-dashoffset': -pathLength + 'px'
+          });
+
+          data.element.animate(animationDefinition, false);
+        }
+      });
+
+      Utility.stop_spinner();
+      resolve();
     });
   }
 };
@@ -3352,4 +3422,6 @@ var DB_method = {
 };
 
 app.initialize();
-User.show_event(ID.get_user_ID().page_id, function(){});
+
+// ユーザ情報画面を表示するたびに、DBからデータを取得して表示データを更新する
+User.show_event(ID.get_user_ID().page_id, User.show_contents);
