@@ -2802,7 +2802,7 @@ var User = {
   show_event: function(page_id, callback) {
     document.addEventListener('show', function(event) {
       if (event.target.id == page_id) {
-        console.log(event.target.id + 'is show');
+        console.log(event.target.id + ' is show');
         callback();
       }
     });
@@ -3042,17 +3042,19 @@ var User = {
     var genre_name_count_obj = {};
     var onomatopoeia_name_count_obj = {};
     for(var genre_key in genre_pk_name_obj) {
-      var genre_name = genre_pk_name_obj[genre_key];
-      var genre_count = genre_pk_count_obj[genre_key];
-
-      genre_name_count_obj[genre_name] = genre_count;
+      if (genre_key in genre_pk_count_obj) {
+        var genre_name = genre_pk_name_obj[genre_key];
+        var genre_count = genre_pk_count_obj[genre_key];
+        genre_name_count_obj[genre_name] = genre_count;
+      }
     }
 
     for(var onomatopoeia_key in onomatopoeia_pk_name_obj) {
-      var onomatopoeia_name = onomatopoeia_pk_name_obj[onomatopoeia_key];
-      var onomatopoeia_count = onomatopoeia_pk_count_obj[onomatopoeia_key];
-
-      onomatopoeia_name_count_obj[onomatopoeia_name] = onomatopoeia_count;
+      if (onomatopoeia_key in onomatopoeia_pk_count_obj) {
+        var onomatopoeia_name = onomatopoeia_pk_name_obj[onomatopoeia_key];
+        var onomatopoeia_count = onomatopoeia_pk_count_obj[onomatopoeia_key];
+        onomatopoeia_name_count_obj[onomatopoeia_name] = onomatopoeia_count;
+      }
     }
 
     return {g_obj: genre_name_count_obj,
