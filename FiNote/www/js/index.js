@@ -2821,7 +2821,7 @@ var User = {
       var db = Utility.get_database();
 
       db.readTransaction(function(tx) {
-        tx.executeSql('SELECT dvd,fav FROM movie', [], function(tx, resultSet) {
+        tx.executeSql('SELECT dvd,fav,genre_id,onomatopoeia_id FROM movie', [], function(tx, resultSet) {
           result.push(resultSet);
 
           tx.executeSql('SELECT * FROM genre', [], function(tx, resultSet) {
