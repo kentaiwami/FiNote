@@ -2849,13 +2849,32 @@ var User = {
       // result[1] genre
       // result[2] onomatopoeia
 
+      // オノマトペとジャンルの名前とカウント数をまとめた連想配列、
+      // DVDとお気に入りの登録数をそれぞれ取得
       var params = User.create_name_count_obj_and_counts(result);
 
-      console.log(params.g_obj);
-      console.log(params.o_obj);
-      console.log('*************************');
-      console.log(params.dvds);
-      console.log(params.favs);
+      // オノマトペとジャンルの合計数をそれぞれ求める
+      // グラフの描画関数に渡す配列を作成する
+      var o_total = 0;
+      var g_total = 0;
+      var o_array_count = [];
+      var g_array_count = [];
+      for(var o_key in params.o_obj) {
+        var o_value = params.o_obj[o_key];
+        o_total += o_value;
+        o_array_count.push(o_value);
+      }
+
+      for(var g_key in params.g_obj) {
+        var g_value = params.g_obj[g_key];
+        g_total += g_value;
+        g_array_count.push(g_value);
+      }
+
+      // 降順でカウント数をソート
+      Utility.sort_array(o_array_count, 1);
+      Utility.sort_array(g_array_count, 1);
+
 
       // 映画、DVD、FAVの件数をhtmlに書き込む
       var movies_count = document.getElementById(ID.get_user_ID().movies_number);
@@ -2866,15 +2885,15 @@ var User = {
       favorites_count.innerHTML = String(params.favs);
 
       var intViewportWidth = window.innerWidth;
-      console.log(intViewportWidth);
 
-      var chart1 = new Chartist.Pie('#chart1', {series: [40, 30, 20, 10]}, {
+      var chart1 = new Chartist.Pie('#chart1', {series: o_array_count}, {
           donut: true,
           donutWidth: 30,
           donutSolid: true,
           showLabel: true,
           width: intViewportWidth * 0.45,
-          height: intViewportWidth * 0.45
+          height: intViewportWidth * 0.45,
+          total: o_total
         });
 
       chart1.on('draw', function(data) {
@@ -2908,13 +2927,14 @@ var User = {
         }
       });
 
-      var chart2 = new Chartist.Pie('#chart2', {series: [40, 30, 20, 10]}, {
+      var chart2 = new Chartist.Pie('#chart2', {series: g_array_count}, {
           donut: true,
           donutWidth: 30,
           donutSolid: true,
           showLabel: true,
           width: intViewportWidth * 0.45,
-          height: intViewportWidth * 0.45
+          height: intViewportWidth * 0.45,
+          total: g_total
         });
 
       chart2.on('draw', function(data) {
@@ -3429,6 +3449,28 @@ var Utility = {
       var chr = match.charCodeAt(0) - 0x60;
       return String.fromCharCode(chr);
     });
+  },
+
+
+  /**
+   * 標準的な1次元配列を昇順 or 降順でソートする
+   * @param  {[type]} array [ソート前の配列]
+   * @param  {[type]} flag  [0なら昇順、1なら降順]
+   */
+  sort_array: function(array, flag) {
+    if (flag === 0) {
+      array.sort(function(a,b){
+        if( a < b ) return -1;
+        if( a > b ) return 1;
+        return 0;
+      });
+    }else {
+      array.sort(function(a,b){
+        if( a > b ) return -1;
+        if( a < b ) return 1;
+        return 0;
+      });
+    }
   }
 };
 
