@@ -2849,96 +2849,21 @@ var User = {
       // result[1] genre
       // result[2] onomatopoeia
 
-      // ジャンルとオノマトペのpkと名前からなる連想配列を作成
-      var genre_pk_name_obj = {};
-      var onomatopoeia_pk_name_obj = {};
-      for(var i = 0; i < result[1].rows.length; i++) {
-        var genre_obj = result[1].rows.item(i);
-        genre_pk_name_obj[genre_obj.id] = genre_obj.name;
-      }
+      var params = User.create_name_count_obj_and_counts(result);
 
-      for(i = 0; i < result[2].rows.length; i++) {
-        var onomatopoeia_obj = result[2].rows.item(i);
-        onomatopoeia_pk_name_obj[onomatopoeia_obj.id] = onomatopoeia_obj.name;
-      }
-
-
-      var dvd_count = 0;
-      var fav_count = 0;
-
-      var genre_pk_count_obj = {};
-      var onomatopoeia_pk_count_obj = {};
-
-      for(i = 0; i < result[0].rows.length; i++) {
-        var movie_record = result[0].rows.item(i);
-        
-        // DVDとFAVの件数をカウント
-        if (movie_record.dvd == 1) {
-          dvd_count += 1;
-        }
-
-        if (movie_record.fav == 1) {
-          fav_count += 1;
-        }
-
-        // ジャンルとオノマトペのcsvから配列を作成
-        var genre_id_list = movie_record.genre_id.split(',');
-        var onomatopoeia_id_list = movie_record.onomatopoeia_id.split(',');
-
-        // ジャンルのpk(id)とカウント数からなる連想配列を作成
-        for(var j = 0; j < genre_id_list.length; j++) {
-          var key_genre = genre_id_list[j];
-          if (key_genre in genre_pk_count_obj) {
-            genre_pk_count_obj[key_genre] += 1;
-          }else {
-            genre_pk_count_obj[key_genre] = 1;
-          }
-        }
-
-        // オノマトペのpk(id)とカウント数からなる連想配列を作成
-        for(j = 0; j < onomatopoeia_id_list.length; j++) {
-          var key_onomatopoeia = onomatopoeia_id_list[j];
-          if (key_onomatopoeia in onomatopoeia_pk_count_obj) {
-            onomatopoeia_pk_count_obj[key_onomatopoeia] += 1;
-          }else {
-            onomatopoeia_pk_count_obj[key_onomatopoeia] = 1;
-          }
-        }
-      }
-
-      // 名前とカウントからなる連想配列を作成
-      var genre_name_count_obj = {};
-      var onomatopoeia_name_count_obj = {};
-      for(var genre_key in genre_pk_name_obj) {
-        var genre_name = genre_pk_name_obj[genre_key];
-        var genre_count = genre_pk_count_obj[genre_key];
-
-        genre_name_count_obj[genre_name] = genre_count;
-      }
-
-      for(var onomatopoeia_key in onomatopoeia_pk_name_obj) {
-        var onomatopoeia_name = onomatopoeia_pk_name_obj[onomatopoeia_key];
-        var onomatopoeia_count = onomatopoeia_pk_count_obj[onomatopoeia_key];
-
-        onomatopoeia_name_count_obj[onomatopoeia_name] = onomatopoeia_count;
-      }
-
-      console.log(genre_pk_count_obj);
-      console.log(onomatopoeia_pk_count_obj);
+      console.log(params.g_obj);
+      console.log(params.o_obj);
       console.log('*************************');
-      console.log(genre_pk_name_obj);
-      console.log(onomatopoeia_pk_name_obj);
-      console.log('*************************');
-      console.log(genre_name_count_obj);
-      console.log(onomatopoeia_name_count_obj);
+      console.log(params.dvds);
+      console.log(params.favs);
 
       // 映画、DVD、FAVの件数をhtmlに書き込む
       var movies_count = document.getElementById(ID.get_user_ID().movies_number);
       var dvds_count = document.getElementById(ID.get_user_ID().dvds_number);
       var favorites_count = document.getElementById(ID.get_user_ID().favorites_number);
       movies_count.innerHTML = String(result[0].rows.length);
-      dvds_count.innerHTML = String(dvd_count);
-      favorites_count.innerHTML = String(fav_count);
+      dvds_count.innerHTML = String(params.dvds);
+      favorites_count.innerHTML = String(params.favs);
 
       var intViewportWidth = window.innerWidth;
       console.log(intViewportWidth);
@@ -3026,6 +2951,94 @@ var User = {
       Utility.stop_spinner();
       resolve();
     });
+  },
+
+
+  /**
+   * ジャンルとオノマトペを名前とカウント数でまとめた連想配列の作成と、
+   * DVDとお気に入りの登録数を求める関数
+   * @param  {[object]} results [0がmovie、1がgenre、2がonomatopoeia]
+   * @return {[object]}         [連想配列とカウント数をまとめたオブジェクト]
+   */
+  create_name_count_obj_and_counts: function(results) {
+    // ジャンルとオノマトペのpkと名前からなる連想配列を作成
+    var genre_pk_name_obj = {};
+    var onomatopoeia_pk_name_obj = {};
+    for(var i = 0; i < results[1].rows.length; i++) {
+      var genre_obj = results[1].rows.item(i);
+      genre_pk_name_obj[genre_obj.id] = genre_obj.name;
+    }
+
+    for(i = 0; i < results[2].rows.length; i++) {
+      var onomatopoeia_obj = results[2].rows.item(i);
+      onomatopoeia_pk_name_obj[onomatopoeia_obj.id] = onomatopoeia_obj.name;
+    }
+
+
+    var dvd_count = 0;
+    var fav_count = 0;
+
+    var genre_pk_count_obj = {};
+    var onomatopoeia_pk_count_obj = {};
+
+    for(i = 0; i < results[0].rows.length; i++) {
+      var movie_record = results[0].rows.item(i);
+      
+      // DVDとFAVの件数をカウント
+      if (movie_record.dvd == 1) {
+        dvd_count += 1;
+      }
+
+      if (movie_record.fav == 1) {
+        fav_count += 1;
+      }
+
+      // ジャンルとオノマトペのcsvから配列を作成
+      var genre_id_list = movie_record.genre_id.split(',');
+      var onomatopoeia_id_list = movie_record.onomatopoeia_id.split(',');
+
+      // ジャンルのpk(id)とカウント数からなる連想配列を作成
+      for(var j = 0; j < genre_id_list.length; j++) {
+        var key_genre = genre_id_list[j];
+        if (key_genre in genre_pk_count_obj) {
+          genre_pk_count_obj[key_genre] += 1;
+        }else {
+          genre_pk_count_obj[key_genre] = 1;
+        }
+      }
+
+      // オノマトペのpk(id)とカウント数からなる連想配列を作成
+      for(j = 0; j < onomatopoeia_id_list.length; j++) {
+        var key_onomatopoeia = onomatopoeia_id_list[j];
+        if (key_onomatopoeia in onomatopoeia_pk_count_obj) {
+          onomatopoeia_pk_count_obj[key_onomatopoeia] += 1;
+        }else {
+          onomatopoeia_pk_count_obj[key_onomatopoeia] = 1;
+        }
+      }
+    }
+
+    // 名前とカウントからなる連想配列を作成
+    var genre_name_count_obj = {};
+    var onomatopoeia_name_count_obj = {};
+    for(var genre_key in genre_pk_name_obj) {
+      var genre_name = genre_pk_name_obj[genre_key];
+      var genre_count = genre_pk_count_obj[genre_key];
+
+      genre_name_count_obj[genre_name] = genre_count;
+    }
+
+    for(var onomatopoeia_key in onomatopoeia_pk_name_obj) {
+      var onomatopoeia_name = onomatopoeia_pk_name_obj[onomatopoeia_key];
+      var onomatopoeia_count = onomatopoeia_pk_count_obj[onomatopoeia_key];
+
+      onomatopoeia_name_count_obj[onomatopoeia_name] = onomatopoeia_count;
+    }
+
+    return {g_obj: genre_name_count_obj,
+            o_obj:onomatopoeia_name_count_obj, 
+            dvds: dvd_count, 
+            favs:fav_count};
   }
 };
 
