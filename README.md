@@ -41,9 +41,11 @@
 ## 使用しているプラットフォーム
 * android 6.2.2
 * ios 4.4.0
+
 ## 使用している外部サービス
 * さくらのレンタルサーバ
 * [The Movie Database](https://www.themoviedb.org)
 
 ## 参考にしたサイト
 * [ひらがら、カタカナの変換を行うJavaScript関数](https://gist.github.com/kawanet/5553478)
+* [CHARTIST.JS](http://gionkunz.github.io/chartist-js/index.html)
