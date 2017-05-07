@@ -181,7 +181,8 @@ var ID = {
     var id_obj = {tmp_id: 'user.html', page_id: 'user', movies_number: 'movies_count_number',
                   dvds_number: 'dvds_count_number',
                   favorites_number: 'favorites_count_number',
-                  onomatopoeia_top3: 'onomatopoeia_top3', genre_top3: 'genre_top3'};
+                  onomatopoeia_top3: 'onomatopoeia_top3', genre_top3: 'genre_top3',
+                  chart1: 'chart1', chart2: 'chart2'};
 
     return id_obj;
   },
@@ -2940,89 +2941,10 @@ var User = {
       dvds_count.innerHTML = String(params.dvds);
       favorites_count.innerHTML = String(params.favs);
 
-      var intViewportWidth = window.innerWidth;
 
-      var chart1 = new Chartist.Pie('#chart1', {series: o_array_count}, {
-          donut: true,
-          donutWidth: 30,
-          donutSolid: true,
-          showLabel: true,
-          width: intViewportWidth * 0.45,
-          height: intViewportWidth * 0.45,
-          total: o_total
-        });
-
-      chart1.on('draw', function(data) {
-        if(data.type === 'slice') {
-          var pathLength = data.element._node.getTotalLength();
-
-          data.element.attr({
-            'stroke-dasharray': pathLength + 'px ' + pathLength + 'px'
-          });
-
-          var animationDefinition = {
-            'stroke-dashoffset': {
-              id: 'anim' + data.index,
-              dur: 400,
-              from: -pathLength + 'px',
-              to:  '0px',
-              easing: Chartist.Svg.Easing.easeOutQuint,
-              fill: 'freeze'
-            }
-          };
-
-          if(data.index !== 0) {
-            animationDefinition['stroke-dashoffset'].begin = 'anim' + (data.index - 1) + '.end';
-          }
-
-          data.element.attr({
-            'stroke-dashoffset': -pathLength + 'px'
-          });
-
-          data.element.animate(animationDefinition, false);
-        }
-      });
-
-      var chart2 = new Chartist.Pie('#chart2', {series: g_array_count}, {
-          donut: true,
-          donutWidth: 30,
-          donutSolid: true,
-          showLabel: true,
-          width: intViewportWidth * 0.45,
-          height: intViewportWidth * 0.45,
-          total: g_total
-        });
-
-      chart2.on('draw', function(data) {
-        if(data.type === 'slice') {
-          var pathLength = data.element._node.getTotalLength();
-
-          data.element.attr({
-            'stroke-dasharray': pathLength + 'px ' + pathLength + 'px'
-          });
-
-          var animationDefinition = {
-            'stroke-dashoffset': {
-              id: 'anim' + data.index,
-              dur: 400,
-              from: -pathLength + 'px',
-              to:  '0px',
-              easing: Chartist.Svg.Easing.easeOutQuint,
-              fill: 'freeze'
-            }
-          };
-
-          if(data.index !== 0) {
-            animationDefinition['stroke-dashoffset'].begin = 'anim' + (data.index - 1) + '.end';
-          }
-
-          data.element.attr({
-            'stroke-dashoffset': -pathLength + 'px'
-          });
-
-          data.element.animate(animationDefinition, false);
-        }
-      });
+      // チャートの描画
+      User.draw_chart(ID.get_user_ID().chart1, o_total, o_array_count);
+      User.draw_chart(ID.get_user_ID().chart2, g_total, g_array_count);
 
       Utility.stop_spinner();
       resolve();
@@ -3118,6 +3040,55 @@ var User = {
             dvds: dvd_count, 
             favs:fav_count};
   },
+
+  draw_chart: function(id, total_count, series_array) {
+    var intViewportWidth = window.innerWidth;
+
+    var chart = new Chartist.Pie('#'+id, {series: series_array},
+    {
+      donut: true,
+      donutWidth: 30,
+      showLabel: true,
+      width: intViewportWidth * 0.45,
+      height: intViewportWidth * 0.45,
+      total: total_count
+    });
+
+    chart.on('draw', function(data) {
+      if(data.type === 'slice') {
+        var pathLength = data.element._node.getTotalLength();
+
+        data.element.attr({
+          'stroke-dasharray': pathLength + 'px ' + pathLength + 'px'
+        });
+
+        var animationDefinition = {
+          'stroke-dashoffset': {
+            id: 'anim' + data.index,
+            dur: 500,
+            from: -pathLength + 'px',
+            to:  '0px',
+            easing: Chartist.Svg.Easing.easeOutQuint,
+            fill: 'freeze'
+          }
+        };
+
+        if(data.index !== 0) {
+          animationDefinition['stroke-dashoffset'].begin = 'anim' + (data.index - 1) + '.end';
+        }
+
+        data.element.attr({
+          'stroke-dashoffset': -pathLength + 'px'
+        });
+
+        data.element.animate(animationDefinition, false);
+      }
+    });
+
+    chart.on('created', function() {
+      chart.update.bind(chart);
+    });
+  }
 };
 
 
