@@ -3044,10 +3044,14 @@ var User = {
   draw_chart: function(id, total_count, series_array) {
     var intViewportWidth = window.innerWidth;
 
+    var sum = function(a, b) { return a + b;};
+
     var chart = new Chartist.Pie('#'+id, {
       series: series_array,
-    },
-    {
+    }, {
+      labelInterpolationFnc: function(value) {
+        return Math.round(value / series_array.reduce(sum) * 100) + '%';
+      },
       donut: true,
       donutWidth: 30,
       showLabel: true,
