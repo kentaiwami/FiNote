@@ -3041,6 +3041,13 @@ var User = {
             favs:fav_count};
   },
 
+
+  /**
+   * グラフを描画する
+   * @param  {[String]} id           [描画したいdiv要素のid]
+   * @param  {[Number]} total_count  [円グラフの合計値]
+   * @param  {[Array]} series_array [表示するデータ]
+   */
   draw_chart: function(id, total_count, series_array) {
     var intViewportWidth = window.innerWidth;
 
