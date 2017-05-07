@@ -3044,7 +3044,9 @@ var User = {
   draw_chart: function(id, total_count, series_array) {
     var intViewportWidth = window.innerWidth;
 
-    var chart = new Chartist.Pie('#'+id, {series: series_array},
+    var chart = new Chartist.Pie('#'+id, {
+      series: series_array,
+    },
     {
       donut: true,
       donutWidth: 30,

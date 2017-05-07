@@ -1,3 +1,6 @@
+@import "_chartist-settings.scss";
+@import "chartist.scss";
+
 /************************************************************
                           	Base
  ************************************************************/
@@ -454,4 +457,9 @@ $font-small: .75rem;
   margin-top: 6px;
   font-size: 14px;
   opacity: 0.4;
+}
+
+.ct-label {
+  fill: rgb(255, 255, 255);
+  color: rgb(255, 255, 255);
 }
