@@ -180,7 +180,8 @@ var ID = {
   get_user_ID: function() {
     var id_obj = {tmp_id: 'user.html', page_id: 'user', movies_number: 'movies_count_number',
                   dvds_number: 'dvds_count_number',
-                  favorites_number: 'favorites_count_number'};
+                  favorites_number: 'favorites_count_number',
+                  onomatopoeia_top3: 'onomatopoeia_top3', genre_top3: 'genre_top3'};
 
     return id_obj;
   },
@@ -2853,6 +2854,7 @@ var User = {
       // DVDとお気に入りの登録数をそれぞれ取得
       var params = User.create_name_count_obj_and_counts(result);
 
+
       // オノマトペとジャンルの合計数をそれぞれ求める
       // グラフの描画関数に渡す配列を作成する
       var o_total = 0;
@@ -2871,9 +2873,63 @@ var User = {
         g_array_count.push(g_value);
       }
 
+
       // 降順でカウント数をソート
       Utility.sort_array(o_array_count, 1);
       Utility.sort_array(g_array_count, 1);
+
+
+      // カウント数の降順でジャンルとオノマトペ名を保存
+      var o_array_name = [];
+      var g_array_name = [];
+      for(var i = 0; i < o_array_count.length; i++) {
+        for(o_key in params.o_obj) {
+          if (o_array_count[i] == params.o_obj[o_key]) {
+            o_array_name.push(o_key);
+            delete params.o_obj[o_key];
+            break;
+          }
+        }
+      }
+
+      for(i = 0; i < g_array_count.length; i++) {
+        for(g_key in params.g_obj) {
+          if (g_array_count[i] == params.g_obj[g_key]) {
+            g_array_name.push(g_key);
+            delete params.g_obj[g_key];
+            break;
+          }
+        }
+      }
+
+
+      // トップ3を書き込む
+      var onomatopoeia_top3 = document.getElementById(ID.get_user_ID().onomatopoeia_top3);
+      var genre_top3 = document.getElementById(ID.get_user_ID().genre_top3);
+      var onomatopoeia_top3_html = '';
+      var genre_top3_html = '';
+      for(i = 0; i < 3; i++) {
+        var tmp_o_name = o_array_name[i];
+        var tmp_g_name = g_array_name[i];
+        var o_style = '';
+        var g_style = '';
+
+        if (typeof o_array_name[i] === 'undefined') {
+          tmp_o_name = 'データなし';
+          o_style = 'opacity: .5;';
+        }
+
+        if (typeof g_array_name[i] === 'undefined') {
+          tmp_g_name = 'データなし';
+          g_style = 'opacity: .5;';
+        }
+
+        onomatopoeia_top3_html += '<ons-list-item style="' + o_style + '">' + (i+1) + '. ' + tmp_o_name + '</ons-list-item>';
+        genre_top3_html += '<ons-list-item style="' + g_style + '">' + (i+1) + '. ' + tmp_g_name + '</ons-list-item>';
+      }
+
+      onomatopoeia_top3.innerHTML = '<ons-list-header>気分 トップ3</ons-list-header>' + onomatopoeia_top3_html;
+      genre_top3.innerHTML = '<ons-list-header>ジャンル トップ3</ons-list-header>' + genre_top3_html;
 
 
       // 映画、DVD、FAVの件数をhtmlに書き込む
@@ -3061,7 +3117,7 @@ var User = {
             o_obj:onomatopoeia_name_count_obj, 
             dvds: dvd_count, 
             favs:fav_count};
-  }
+  },
 };
 
 
