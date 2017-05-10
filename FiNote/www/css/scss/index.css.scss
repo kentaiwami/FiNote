@@ -1,3 +1,6 @@
+@import "_chartist-settings.scss";
+@import "chartist.scss";
+
 /************************************************************
                           	Base
  ************************************************************/
@@ -428,4 +431,45 @@ $font-small: .75rem;
   align-items: center;
   text-align: center;
   opacity: .6;
+}
+
+
+
+/************************************************************
+                            User
+************************************************************/
+.chart_area {
+  margin: .987rem 0rem;
+  height: 40vw;
+  padding: .987rem 0rem;
+}
+
+.info-col {
+  height: 60px;
+  line-height: 1;
+  padding: 12px 0 12px 4px;
+}
+
+.info-num {
+  font-size: 16px;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.info-unit {
+  margin-top: 6px;
+  font-size: 14px;
+  opacity: 0.4;
+}
+
+.ct-label {
+  fill: $color-brown;
+  color: $color-brown;
+}
+
+.no_data_graph_message {
+  height: 40.4vh;
+  margin-top: 30vh;
+  opacity: .6;
+  text-align: center;
 }

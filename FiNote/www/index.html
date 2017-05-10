@@ -16,6 +16,7 @@
   <script src="js/spin.min.js"></script>
   <script type="text/javascript" src="js/SocialSharing.js"></script>
   <script type="text/javascript" src="js/rgbcolor.js"></script>
+  <script type="text/javascript" src="js/chartist.min.js"></script>
   <script src="js/index.js"></script>
 </head>
 
@@ -476,7 +477,29 @@
         </div>
       </ons-toolbar>
 
-      <p style="text-align: center; opacity: 0.6; padding-top: 20px;">user.html</p>
+      <!-- 気分とジャンルの円グラフ描画エリア -->
+      <div id="user_graph_area"></div>
+
+      <!-- 追加済みの映画の数、DVDとお気に入りの登録数 -->
+      <ons-list>
+        <ons-list-item>
+          <ons-row>
+            <ons-col class="info-col">
+              <div class="info-num" id="movies_count_number">0</div>
+              <div class="info-unit">Movies</div>
+            </ons-col>
+            <ons-col class="info-col">
+              <div class="info-num" id="dvds_count_number">0</div>
+              <div class="info-unit">DVDs</div>
+            </ons-col>
+            <ons-col class="info-col">
+              <div class="info-num" id="favorites_count_number">0</div>
+              <div class="info-unit">Favorites</div>
+            </ons-col>
+          </ons-row>
+        </ons-list-item>
+      </ons-list>
+      
     </ons-page>
   </ons-template>
   <!-- ●●●●●●●●● ここまでuser.html ●●●●●●●●● -->
