@@ -187,6 +187,11 @@ var ID = {
     return id_obj;
   },
 
+  get_setting_ID: function() {
+    var id_obj = {tmp_id: 'setting.html', page_id: 'setting'};
+    return id_obj;
+  },
+
   get_utility_ID: function() {
     var id_obj = {navigator: 'myNavigator'};
     return id_obj;
@@ -3127,6 +3132,33 @@ var User = {
   }
 };
 
+
+
+
+/************************************************************
+                        setting.html
+ ************************************************************/
+var Setting = {
+  show_contents: function() {
+    var storage = window.localStorage;
+    var username = storage.getItem('username');
+    var email = storage.getItem('email');
+    var adult = storage.getItem('adult');
+
+    var callback = function() {
+    //   // アダルト作品のフラグからチェック状態を変更する
+    };
+    
+    Utility.check_page_init(ID.get_setting_ID().page_id,callback);
+    Utility.push_page(ID.get_setting_ID().tmp_id, 'lift', 0, '');
+  },
+
+  close_setting: function() {
+    // アダルト作品のチェック状態を取得
+    // チェック状態に応じて値を保存
+    Utility.pop_page();
+  }
+};
 
 
 

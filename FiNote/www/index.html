@@ -471,7 +471,7 @@
         <div class="center brown_color">ユーザ情報</div>
 
         <div class="right">
-          <ons-toolbar-button onClick="">
+          <ons-toolbar-button onClick="Setting.show_contents()">
             <ons-icon class="brown_color" icon="ion-ios-gear"></ons-icon>
           </ons-toolbar-button>
         </div>
@@ -503,5 +503,23 @@
     </ons-page>
   </ons-template>
   <!-- ●●●●●●●●● ここまでuser.html ●●●●●●●●● -->
+
+
+
+
+
+  <!-- ●●●●●●●●● ここからsetting.html ●●●●●●●●● -->
+  <ons-template id="setting.html">
+    <ons-page id="setting">
+      <!--ツールバー-->
+      <ons-toolbar>
+        <div class="left brown_color" onClick="Setting.close_setting()">
+          <ons-toolbar-button class="brown_color"><ons-icon class="brown_color" icon="ion-close-round"></ons-icon></ons-toolbar-button>
+        </div>
+        <div class="center brown_color">各種設定</div>
+      </ons-toolbar>
+    </ons-page>
+  </ons-template>
+  <!-- ●●●●●●●●● ここまでsetting.html ●●●●●●●●● -->
 </body>
 </html>
