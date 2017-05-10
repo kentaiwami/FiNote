@@ -182,7 +182,7 @@ var ID = {
                   dvds_number: 'dvds_count_number',
                   favorites_number: 'favorites_count_number',
                   onomatopoeia_top3: 'onomatopoeia_top3', genre_top3: 'genre_top3',
-                  chart1: 'chart1', chart2: 'chart2'};
+                  chart1: 'chart1', chart2: 'chart2', graph_area: 'user_graph_area'};
 
     return id_obj;
   },
@@ -760,7 +760,6 @@ var Movies = {
       }
     };
     Utility.check_page_init(ID.get_index_ID().page_id,callback);
-    Utility.check_page_init(ID.get_user_ID().page_id,User.show_contents);
 
     var data = {
       "username": username,
@@ -2805,7 +2804,31 @@ var User = {
     document.addEventListener('show', function(event) {
       if (event.target.id == page_id) {
         console.log(event.target.id + ' is show');
-        callback();
+
+        DB_method.count_record('movie').then(function(movie_count) {
+
+          if (movie_count === 0) {
+            document.getElementById(ID.get_user_ID().graph_area).innerHTML = '<div><p class="no_data_graph_message">映画を登録するとグラフが表示されます</p></div>';
+            document.getElementById(ID.get_user_ID().movies_number).innerHTML = '0';
+            document.getElementById(ID.get_user_ID().dvds_number).innerHTML = '0';
+            document.getElementById(ID.get_user_ID().favorites_number).innerHTML = '0';
+          }else {
+            document.getElementById(ID.get_user_ID().graph_area).innerHTML = 
+            '<ons-list>'+
+            '<ons-list-item modifier="longdivider" id="chart1_list_item">'+
+            '<div class="left"><div class="ct-chart ct-perfect-fourth chart_area" id="chart1"></div></div>'+
+            '<div class="right"><ons-list id="onomatopoeia_top3"></ons-list></div>'+
+            '</ons-list-item>'+
+            '<ons-list-item modifier="longdivider">'+
+            '<div class="left"><div class="ct-chart ct-perfect-fourth chart_area" id="chart2"></div></div>'+
+            '<div class="right"><ons-list id="genre_top3"></div></div>'+
+            '</ons-list-item>'+
+            '</ons-list>';
+
+            // グラフ描画等を行う
+            callback();
+          }
+        });
       }
     });
   },

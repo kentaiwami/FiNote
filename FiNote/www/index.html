@@ -478,40 +478,22 @@
       </ons-toolbar>
 
       <!-- 気分とジャンルの円グラフ描画エリア -->
-       <ons-list>
-        <ons-list-item modifier="longdivider">
-          <div class="left">
-            <div class="ct-chart ct-perfect-fourth chart_area" id="chart1"></div>
-          </div>
-          <div class="right">
-            <ons-list id="onomatopoeia_top3"></ons-list>
-          </div>
-        </ons-list-item>
-
-        <ons-list-item modifier="longdivider">
-          <div class="left">
-            <div class="ct-chart ct-perfect-fourth chart_area" id="chart2"></div>
-          </div>
-          <div class="right">
-            <ons-list id="genre_top3"></ons-list>
-          </div>
-        </ons-list-item>
-      </ons-list>
+      <div id="user_graph_area"></div>
 
       <!-- 追加済みの映画の数、DVDとお気に入りの登録数 -->
       <ons-list>
         <ons-list-item>
           <ons-row>
             <ons-col class="info-col">
-              <div class="info-num" id="movies_count_number">87</div>
+              <div class="info-num" id="movies_count_number">0</div>
               <div class="info-unit">Movies</div>
             </ons-col>
             <ons-col class="info-col">
-              <div class="info-num" id="dvds_count_number">40</div>
+              <div class="info-num" id="dvds_count_number">0</div>
               <div class="info-unit">DVDs</div>
             </ons-col>
             <ons-col class="info-col">
-              <div class="info-num" id="favorites_count_number">38</div>
+              <div class="info-num" id="favorites_count_number">0</div>
               <div class="info-unit">Favorites</div>
             </ons-col>
           </ons-row>

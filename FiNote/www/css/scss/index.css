@@ -1104,6 +1104,9 @@
   opacity: .6;
 }
 
+/************************************************************
+                            User
+************************************************************/
 .chart_area {
   margin: .987rem 0rem;
   height: 40vw;
@@ -1131,6 +1134,13 @@
 .ct-label {
   fill: #462401;
   color: #462401;
+}
+
+.no_data_graph_message {
+  height: 40.4vh;
+  margin-top: 30vh;
+  opacity: .6;
+  text-align: center;
 }
 
 /*# sourceMappingURL=index.css.map */

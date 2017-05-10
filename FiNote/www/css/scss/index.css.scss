@@ -435,6 +435,9 @@ $font-small: .75rem;
 
 
 
+/************************************************************
+                            User
+************************************************************/
 .chart_area {
   margin: .987rem 0rem;
   height: 40vw;
@@ -462,4 +465,11 @@ $font-small: .75rem;
 .ct-label {
   fill: $color-brown;
   color: $color-brown;
+}
+
+.no_data_graph_message {
+  height: 40.4vh;
+  margin-top: 30vh;
+  opacity: .6;
+  text-align: center;
 }
