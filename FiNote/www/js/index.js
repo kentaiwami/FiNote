@@ -3141,7 +3141,6 @@ var User = {
 var Setting = {
   show_contents: function() {
     var storage = window.localStorage;
-    storage.setItem('adult', false);
     var username = storage.getItem('username');
     var email = storage.getItem('email');
     var adult = storage.getItem('adult');
@@ -3159,6 +3158,9 @@ var Setting = {
       }else {
         adult_check.removeAttribute('checked');
       }
+
+      // チェック状態が変更されるたびに保存を行うイベントを登録
+      Setting.add_event_adult_check();
     };
     
     Utility.check_page_init(ID.get_setting_ID().page_id,callback);
@@ -3169,6 +3171,18 @@ var Setting = {
     // アダルト作品のチェック状態を取得
     // チェック状態に応じて値を保存
     Utility.pop_page();
+  },
+
+  add_event_adult_check: function() {
+    document.addEventListener('change', function(event) {
+      if (event.target.id == ID.get_setting_ID().adult_check) {
+        console.log(event.target.id + ' is changed ' + event.value);
+
+        // チェック状態が変更されたらローカルDBへ保存
+        var storage = window.localStorage;
+        storage.setItem('adult', event.value);
+      }
+    });
   }
 };
 
