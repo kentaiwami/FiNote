@@ -195,7 +195,7 @@ var ID = {
   get_change_password_ID: function() {
     var id_obj = {tmp_id: 'change_password.html', page_id: 'change_password',
                   now_password: 'now_password', new_password: 'new_password',
-                  re_new_password: 're_new_password', submit_password: 'submit_change_password'};
+                  re_new_password: 're_new_password', submit_password: 'submit_change_password', success_alert: 'change_password_successalert'};
     return id_obj;
   },
 
@@ -3238,7 +3238,14 @@ var Change_Password = {
     }
   },
 
+
+  /**
+   * 変更ボタンを押した際に、パスワード入力フォームのチェックを行い、
+   * APIへリクエストを送信する。
+   */
   tap_submit_button: function() {
+    Utility.show_spinner(ID.get_change_password_ID().page_id);
+
     var now_pass = document.getElementById(ID.get_change_password_ID().now_password).value;
     var new_pass = document.getElementById(ID.get_change_password_ID().new_password).value;
     var re_new_pass = document.getElementById(ID.get_change_password_ID().re_new_password).value;
@@ -3246,14 +3253,46 @@ var Change_Password = {
 
     if (now_pass != storage.getItem('password')) {
       Utility.show_error_alert('パスワード変更エラー', '現在のパスワードが間違っています', 'OK');
+      Utility.stop_spinner();
     }else if(now_pass == new_pass) {
       Utility.show_error_alert('パスワード変更エラー', '現在のパスワードと新しいパスワードは同じにできません', 'OK');
+      Utility.stop_spinner();
     }else if(new_pass != re_new_pass) {
       Utility.show_error_alert('パスワード変更エラー', '新しいパスワードの入力を再度確認してください', 'OK');
+      Utility.stop_spinner();
     }else if(now_pass == storage.getItem('password')) {
-      console.log('OK');
+      var data = {
+        "username": storage.getItem('username'),
+        "now_password": now_pass,
+        "new_password": new_pass
+      };
+
+      Utility.FiNote_API('changepassword', data, 'POST').then(function(token_obj) {
+        var json_data = JSON.parse(token_obj);
+        storage.setItem('password', new_pass);
+        storage.setItem('token', json_data.token);
+
+        Utility.stop_spinner();
+        var alert = document.getElementById(ID.get_change_password_ID().success_alert);
+        alert.show();
+      })
+      .catch(function(err) {
+        console.log(err);
+        Utility.stop_spinner();
+        Utility.show_error_alert('エラー発生', err, 'OK');
+      });
     }
-  }
+  },
+
+
+  /**
+   * パスワードの変更が成功した際に表示されるアラートを閉じる&ページを戻る関数
+   */
+  alert_hide: function() {
+    var alert = document.getElementById(ID.get_change_password_ID().success_alert);
+    alert.hide();
+    Utility.pop_page();
+  }  
 };
 
 

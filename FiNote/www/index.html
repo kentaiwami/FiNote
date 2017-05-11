@@ -582,6 +582,13 @@
         <ons-button id="submit_change_password" modifier="large" class="large-button" onClick="Change_Password.tap_submit_button()" disabled>変更する</ons-button>
       </div>
 
+      <!-- パスワード変更成功時のアラート -->
+      <ons-dialog id="change_password_successalert">
+        <div class="alert">
+          <p>パスワードの変更が完了しました</p>
+          <p><ons-button class="brown_bg_color" onClick="Change_Password.alert_hide()">OK</ons-button></p>
+        </div>
+      </ons-dialog>
     </ons-page>
   </ons-template>
   <!-- ●●●●●●●●● ここまでchange_password.html ●●●●●●●●● -->

@@ -141,6 +141,42 @@ class SignInNoTokenViewSet(viewsets.ViewSet):
                 raise ValidationError('ユーザ名かパスワードが違います')
 
 
+
+class ChangePasswordViewSet(viewsets.ViewSet):
+    queryset = Movie.objects.all()
+    serializer_class = ChangePasswordSerializer
+
+    def create(self, request):
+        """
+        When ChangePassword api access, run this method.
+        This method is change password and return token.
+        :param request: Include username, now_password and new_password
+        :return: User's token.
+        """
+
+        if request.method == 'POST':
+            data = request.data
+
+            if not data['username']:
+                raise ValidationError('ユーザ名が含まれていません')
+            if not data['now_password']:
+                raise ValidationError('現在のパスワードが含まれていません')
+            if not data['new_password']:
+                raise ValidationError('新しいパスワードが含まれていません')
+
+            try:
+                get_user = AuthUser.objects.get(username=data['username'])
+                get_user.set_password(data['new_password'])
+                get_user.save()
+                token = Token.objects.get(user_id=get_user.pk)
+
+                return JsonResponse({'token':str(token)})
+
+            except ObjectDoesNotExist:
+                raise ValidationError('ユーザが見つかりませんでした')
+
+
+
 class MovieAddViewSet(viewsets.ViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieAddSerializer
