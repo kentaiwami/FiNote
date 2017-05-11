@@ -3240,12 +3240,18 @@ var Change_Password = {
 
   tap_submit_button: function() {
     var now_pass = document.getElementById(ID.get_change_password_ID().now_password).value;
+    var new_pass = document.getElementById(ID.get_change_password_ID().new_password).value;
+    var re_new_pass = document.getElementById(ID.get_change_password_ID().re_new_password).value;
     var storage = window.localStorage;
 
-    if (now_pass === storage.getItem('password')) {
-      console.log('OK');
-    }else {
+    if (now_pass != storage.getItem('password')) {
       Utility.show_error_alert('パスワード変更エラー', '現在のパスワードが間違っています', 'OK');
+    }else if(now_pass == new_pass) {
+      Utility.show_error_alert('パスワード変更エラー', '現在のパスワードと新しいパスワードは同じにできません', 'OK');
+    }else if(new_pass != re_new_pass) {
+      Utility.show_error_alert('パスワード変更エラー', '新しいパスワードの入力を再度確認してください', 'OK');
+    }else if(now_pass == storage.getItem('password')) {
+      console.log('OK');
     }
   }
 };
