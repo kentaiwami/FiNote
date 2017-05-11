@@ -192,6 +192,13 @@ var ID = {
     return id_obj;
   },
 
+  get_change_password_ID: function() {
+    var id_obj = {tmp_id: 'change_password.html', page_id: 'change_password',
+                  now_password: 'now_password', new_password: 'new_password',
+                  re_new_password: 're_new_password', submit_password: 'submit_change_password'};
+    return id_obj;
+  },
+
   get_utility_ID: function() {
     var id_obj = {navigator: 'myNavigator'};
     return id_obj;
@@ -3139,6 +3146,10 @@ var User = {
                         setting.html
  ************************************************************/
 var Setting = {
+
+  /**
+   * 設定画面の描画に必要な情報を取得して表示を行う
+   */
   show_contents: function() {
     var storage = window.localStorage;
     var username = storage.getItem('username');
@@ -3166,8 +3177,12 @@ var Setting = {
     Utility.check_page_init(ID.get_setting_ID().page_id,callback);
     Utility.push_page(ID.get_setting_ID().tmp_id, 'lift', 0, '');
   },
-  
 
+
+  /**
+   * アダルトのチェックボタンが変更されるたびに、
+   * ローカルへ保存するイベントを登録する
+   */
   add_event_adult_check: function() {
     document.addEventListener('change', function(event) {
       if (event.target.id == ID.get_setting_ID().adult_check) {
@@ -3178,6 +3193,49 @@ var Setting = {
         storage.setItem('adult', event.value);
       }
     });
+  }
+};
+
+
+
+
+
+/************************************************************
+                        change_password.html
+ ************************************************************/
+var Change_Password = {
+
+  /**
+   * パスワード画面へ遷移を行い、keyupイベントを登録する
+   */
+  initialize: function() {
+    //イベント登録
+    var addevent = function(){
+      // sign upのフォームにイベントを登録
+      document.getElementById(ID.get_change_password_ID().now_password).addEventListener('keyup',Change_Password.check_form);
+      document.getElementById(ID.get_change_password_ID().new_password).addEventListener('keyup',Change_Password.check_form);
+      document.getElementById(ID.get_change_password_ID().re_new_password).addEventListener('keyup',Change_Password.check_form);
+    };
+
+    Utility.check_page_init(ID.get_change_password_ID().page_id, addevent);
+    Utility.push_page(ID.get_change_password_ID().tmp_id, '', 0, '');
+  },
+
+
+  /**
+   * パスワード入力フォームの文字数を監視し、変更ボタンの無効・有効を切り替える
+   */
+  check_form: function() {
+    var now_pass = document.getElementById(ID.get_change_password_ID().now_password).value;
+    var new_pass = document.getElementById(ID.get_change_password_ID().new_password).value;
+    var re_new_pass = document.getElementById(ID.get_change_password_ID().re_new_password).value;
+
+    var submit_button = document.getElementById(ID.get_change_password_ID().submit_password);
+    if (now_pass.length >= 6 && new_pass.length >= 6 && re_new_pass.length >= 6) {
+      submit_button.removeAttribute('disabled');
+    }else {
+      submit_button.setAttribute('disabled', 'disabled');
+    }
   }
 };
 

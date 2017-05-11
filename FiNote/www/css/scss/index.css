@@ -741,11 +741,11 @@
   color: #462401;
 }
 
-.brown_bg_color, .login-button {
+.brown_bg_color, .large-button {
   background-color: #462401;
   color: #FFF;
 }
-.brown_bg_color:active, .login-button:active {
+.brown_bg_color:active, .large-button:active {
   background-color: #462401;
   color: #FFF;
 }
@@ -821,7 +821,7 @@
   outline: none;
 }
 
-.login-button {
+.large-button {
   width: 100%;
   margin: 0 auto;
 }
