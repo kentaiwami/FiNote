@@ -535,7 +535,7 @@
       <div class="settings-header">登録情報の変更</div>
       <ons-list modifier="inset" class="settings-list">
         <ons-list-item modifier="chevron tappable" onClick="Change_Password.initialize()">パスワード</ons-list-item>
-        <ons-list-item modifier="chevron tappable" onClick="Utility.push_page('change_email.html', '', 0, '')">メールアドレス</ons-list-item>
+        <ons-list-item modifier="chevron tappable" onClick="Change_Email.initialize()">メールアドレス</ons-list-item>
         <ons-list-item modifier="chevron tappable" onClick="Utility.push_page('change_sex.html', '', 0, '')">性別</ons-list-item>
       </ons-list>
 
@@ -583,7 +583,7 @@
       </div>
 
       <!-- パスワード変更成功時のアラート -->
-      <ons-dialog id="change_password_successalert">
+      <ons-dialog id="change_password_success_alert">
         <div class="alert">
           <p>パスワードの変更が完了しました</p>
           <p><ons-button class="brown_bg_color" onClick="Change_Password.alert_hide()">OK</ons-button></p>
@@ -607,6 +607,20 @@
         </div>
         <div class="center brown_color">メールアドレスの変更</div>
       </ons-toolbar>
+
+      <div class="login-form">
+        <input id="new_email" type="text" class="text-input--underbar signin_form_input" placeholder="新しいメールアドレス" value="">
+        <br><br>
+        <ons-button id="submit_change_email" modifier="large" class="large-button" onClick="Change_Email.tap_submit_button()" disabled>変更する</ons-button>
+      </div>
+
+      <!-- メールアドレス変更成功時のアラート -->
+      <ons-dialog id="change_email_success_alert">
+        <div class="alert">
+          <p>メールアドレスの変更が完了しました</p>
+          <p><ons-button class="brown_bg_color" onClick="Change_Email.alert_hide()">OK</ons-button></p>
+        </div>
+      </ons-dialog>
 
     </ons-page>
   </ons-template>
