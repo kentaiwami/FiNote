@@ -3236,6 +3236,17 @@ var Change_Password = {
     }else {
       submit_button.setAttribute('disabled', 'disabled');
     }
+  },
+
+  tap_submit_button: function() {
+    var now_pass = document.getElementById(ID.get_change_password_ID().now_password).value;
+    var storage = window.localStorage;
+
+    if (now_pass === storage.getItem('password')) {
+      console.log('OK');
+    }else {
+      Utility.show_error_alert('パスワード変更エラー', '現在のパスワードが間違っています', 'OK');
+    }
   }
 };
 
