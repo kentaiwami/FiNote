@@ -188,7 +188,7 @@ var ID = {
   },
 
   get_setting_ID: function() {
-    var id_obj = {tmp_id: 'setting.html', page_id: 'setting'};
+    var id_obj = {tmp_id: 'setting.html', page_id: 'setting', username: 'user_username', email: 'user_email'};
     return id_obj;
   },
 
@@ -3146,7 +3146,10 @@ var Setting = {
     var adult = storage.getItem('adult');
 
     var callback = function() {
-    //   // アダルト作品のフラグからチェック状態を変更する
+      document.getElementById(ID.get_setting_ID().username).innerHTML = username;
+      document.getElementById(ID.get_setting_ID().email).innerHTML = email;
+
+      // アダルト作品のフラグからチェック状態を変更する
     };
     
     Utility.check_page_init(ID.get_setting_ID().page_id,callback);

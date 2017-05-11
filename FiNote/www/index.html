@@ -518,6 +518,43 @@
         </div>
         <div class="center brown_color">各種設定</div>
       </ons-toolbar>
+
+      <!-- ユーザのプロフ画像、名前、メールアドレス -->
+      <ons-row class="profile-wrapper">
+        <ons-col width="25vw" class="profile-image-wrapper">
+          <img src="images/profile-image-05.png" class="profile-image">
+        </ons-col>
+
+        <ons-col>
+          <div class="profile-name" id="user_username"></div>
+          <div class="profile-email" id="user_email"></div>
+        </ons-col>
+      </ons-row>
+
+      <!-- パスワード、メールアドレス、性別の変更 -->
+      <div class="settings-header">登録情報の変更</div>
+      <ons-list modifier="inset" class="settings-list">
+        <ons-list-item modifier="chevron tappable">パスワード</ons-list-item>
+        <ons-list-item modifier="chevron tappable">メールアドレス</ons-list-item>
+        <ons-list-item modifier="chevron tappable">性別</ons-list-item>
+      </ons-list>
+
+      <!-- 検索の設定 -->
+      <div class="settings-header">検索設定</div>
+      <ons-list modifier="inset" class="settings-list">
+        <ons-list-item>
+          <div class="left">アダルト作品を含む</div>
+          <div class="right"><ons-switch></ons-switch></div>
+        </ons-list-item>
+      </ons-list>
+
+      <!-- ログアウト -->
+      <ons-list modifier="inset" class="settings-list">
+        <ons-list-item modifier="tappable">
+          <ons-icon icon="ion-log-out" class="settings-logout"></ons-icon>
+          ログアウト
+        </ons-list-item>
+      </ons-list>
     </ons-page>
   </ons-template>
   <!-- ●●●●●●●●● ここまでsetting.html ●●●●●●●●● -->
