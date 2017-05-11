@@ -927,19 +927,19 @@ var Movies = {
                      '<div class="right">'+
                      '<ons-row class="list_button_row">'+
                      '<ons-col>'+
-                     '<ons-button class="' + button_class.dvd + '" id="dvd_'+ movie_record.id +'" onclick="Movies.tap_dvd_fav(this.id,0)" modifier="quiet">'+
+                     '<ons-button class="' + button_class.dvd + '" id="dvd_'+ movie_record.id +'" onClick="Movies.tap_dvd_fav(this.id,0)" modifier="quiet">'+
                      '<ons-icon icon="ion-disc" size="20px"></ons-icon>'+
                      '</ons-button>'+
                      '</ons-col>'+
 
                      '<ons-col>'+
-                     '<ons-button class="' + button_class.fav + '" id="fav_' + movie_record.id + '" onclick="Movies.tap_dvd_fav(this.id,1)" modifier="quiet">'+
+                     '<ons-button class="' + button_class.fav + '" id="fav_' + movie_record.id + '" onClick="Movies.tap_dvd_fav(this.id,1)" modifier="quiet">'+
                      '<ons-icon size="20px" icon="ion-android-favorite"></ons-icon>'+
                      '</ons-button>'+
                      '</ons-col>'+
 
                      '<ons-col>'+
-                     '<ons-button class="brown_bg_color_quiet" id=' + movie_record.id + ' onclick="Movies_detail.show_contents(this.id)" modifier="quiet">'+
+                     '<ons-button class="brown_bg_color_quiet" id=' + movie_record.id + ' onClick="Movies_detail.show_contents(this.id)" modifier="quiet">'+
                      '<ons-icon size="20px" icon="ion-more"></ons-icon>'+
                      '</ons-button>'+
                      '</ons-col>'+
@@ -1291,16 +1291,16 @@ var Movies_detail = {
     }
 
     var callback = function(){
-    var poster_html = '<img onclick="Movies_detail.tap_img(this)" class="poster" src="' + movie_record.poster + '">';
+    var poster_html = '<img onClick="Movies_detail.tap_img(this)" class="poster" src="' + movie_record.poster + '">';
     document.getElementById(ID.get_movies_detail_ID().poster).innerHTML = poster_html;
 
     var movie_detail_html = '<ons-list modifier="inset">'+
                             '<ons-list-header>ステータス</ons-list-header>'+
-                            '<ons-list-item onclick="Movies_detail.push_page_feeling(\''+onomatopoeia_text+'\')" modifier="chevron" tappable>'+
+                            '<ons-list-item onClick="Movies_detail.push_page_feeling(\''+onomatopoeia_text+'\')" modifier="chevron" tappable>'+
                             onomatopoeia_text+
                             '</ons-list-item>'+
 
-                            '<ons-list-item onclick="Movies_detail.push_page_status()" modifier="chevron" tappable>'+
+                            '<ons-list-item onClick="Movies_detail.push_page_status()" modifier="chevron" tappable>'+
                             '<ons-icon icon="ion-disc" class="list-item__icon brown_bg_color_quiet"></ons-icon>'+
                             dvd+
                             '<ons-icon icon="ion-android-favorite" class="list-item__icon brown_bg_color_quiet"></ons-icon>'+
@@ -1325,13 +1325,13 @@ var Movies_detail = {
 
                             '<ons-list modifier="inset">'+
                             '<ons-list-header>SNS</ons-list-header>'+
-                            '<ons-list-item tappable onclick="Movies_detail.sns_share()">'+
+                            '<ons-list-item tappable onClick="Movies_detail.sns_share()">'+
                             '<ons-icon icon="ion-share" class="list-item__icon brown_bg_color_quiet"></ons-icon>'+
                             'この映画をシェアする'+
                             '</ons-list-item>'+
                             '</ons-list>'+
 
-                            '<ons-button onclick="Movies_detail.tap_delete_button()" class="delete_button" modifier="large">'+
+                            '<ons-button onClick="Movies_detail.tap_delete_button()" class="delete_button" modifier="large">'+
                             '削除'+
                             '</ons-button>';
     document.getElementById(ID.get_movies_detail_ID().detail).innerHTML = movie_detail_html;
@@ -1772,13 +1772,13 @@ var Movieadd_search = {
             if (index == -1) {
               exist_message = '';
               modifier = 'longdivider chevron';
-              tappable = 'tappable onclick="Movieadd_search.tap_list(this)"';
+              tappable = 'tappable onClick="Movieadd_search.tap_list(this)"';
             }else {
               exist_message = '<div class="exist_message">'+
                               '<ons-icon icon="ion-ios-checkmark-outline"></ons-icon>'+
                               '</div>';
               modifier = 'longdivider';
-              tappable = 'tappable onclick="Movieadd_search.exist_movie_list_alert_show()"';
+              tappable = 'tappable onClick="Movieadd_search.exist_movie_list_alert_show()"';
             }
 
             //TMDBから取得したrelease_dateが空だった場合は情報なしを代入する
@@ -2576,11 +2576,11 @@ var Feeling = {
                                   '</div>'+
 
                                   '<div class="right">'+
-                                  '<ons-button class="brown_bg_color_quiet" modifier="quiet" onclick="Feeling.tap_edit('+ i +')">'+
+                                  '<ons-button class="brown_bg_color_quiet" modifier="quiet" onClick="Feeling.tap_edit('+ i +')">'+
                                   '<ons-icon size="25px" icon="ion-edit"></ons-icon>'+
                                   '</ons-button>'+
 
-                                  '<ons-button class="brown_bg_color_quiet" modifier="quiet" onclick="Feeling.tap_delete('+ i +')">'+
+                                  '<ons-button class="brown_bg_color_quiet" modifier="quiet" onClick="Feeling.tap_delete('+ i +')">'+
                                   '<ons-icon size="25px" icon="ion-trash-a"></ons-icon>'+
                                   '</ons-button>'+
                                   '</div>'+

@@ -70,7 +70,7 @@
     <ons-page id="top">
       <ons-toolbar>
         <div class="left">
-          <ons-toolbar-button onclick="Top.prev()">
+          <ons-toolbar-button onClick="Top.prev()">
             <ons-icon class="brown_color" icon="ion-ios-arrow-back"></ons-icon>
           </ons-toolbar-button>
         </div>
@@ -78,7 +78,7 @@
         <div class="center brown_color" id="carousel_toolbar_center">ユーザ登録</div>
 
         <div class="right">
-          <ons-toolbar-button onclick="Top.next()">
+          <ons-toolbar-button onClick="Top.next()">
             <ons-icon class="brown_color" icon="ion-ios-arrow-forward"></ons-icon>
           </ons-toolbar-button>
         </div>
@@ -127,7 +127,7 @@
              
               <!-- 登録ボタン -->
               <div class="vspc form-row">
-                <ons-button class="brown_bg_color" modifier="large--cta" id="signup_button" onclick="Signup.usersignup()" disabled>登録</ons-button>
+                <ons-button class="brown_bg_color" modifier="large--cta" id="signup_button" onClick="Signup.usersignup()" disabled>登録</ons-button>
               </div>
             </div>
           </ons-list>
@@ -136,7 +136,7 @@
           <ons-dialog id="signup-alert-success">
             <div class="alert">
               <p>会員登録が完了しました</p>
-              <p><ons-button class="brown_bg_color" onclick="Signup.alert_hide()">OK</ons-button></p>
+              <p><ons-button class="brown_bg_color" onClick="Signup.alert_hide()">OK</ons-button></p>
             </div>
           </ons-dialog>
         </ons-carousel-item>
@@ -147,7 +147,7 @@
             <input id="signin_username" type="text" class="text-input--underbar signin_form_input" placeholder="ユーザ名" value="">
             <input id="signin_password" type="password" class="text-input--underbar signin_form_input" placeholder="パスワード" value="">
             <br><br>
-            <ons-button id="signin_button" modifier="large" class="large-button" onclick="Signin.tap_sign_in_button()" disabled>ログイン</ons-button>
+            <ons-button id="signin_button" modifier="large" class="large-button" onClick="Signin.tap_sign_in_button()" disabled>ログイン</ons-button>
           </div>
         </ons-carousel-item>
       </ons-carousel>
@@ -178,7 +178,7 @@
           <input id="search_local_movies_input" type="search" value="" placeholder="タイトルや気分で絞り込む" class="search-input movies_search_input" onfocus="Movies.set_event_movies_search_input('focus')" onblur="Movies.set_event_movies_search_input('blur')">
         </form>
 
-        <ons-button id="movies_reset_button" onclick="Movies.tap_reset_button()" class="movies_reset_button" modifier="quiet"><ons-icon class="brown_color" icon="ion-close-circled"></ons-icon></ons-button>
+        <ons-button id="movies_reset_button" onClick="Movies.tap_reset_button()" class="movies_reset_button" modifier="quiet"><ons-icon class="brown_color" icon="ion-close-circled"></ons-icon></ons-button>
       </div>
       
       <!-- 登録済み映画を表示するリスト -->
@@ -201,7 +201,7 @@
 	<ons-page id="movies_detail">
 		<!-- ツールバー -->
     <ons-toolbar>
-		  <div class="left" onclick="Utility.pop_page(Movies.update_movies())" id="movieadd_search_backbutton"><ons-back-button class="brown_color"></ons-back-button></div>
+		  <div class="left" onClick="Utility.pop_page(Movies.update_movies())" id="movieadd_search_backbutton"><ons-back-button class="brown_color"></ons-back-button></div>
       <div class="center brown_color">詳細画面</div>
     </ons-toolbar>
 
@@ -212,12 +212,12 @@
     <ons-dialog id="success_sns_alert_detail">
       <div class="alert">
         <p>投稿が完了しました</p>
-        <p><ons-button class="brown_bg_color" onclick="Movies_detail.sns_alert_hide()">OK</ons-button></p>
+        <p><ons-button class="brown_bg_color" onClick="Movies_detail.sns_alert_hide()">OK</ons-button></p>
       </div>
     </ons-dialog>
 
     <!-- ポスターを画面いっぱいに表示させるmodal -->
-    <ons-modal id="modal_detail" onclick="Movies_detail.hide_modal()" animation="fade">
+    <ons-modal id="modal_detail" onClick="Movies_detail.hide_modal()" animation="fade">
       <img id="modal_poster" src="">
     </ons-modal>
 	</ons-page>
@@ -234,14 +234,14 @@
 	  <ons-page id="movieadd_search">
       <!-- ツールバー -->
       <ons-toolbar>
-        <div class="left" onclick="Utility.pop_page(Movies.update_movies())" id="movieadd_search_backbutton"><ons-back-button class="brown_color"></ons-back-button></div>
+        <div class="left" onClick="Utility.pop_page(Movies.update_movies())" id="movieadd_search_backbutton"><ons-back-button class="brown_color"></ons-back-button></div>
 
         <div class="center toolbar_center_search_form" id="movieadd_search_input">
           <form action="javascript:Movieadd_search.click_done()">
               <input onfocus="Movieadd_search.set_event_movieadd_search_input('focus')" onblur="Movieadd_search.set_event_movieadd_search_input('blur')" type="search" id="search_movie_title" value="" placeholder="追加する映画を検索" class="search-input search_form">
           </form>
 
-          <ons-button id="movieadd_reset_button" onclick="Movieadd_search.tap_reset()" class="reset_button" modifier="quiet"><ons-icon class="brown_color" icon="ion-close-circled"></ons-icon></ons-button>
+          <ons-button id="movieadd_reset_button" onClick="Movieadd_search.tap_reset()" class="reset_button" modifier="quiet"><ons-icon class="brown_color" icon="ion-close-circled"></ons-icon></ons-button>
         </div>
       </ons-toolbar>
 
@@ -255,7 +255,7 @@
       <ons-dialog id="tap_exist_movie_list">
         <div class="alert">
           <p>追加済みの映画を編集するには映画の一覧から行ってください</p>
-          <p><ons-button class="brown_bg_color" onclick="Movieadd_search.exist_movie_list_alert_hide()">OK</ons-button></p>
+          <p><ons-button class="brown_bg_color" onClick="Movieadd_search.exist_movie_list_alert_hide()">OK</ons-button></p>
         </div>
       </ons-dialog>
     </ons-page>
@@ -284,7 +284,7 @@
       </ons-toolbar>
 
       <!-- 映画のポスター表示 -->
-      <div class="card card_back_image" id="movieadd_card" onclick="Movieadd.fadeTo_detail_info()"></div>
+      <div class="card card_back_image" id="movieadd_card" onClick="Movieadd.fadeTo_detail_info()"></div>
 
       <!-- ユーザアクション部分 -->
       <ons-list>
@@ -330,7 +330,7 @@
       <ons-dialog id="success_movieadd_alert">
         <div class="alert">
           <p>映画の追加が完了しました</p>
-          <p><ons-button class="brown_bg_color" onclick="Movieadd.success_movieadd_alert_hide()">OK</ons-button></p>
+          <p><ons-button class="brown_bg_color" onClick="Movieadd.success_movieadd_alert_hide()">OK</ons-button></p>
         </div>
       </ons-dialog>
 
@@ -338,7 +338,7 @@
       <ons-dialog id="success_sns_alert">
         <div class="alert">
           <p>投稿が完了しました</p>
-          <p><ons-button class="brown_bg_color" onclick="Movieadd.sns_alert_hide()">OK</ons-button></p>
+          <p><ons-button class="brown_bg_color" onClick="Movieadd.sns_alert_hide()">OK</ons-button></p>
         </div>
       </ons-dialog>
     </ons-page>
@@ -380,8 +380,8 @@
           <p>映画を観た気分を6文字以内で入力</p>
           <ons-input input-id="feeling_input_name" placeholder="例) ドキドキ、ワクワクなど" modifier="underbar" maxlength="6" float></ons-input>
           <p>
-            <ons-button class="brown_bg_color" onclick="Feeling.hide_input_alert('cancel', 'feeling_add_dialog')">キャンセル</ons-button>
-            <ons-button class="brown_bg_color" id="feeling_add_button" onclick="Feeling.hide_input_alert('add', 'feeling_add_dialog')" disabled>登  　　録</ons-button>
+            <ons-button class="brown_bg_color" onClick="Feeling.hide_input_alert('cancel', 'feeling_add_dialog')">キャンセル</ons-button>
+            <ons-button class="brown_bg_color" id="feeling_add_button" onClick="Feeling.hide_input_alert('add', 'feeling_add_dialog')" disabled>登  　　録</ons-button>
           </p>
         </div>
       </ons-dialog>
@@ -392,8 +392,8 @@
           <p>映画を観た気分を6文字以内で入力</p>
           <ons-input input-id="feeling_edit_input_name" modifier="underbar" maxlength="6" float></ons-input>
           <p>
-            <ons-button class="brown_bg_color" onclick="Feeling.hide_input_alert('cancel', 'feeling_edit_dialog')">キャンセル</ons-button>
-            <ons-button class="brown_bg_color" id="feeling_edit_button" onclick="Feeling.hide_input_alert('change', 'feeling_edit_dialog')">変  　　更</ons-button>
+            <ons-button class="brown_bg_color" onClick="Feeling.hide_input_alert('cancel', 'feeling_edit_dialog')">キャンセル</ons-button>
+            <ons-button class="brown_bg_color" id="feeling_edit_button" onClick="Feeling.hide_input_alert('change', 'feeling_edit_dialog')">変  　　更</ons-button>
           </p>
         </div>
       </ons-dialog>
