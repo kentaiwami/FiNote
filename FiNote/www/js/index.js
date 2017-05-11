@@ -188,7 +188,7 @@ var ID = {
   },
 
   get_setting_ID: function() {
-    var id_obj = {tmp_id: 'setting.html', page_id: 'setting', username: 'user_username', email: 'user_email'};
+    var id_obj = {tmp_id: 'setting.html', page_id: 'setting', username: 'user_username', email: 'user_email', adult_check: 'adult_check'};
     return id_obj;
   },
 
@@ -3141,15 +3141,24 @@ var User = {
 var Setting = {
   show_contents: function() {
     var storage = window.localStorage;
+    storage.setItem('adult', false);
     var username = storage.getItem('username');
     var email = storage.getItem('email');
     var adult = storage.getItem('adult');
 
+
     var callback = function() {
+      // ユーザ名とメールアドレスの表示
       document.getElementById(ID.get_setting_ID().username).innerHTML = username;
       document.getElementById(ID.get_setting_ID().email).innerHTML = email;
 
-      // アダルト作品のフラグからチェック状態を変更する
+      // アダルト作品のフラグからチェック状態を変更
+      var adult_check = document.getElementById(ID.get_setting_ID().adult_check);
+      if (adult == 'true') {
+        adult_check.setAttribute('checked', 'checked');
+      }else {
+        adult_check.removeAttribute('checked');
+      }
     };
     
     Utility.check_page_init(ID.get_setting_ID().page_id,callback);
