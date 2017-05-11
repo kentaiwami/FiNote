@@ -513,7 +513,7 @@
     <ons-page id="setting">
       <!--ツールバー-->
       <ons-toolbar>
-        <div class="left brown_color" onClick="Setting.close_setting()">
+        <div class="left brown_color" onClick="Utility.pop_page()">
           <ons-toolbar-button class="brown_color"><ons-icon class="brown_color" icon="ion-close-round"></ons-icon></ons-toolbar-button>
         </div>
         <div class="center brown_color">各種設定</div>
@@ -534,9 +534,9 @@
       <!-- パスワード、メールアドレス、性別の変更 -->
       <div class="settings-header">登録情報の変更</div>
       <ons-list modifier="inset" class="settings-list">
-        <ons-list-item modifier="chevron tappable">パスワード</ons-list-item>
-        <ons-list-item modifier="chevron tappable">メールアドレス</ons-list-item>
-        <ons-list-item modifier="chevron tappable">性別</ons-list-item>
+        <ons-list-item modifier="chevron tappable" onClick="Utility.push_page('change_password.html', '', 0, '')">パスワード</ons-list-item>
+        <ons-list-item modifier="chevron tappable" onClick="Utility.push_page('change_email.html', '', 0, '')">メールアドレス</ons-list-item>
+        <ons-list-item modifier="chevron tappable" onClick="Utility.push_page('change_sex.html', '', 0, '')">性別</ons-list-item>
       </ons-list>
 
       <!-- 検索の設定 -->
@@ -566,8 +566,54 @@
   <!-- ●●●●●●●●● ここからchange_password.html ●●●●●●●●● -->
   <ons-template id="change_password.html">
     <ons-page id="change_password">
+      <!--ツールバー-->
+      <ons-toolbar>
+        <div class="left brown_color" onClick="Utility.pop_page()">
+          <ons-back-button class="brown_color"></ons-back-button>
+        </div>
+        <div class="center brown_color">パスワードの変更</div>
+      </ons-toolbar>
+
     </ons-page>
   </ons-template>
-  <!-- ●●●●●●●●● ここまでsetting.html ●●●●●●●●● -->
+  <!-- ●●●●●●●●● ここまでchange_password.html ●●●●●●●●● -->
+
+
+
+
+
+ <!-- ●●●●●●●●● ここからchange_email.html ●●●●●●●●● -->
+  <ons-template id="change_email.html">
+    <ons-page id="change_email">
+      <!--ツールバー-->
+      <ons-toolbar>
+        <div class="left brown_color" onClick="Utility.pop_page()">
+          <ons-back-button class="brown_color"></ons-back-button>
+        </div>
+        <div class="center brown_color">メールアドレスの変更</div>
+      </ons-toolbar>
+
+    </ons-page>
+  </ons-template>
+  <!-- ●●●●●●●●● ここまでchange_email.html ●●●●●●●●● -->
+
+
+
+
+
+  <!-- ●●●●●●●●● ここからchange_sex.html ●●●●●●●●● -->
+  <ons-template id="change_sex.html">
+    <ons-page id="change_sex">
+      <!--ツールバー-->
+      <ons-toolbar>
+        <div class="left brown_color" onClick="Utility.pop_page()">
+          <ons-back-button class="brown_color"></ons-back-button>
+        </div>
+        <div class="center brown_color">性別の変更</div>
+      </ons-toolbar>
+
+    </ons-page>
+  </ons-template>
+  <!-- ●●●●●●●●● ここまでchange_sex.html ●●●●●●●●● -->
 </body>
 </html>

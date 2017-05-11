@@ -3166,12 +3166,7 @@ var Setting = {
     Utility.check_page_init(ID.get_setting_ID().page_id,callback);
     Utility.push_page(ID.get_setting_ID().tmp_id, 'lift', 0, '');
   },
-
-  close_setting: function() {
-    // アダルト作品のチェック状態を取得
-    // チェック状態に応じて値を保存
-    Utility.pop_page();
-  },
+  
 
   add_event_adult_check: function() {
     document.addEventListener('change', function(event) {
