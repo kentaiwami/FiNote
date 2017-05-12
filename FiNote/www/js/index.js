@@ -3447,6 +3447,40 @@ var Change_Sex = {
 
 
 
+
+/************************************************************
+                          SignOut
+ ************************************************************/
+var SignOut = {
+
+  /**
+   * サインアウトを実行する関数。
+   * ローカルデータの全削除、全ページのリセット、トップページへの遷移
+   */
+  run_signout: function() {
+    var func0 = function(){};
+    var func1 = function(){
+      Utility.show_spinner(ID.get_setting_ID().page_id);
+
+      // ローカルデータの削除
+      DB_method.delete_all_record();
+      Utility.delete_localstorage();
+
+      Utility.stop_spinner();
+
+      // 全てのページをリセット
+      document.getElementById(ID.get_utility_ID().navigator).resetToPage();
+
+      Utility.show_confirm_alert('ログアウトの完了', 'ログアウトしました', ['OK'], Index.check_signup);
+    };
+
+    Utility.show_confirm_alert('ログアウトの確認', 'ログアウトしますか？', ['キャンセル', 'ログアウト'], func0, func1);
+  }
+};
+
+
+
+
 /************************************************************
                           Utility
  ************************************************************/
@@ -3854,6 +3888,12 @@ var Utility = {
     }
   },
 
+
+  /**
+   * メールアドレスのバリデーションを行う
+   * @param  {[String]} val [チェックを行いたいメールアドレス]
+   * @return {[Bool]}     [有効ならtrue、無効ならfalse]
+   */
   validateMail: function(val){
     if(val.match(/.+@.+\..+/) === null){
       return false;
@@ -3905,6 +3945,7 @@ var DB_method = {
       tx.executeSql('DELETE FROM movie');
       tx.executeSql('DELETE FROM genre');
       tx.executeSql('DELETE FROM onomatopoeia');
+      tx.executeSql('DELETE FROM sqlite_sequence');
     },
     function(err) {
       console.log('DELETE ALL RECORD ERROR: ' +JSON.stringify(err) +' ' + err.message);
