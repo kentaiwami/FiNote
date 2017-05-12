@@ -1089,7 +1089,7 @@
   padding: 2.5vh;
 }
 
-.small_message {
+.small_message, .list_small_message {
   opacity: .5;
   font-size: 0.75rem;
 }
@@ -1182,6 +1182,10 @@
 .settings-logout {
   margin-right: .5rem;
   opacity: .6;
+}
+
+.list_small_message {
+  margin: .5rem;
 }
 
 /*# sourceMappingURL=index.css.map */
