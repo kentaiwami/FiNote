@@ -641,6 +641,25 @@
         <div class="center brown_color">性別の変更</div>
       </ons-toolbar>
 
+      <ons-list>
+        <div class="formarea">
+          <ons-list-header class="brown_color">性別</ons-list-header>
+          <ons-list-item tappable>
+            <label class="left"><ons-input name="color" type="radio" input-id="radio_m" checked></ons-input></label>
+            <label for="radio_m" class="center">男性</label>
+          </ons-list-item>
+
+          <ons-list-item tappable>
+            <label class="left"><ons-input name="color" type="radio" input-id="radio_f"></ons-input></label>
+            <label for="radio_f" class="center">女性</label>
+          </ons-list-item>
+
+          <div class="login-form">
+            <ons-button id="submit_change_sex" modifier="large" class="large-button" onClick="Change_Email.tap_submit_button()" disabled>変更する</ons-button>
+          </div>
+        </div>
+      </ons-list>
+
     </ons-page>
   </ons-template>
   <!-- ●●●●●●●●● ここまでchange_sex.html ●●●●●●●●● -->
