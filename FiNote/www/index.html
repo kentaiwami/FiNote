@@ -536,7 +536,7 @@
       <ons-list modifier="inset" class="settings-list">
         <ons-list-item modifier="chevron tappable" onClick="Change_Password.initialize()">パスワード</ons-list-item>
         <ons-list-item modifier="chevron tappable" onClick="Change_Email.initialize()">メールアドレス</ons-list-item>
-        <ons-list-item modifier="chevron tappable" onClick="Utility.push_page('change_sex.html', '', 0, '')">性別</ons-list-item>
+        <ons-list-item modifier="chevron tappable" onClick="Change_Sex.initialize()">性別</ons-list-item>
       </ons-list>
 
       <!-- 検索の設定 -->
@@ -645,18 +645,18 @@
         <div class="formarea">
           <ons-list-header class="brown_color">性別</ons-list-header>
           <ons-list-item tappable>
-            <label class="left"><ons-input name="color" type="radio" input-id="radio_m" checked></ons-input></label>
-            <label for="radio_m" class="center">男性</label>
+            <label class="left">
+              <ons-input name="color" type="radio" input-id="change_m" onChange="Change_Sex.save_data('M')" checked></ons-input>
+            </label>
+            <label for="change_m" class="center">男性</label>
           </ons-list-item>
 
           <ons-list-item tappable>
-            <label class="left"><ons-input name="color" type="radio" input-id="radio_f"></ons-input></label>
-            <label for="radio_f" class="center">女性</label>
+            <label class="left">
+              <ons-input name="color" type="radio" input-id="change_f" onChange="Change_Sex.save_data('F')"></ons-input>
+            </label>
+            <label for="change_f" class="center">女性</label>
           </ons-list-item>
-
-          <div class="login-form">
-            <ons-button id="submit_change_sex" modifier="large" class="large-button" onClick="Change_Email.tap_submit_button()" disabled>変更する</ons-button>
-          </div>
         </div>
       </ons-list>
 

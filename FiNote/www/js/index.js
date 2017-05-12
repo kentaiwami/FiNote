@@ -206,6 +206,12 @@ var ID = {
     return id_obj;
   },
 
+  get_change_sex_ID: function() {
+    var id_obj = {tmp_id: 'change_sex.html', page_id: 'change_sex',
+                  radio_m: 'change_m', radio_f: 'change_f'};
+    return id_obj;
+  },
+
   get_utility_ID: function() {
     var id_obj = {navigator: 'myNavigator'};
     return id_obj;
@@ -3390,7 +3396,52 @@ var Change_Email = {
     var alert = document.getElementById(ID.get_change_email_ID().success_alert);
     alert.hide();
     Utility.pop_page();
-  } 
+  }
+};
+
+
+
+
+
+/************************************************************
+                      change_sex.html
+ ************************************************************/
+var Change_Sex = {
+
+  /**
+   * ローカルに保存されている性別の値に応じて、チェック状態を変える。
+   * その後、画面遷移を行う。
+   */
+  initialize: function() {
+    var callback = function() {
+      var storage = window.localStorage;
+      var now_sex = storage.getItem('sex');
+
+      var radio_id = '';
+      if (now_sex == 'M') {
+        radio_id = ID.get_change_sex_ID().radio_m;
+      }else {
+        radio_id = ID.get_change_sex_ID().radio_f;
+      }
+
+      document.getElementById(radio_id).setAttribute('checked', 'checked');
+    };
+
+    Utility.check_page_init(ID.get_change_sex_ID().page_id, callback);
+    Utility.push_page(ID.get_change_sex_ID().tmp_id, '', 0, '');
+  },
+
+
+  /**
+   * 引き渡された性別の識別子をローカルに保存する
+   * @param  {[String]} sex [M or F]
+   */
+  save_data: function(sex) {
+    var storage = window.localStorage;
+    storage.setItem('sex', sex);
+
+    console.log(storage.getItem('sex') + ' is seted.');
+  }
 };
 
 
