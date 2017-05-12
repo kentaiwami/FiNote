@@ -6,11 +6,13 @@ var app = {
     this.bindEvents();
   },
 
+
   bindEvents: function() {
     document.addEventListener('deviceready', this.onDeviceReady, false);
     setTimeout(function() {
       navigator.splashscreen.hide();}, 500);
   },
+
 
   onDeviceReady: function() {
     //ステータスバーの自動調整を無効にする
@@ -56,8 +58,8 @@ var Global_variable = {
 
   /**
    * 気分リストのツールバー左に表示するボタンを動的に変える
-   * @param  {[integer]} flag [0なら映画追加画面、1なら映画詳細画面からの気分リスト]
-   * @return {[string]}       [ボタンのhtml]
+   * @param  {[Integer]} flag [0なら映画追加画面、1なら映画詳細画面からの気分リスト]
+   * @return {[String]}       [ボタンのhtml]
    */
   get_toolbar_feeling: function(flag) {
     if (flag === 0) {
@@ -70,8 +72,8 @@ var Global_variable = {
 
   /**
    * ステータスのツールバー左に表示するボタンを動的に変える
-   * @param  {[integer]} flag [0なら映画追加画面、1なら映画詳細画面からのステータス画面]
-   * @return {[string]}      [ボタンのhtml]
+   * @param  {[Integer]} flag [0なら映画追加画面、1なら映画詳細画面からのステータス画面]
+   * @return {[String]}      [ボタンのhtml]
    */
   get_toolbar_status: function(flag) {
     if (flag === 0) {
@@ -100,16 +102,19 @@ var ID = {
     return id_obj;
   },
 
+
   get_top_ID: function() {
     var id_obj = {tmp_id: 'top.html', page_id: 'top',
                   toolbar_center: 'carousel_toolbar_center', carousel: 'top_carousel'};
     return id_obj;
   },
 
+
   get_tab_ID: function() {
     var id_obj = {tmp_id: 'tab.html', page_id: 'tab'};
     return id_obj;
   },
+
 
   get_signin_ID: function() {
     var id_obj = {username: 'signin_username', password: 'signin_password',
@@ -117,12 +122,14 @@ var ID = {
     return id_obj;
   },
 
+
   get_signup_ID: function() {
     var id_obj = {tmp_id: 'signup.html', page_id: 'signup', signup_button: 'signup_button', 
                   list_id: 'signup_list', username: 'username', password: 'password',
                   email: 'email', birthday: 'birthday', success_alert: 'signup-alert-success', error_message: 'error-message', radio: 'radio_m'};
     return id_obj;
   },
+
 
   get_movies_ID: function() {
     var id_obj = {tmp_id: 'movies.html', page_id: 'movies', nodata_message: 'nodata_message',
@@ -132,6 +139,7 @@ var ID = {
     return id_obj;
   },
 
+
   get_movies_detail_ID: function() {
     var id_obj = {tmp_id: 'movies_detail.html', page_id: 'movies_detail',
                   poster: 'detail_poster_area', detail: 'movie_detail_area',
@@ -139,6 +147,7 @@ var ID = {
                   modal_poster: 'modal_poster'};
     return id_obj;
   },
+
 
   get_feeling_ID: function() {
     var id_obj = {tmp_id: 'feeling.html', page_id: 'feeling',
@@ -150,12 +159,14 @@ var ID = {
     return id_obj;
   },
 
+
   get_movieadd_search_ID: function() {
     var id_obj = {form: 'search_movie_title', nodata_message: 'movieadd_no_match_message',
                   reset: 'movieadd_reset_button', list: 'movieadd_search_list',
                   exist_alert: 'tap_exist_movie_list'};
     return id_obj;
   },
+
 
   get_moveadd_ID: function() {
     var id_obj = {tmp_id: 'movieadd.html', page_id: 'movieadd', poster: 'movieadd_card',
@@ -170,12 +181,14 @@ var ID = {
     return id_obj;
   },
 
+
   get_movieadd_status_ID: function() {
     var id_obj = {tmp_id: 'movieadd_status.html', page_id: 'movieadd_status',
                   dvd: 'dvd_switch', fav: 'fav_switch',
                   toolbar: 'status_toolbar_left', small_message: 'small_message'};
     return id_obj;
   },
+
 
   get_user_ID: function() {
     var id_obj = {tmp_id: 'user.html', page_id: 'user', movies_number: 'movies_count_number',
@@ -187,10 +200,12 @@ var ID = {
     return id_obj;
   },
 
+
   get_setting_ID: function() {
     var id_obj = {tmp_id: 'setting.html', page_id: 'setting', username: 'user_username', email: 'user_email', adult_check: 'adult_check'};
     return id_obj;
   },
+
 
   get_change_password_ID: function() {
     var id_obj = {tmp_id: 'change_password.html', page_id: 'change_password',
@@ -199,6 +214,7 @@ var ID = {
     return id_obj;
   },
 
+
   get_change_email_ID: function() {
     var id_obj = {tmp_id: 'change_email.html', page_id: 'change_email',
                   input_new_email: 'new_email', submit_email: 'submit_change_email',
@@ -206,11 +222,13 @@ var ID = {
     return id_obj;
   },
 
+
   get_change_sex_ID: function() {
     var id_obj = {tmp_id: 'change_sex.html', page_id: 'change_sex',
                   radio_m: 'change_m', radio_f: 'change_f'};
     return id_obj;
   },
+
 
   get_utility_ID: function() {
     var id_obj = {navigator: 'myNavigator'};
@@ -230,8 +248,9 @@ var ID = {
 * @type {Object}
 */
 var Index = {
-  formcheck: [false,false],                 //[0]入力項目、[1]は生年月日に対応している
+  formcheck: [false,false],   //[0]入力項目、[1]は生年月日に対応している
   
+
   /**
    * サインアップしているかを確認する
    */
@@ -267,6 +286,7 @@ var Index = {
     }
   },
 
+
   /**
    * ユーザ名とパスワード入力フォームのkeyupイベントが起きるたびに入力文字数を確認する
    */
@@ -283,6 +303,7 @@ var Index = {
     
     Index.change_abled_signup_button();
   },
+
 
   /**
    * formcheck配列を確認して全てtrueならボタンをabledに、そうでなければdisabledにする
@@ -322,10 +343,12 @@ var Top = {
     });
   },
 
+
   prev: function() {
     var carousel = document.getElementById(ID.get_top_ID().carousel);
     carousel.prev();
   },
+
 
   next: function() {
     var carousel = document.getElementById(ID.get_top_ID().carousel);
@@ -345,6 +368,9 @@ var Top = {
 * @type {Object}
 */
 var Signup = {
+  /**
+   * フォームに入力された値をサーバへ送信してサインアップを行い、その後ローカルへ保存する
+   */
   usersignup: function() {
     Utility.show_spinner(ID.get_signup_ID().list_id);
 
@@ -407,8 +433,9 @@ var Signup = {
       document.getElementById(ID.get_signup_ID().success_alert).hide(pushpage_tabbar());
   },
 
+
   /**
-   * 生年を選択させるフォーム
+   * 生年を選択させるフォームへpickerを設定する
    */
   birthday_pickerview: function(){
     cordova.plugins.Keyboard.close();
@@ -453,7 +480,7 @@ var Signup = {
 
   /**
    * 性別を選択するチェックボックスの状態から性別の識別子を返す
-   * @return {[string]} [M or F]
+   * @return {[String]} [M or F]
    */
   get_sex: function(){
     var M = document.getElementById(ID.get_signup_ID().radio).checked;
@@ -475,6 +502,7 @@ var Signup = {
 var Signin = {
   // 既に処理済みの映画タイトル、ジャンル名、オノマトペを保存
   exist: {movie_title_array: [], genre_array: [], onomatopoeia_array: []},
+
 
   /**
    * ユーザ名とパスワード入力フォームのkeyupイベントが起きるたびに入力文字数を確認する
@@ -543,8 +571,8 @@ var Signin = {
 
   /**
    * サーバから取得したリスト(BackUpレコード)1つに対してリストア処理を行う
-   * @param  {[type]} movie [サーバから取得したBackUpのレコード(1つ)]
-   * @return {[function]}
+   * @param  {[Object]} movie [サーバから取得したBackUpのレコード(1つ)]
+   * @return {[Function]}
    */
   movie_restore: function(movie) {
     return function() {
@@ -717,11 +745,10 @@ var Signin = {
   },
 
 
-
   /**
    * ローカルDBにジャンルが保存しているかに応じてクエリを変える
-   * @param  {[json]} movie [サーバから取得したBackUp1レコード]
-   * @return {[object]}     [DBへ問い合わせをするpromiseのarray,
+   * @param  {[Json]} movie [サーバから取得したBackUp1レコード]
+   * @return {[Object]}     [DBへ問い合わせをするpromiseのarray,
                              ジャンルのINSERTを行うかのフラグ,
                              オノマトペのINSERTを行うかのフラグ]
    */
@@ -820,6 +847,7 @@ var Movies = {
     });
   },
 
+
   /**
    * 映画一覧画面の表示を行う
    */
@@ -871,10 +899,9 @@ var Movies = {
   },
 
 
-
   /**
    * 受け取ったデータベースの検索結果からリストを描画する関数
-   * @param  {[array]} result [各テーブルの検索結果を格納した配列]
+   * @param  {[Array]} result [各テーブルの検索結果を格納した配列]
    */
   draw_movies_list: function(result) {
     return new Promise(function(resolve,reject) {
@@ -985,7 +1012,6 @@ var Movies = {
     });
   },
 
-  
 
   /**
    * 登録済みの映画がないメッセージを表示する関数
@@ -997,8 +1023,8 @@ var Movies = {
 
   /**
    * moviesのDVDやFAVボタンを押した際にデータベースとサーバのバックアップの値を更新する関数
-   * @param  {[string]} id [dvdorfav + タップした映画のprimary key]
-   * @param  {[number]} flag    [0:DVD, 1:FAV]
+   * @param  {[String]} id [dvdorfav + タップした映画のprimary key]
+   * @param  {[Integer]} flag    [0:DVD, 1:FAV]
    */
   tap_dvd_fav: function(id,flag) {
     Utility.show_spinner(ID.get_movies_ID().page_id);
@@ -1088,7 +1114,7 @@ var Movies = {
 
   /**
    * 検索フォームに文字が入力されるたびに、リセットボタンを表示・非表示にするかを決定するイベントを追加する
-   * @param {[string]} event_name [focus or blur]
+   * @param {[String]} event_name [focus or blur]
    */
   set_event_movies_search_input: function(event_name) {
     if (event_name == 'focus') {
@@ -1229,7 +1255,7 @@ var Movies_detail = {
 
   /**
    * moviesのinfoボタンを押した際に詳細画面へと遷移させる
-   * @param  {[Number]} id [タップした映画のprimary key]
+   * @param  {[Integer]} id [タップした映画のprimary key]
    */
   show_contents: function(id) {
     var query = 'SELECT * from movie WHERE id = ?';
@@ -1253,9 +1279,9 @@ var Movies_detail = {
 
   /**
    * 詳細画面の初期化が完了した後に描画を実行するコールバック関数を作成する
-   * @param  {[object]} movie_record [ローカルに保存されているタップされた映画オブジェクト]
-   * @param  {[object]} result_onomatopoeia [ローカルに保存されているオノマトペオブジェクト]
-   * @return {[function]}            [描画を行うコールバック関数]
+   * @param  {[Object]} movie_record [ローカルに保存されているタップされた映画オブジェクト]
+   * @param  {[Object]} result_onomatopoeia [ローカルに保存されているオノマトペオブジェクト]
+   * @return {[Function]}            [描画を行うコールバック関数]
    */
   create_show_contents_callback: function(movie_record, result_onomatopoeia) {
     // 画面に表示するオノマトペのテキストを生成する
@@ -1356,7 +1382,7 @@ var Movies_detail = {
 
   /**
    * 既に登録されている気分を読み込んだ気分リストを表示させる
-   * @param  {[string]} onomatopoeia_text [画面表示用になっているオノマトペのテキスト]
+   * @param  {[String]} onomatopoeia_text [画面表示用になっているオノマトペのテキスト]
    */
   push_page_feeling: function(onomatopoeia_text) {
     var onomatopoeia_name_list = onomatopoeia_text.split('、');
@@ -1414,6 +1440,7 @@ var Movies_detail = {
     window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
   },
 
+
   /**
    * SNSの投稿が完了した後に表示されるアラートを閉じるボタンが押された時に動作する
    */
@@ -1424,7 +1451,7 @@ var Movies_detail = {
 
   /**
    * 詳細画面の映画ポスター部分がタップされた際に、表示中のポスターをモーダルで表示する関数
-   * @param  {[html object]} poster_img [img要素]
+   * @param  {[html Object]} poster_img [img要素]
    */
   tap_img: function(poster_img) {
     var src = poster_img.getAttribute('src');
@@ -1669,7 +1696,6 @@ var Movieadd_search = {
    * Searchボタン(改行)を押した際に動作
    */
   click_done: function(){
-    //console.log('click_done');
     Utility.hideKeyboardAccessoryBar(true);
 
     document.getElementById(ID.get_movieadd_search_ID().form).blur();
@@ -1702,7 +1728,7 @@ var Movieadd_search = {
 
   /**
    * 検索フォームにフォーカス時、フォーカスが外れた時のイベントを設定する
-   * @param {[string]} event_name [focusまたはblurを受け取る]
+   * @param {[String]} event_name [focusまたはblurを受け取る]
    */
   set_event_movieadd_search_input: function(event_name) {
     if (event_name == 'focus') {
@@ -1855,9 +1881,9 @@ var Movieadd_search = {
   
   /**
    * 映画をタイトルで検索するリクエストを生成して実行する
-   * @param  {[string]} movie_title [検索したい映画タイトル]
-   * @param  {[string]} language    [jaで日本語情報、enで英語情報]
-   * @return {[json]}             [検索結果をjsonに変換したもの]
+   * @param  {[String]} movie_title [検索したい映画タイトル]
+   * @param  {[String]} language    [jaで日本語情報、enで英語情報]
+   * @return {[Json]}             [検索結果をjsonに変換したもの]
    */
   create_request_movie_search: function(movie_title, language){
     return new Promise(function(resolve, reject) {
@@ -1884,11 +1910,12 @@ var Movieadd_search = {
     });
   },
 
+
   /**
    * jaとenの検索結果を1つの配列にまとめる
-   * @param  {[array]} ja_results_json [jaリクエストの配列
-   * @param  {[array]} en_results_json [enリクエストの配列]
-   * @return {[array]}       [jaとen検索結果をまとめた配列]
+   * @param  {[Array]} ja_results_json [jaリクエストの配列
+   * @param  {[Array]} en_results_json [enリクエストの配列]
+   * @return {[Array]}       [jaとen検索結果をまとめた配列]
    */
   create_list_data: function(ja_results_json,en_results_json){
     if (ja_results_json.length === 0 && en_results_json.length === 0) {
@@ -1927,10 +1954,11 @@ var Movieadd_search = {
     }
   },
 
+
   /**
    * サムネイルとして表示する画像を取得する
-   * @param  {[array]} list_data [映画オブジェクトの配列]
-   * @return {[string]}           [画像のパス]
+   * @param  {[Array]} list_data [映画オブジェクトの配列]
+   * @return {[String]}           [画像のパス]
    */
   get_poster: function(list_data){
     var image_url_array = [];
@@ -1951,6 +1979,7 @@ var Movieadd_search = {
     return image_url_array;
   },
 
+
   /**
    * リストのコンテンツを非表示にする
    */
@@ -1962,7 +1991,7 @@ var Movieadd_search = {
 
   /**
    * リストをタップした際に動作する
-   * @param  {[object]} obj [タップしたオブジェクト]
+   * @param  {[Object]} obj [タップしたオブジェクト]
    */
   tap_list: function(obj){
     var list_data = Movieadd_search.show_list_data;
@@ -2000,10 +2029,11 @@ var Movieadd = {
   userdata: {feeling_name_list: [], dvd: false, fav: false},
   current_movie: {},
 
+
   /**
    * [映画追加画面のコンテンツを表示する]
-   * @param  {[array]} list_data [検索結果の映画オブジェクトが格納された配列]
-   * @param  {[number]} tap_id    [映画検索画面のリストのうちタップされたリスト番号]
+   * @param  {[Array]} list_data [検索結果の映画オブジェクトが格納された配列]
+   * @param  {[Integer]} tap_id    [映画検索画面のリストのうちタップされたリスト番号]
    */
   show_contents: function(list_data,tap_id){
 
@@ -2061,6 +2091,7 @@ var Movieadd = {
     card.innerHTML = '<div class="modal card_modal" id="'+ID.get_moveadd_ID().detail_info+'"><div class="modal__content"><p>'+ title +'</p><p>'+ copy_overview +'</p><p>'+ release_date +'</p>' + rating_html + '</div></div>';
   },
 
+
   /**
    * 映画追加画面上部のツールバーにあるバックボタンをタップした際にpopPageを行う
    */
@@ -2086,7 +2117,7 @@ var Movieadd = {
 
   /**
    * 映画のレーティングを最大評価5に合うように計算して表示する
-   * @param  {[number]} vote_average [最大評価10.0の評価値]
+   * @param  {[Integer]} vote_average [最大評価10.0の評価値]
    */
   show_vote_average: function(vote_average){
     //検索結果のvote_averageはMAX10なので半分にする
@@ -2273,7 +2304,7 @@ var Movieadd = {
 
   /**
    * ローカルDBのgenreテーブルにサーバから受け取ったgenre_idとnameを格納
-   * @param {[json]} genre_obj_json [サーバから受け取ったgenre_idをkey、nameをvalueにしたjson]
+   * @param {[Json]} genre_obj_json [サーバから受け取ったgenre_idをkey、nameをvalueにしたjson]
    */
   set_genre_local: function(genre_obj_json) {
     var exist_genre_id_list = [];
@@ -2347,7 +2378,7 @@ var Movieadd = {
 
   /**
    * ローカルDBのonomatopoeiaテーブルにonomatopoeiaの名前を格納する
-   * @param {[array]} onomatopoeia_name_list [ユーザが追加したオノマトペリスト]
+   * @param {[Array]} onomatopoeia_name_list [ユーザが追加したオノマトペリスト]
    */
   set_onomatopoeia_local: function(onomatopoeia_name_list) {
     var exist_onomatopoeia_id_list = [];
@@ -2662,8 +2693,8 @@ var Feeling = {
 
   /**
    * アラートを閉じるor閉じてリストへ追加する関数
-   * @param  {[string]} func_id [cancel or add or change]
-   * @param  {[string]} dialog_id [feeling_add_dialog or feeling_edit_dialog]
+   * @param  {[String]} func_id [cancel or add or change]
+   * @param  {[String]} dialog_id [feeling_add_dialog or feeling_edit_dialog]
    */
   hide_input_alert: function(func_id, dialog_id){
     if (func_id == 'cancel') {
@@ -2707,7 +2738,7 @@ var Feeling = {
 
   /**
    * リストの編集ボタンをタップした際に、入力用のアラートを表示する
-   * @param  {[number]} i [タップしたリストの配列の添え字]
+   * @param  {[Integer]} i [タップしたリストの配列の添え字]
    */
   tap_edit: function(i) {
     Feeling.data.tap_id = i;
@@ -2723,7 +2754,7 @@ var Feeling = {
 
   /**
    * リストの削除ボタンをタップした際に、確認用のアラートを表示して削除を行う
-   * @param  {[number]} i [タップしたリストの配列の添え字]
+   * @param  {[Integer]} i [タップしたリストの配列の添え字]
    */
   tap_delete: function(i) {
     Feeling.data.tap_id = i;
@@ -2861,7 +2892,7 @@ var User = {
 
   /**
    * データベースからデータを取得して、件数やグラフを描画する関数
-   * @return {[promise]} [空のresolve]
+   * @return {[Promise]} [空のresolve]
    */
   show_contents: function() {
     return new Promise(function(resolve, reject) {
@@ -3003,8 +3034,8 @@ var User = {
   /**
    * ジャンルとオノマトペを名前とカウント数でまとめた連想配列の作成と、
    * DVDとお気に入りの登録数を求める関数
-   * @param  {[object]} results [0がmovie、1がgenre、2がonomatopoeia]
-   * @return {[object]}         [連想配列とカウント数をまとめたオブジェクト]
+   * @param  {[Object]} results [0がmovie、1がgenre、2がonomatopoeia]
+   * @return {[Object]}         [連想配列とカウント数をまとめたオブジェクト]
    */
   create_name_count_obj_and_counts: function(results) {
     // ジャンルとオノマトペのpkと名前からなる連想配列を作成
@@ -3093,7 +3124,7 @@ var User = {
   /**
    * グラフを描画する
    * @param  {[String]} id           [描画したいdiv要素のid]
-   * @param  {[Number]} total_count  [円グラフの合計値]
+   * @param  {[Integer]} total_count  [円グラフの合計値]
    * @param  {[Array]} series_array [表示するデータ]
    */
   draw_chart: function(id, total_count, series_array) {
@@ -3490,6 +3521,7 @@ var SignOut = {
 * @type {Object}
 */
 var Utility = {
+
   /**
    * ローカルストレージの初期化をする
    */
@@ -3504,6 +3536,7 @@ var Utility = {
     storage.removeItem('adult');
     storage.removeItem('token');
   },
+
 
   /**
    * ローカルストレージの状態を表示する
@@ -3524,7 +3557,7 @@ var Utility = {
 
   /**
    * 指定したページの読み込み終了後に指定したcallbackを実行する
-   * @param  {[string]}   pageid   [pageのid]
+   * @param  {[String]}   pageid   [pageのid]
    * @param  {Function} callback [読み込み終了後に実行したいコールバック関数]
    */
   check_page_init: function(pageid,callback){
@@ -3540,7 +3573,7 @@ var Utility = {
 
   /**
    * データベースのオブジェクトを返す    
-   * @return {[type]} [description]
+   * @return {[Object]} [description]
    */
   get_database: function(){
     var db = window.sqlitePlugin.openDatabase({name: 'my_db.db', location: 'default'});
@@ -3550,7 +3583,7 @@ var Utility = {
 
   /**
    * TMDBのAPIキーを返す
-   * @return {[string]} [TMDBのAPIキー]
+   * @return {[String]} [TMDBのAPIキー]
    */
   get_tmdb_apikey: function(){
     return 'dcf593b3416b09594c1f13fabd1b9802';
@@ -3559,10 +3592,10 @@ var Utility = {
 
   /**
    * htmlファイル、アニメーション、delay時間を指定するとアニメーションを行って画面遷移する
-   * @param  {[string]} html_name      [画面遷移したいhtmlファイル名]
-   * @param  {[string]} animation_name [アニメーション名]
-   * @param  {[number]} delaytime      [Timeoutの時間]
-   * @param  {[function]} callback     [push_page実施後のコールバック]
+   * @param  {[String]} html_name      [画面遷移したいhtmlファイル名]
+   * @param  {[String]} animation_name [アニメーション名]
+   * @param  {[Integer]} delaytime      [Timeoutの時間]
+   * @param  {[Function]} callback     [push_page実施後のコールバック]
    */
   push_page: function(html_name, animation_name, delaytime, callback) {
     var showpage = function(){
@@ -3587,7 +3620,6 @@ var Utility = {
 
   /**
    * ブラウザで強制的にログインするための関数
-   * @return {[type]} [description]
    */
   browser_signup: function(){
     var callback = function(){
@@ -3614,7 +3646,7 @@ var Utility = {
 
   /**
    * 指定した親要素にスピナーを表示する
-   * @param  {[string]} parent [親要素のid]
+   * @param  {[String]} parent [親要素のid]
    */
   show_spinner: function(parent){
     var opts = {
@@ -3662,9 +3694,9 @@ var Utility = {
 
   /**
    * エラーのアラートを表示する
-   * @param  {[string]} title       [タイトル]
-   * @param  {[string]} message     [メッセージ]
-   * @param  {[string]} buttonLabel [ボタンのラベル]
+   * @param  {[String]} title       [タイトル]
+   * @param  {[String]} message     [メッセージ]
+   * @param  {[String]} buttonLabel [ボタンのラベル]
    */
   show_error_alert: function(title,message,buttonLabel) {
     ons.notification.alert(
@@ -3678,11 +3710,11 @@ var Utility = {
 
   /**
    * confirmアラートを表示する
-   * @param  {[string]} title        [タイトル]
-   * @param  {[string]} message      [メッセージ]
-   * @param  {[array]} buttonLabels  [ボタンのラベルを文字列で格納した配列]
-   * @param  {[function]} func0      [ボタンのラベル配列の0番目をタップすると実行される関数]
-   * @param  {[function]} func1      [ボタンのラベル配列の1番目をタップすると実行される関数]
+   * @param  {[String]} title        [タイトル]
+   * @param  {[String]} message      [メッセージ]
+   * @param  {[Array]} buttonLabels  [ボタンのラベルを文字列で格納した配列]
+   * @param  {[Function]} func0      [ボタンのラベル配列の0番目をタップすると実行される関数]
+   * @param  {[Function]} func1      [ボタンのラベル配列の1番目をタップすると実行される関数]
    */
   show_confirm_alert: function(title, message, buttonLabels, func0, func1) {
     ons.notification.confirm(
@@ -3703,7 +3735,7 @@ var Utility = {
 
   /**
    * TMDBに関するエラーアラートを表示する
-   * @param  {[number]} err_status [エラーのHTTPstatus]
+   * @param  {[Integer]} err_status [エラーのHTTPstatus]
    */
   show_tmdb_error: function(err_status) {
     switch(err_status) {
@@ -3725,9 +3757,9 @@ var Utility = {
 
   /**
    * 画像をbase64エンコードする
-   * @param  {[image]} image_src [img要素]
-   * @param  {[string]} mine_type [データ型]
-   * @return {[promise]}           [成功時：画像をbase64エンコードした文字列]
+   * @param  {[Image]} image_src [img要素]
+   * @param  {[String]} mine_type [データ型]
+   * @return {[Promise]}           [成功時：画像をbase64エンコードした文字列]
    */
   image_to_base64: function(image_src, mine_type) {
     return new Promise(function(resolve,reject) {
@@ -3745,8 +3777,8 @@ var Utility = {
 
   /**
    * base64をデコードする
-   * @param  {[string]}   base64img [base64の文字列]
-   * @param  {Function} callback  [変換後のコールバック]
+   * @param  {[String]}   base64img [base64の文字列]
+   * @param  {[Function]} callback  [変換後のコールバック]
    */
   base64_to_image: function(base64img, callback) {
     var img = new Image();
@@ -3759,8 +3791,8 @@ var Utility = {
 
   /**
    * 複数のオブジェクトに同じattributeをセットする
-   * @param {[array]} object_list    [attributeをセットしたいオブジェクトを格納した配列]
-   * @param {[string]} attribute_name [セットしたいattribute名]
+   * @param {[Array]} object_list    [attributeをセットしたいオブジェクトを格納した配列]
+   * @param {[String]} attribute_name [セットしたいattribute名]
    */
   setAttribute_list_object: function(object_list, attribute_name) {
     for(var i = 0; i < object_list.length; i++) {
@@ -3771,8 +3803,8 @@ var Utility = {
 
   /**
    * 複数のオブジェクトから同じattributeを取り除く
-   * @param  {[array]} object_list    [attributeを取り除きたいオブジェクトを格納した配列]
-   * @param  {[string]} attribute_name [取り除きたいattribute名]
+   * @param  {[Array]} object_list    [attributeを取り除きたいオブジェクトを格納した配列]
+   * @param  {[String]} attribute_name [取り除きたいattribute名]
    */
   removeAttribute_list_object: function(object_list, attribute_name) {
     for(var i = 0; i < object_list.length; i++) {
@@ -3783,7 +3815,7 @@ var Utility = {
 
   /**
    * キーボードのアクセサリーバーの表示・非表示を設定する
-   * @param  {[bool]} bool [description]
+   * @param  {[Bool]} bool [description]
    */
   hideKeyboardAccessoryBar:function(bool) {
     cordova.plugins.Keyboard.hideKeyboardAccessoryBar(bool);
@@ -3792,9 +3824,9 @@ var Utility = {
 
   /**
    * FiNoteのAPIを実行してpromiseを受け取る
-   * @param {[string]} api_name [利用するAPIの名前]
-   * @param {[json]} data       [postする場合のデータ]
-   * @param {[string]} method   [postなどのメソッド名]
+   * @param {[String]} api_name [利用するAPIの名前]
+   * @param {[Json]} data       [postする場合のデータ]
+   * @param {[String]} method   [postなどのメソッド名]
    */
   FiNote_API: function(api_name, data, method) {
     return new Promise(function(resolve, reject) {
@@ -3820,8 +3852,8 @@ var Utility = {
 
   /**
    * できるだけ日本語の映画タイトルを返す関数
-   * @param  {[json]} movie_json [TMDBから取得した映画データ]
-   * @return {[string]}            [映画のタイトル]
+   * @param  {[Json]} movie_json [TMDBから取得した映画データ]
+   * @return {[String]}            [映画のタイトル]
    */
   get_movie_ja_title: function(movie_json) {
     if (movie_json.original_language == 'ja') {
@@ -3843,8 +3875,8 @@ var Utility = {
   /**
    * by kawanet(https://gist.github.com/kawanet/5553478)
    * ひらがなをカタカナに変換する
-   * @param  {[string]} src [変換したい文字列]
-   * @return {[string]}     [文字列中のひらがなをカタカナに変換した文字列]
+   * @param  {[String]} src [変換したい文字列]
+   * @return {[String]}     [文字列中のひらがなをカタカナに変換した文字列]
    */
   hiraganaToKatagana: function(src) {
     return src.replace(/[\u3041-\u3096]/g, function(match) {
@@ -3857,8 +3889,8 @@ var Utility = {
   /**
    * by kawanet(https://gist.github.com/kawanet/5553478)
    * カタカナをひらがなに変換する
-   * @param  {[string]} src [変換したい文字列]
-   * @return {[string]}     [文字列中のカタカナをひらがなに変換した文字列]
+   * @param  {[String]} src [変換したい文字列]
+   * @return {[String]}     [文字列中のカタカナをひらがなに変換した文字列]
    */
   katakanaToHiragana: function(src) {
     return src.replace(/[\u30a1-\u30f6]/g, function(match) {
@@ -3870,8 +3902,8 @@ var Utility = {
 
   /**
    * 標準的な1次元配列を昇順 or 降順でソートする
-   * @param  {[type]} array [ソート前の配列]
-   * @param  {[type]} flag  [0なら昇順、1なら降順]
+   * @param  {[Array]} array [ソート前の配列]
+   * @param  {[Integer]} flag  [0なら昇順、1なら降順]
    */
   sort_array: function(array, flag) {
     if (flag === 0) {
@@ -3918,8 +3950,8 @@ var DB_method = {
 
   /**
    * 指定したテーブルのレコード件数を返す
-   * @param  {[string]} table_name [レコード件数を取得したいテーブル名]
-   * @return {[promise]}            [成功時：レコード件数、失敗時：エラーメッセージ]
+   * @param  {[String]} table_name [レコード件数を取得したいテーブル名]
+   * @return {[Promise]}            [成功時：レコード件数、失敗時：エラーメッセージ]
    */
   count_record: function(table_name) {
     return new Promise(function(resolve,reject) {
@@ -3956,9 +3988,9 @@ var DB_method = {
 
   /**
    * シングルSQLを実行する関数
-   * @param  {[string]} query     [クエリー文]
-   * @param  {[array]} data_list [クエリー内に埋め込む値を格納した配列]
-   * @return {[promise]}           [成功時：クエリーの実行結果，失敗時：エラーメッセージ]
+   * @param  {[String]} query     [クエリー文]
+   * @param  {[Array]} data_list [クエリー内に埋め込む値を格納した配列]
+   * @return {[Promise]}           [成功時：クエリーの実行結果，失敗時：エラーメッセージ]
    */
   single_statement_execute: function(query,data_list) {
     return new Promise(function(resolve,reject) {
