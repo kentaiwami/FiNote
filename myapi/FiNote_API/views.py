@@ -1,6 +1,4 @@
-import json
-
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
@@ -139,6 +137,75 @@ class SignInNoTokenViewSet(viewsets.ViewSet):
 
             except ObjectDoesNotExist:
                 raise ValidationError('ユーザ名かパスワードが違います')
+
+
+
+class ChangePasswordViewSet(viewsets.ViewSet):
+    queryset = User.objects.all()
+    serializer_class = ChangePasswordSerializer
+
+    def create(self, request):
+        """
+        When ChangePassword api access, run this method.
+        This method is change password and return token.
+        :param request: Include username, now_password and new_password
+        :return: User's token.
+        """
+
+        if request.method == 'POST':
+            data = request.data
+
+            if not data['username']:
+                raise ValidationError('ユーザ名が含まれていません')
+            if not data['now_password']:
+                raise ValidationError('現在のパスワードが含まれていません')
+            if not data['new_password']:
+                raise ValidationError('新しいパスワードが含まれていません')
+
+            try:
+                get_user = AuthUser.objects.get(username=data['username'])
+                get_user.set_password(data['new_password'])
+                get_user.save()
+                token = Token.objects.get(user_id=get_user.pk)
+
+                return JsonResponse({'token':str(token)})
+
+            except ObjectDoesNotExist:
+                raise ValidationError('ユーザが見つかりませんでした')
+
+
+class ChangeEmailViewSet(viewsets.ViewSet):
+    queryset = Movie.objects.all()
+    serializer_class = ChangeEmailSerializer
+
+    def create(self, request):
+        """
+        When ChangeEmail api access, run this method.
+        This method is change email and return new_email.
+        :param request: Include username and new_email
+        :return: User's new email.
+        """
+
+        if request.method == 'POST':
+            data = request.data
+
+            if not data['username']:
+                raise ValidationError('ユーザ名が含まれていません')
+            if not data['new_email']:
+                raise ValidationError('新しいメールアドレスが含まれていません')
+
+            serializer = ChangeEmailSerializer(data=data)
+            if serializer.is_valid():
+                try:
+                    get_user = AuthUser.objects.get(username=data['username'])
+                    get_user.email = data['new_email']
+                    get_user.save()
+
+                    return JsonResponse({'new_email': data['new_email']})
+                except:
+                    raise ValidationError('ユーザが見つかりませんでした')
+            else:
+                return Response(serializer.errors)
 
 
 class MovieAddViewSet(viewsets.ViewSet):

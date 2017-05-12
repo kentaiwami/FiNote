@@ -20,6 +20,17 @@ class SignInNoTokenSerializer(serializers.Serializer):
     password = serializers.CharField(allow_blank=False, required=True)
 
 
+class ChangePasswordSerializer(serializers.Serializer):
+    username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
+    now_password = serializers.CharField(allow_blank=False, allow_null=False, required=True)
+    new_password = serializers.CharField(allow_blank=False, allow_null=False, required=True)
+
+
+class ChangeEmailSerializer(serializers.Serializer):
+    username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
+    new_email = serializers.EmailField(allow_blank=False, allow_null=False, required=True)
+
+
 class MovieAddSerializer(serializers.Serializer):
     username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
     movie_title = serializers.CharField(allow_blank=False, allow_null=False, required=True)
