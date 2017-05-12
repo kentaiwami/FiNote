@@ -161,7 +161,7 @@ class ChangePasswordViewSet(viewsets.ViewSet):
                 raise ValidationError('現在のパスワードが含まれていません')
             if not data['new_password']:
                 raise ValidationError('新しいパスワードが含まれていません')
-            
+
             try:
                 get_user = AuthUser.objects.get(username=data['username'])
                 get_user.set_password(data['new_password'])
