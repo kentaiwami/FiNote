@@ -182,22 +182,23 @@ class ChangeEmailViewSet(viewsets.ViewSet):
         """
         When ChangeEmail api access, run this method.
         This method is change email and return new_email.
-        :param request: Include username and new_email
+        :param request: Include token and new_email
         :return: User's new email.
         """
 
         if request.method == 'POST':
             data = request.data
 
-            if not data['username']:
-                raise ValidationError('ユーザ名が含まれていません')
+            if not data['token']:
+                raise ValidationError('認証情報が含まれていません')
             if not data['new_email']:
                 raise ValidationError('新しいメールアドレスが含まれていません')
 
             serializer = ChangeEmailSerializer(data=data)
             if serializer.is_valid():
                 try:
-                    get_user = AuthUser.objects.get(username=data['username'])
+                    user_id = Token.objects.get(key=data['token']).user_id
+                    get_user = AuthUser.objects.get(pk=user_id)
                     get_user.email = data['new_email']
                     get_user.save()
 
@@ -235,7 +236,6 @@ class ChangeSexViewSet(viewsets.ViewSet):
                 try:
                     user_id = Token.objects.get(key=data['token']).user_id
                     get_user = AuthUser.objects.get(pk=user_id)
-
                     get_user.sex = data['new_sex']
                     get_user.save()
 

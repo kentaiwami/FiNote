@@ -27,7 +27,7 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 
 class ChangeEmailSerializer(serializers.Serializer):
-    username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
+    token = serializers.CharField(allow_blank=False, allow_null=False, required=True)
     new_email = serializers.EmailField(allow_blank=False, allow_null=False, required=True)
 
 

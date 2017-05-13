@@ -3397,7 +3397,7 @@ var Change_Email = {
     if(Utility.validateMail(new_email)) {
       var storage = window.localStorage;
       var data = {
-        "username": storage.getItem('username'),
+        "token": storage.getItem('token'),
         "new_email": new_email
       };
 
