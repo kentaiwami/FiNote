@@ -3249,6 +3249,30 @@ var Setting = {
     var alert = document.getElementById(id);
     alert.hide();
     Utility.pop_page();
+  },
+
+  tap_profile_img: function() {
+    console.log('*************');
+
+    var cameraSuccess = function(image) {
+      console.log('Success Camera');
+
+      var img = document.getElementById('profile_img');
+      img.src = "data:image/jpeg;base64," + image;
+    };
+
+    var cameraError = function(message) {
+      console.log('Camera Error: ' + message);
+    };
+
+    var options = {
+      quality: 100,
+      destinationType: Camera.DestinationType.DATA_URL,
+      sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+      mediaType: Camera.MediaType.PICTURE,
+      encodingType: Camera.EncodingType.JPEG
+    };
+    navigator.camera.getPicture(cameraSuccess, cameraError, options);
   }
 };
 

@@ -37,6 +37,8 @@
 * [cordova-plugin-whitelist 1.3.2](https://www.npmjs.com/package/cordova-plugin-whitelist)
 * [cordova-plugin-x-socialsharing 5.1.7](https://www.npmjs.com/package/cordova-plugin-x-socialsharing)
 * [cordova-sqlite-legacy-build-support 1.3.5-pre1](https://github.com/litehelpers/Cordova-sqlite-legacy-build-support)
+* [cordova-plugin-camera 2.4.1](https://github.com/apache/cordova-plugin-camera)
+* [cordova-plugin-compat 1.1.0](https://www.npmjs.com/package/cordova-plugin-compat)
 
 ## 使用しているプラットフォーム
 * android 6.2.2
