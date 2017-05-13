@@ -3270,7 +3270,8 @@ var Setting = {
       destinationType: Camera.DestinationType.DATA_URL,
       sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
       mediaType: Camera.MediaType.PICTURE,
-      encodingType: Camera.EncodingType.JPEG
+      encodingType: Camera.EncodingType.JPEG,
+      targetWidth: window.innerWidth * 0.2
     };
     navigator.camera.getPicture(cameraSuccess, cameraError, options);
   }
