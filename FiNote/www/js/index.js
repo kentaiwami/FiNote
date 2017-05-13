@@ -3319,7 +3319,7 @@ var Change_Password = {
       Utility.stop_spinner();
     }else if(now_pass == storage.getItem('password')) {
       var data = {
-        "username": storage.getItem('username'),
+        "token": storage.getItem('token'),
         "now_password": now_pass,
         "new_password": new_pass
       };

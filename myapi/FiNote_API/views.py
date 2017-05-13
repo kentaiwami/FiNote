@@ -148,27 +148,34 @@ class ChangePasswordViewSet(viewsets.ViewSet):
         """
         When ChangePassword api access, run this method.
         This method is change password and return token.
-        :param request: Include username, now_password and new_password
+        :param request: Include token, now_password and new_password
         :return: User's token.
         """
 
         if request.method == 'POST':
             data = request.data
 
-            if not data['username']:
-                raise ValidationError('ユーザ名が含まれていません')
+            if not data['token']:
+                raise ValidationError('認証情報が含まれていません')
             if not data['now_password']:
                 raise ValidationError('現在のパスワードが含まれていません')
             if not data['new_password']:
                 raise ValidationError('新しいパスワードが含まれていません')
 
             try:
-                get_user = AuthUser.objects.get(username=data['username'])
-                get_user.set_password(data['new_password'])
-                get_user.save()
-                token = Token.objects.get(user_id=get_user.pk)
+                user_id = Token.objects.get(key=data['token']).user_id
+                get_user = AuthUser.objects.get(pk=user_id)
 
-                return JsonResponse({'token':str(token)})
+                if get_user.check_password(data['now_password'].encode('utf-8')):
+                    get_user.set_password(data['new_password'])
+                    get_user.save()
+                    token = Token.objects.get(user_id=get_user.pk)
+
+                    return JsonResponse({'token': str(token)})
+                else:
+                    raise ValidationError('現在のパスワードが異なるため変更に失敗しました')
+
+
 
             except ObjectDoesNotExist:
                 raise ValidationError('ユーザが見つかりませんでした')

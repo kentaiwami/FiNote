@@ -21,7 +21,7 @@ class SignInNoTokenSerializer(serializers.Serializer):
 
 
 class ChangePasswordSerializer(serializers.Serializer):
-    username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
+    token = serializers.CharField(allow_blank=False, allow_null=False, required=True)
     now_password = serializers.CharField(allow_blank=False, allow_null=False, required=True)
     new_password = serializers.CharField(allow_blank=False, allow_null=False, required=True)
 
