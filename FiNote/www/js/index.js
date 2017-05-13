@@ -225,7 +225,8 @@ var ID = {
 
   get_change_sex_ID: function() {
     var id_obj = {tmp_id: 'change_sex.html', page_id: 'change_sex',
-                  radio_m: 'change_m', radio_f: 'change_f'};
+                  radio_m: 'change_m', radio_f: 'change_f',
+                  success_alert: 'change_sex_success_alert'};
     return id_obj;
   },
 
@@ -3488,12 +3489,26 @@ var Change_Sex = {
 
       Utility.stop_spinner();
       console.log(storage.getItem('sex') + ' is seted.');
+
+      // アラートの表示
+      var alert = document.getElementById(ID.get_change_sex_ID().success_alert);
+      alert.show();
     })
     .catch(function(err) {
       console.log(err);
       Utility.stop_spinner();
       Utility.show_error_alert('エラー発生', err, 'OK');
     });
+  },
+
+
+  /**
+   * 性別の変更に成功した際に表示されるアラートを閉じて画面を戻す関数
+   */
+  alert_hide: function() {
+    var alert = document.getElementById(ID.get_change_sex_ID().success_alert);
+    alert.hide();
+    Utility.pop_page();
   }
 };
 
