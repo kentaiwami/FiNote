@@ -3412,6 +3412,11 @@ var Change_Email = {
         // メールアドレスの変更に成功した旨を伝えるアラートを表示
         var alert = document.getElementById(ID.get_change_email_ID().success_alert);
         alert.show();
+      })
+      .catch(function(err) {
+        console.log(err);
+        Utility.stop_spinner();
+        Utility.show_error_alert('エラー発生', err, 'OK');
       });
     }else {
       Utility.stop_spinner();
@@ -3464,14 +3469,31 @@ var Change_Sex = {
 
 
   /**
-   * 引き渡された性別の識別子をローカルに保存する
+   * 引き渡された性別の識別子をサーバとローカルに保存する
    * @param  {[String]} sex [M or F]
    */
   save_data: function(sex) {
-    var storage = window.localStorage;
-    storage.setItem('sex', sex);
+    Utility.show_spinner(ID.get_change_sex_ID().page_id);
 
-    console.log(storage.getItem('sex') + ' is seted.');
+    var storage = window.localStorage;
+    var data = {
+      "token": storage.getItem('token'),
+      "new_sex": sex
+    };
+
+    Utility.FiNote_API('changesex', data, 'POST').then(function(sex_obj) {
+      // json形式にしてからローカルへ新しい性別を保存
+      var json_data = JSON.parse(sex_obj);
+      storage.setItem('sex', json_data.new_sex);
+
+      Utility.stop_spinner();
+      console.log(storage.getItem('sex') + ' is seted.');
+    })
+    .catch(function(err) {
+      console.log(err);
+      Utility.stop_spinner();
+      Utility.show_error_alert('エラー発生', err, 'OK');
+    });
   }
 };
 

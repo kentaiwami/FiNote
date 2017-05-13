@@ -175,7 +175,7 @@ class ChangePasswordViewSet(viewsets.ViewSet):
 
 
 class ChangeEmailViewSet(viewsets.ViewSet):
-    queryset = Movie.objects.all()
+    queryset = User.objects.all()
     serializer_class = ChangeEmailSerializer
 
     def create(self, request):
@@ -202,6 +202,44 @@ class ChangeEmailViewSet(viewsets.ViewSet):
                     get_user.save()
 
                     return JsonResponse({'new_email': data['new_email']})
+                except:
+                    raise ValidationError('ユーザが見つかりませんでした')
+            else:
+                return Response(serializer.errors)
+
+
+class ChangeSexViewSet(viewsets.ViewSet):
+    queryset = User.objects.all()
+    serializer_class = ChangeSexSerializer
+
+    def create(self, request):
+        """
+        When ChangeSex api access, run this method.
+        This method is change sex and return new_sex.
+        :param request: Include token and new_sex
+        :return: User's new sex.
+        """
+
+        if request.method == 'POST':
+            data = request.data
+
+            if not data['token']:
+                raise ValidationError('認証情報が含まれていません')
+            if not data['new_sex']:
+                raise ValidationError('新しい性別が含まれていません')
+            if not (data['new_sex'] == 'M' or data['new_sex'] == 'F'):
+                raise ValidationError('性別の入力形式が正しくありません')
+
+            serializer = ChangeSexSerializer(data=data)
+            if serializer.is_valid():
+                try:
+                    user_id = Token.objects.get(key=data['token']).user_id
+                    get_user = AuthUser.objects.get(pk=user_id)
+
+                    get_user.sex = data['new_sex']
+                    get_user.save()
+
+                    return JsonResponse({'new_sex': data['new_sex']})
                 except:
                     raise ValidationError('ユーザが見つかりませんでした')
             else:
