@@ -3238,6 +3238,17 @@ var Setting = {
         storage.setItem('adult', event.value);
       }
     });
+  },
+
+
+  /**
+   * パスワード、メールアドレス、性別の変更が完了した際に表示されるアラートを非表示にしてpop_pageを行う
+   * @param  {[String]} id [アラートのid]
+   */
+  alert_hide: function(id) {
+    var alert = document.getElementById(id);
+    alert.hide();
+    Utility.pop_page();
   }
 };
 
@@ -3329,16 +3340,6 @@ var Change_Password = {
       });
     }
   },
-
-
-  /**
-   * パスワードの変更が成功した際に表示されるアラートを閉じる&ページを戻る関数
-   */
-  alert_hide: function() {
-    var alert = document.getElementById(ID.get_change_password_ID().success_alert);
-    alert.hide();
-    Utility.pop_page();
-  }  
 };
 
 
@@ -3424,16 +3425,6 @@ var Change_Email = {
       Utility.show_error_alert('エラー', '有効なメールアドレスを入力してください', 'OK');
     }
   },
-
-
-  /**
-   * メールアドレスの変更に成功した際に表示されるアラートを閉じて画面を戻す関数
-   */
-  alert_hide: function() {
-    var alert = document.getElementById(ID.get_change_email_ID().success_alert);
-    alert.hide();
-    Utility.pop_page();
-  }
 };
 
 
@@ -3500,16 +3491,6 @@ var Change_Sex = {
       Utility.show_error_alert('エラー発生', err, 'OK');
     });
   },
-
-
-  /**
-   * 性別の変更に成功した際に表示されるアラートを閉じて画面を戻す関数
-   */
-  alert_hide: function() {
-    var alert = document.getElementById(ID.get_change_sex_ID().success_alert);
-    alert.hide();
-    Utility.pop_page();
-  }
 };
 
 
