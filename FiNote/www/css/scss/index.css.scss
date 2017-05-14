@@ -125,6 +125,7 @@ $font-small: .75rem;
   margin: 2vw 5vw;
 }
 
+
 /************************************************************
                             Message
  ************************************************************/
@@ -141,6 +142,15 @@ $font-small: .75rem;
   text-align: center;
   margin-top: 5vh;
   opacity: .6;
+}
+
+.small_overview {
+  font-size: $font-small;
+}
+
+.small_overview_opacity {
+  @extend .small_overview;
+  opacity: .5;
 }
 
 
@@ -162,6 +172,19 @@ $font-small: .75rem;
   top: 0%;
   left: 80%;
   visibility: hidden;
+}
+
+.delete_button {
+  @extend .red_bg_color;
+  width: 96vw;
+  margin-top: 3rem;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 3rem;
+
+  &:active {
+    @extend .red_bg_color;
+  }
 }
 
 
@@ -202,14 +225,8 @@ $font-small: .75rem;
 
 
 
-
-
-
-
-
-
 /************************************************************
-                        Movie Detail
+                          Image
 ************************************************************/
 .poster_area {
   margin: 1rem 0rem;
@@ -222,27 +239,12 @@ $font-small: .75rem;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
 }
 
-.small_overview {
-  font-size: $font-small;
-}
 
-.small_overview_opacity {
-  @extend .small_overview;
-  opacity: .5;
-}
 
-.delete_button {
-  @extend .red_bg_color;
-  width: 96vw;
-  margin-top: 3rem;
-  margin-right: auto;
-  margin-left: auto;
-  margin-bottom: 3rem;
 
-  &:active {
-    @extend .red_bg_color;
-  }
-}
+
+
+
 
 
 /************************************************************
