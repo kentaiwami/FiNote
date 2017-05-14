@@ -817,6 +817,17 @@
   margin: 2vw 5vw;
 }
 
+.search_form {
+  width: 80vw;
+}
+
+.toolbar_center_search_form {
+  position: absolute;
+  left: 0;
+  margin-left: 12vw;
+  padding: .4rem 0rem;
+}
+
 /************************************************************
                             Message
  ************************************************************/
@@ -835,12 +846,38 @@
   opacity: .6;
 }
 
+.all_center_message {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  opacity: .6;
+}
+
 .small_overview, .small_overview_opacity {
   font-size: 0.75rem;
 }
 
 .small_overview_opacity {
   opacity: .5;
+}
+
+.exist_message {
+  position: absolute;
+  bottom: 6%;
+  right: 2%;
+  color: #BE956A;
+  font-size: .9rem;
+  font-weight: 500;
+}
+
+.exist_message:after {
+  position: relative;
+  bottom: -0.16em;
+  margin-left: 0.1em;
+  margin-right: 0.3em;
+  content: '追加済み';
 }
 
 /************************************************************
@@ -870,6 +907,13 @@
   margin-bottom: 3rem;
 }
 
+.reset_button {
+  position: absolute;
+  top: 0;
+  margin-left: 100%;
+  visibility: hidden;
+}
+
 /************************************************************
                             List
 ************************************************************/
@@ -881,7 +925,15 @@
   object-fit: contain;
 }
 
+.list_img_large {
+  width: 25vw;
+}
+
 .list_title {
+  font-weight: 500;
+}
+
+.list_title_bold {
   font-weight: 500;
 }
 
@@ -892,6 +944,8 @@
 
 .list_sub_title_small {
   margin-top: 1rem;
+  font-size: 3.5vw;
+  line-height: 1rem;
 }
 
 .list_button_row {
@@ -913,66 +967,6 @@
   margin: 0 auto;
   width: 40vw;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
-}
-
-/************************************************************
-                       Movie Add Search
-************************************************************/
-.search_form {
-  width: 80vw;
-}
-
-.toolbar_center_search_form {
-  position: absolute;
-  left: 0;
-  margin-left: 12vw;
-  padding: .4rem 0rem;
-}
-
-.reset_button {
-  position: absolute;
-  top: 0;
-  margin-left: 100%;
-  visibility: hidden;
-}
-
-.all_center_message {
-  text-align: center;
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  opacity: .6;
-}
-
-.list_img_large {
-  width: 25vw;
-}
-
-.list_title_bold {
-  font-weight: 500;
-}
-
-.list_sub_title_small {
-  font-size: 3.5vw;
-  line-height: 1rem;
-}
-
-.exist_message {
-  position: absolute;
-  bottom: 6%;
-  right: 2%;
-  color: #BE956A;
-  font-size: .9rem;
-  font-weight: 500;
-}
-
-.exist_message:after {
-  position: relative;
-  bottom: -0.16em;
-  margin-left: 0.1em;
-  margin-right: 0.3em;
-  content: '追加済み';
 }
 
 /************************************************************
