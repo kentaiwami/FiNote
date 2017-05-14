@@ -3305,6 +3305,10 @@ var Setting = {
     Utility.pop_page();
   },
 
+
+  /**
+   * プロフ画像の選択、ローカルとサーバへの保存を行う
+   */
   tap_profile_img: function() {
     var cameraSuccess = function(image) {
       Utility.show_spinner(ID.get_setting_ID().page_id);
@@ -3349,6 +3353,7 @@ var Setting = {
       targetWidth: window.innerWidth * 0.2
     };
 
+    // 写真の選択を行う
     navigator.camera.getPicture(cameraSuccess, cameraError, options);
   }
 };
