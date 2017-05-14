@@ -37,11 +37,17 @@
 * [cordova-plugin-whitelist 1.3.2](https://www.npmjs.com/package/cordova-plugin-whitelist)
 * [cordova-plugin-x-socialsharing 5.1.7](https://www.npmjs.com/package/cordova-plugin-x-socialsharing)
 * [cordova-sqlite-legacy-build-support 1.3.5-pre1](https://github.com/litehelpers/Cordova-sqlite-legacy-build-support)
+* [cordova-plugin-camera 2.4.1](https://github.com/apache/cordova-plugin-camera)
+* [cordova-plugin-compat 1.1.0](https://www.npmjs.com/package/cordova-plugin-compat)
 
 ## 使用しているプラットフォーム
 * android 6.2.2
 * ios 4.4.0
+
 ## 使用している外部サービス
 * さくらのレンタルサーバ
 * [The Movie Database](https://www.themoviedb.org)
 
+## 参考にしたサイト
+* [ひらがら、カタカナの変換を行うJavaScript関数](https://gist.github.com/kawanet/5553478)
+* [CHARTIST.JS](http://gionkunz.github.io/chartist-js/index.html)

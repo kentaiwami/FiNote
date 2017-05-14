@@ -1,3 +1,6 @@
+@import "_chartist-settings.scss";
+@import "chartist.scss";
+
 /************************************************************
                           	Base
  ************************************************************/
@@ -123,11 +126,12 @@ $font-small: .75rem;
   height: 100%;
   margin: 0 auto;
   padding-top: 15px;
-  padding-bottom: 16px;
+  padding-bottom: .3rem;
+  margin-bottom: 1rem;
   outline: none;
 }
 
-.login-button {
+.large-button {
   @extend .brown_bg_color;
   width: 100%;
   margin: 0 auto;
@@ -173,6 +177,18 @@ $font-small: .75rem;
   bottom: 3.5%;
   right: 2%;
   width: 40vw;
+}
+
+.movies_search_input {
+  width: 90vw;
+  margin: 2vw 5vw;
+}
+
+.movies_reset_button {
+  position: absolute;
+  top: 0%;
+  left: 80%;
+  visibility: hidden;
 }
 
 
@@ -416,4 +432,95 @@ $font-small: .75rem;
   align-items: center;
   text-align: center;
   opacity: .6;
+}
+
+
+
+/************************************************************
+                            User
+************************************************************/
+.chart_area {
+  margin: .987rem 0rem;
+  height: 40vw;
+  padding: .987rem 0rem;
+}
+
+.info-col {
+  height: 60px;
+  line-height: 1;
+  padding: 12px 0 12px 4px;
+}
+
+.info-num {
+  font-size: 16px;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.info-unit {
+  margin-top: 6px;
+  font-size: 14px;
+  opacity: 0.4;
+}
+
+.ct-label {
+  fill: $color-brown;
+  color: $color-brown;
+}
+
+.no_data_graph_message {
+  height: 40.4vh;
+  margin-top: 30vh;
+  opacity: .6;
+  text-align: center;
+}
+
+
+
+
+
+/************************************************************
+                          Setting
+************************************************************/
+.profile-wrapper {
+  padding: 16px 10px 0 10px;
+}
+
+.profile-image {
+  width: 20vw;
+  height: 20vw;
+  border-radius: 4px;
+  border: inset 1px rgba(0, 0, 0, 0.3);
+  object-fit: cover;
+  background: url(../../img/loading.gif) no-repeat center;
+}
+
+.profile-name {
+  font-size: 18px;
+  padding: 4px 0 2px 0;
+}
+
+.profile-email {
+  font-size: 15px;
+  opacity: .4;
+}
+
+.settings-header {
+  margin-bottom: -.8rem;
+  padding: 1.5rem 0px 0px .5rem;
+  opacity: .6;
+}
+
+.settings-list {
+  margin-top: 1rem;
+}
+
+.settings-logout {
+  margin-right: .5rem;
+  opacity: .6;
+}
+
+.list_small_message {
+  margin: .5rem;
+  @extend .small_message;
 }

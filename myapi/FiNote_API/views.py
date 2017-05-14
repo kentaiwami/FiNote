@@ -1,15 +1,15 @@
-import json
+import os
 
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework_jwt.serializers import User
-
 from FiNote_API.functions import *
 from .serializer import *
 from django.core.exceptions import ObjectDoesNotExist
-
+import base64
+from django.core.files.base import ContentFile
 
 class SignUpViewSet(viewsets.ViewSet):
     queryset = User.objects.all()
@@ -125,12 +125,21 @@ class SignInNoTokenViewSet(viewsets.ViewSet):
                         'username__username', 'username__email', 'username__birthday', 'username__sex'
                     )
 
+                    # ファイルを開いてbase64文字列を取得
+                    if str(get_user.img) == '':
+                        encoded_string = ''
+                    else:
+                        file_path = settings.MEDIA_ROOT + '/' + str(get_user.img)
+                        with open(file_path, "rb") as image_file:
+                            encoded_string = b'data:image/jpeg;base64,' + base64.b64encode(image_file.read())
+
                     response_list = list(backup_obj)
                     response_list.append({'token': str(token)})
                     response_list.append({'username': str(get_user.username)})
                     response_list.append({'email': str(get_user.email)})
                     response_list.append({'birthday': int(get_user.birthday)})
                     response_list.append({'sex': str(get_user.sex)})
+                    response_list.append({'profile_img': str(encoded_string.decode('utf-8'))})
 
                     return JsonResponse({'results': response_list})
 
@@ -139,6 +148,166 @@ class SignInNoTokenViewSet(viewsets.ViewSet):
 
             except ObjectDoesNotExist:
                 raise ValidationError('ユーザ名かパスワードが違います')
+
+
+
+class ChangePasswordViewSet(viewsets.ViewSet):
+    queryset = User.objects.all()
+    serializer_class = ChangePasswordSerializer
+
+    def create(self, request):
+        """
+        When ChangePassword api access, run this method.
+        This method is change password and return token.
+        :param request: Include token, now_password and new_password
+        :return: User's token.
+        """
+
+        if request.method == 'POST':
+            data = request.data
+
+            if not data['token']:
+                raise ValidationError('認証情報が含まれていません')
+            if not data['now_password']:
+                raise ValidationError('現在のパスワードが含まれていません')
+            if not data['new_password']:
+                raise ValidationError('新しいパスワードが含まれていません')
+
+            try:
+                user_id = Token.objects.get(key=data['token']).user_id
+                get_user = AuthUser.objects.get(pk=user_id)
+
+                if get_user.check_password(data['now_password'].encode('utf-8')):
+                    get_user.set_password(data['new_password'])
+                    get_user.save()
+                    token = Token.objects.get(user_id=get_user.pk)
+
+                    return JsonResponse({'token': str(token)})
+                else:
+                    raise ValidationError('現在のパスワードが異なるため変更に失敗しました')
+
+
+
+            except ObjectDoesNotExist:
+                raise ValidationError('ユーザが見つかりませんでした')
+
+
+class ChangeEmailViewSet(viewsets.ViewSet):
+    queryset = User.objects.all()
+    serializer_class = ChangeEmailSerializer
+
+    def create(self, request):
+        """
+        When ChangeEmail api access, run this method.
+        This method is change email and return new_email.
+        :param request: Include token and new_email
+        :return: User's new email.
+        """
+
+        if request.method == 'POST':
+            data = request.data
+
+            if not data['token']:
+                raise ValidationError('認証情報が含まれていません')
+            if not data['new_email']:
+                raise ValidationError('新しいメールアドレスが含まれていません')
+
+            serializer = ChangeEmailSerializer(data=data)
+            if serializer.is_valid():
+                try:
+                    user_id = Token.objects.get(key=data['token']).user_id
+                    get_user = AuthUser.objects.get(pk=user_id)
+                    get_user.email = data['new_email']
+                    get_user.save()
+
+                    return JsonResponse({'new_email': data['new_email']})
+                except:
+                    raise ValidationError('ユーザが見つかりませんでした')
+            else:
+                return Response(serializer.errors)
+
+
+class ChangeSexViewSet(viewsets.ViewSet):
+    queryset = User.objects.all()
+    serializer_class = ChangeSexSerializer
+
+    def create(self, request):
+        """
+        When ChangeSex api access, run this method.
+        This method is change sex and return new_sex.
+        :param request: Include token and new_sex
+        :return: User's new sex.
+        """
+
+        if request.method == 'POST':
+            data = request.data
+
+            if not data['token']:
+                raise ValidationError('認証情報が含まれていません')
+            if not data['new_sex']:
+                raise ValidationError('新しい性別が含まれていません')
+            if not (data['new_sex'] == 'M' or data['new_sex'] == 'F'):
+                raise ValidationError('性別の入力形式が正しくありません')
+
+            serializer = ChangeSexSerializer(data=data)
+            if serializer.is_valid():
+                try:
+                    user_id = Token.objects.get(key=data['token']).user_id
+                    get_user = AuthUser.objects.get(pk=user_id)
+                    get_user.sex = data['new_sex']
+                    get_user.save()
+
+                    return JsonResponse({'new_sex': data['new_sex']})
+                except:
+                    raise ValidationError('ユーザが見つかりませんでした')
+            else:
+                return Response(serializer.errors)
+
+
+class SetProfileImgViewSet(viewsets.ViewSet):
+    queryset = User.objects.all()
+    serializer_class = SetProfileImgSerializer
+
+    def create(self, request):
+        """
+        When SetProfileImg api access, run this method.
+        This method is set img and return token.
+        :param request: Include token and img base64 string.
+        :return: User's token.
+        """
+
+        if request.method == 'POST':
+            data = request.data
+
+            if not data['token']:
+                raise ValidationError('認証情報が含まれていません')
+            if not data['img']:
+                raise ValidationError('画像情報が含まれていません')
+
+            try:
+                # tokenからユーザの割り出し
+                user_id = Token.objects.get(key=data['token']).user_id
+                get_user = AuthUser.objects.get(pk=user_id)
+
+                # 古いプロフ画像の削除
+                old_img_path = settings.MEDIA_ROOT + '/' + str(get_user.img)
+
+                if os.path.isfile(old_img_path):
+                    os.remove(old_img_path)
+
+                # base64文字列からファイルインスタンスの生成
+                format, img_str = data['img'].split(';base64,')
+                ext = format.split('/')[-1]
+                img_data = ContentFile(base64.b64decode(img_str), name=get_user.username + '.' + ext)
+
+                # 画像の保存
+                get_user.img = img_data
+                get_user.save()
+
+                return JsonResponse({'token': str(data['token'])})
+
+            except ObjectDoesNotExist:
+                raise ValidationError('ユーザが見つかりませんでした')
 
 
 class MovieAddViewSet(viewsets.ViewSet):

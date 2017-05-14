@@ -15,3 +15,8 @@ plugins/
 
 #res
 resources/signing
+
+#image
+*.png
+*.jpeg
+*.jpg
