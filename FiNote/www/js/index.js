@@ -2218,8 +2218,8 @@ var Movieadd = {
 
       // ツールバーとユーザアクション部分のボタンを無効にする
       // 気分リストへの登録件数の表示を透過させる
-      var button_list = [document.getElementById(ID.get_moveadd_ID().add_button),document.getElementById(ID.get_moveadd_ID().feeling_button),document.getElementById(ID.get_moveadd_ID().dvd_button),document.getElementById(ID.get_moveadd_ID().share_button),document.getElementById(ID.get_moveadd_ID().show_info_button),document.getElementById(ID.get_moveadd_ID().back_button)];
-      Utility.setAttribute_list_object(button_list, 'disabled');
+      var button_list = [ID.get_moveadd_ID().add_button,ID.get_moveadd_ID().feeling_button,ID.get_moveadd_ID().dvd_button,ID.get_moveadd_ID().share_button,ID.get_moveadd_ID().show_info_button,ID.get_moveadd_ID().back_button];
+      Utility.setAttribute_list_object(button_list, 'disabled', 'disabled');
       document.getElementById(ID.get_moveadd_ID().feeling_number).style.opacity = '.4';
 
       var user_onomatopoeia_list = Movieadd.userdata.feeling_name_list;
@@ -2543,9 +2543,9 @@ var Movieadd = {
         document.getElementById(ID.get_moveadd_ID().success_sns_alert).show();
 
         //映画追加画面のボタンオブジェクト
-          var button_list = [document.getElementById(ID.get_moveadd_ID().add_button),document.getElementById(ID.get_moveadd_ID().feeling_button),document.getElementById(ID.get_moveadd_ID().dvd_button),document.getElementById(ID.get_moveadd_ID().share_button),document.getElementById(ID.get_moveadd_ID().show_info_button),document.getElementById(ID.get_moveadd_ID().back_button)];
+          var button_list = [ID.get_moveadd_ID().add_button,ID.get_moveadd_ID().feeling_button,ID.get_moveadd_ID().dvd_button,ID.get_moveadd_ID().share_button,ID.get_moveadd_ID().show_info_button,ID.get_moveadd_ID().back_button];
 
-          Utility.setAttribute_list_object(button_list, 'disabled');
+          Utility.setAttribute_list_object(button_list, 'disabled', 'disabled');
 
           document.getElementById(ID.get_moveadd_ID().feeling_number).style.opacity = '.4';
           document.getElementById(ID.get_moveadd_ID().add_button).style.opacity = '.4';
@@ -2556,9 +2556,9 @@ var Movieadd = {
       Utility.show_error_alert('投稿エラー',msg,'OK');
 
       //映画追加画面のボタンオブジェクト
-        var button_list = [document.getElementById(ID.get_moveadd_ID().add_button),document.getElementById(ID.get_moveadd_ID().feeling_button),document.getElementById(ID.get_moveadd_ID().dvd_button),document.getElementById(ID.get_moveadd_ID().share_button),document.getElementById(ID.get_moveadd_ID().show_info_button),document.getElementById(ID.get_moveadd_ID().back_button)];
+        var button_list = [ID.get_moveadd_ID().add_button,ID.get_moveadd_ID().feeling_button,ID.get_moveadd_ID().dvd_button,ID.get_moveadd_ID().share_button,ID.get_moveadd_ID().show_info_button,ID.get_moveadd_ID().back_button];
 
-        Utility.setAttribute_list_object(button_list, 'disabled');
+        Utility.setAttribute_list_object(button_list, 'disabled', 'disabled');
         document.getElementById(ID.get_moveadd_ID().feeling_number).style.opacity = '.4';
         document.getElementById(ID.get_moveadd_ID().add_button).style.opacity = '.4';
     };
@@ -3944,25 +3944,26 @@ var Utility = {
 
 
   /**
-   * 複数のオブジェクトに同じattributeをセットする
-   * @param {[Array]} object_list    [attributeをセットしたいオブジェクトを格納した配列]
-   * @param {[String]} attribute_name [セットしたいattribute名]
+   * 引数で渡されたidと属性を一括でセットする
+   * @param {[Array]} id_list          [属性をセットしたいidを含んだ配列]
+   * @param {[String]} attribute_name_0 [属性名]
+   * @param {[String]} attribute_name_1 [属性値]
    */
-  setAttribute_list_object: function(object_list, attribute_name) {
-    for(var i = 0; i < object_list.length; i++) {
-      object_list[i].setAttribute(attribute_name, attribute_name);
+  setAttribute_list_object: function(id_list, attribute_name_0, attribute_name_1) {
+    for(var i = 0; i < id_list.length; i++) {
+      document.getElementById(id_list[i]).setAttribute(attribute_name_0, attribute_name_1);
     }
   },
 
 
   /**
    * 複数のオブジェクトから同じattributeを取り除く
-   * @param  {[Array]} object_list    [attributeを取り除きたいオブジェクトを格納した配列]
-   * @param  {[String]} attribute_name [取り除きたいattribute名]
+   * @param  {[Array]} id_list    [属性を取り除きたいidを格納した配列]
+   * @param  {[String]} attribute_name [取り除きたい属性名]
    */
-  removeAttribute_list_object: function(object_list, attribute_name) {
-    for(var i = 0; i < object_list.length; i++) {
-      object_list[i].removeAttribute(attribute_name);
+  removeAttribute_list_object: function(id_list, attribute_name) {
+    for(var i = 0; i < id_list.length; i++) {
+      document.getElementById(id_list[i]).removeAttribute(attribute_name);
     }
   },
 
