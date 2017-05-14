@@ -1,3 +1,5 @@
+import os
+
 from django.http import JsonResponse
 from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
@@ -123,13 +125,18 @@ class SignInNoTokenViewSet(viewsets.ViewSet):
                         'username__username', 'username__email', 'username__birthday', 'username__sex'
                     )
 
+                    # ファイルを開いてbase64文字列を取得
+                    file_path = settings.MEDIA_ROOT + '/' + str(get_user.img)
+                    with open(file_path, "rb") as image_file:
+                        encoded_string = 'data:image/jpeg;base64,' + base64.b64encode(image_file.read())
+
                     response_list = list(backup_obj)
                     response_list.append({'token': str(token)})
                     response_list.append({'username': str(get_user.username)})
                     response_list.append({'email': str(get_user.email)})
                     response_list.append({'birthday': int(get_user.birthday)})
                     response_list.append({'sex': str(get_user.sex)})
-                    response_list.append({'profile_img': str(get_user.img)})
+                    response_list.append({'profile_img': str(encoded_string)})
 
                     return JsonResponse({'results': response_list})
 
@@ -279,6 +286,12 @@ class SetProfileImgViewSet(viewsets.ViewSet):
                 user_id = Token.objects.get(key=data['token']).user_id
                 get_user = AuthUser.objects.get(pk=user_id)
 
+                # 古いプロフ画像の削除
+                old_img_path = settings.MEDIA_ROOT + '/' + str(get_user.img)
+
+                if os.path.isfile(old_img_path):
+                    os.remove(old_img_path)
+
                 # base64文字列からファイルインスタンスの生成
                 format, img_str = data['img'].split(';base64,')
                 ext = format.split('/')[-1]
@@ -287,12 +300,6 @@ class SetProfileImgViewSet(viewsets.ViewSet):
                 # 画像の保存
                 get_user.img = img_data
                 get_user.save()
-
-                # ファイルを開いてbase64文字列を取得するメモ
-                # file_path = settings.MEDIA_ROOT + '/' + str(get_user.img)
-                # with open(file_path, "rb") as image_file:
-                #     encoded_string = base64.b64encode(image_file.read())
-                #     print('data:image/png;base64,' + encoded_string)
 
                 return JsonResponse({'token': str(data['token'])})
 
