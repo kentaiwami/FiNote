@@ -189,6 +189,50 @@ $font-small: .75rem;
   content: '追加済み';
 }
 
+.rating {
+  position: relative;
+  text-align: center;
+}
+
+.rating-num {
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  bottom: 100;
+  right: 0;
+  margin: 0 auto 0 auto;
+  padding: 0 6px;
+  width: auto;
+  height: 24px;
+  border-radius: 4px 4px 0 0;
+  text-align: center;
+  color: white;
+  font-size: .8rem;
+  font-weight: 600;
+}
+
+.rating-num ons-icon {
+  font-size: 11px;
+  vertical-align: 0px;
+}
+
+.small_message {
+  opacity: .5;
+  font-size: $font-small;
+}
+
+.feeling_no_message {
+  @extend .center_message;
+  margin-top: 0;
+}
+
+.no_data_graph_message {
+  height: 40.4vh;
+  margin-top: 30vh;
+  opacity: .6;
+  text-align: center;
+}
+
 
 /************************************************************
                             Button
@@ -229,6 +273,16 @@ $font-small: .75rem;
   margin-left: 100%;
   visibility: hidden;
 }
+
+.btn_disable {
+  @extend .brown_color;
+  opacity: .4;
+
+  &:active {
+    color: $color-brown;
+  }
+}
+
 
 /************************************************************
                             List
@@ -273,11 +327,6 @@ $font-small: .75rem;
 }
 
 
-
-
-
-
-
 /************************************************************
                           Image
 ************************************************************/
@@ -292,26 +341,27 @@ $font-small: .75rem;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
 }
 
+.card {
+  height: 80vh;
+  background-color: $color-white;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: $color-white;
+}
 
-
-
-
-
-
+.card_back_image {
+  width: 100%;
+  height: 80vh;
+  background-image: url('../../img/noimage.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 
 
 /************************************************************
-                          Movie Add
- ************************************************************/
-.btn_disable {
-	@extend .brown_color;
-  opacity: .4;
-
-  &:active {
-  	color: $color-brown;
-  }
-}
-
+                        Notification
+************************************************************/
 .notification_space_small {
   position: relative;
   margin-top: -15vw;
@@ -321,18 +371,19 @@ $font-small: .75rem;
 }
 
 .notification_space_large {
-	@extend .notification_space_small;
+  @extend .notification_space_small;
   margin-left: 15vw;
 }
 
-.card {
-	height: 80vh;
-  background-color: $color-white;
-  background-repeat: no-repeat;
-  background-size: cover;
-  color: $color-white;
+.alert {
+  text-align: center;
+  padding: 10px;
 }
 
+
+/************************************************************
+                            Modal
+************************************************************/
 .modal__content {
  font-size: 4vmin;
 }
@@ -349,42 +400,10 @@ $font-small: .75rem;
   height: 87%;
 }
 
-.card_back_image {
-	width: 100%;
-	height: 80vh;
-  background-image: url('../../img/noimage.png');
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-}
 
-.rating {
-	position: relative;
-  text-align: center;
-}
-
-.rating-num {
-  display: inline-block;
-  position: absolute;
-  left: 0;
-  bottom: 100;
-  right: 0;
-  margin: 0 auto 0 auto;
-  padding: 0 6px;
-  width: auto;
-  height: 24px;
-  border-radius: 4px 4px 0 0;
-  text-align: center;
-  color: white;
-  font-size: .8rem;
-  font-weight: 600;
-}
-
-.rating-num ons-icon {
-  font-size: 11px;
-  vertical-align: 0px;
-}
-
+/************************************************************
+                            Row & Col
+ ************************************************************/
 .action-col {
   text-align: center;
   padding: 10px 0 8px;
@@ -411,48 +430,6 @@ $font-small: .75rem;
   font-size: 12px;
 }
 
-.alert {
-  text-align: center;
-  padding: 10px;
-}
-
-
-/************************************************************
-                        Movie Add Status
-************************************************************/
-.center_button {
-  margin-top: 2.5vh;
-  padding: 2.5vh;
-}
-
-.small_message {
-  opacity: .5;
-  font-size: $font-small;
-}
-
-
-/************************************************************
-                        Movie Add Feeling
-************************************************************/
-.feeling_no_message {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  opacity: .6;
-}
-
-
-
-/************************************************************
-                            User
-************************************************************/
-.chart_area {
-  margin: .987rem 0rem;
-  height: 40vw;
-  padding: .987rem 0rem;
-}
-
 .info-col {
   height: 60px;
   line-height: 1;
@@ -476,13 +453,15 @@ $font-small: .75rem;
   color: $color-brown;
 }
 
-.no_data_graph_message {
-  height: 40.4vh;
-  margin-top: 30vh;
-  opacity: .6;
-  text-align: center;
-}
 
+/************************************************************
+                            Chart
+************************************************************/
+.chart_area {
+  margin: .987rem 0rem;
+  height: 40vw;
+  padding: .987rem 0rem;
+}
 
 
 
