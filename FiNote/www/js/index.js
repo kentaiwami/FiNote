@@ -548,11 +548,10 @@ var Signin = {
       storage.setItem('token', backup_json[backup_json_length - 6].token);
       storage.setItem('signup_flag', true);
       storage.setItem('adult', false);
-      storage.setItem('profile_img', backup_json[backup_json_length - 1].profile_img);
 
       // サーバから返ってきたレスポンスリストの1つ1つに対してpromiseを作成
       var promises = [];
-      for(var i = 0; i < backup_json_length - 5; i++) {
+      for(var i = 0; i < backup_json_length - 7; i++) {
         promises.push(Signin.movie_restore(backup_json[i]));
       }
 
@@ -560,8 +559,20 @@ var Signin = {
         return prev.then(curr);
       }, Promise.resolve())
       .then(function(result) {
-        Utility.stop_spinner();
+        // サーバから取得したプロフ画像の文字列に応じて何もしないか、テーブルへ挿入するかを変える
+        var profile_img_str = backup_json[backup_json_length - 1].profile_img;
+        var query = '';
+        if (profile_img_str === '') {
+          return '';
+        }else {
+          query = 'INSERT INTO profile_img(img) VALUES(?)';
+          return DB_method.single_statement_execute(query, [profile_img_str]);
+        }
+      })
+      .then(function(result) {
+        console.log(result);
         console.log('******* restore all done *******');
+        Utility.stop_spinner();
         Movies.draw_movie_content();
       });
     })
