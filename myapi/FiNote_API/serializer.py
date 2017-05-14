@@ -36,6 +36,11 @@ class ChangeSexSerializer(serializers.Serializer):
     new_sex = serializers.CharField(allow_blank=False, allow_null=False, required=True)
 
 
+class SetProfileImgSerializer(serializers.Serializer):
+    token = serializers.CharField(allow_blank=False, allow_null=False, required=True)
+    img = serializers.CharField(allow_blank=True, allow_null=False, required=True)
+
+
 class MovieAddSerializer(serializers.Serializer):
     username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
     movie_title = serializers.CharField(allow_blank=False, allow_null=False, required=True)

@@ -28,6 +28,7 @@ var app = {
       tx.executeSql('CREATE TABLE IF NOT EXISTS movie (id integer primary key AUTOINCREMENT, title text unique, tmdb_id integer unique, genre_id text, onomatopoeia_id text, poster text, overview text, dvd integer, fav integer, add_year integer, add_month integer, add_day integer)');
       tx.executeSql('CREATE TABLE IF NOT EXISTS genre (id integer primary key AUTOINCREMENT, genre_id integer, name text unique)');
       tx.executeSql('CREATE TABLE IF NOT EXISTS onomatopoeia (id integer primary Key AUTOINCREMENT, name text)');
+      tx.executeSql('CREATE TABLE IF NOT EXISTS profile_img (id integer primary Key AUTOINCREMENT, img text)');
     }, function(err) {
       console.log('Open database ERROR: ' +JSON.stringify(err) +' ' + err.message);
     });
@@ -202,7 +203,7 @@ var ID = {
 
 
   get_setting_ID: function() {
-    var id_obj = {tmp_id: 'setting.html', page_id: 'setting', username: 'user_username', email: 'user_email', adult_check: 'adult_check'};
+    var id_obj = {tmp_id: 'setting.html', page_id: 'setting', username: 'user_username', email: 'user_email', adult_check: 'adult_check', profile_img: 'profile_img'};
     return id_obj;
   },
 
@@ -403,6 +404,7 @@ var Signup = {
       storage.setItem('sex', sex);
       storage.setItem('adult', false);
       storage.setItem('token', json_data.token);
+      storage.setItem('profile_img', '');
 
       //同時にこれらの情報が記録されているかを判断するフラグも保存する
       storage.setItem('signup_flag', true);
@@ -538,14 +540,15 @@ var Signin = {
 
       // ローカルDBへユーザ情報を格納
       var storage = window.localStorage;
-      storage.setItem('username', backup_json[backup_json_length - 4].username);
+      storage.setItem('username', backup_json[backup_json_length - 5].username);
       storage.setItem('password', password);
-      storage.setItem('email', backup_json[backup_json_length - 3].email);
-      storage.setItem('birthday', backup_json[backup_json_length - 2].birthday);
-      storage.setItem('sex', backup_json[backup_json_length - 1].sex);
-      storage.setItem('token', backup_json[backup_json_length - 5].token);
+      storage.setItem('email', backup_json[backup_json_length - 4].email);
+      storage.setItem('birthday', backup_json[backup_json_length - 3].birthday);
+      storage.setItem('sex', backup_json[backup_json_length - 2].sex);
+      storage.setItem('token', backup_json[backup_json_length - 6].token);
       storage.setItem('signup_flag', true);
       storage.setItem('adult', false);
+      storage.setItem('profile_img', backup_json[backup_json_length - 1].profile_img);
 
       // サーバから返ってきたレスポンスリストの1つ1つに対してpromiseを作成
       var promises = [];
@@ -3201,22 +3204,62 @@ var Setting = {
     var email = storage.getItem('email');
     var adult = storage.getItem('adult');
 
-
     var callback = function() {
-      // ユーザ名とメールアドレスの表示
-      document.getElementById(ID.get_setting_ID().username).innerHTML = username;
-      document.getElementById(ID.get_setting_ID().email).innerHTML = email;
+      DB_method.count_record('profile_img').then(function(count_result) {
+        // ユーザ名とメールアドレスの表示
+        document.getElementById(ID.get_setting_ID().username).innerHTML = username;
+        document.getElementById(ID.get_setting_ID().email).innerHTML = email;
 
-      // アダルト作品のフラグからチェック状態を変更
-      var adult_check = document.getElementById(ID.get_setting_ID().adult_check);
-      if (adult == 'true') {
-        adult_check.setAttribute('checked', 'checked');
-      }else {
-        adult_check.removeAttribute('checked');
-      }
+        // アダルト作品のフラグからチェック状態を変更
+        var adult_check = document.getElementById(ID.get_setting_ID().adult_check);
+        if (adult == 'true') {
+          adult_check.setAttribute('checked', 'checked');
+        }else {
+          adult_check.removeAttribute('checked');
+        }
 
-      // チェック状態が変更されるたびに保存を行うイベントを登録
-      Setting.add_event_adult_check();
+        // チェック状態が変更されるたびに保存を行うイベントを登録
+        Setting.add_event_adult_check();
+
+        var query = '';
+        if (count_result === 0) {
+          var img_html = document.getElementById(ID.get_setting_ID().profile_img);
+
+          Utility.local_image_to_base64(img_html.src).then(function(base64) {
+            return base64;
+          })
+          .then(function(base64) {
+            query = 'INSERT INTO profile_img(img) VALUES(?)';
+            return DB_method.single_statement_execute(query, [base64]);
+          })
+          .then(function(result) {
+            console.log(result);
+          })
+          .catch(function(err) {
+            console.log(err);
+          });
+        }else {
+          var profile_img = document.getElementById(ID.get_setting_ID().profile_img);
+
+          // 初期設定している画像がローカルから取得した画像を反映するまで表示されないようにする
+          profile_img.src = '';
+
+          query = 'SELECT img FROM profile_img WHERE id = 1';
+
+          DB_method.single_statement_execute(query, []).then(function(result) {
+            Utility.base64_to_image(result.rows.item(0).img, function(img) {
+              profile_img.src = img.src;
+            });
+          })
+          .catch(function(err) {
+            console.log(err);
+          });
+        }
+      })
+      .catch(function(err) {
+        console.log(err);
+        Utility.show_error_alert('エラー発生', err, 'OK');
+      });
     };
     
     Utility.check_page_init(ID.get_setting_ID().page_id,callback);
@@ -3252,13 +3295,34 @@ var Setting = {
   },
 
   tap_profile_img: function() {
-    console.log('*************');
-
     var cameraSuccess = function(image) {
-      console.log('Success Camera');
+      Utility.show_spinner(ID.get_setting_ID().page_id);
 
-      var img = document.getElementById('profile_img');
-      img.src = "data:image/jpeg;base64," + image;
+      var storage = window.localStorage;
+      var query = 'UPDATE profile_img SET img = ? WHERE id = 1';
+      var data = 'data:image/jpeg;base64,'+image;
+      var api_request_data = {
+        "token": storage.getItem('token'),
+        "img": data
+      };
+      var promises =
+      [
+        DB_method.single_statement_execute(query, [data]),
+        Utility.FiNote_API('setprofileimg', api_request_data, 'POST')
+      ];
+
+      Promise.all(promises).then(function(result) {
+        Utility.stop_spinner();
+
+        // プロフィール画像を描画
+        var img = document.getElementById(ID.get_setting_ID().profile_img);
+        img.src = data;
+      })
+      .catch(function(err) {
+        console.log(err);
+        Utility.stop_spinner();
+        Utility.show_error_alert('エラー発生', err, 'OK');
+      });
     };
 
     var cameraError = function(message) {
@@ -3266,13 +3330,14 @@ var Setting = {
     };
 
     var options = {
-      quality: 100,
+      quality: 25,
       destinationType: Camera.DestinationType.DATA_URL,
       sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
       mediaType: Camera.MediaType.PICTURE,
       encodingType: Camera.EncodingType.JPEG,
       targetWidth: window.innerWidth * 0.2
     };
+
     navigator.camera.getPicture(cameraSuccess, cameraError, options);
   }
 };
@@ -3819,6 +3884,31 @@ var Utility = {
 
 
   /**
+   * ローカルのImage Fileをbase64へ変換する
+   * @param  {[String]} image_path [変換したい画像のパス]
+   * @return {[Promise]}            [base64文字列]
+   */
+  local_image_to_base64: function(image_path) {
+    return new Promise(function(resolve,reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", image_path, true);
+      xhr.responseType = "blob";
+      xhr.onload = function (e) {
+        console.log(this.response);
+        var reader = new FileReader();
+        reader.onload = function(event) {
+         var res = event.target.result;
+         resolve(res);
+        };
+        var file = this.response;
+        reader.readAsDataURL(file);
+      };
+      xhr.send();
+    });
+  },
+  
+
+  /**
    * base64をデコードする
    * @param  {[String]}   base64img [base64の文字列]
    * @param  {[Function]} callback  [変換後のコールバック]
@@ -4021,6 +4111,7 @@ var DB_method = {
       tx.executeSql('DELETE FROM movie');
       tx.executeSql('DELETE FROM genre');
       tx.executeSql('DELETE FROM onomatopoeia');
+      tx.executeSql('DELETE FROM profile_img');
       tx.executeSql('DELETE FROM sqlite_sequence');
     },
     function(err) {

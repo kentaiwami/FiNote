@@ -491,7 +491,8 @@ $font-small: .75rem;
   height: 20vw;
   border-radius: 4px;
   border: inset 1px rgba(0, 0, 0, 0.3);
-  object-fit: cover
+  object-fit: cover;
+  background: url(../../img/loading.gif) no-repeat center;
 }
 
 .profile-name {

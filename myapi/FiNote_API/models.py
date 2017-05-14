@@ -39,6 +39,7 @@ class AuthUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True, max_length=30, blank=False, default='email')
     birthday = models.IntegerField(blank=False, default=1900)
     sex = models.CharField(max_length=1, blank=False, default='M')
+    img = models.FileField(blank=True, null=False)
 
     date_joined = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True, null=False)

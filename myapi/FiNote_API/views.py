@@ -3,11 +3,11 @@ from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework_jwt.serializers import User
-
 from FiNote_API.functions import *
 from .serializer import *
 from django.core.exceptions import ObjectDoesNotExist
-
+import base64
+from django.core.files.base import ContentFile
 
 class SignUpViewSet(viewsets.ViewSet):
     queryset = User.objects.all()
@@ -129,6 +129,7 @@ class SignInNoTokenViewSet(viewsets.ViewSet):
                     response_list.append({'email': str(get_user.email)})
                     response_list.append({'birthday': int(get_user.birthday)})
                     response_list.append({'sex': str(get_user.sex)})
+                    response_list.append({'profile_img': str(get_user.img)})
 
                     return JsonResponse({'results': response_list})
 
@@ -251,6 +252,52 @@ class ChangeSexViewSet(viewsets.ViewSet):
                     raise ValidationError('ユーザが見つかりませんでした')
             else:
                 return Response(serializer.errors)
+
+
+class SetProfileImgViewSet(viewsets.ViewSet):
+    queryset = User.objects.all()
+    serializer_class = SetProfileImgSerializer
+
+    def create(self, request):
+        """
+        When SetProfileImg api access, run this method.
+        This method is set img and return token.
+        :param request: Include token and img base64 string.
+        :return: User's token.
+        """
+
+        if request.method == 'POST':
+            data = request.data
+
+            if not data['token']:
+                raise ValidationError('認証情報が含まれていません')
+            if not data['img']:
+                raise ValidationError('画像情報が含まれていません')
+
+            try:
+                # tokenからユーザの割り出し
+                user_id = Token.objects.get(key=data['token']).user_id
+                get_user = AuthUser.objects.get(pk=user_id)
+
+                # base64文字列からファイルインスタンスの生成
+                format, img_str = data['img'].split(';base64,')
+                ext = format.split('/')[-1]
+                img_data = ContentFile(base64.b64decode(img_str), name=get_user.username + '.' + ext)
+
+                # 画像の保存
+                get_user.img = img_data
+                get_user.save()
+
+                # ファイルを開いてbase64文字列を取得するメモ
+                # file_path = settings.MEDIA_ROOT + '/' + str(get_user.img)
+                # with open(file_path, "rb") as image_file:
+                #     encoded_string = base64.b64encode(image_file.read())
+                #     print('data:image/png;base64,' + encoded_string)
+
+                return JsonResponse({'token': str(data['token'])})
+
+            except ObjectDoesNotExist:
+                raise ValidationError('ユーザが見つかりませんでした')
 
 
 class MovieAddViewSet(viewsets.ViewSet):
