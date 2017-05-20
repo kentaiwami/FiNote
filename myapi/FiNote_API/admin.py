@@ -12,6 +12,7 @@ class GenreAdmin(admin.ModelAdmin):
 
 class OnomatopoeiaAdmin(admin.ModelAdmin):
     list_display = ('pk', 'name')
+    search_fields = ('name',)
 
 
 class MovieAdmin(admin.ModelAdmin):
