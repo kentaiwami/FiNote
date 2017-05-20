@@ -47,6 +47,7 @@
 ## 使用している外部サービス
 * さくらのレンタルサーバ
 * [The Movie Database](https://www.themoviedb.org)
+* [オノマトペ辞典](http://sura-sura.com)
 
 ## 参考にしたサイト
 * [ひらがら、カタカナの変換を行うJavaScript関数](https://gist.github.com/kawanet/5553478)
