@@ -1,10 +1,8 @@
 from django.core.management.base import BaseCommand
 from ...models import Onomatopoeia
 import lxml.html
-from selenium import webdriver
 import jaconv
-
-driver = webdriver.PhantomJS()
+import requests
 
 
 class Command(BaseCommand):
@@ -38,7 +36,7 @@ class Command(BaseCommand):
                     kana_name = jaconv.hira2kata(name)
                     kana_names.append(kana_name)
 
-                print(kana_names)
+                print(', '.join(kana_names).encode('utf-8'))
 
             print(str(i) + ' is end')
 
@@ -57,11 +55,11 @@ class Command(BaseCommand):
         names = []
 
         target_url = 'http://sura-sura.com/page/' + str(number)
-        driver.get(target_url)
-        root = lxml.html.fromstring(driver.page_source)
-        links = root.cssselect('#post_list_type1 h3 a')
+        target_html = requests.get(target_url).text
+        dom = lxml.html.fromstring(target_html)
+        links = dom.cssselect('#post_list_type1 h3 a')
 
-        for name in links:
-            names.append(name.text)
+        for link in links:
+            names.append(link.text)
 
         return names

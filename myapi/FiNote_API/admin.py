@@ -11,7 +11,7 @@ class GenreAdmin(admin.ModelAdmin):
 
 
 class OnomatopoeiaAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'name')
+    list_display = ('name',)
     search_fields = ('name',)
 
 
