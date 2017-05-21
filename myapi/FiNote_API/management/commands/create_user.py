@@ -30,27 +30,36 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-
         if not options['test']:
-            user_param = self.generate_user_params()
+            for i in range(0, 3):
+                user_param = self.generate_user_params()
 
-            # ユーザの作成
-            user_obj, created = User.objects.get_or_create(
-                username=user_param['username'],
-                defaults={'username': user_param['username'],
-                          'email': user_param['email'],
-                          'password': user_param['password'],
-                          'birthday': user_param['birth_year'],
-                          'sex': user_param['sex'],
-                          'img': self.get_image_file(user_param['img_url'], user_param['username'])
-                          },
-            )
-            user_obj.set_password(user_param['password'])
-            user_obj.save()
+                # ユーザの作成
+                user_obj, created = User.objects.get_or_create(
+                    username=user_param['username'],
+                    defaults={'username': user_param['username'],
+                              'email': user_param['email'],
+                              'password': user_param['password'],
+                              'birthday': user_param['birth_year'],
+                              'sex': user_param['sex'],
+                              },
+                )
 
-            self.stdout.write(self.style.SUCCESS('***** Create User Success *****'))
-            self.output_console(user_param)
-            self.stdout.write(self.style.SUCCESS('***** Create User Success *****'))
+                if created:
+                    user_obj.set_password(user_param['password'])
+                    user_obj.img = self.get_image_file(user_param['img_url'], user_param['username'])
+
+                    try:
+                        user_obj.save()
+                    except UnicodeEncodeError:
+                        user_obj.delete()
+                        continue
+
+                self.stdout.write(self.style.SUCCESS('***** Create User Success *****'))
+                self.output_console(user_param)
+                self.stdout.write(self.style.SUCCESS('Count is ' + str(i)))
+                self.stdout.write(self.style.SUCCESS('***** Create User Success *****'))
+
         else:
             user_param = self.generate_user_params()
 
