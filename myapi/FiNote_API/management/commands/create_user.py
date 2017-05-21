@@ -56,7 +56,6 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS('***** Test Success *****'))
             self.output_console(user_param)
 
-
     def create_oath_session(self, oath_key_dict):
         """
         Create oath session.
