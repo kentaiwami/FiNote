@@ -50,11 +50,13 @@ class Command(BaseCommand):
 
             self.stdout.write(self.style.SUCCESS('***** Create User Success *****'))
             self.output_console(user_param)
+            self.stdout.write(self.style.SUCCESS('***** Create User Success *****'))
         else:
             user_param = self.generate_user_params()
 
             self.stdout.write(self.style.SUCCESS('***** Test Success *****'))
             self.output_console(user_param)
+            self.stdout.write(self.style.SUCCESS('***** Test Success *****'))
 
     def create_oath_session(self, oath_key_dict):
         """
@@ -233,9 +235,9 @@ class Command(BaseCommand):
         :type user_param: dict
         """
 
-        self.stdout.write(self.style.SUCCESS('username: ' + str(user_param['username'])))
-        self.stdout.write(self.style.SUCCESS('email: ' + str(user_param['email'])))
-        self.stdout.write(self.style.SUCCESS('sex: ' + str(user_param['sex'])))
-        self.stdout.write(self.style.SUCCESS('password: ' + str(user_param['password'])))
+        self.stdout.write(self.style.SUCCESS('username: ' + user_param['username']))
+        self.stdout.write(self.style.SUCCESS('email: ' + user_param['email']))
+        self.stdout.write(self.style.SUCCESS('sex: ' + user_param['sex']))
+        self.stdout.write(self.style.SUCCESS('password: ' + user_param['password']))
         self.stdout.write(self.style.SUCCESS('birth_year: ' + str(user_param['birth_year'])))
-        self.stdout.write(self.style.SUCCESS('img_url: ' + str(user_param['img_url'])))
+        self.stdout.write(self.style.SUCCESS('img_url: ' + user_param['img_url']))

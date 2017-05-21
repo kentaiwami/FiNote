@@ -35,8 +35,8 @@ class AuthUser(AbstractBaseUser, PermissionsMixin):
     def get_full_name(self):
         return self.username
 
-    username = models.CharField(unique=True, max_length=30, blank=False, default='username')
-    email = models.EmailField(unique=True, max_length=30, blank=False, default='email')
+    username = models.CharField(unique=True, max_length=100, blank=False, default='username')
+    email = models.EmailField(unique=True, max_length=100, blank=False, default='email')
     birthday = models.IntegerField(blank=False, default=1900)
     sex = models.CharField(max_length=1, blank=False, default='M')
     img = models.FileField(blank=True, null=False)
