@@ -26,7 +26,7 @@ class Command(BaseCommand):
             action='store_true',
             dest='test',
             default=False,
-            help='Save results that scraping onomatopoeia',
+            help='Do not Save new users',
         )
 
     def handle(self, *args, **options):
