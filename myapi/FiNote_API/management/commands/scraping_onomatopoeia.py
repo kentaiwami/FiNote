@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from ...models import Onomatopoeia
+from FiNote_API.models import Onomatopoeia
 import lxml.html
 import jaconv
 import requests

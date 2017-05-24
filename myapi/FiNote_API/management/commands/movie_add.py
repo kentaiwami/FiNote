@@ -1,4 +1,5 @@
 from django.core.management import BaseCommand
+from FiNote_API.models import Onomatopoeia, Movie
 
 
 class Command(BaseCommand):
@@ -14,4 +15,4 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        pass
+        print('result: ' + str(Onomatopoeia.objects.count()))
