@@ -1,8 +1,9 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.management import BaseCommand
 from django.db.models import Max, Min
-
+from rest_framework_jwt.serializers import User
 from FiNote_API.models import Onomatopoeia, Movie
-
+import random
 
 class Command(BaseCommand):
     help = 'Movie add random choice movies'
@@ -18,9 +19,9 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         if not options['test']:
-            self.get_movie_params()
+            user = self.choice_onomatopoeia()
         else:
-            self.get_movie_params()
+            pass
 
         # Top rated movies, Upcoming movies, Now playing movies, Popular movies, random choiceかを、
         # ルーレットホイールセレクションを使って選択する(最新の映画は割合を多めに)
@@ -28,22 +29,46 @@ class Command(BaseCommand):
         # ランダムで映画を選択
         # ランダムでDVDとFAVを選択
 
-        # オノマトペを選択
-
-        # オノマトペを何個付けるかを1〜3の間でランダムに選択
-        # 選択済みのオノマトペが上記の数になるまでループ
-        # min_id〜max_idまでをランダムに選択
-        # 取得したオノマトペが選択済みに含まれていなければ追加、
-        # 含まれている or DoesNotExistが発生したらやり直し
-
-        # Userのmax_idとmin_idを取得
-        # min_id〜max_idの間で乱数を発生させる
-        # 取得した乱数でgetを行い、DoesNotExistならやり直し
-        # 無事に取得できたらループを抜ける
-
         # 映画を登録する
-        max_id = Onomatopoeia.objects.all().aggregate(Max('pk'))
-        min_id = Onomatopoeia.objects.all().aggregate(Min('pk'))
 
-    def get_movie_params(self):
-        pass
+
+
+    def choice_onomatopoeia(self):
+        """
+        Choice onomatopoeia random counts(one to three).
+        :return: Onomatopoeia Object list.
+        """
+
+        max_pk = Onomatopoeia.objects.all().aggregate(Max('pk'))
+        min_pk = Onomatopoeia.objects.all().aggregate(Min('pk'))
+        choice_onomatopoeia_count = random.randint(1, 3)
+        onomatopoeia_obj_list = []
+
+        while len(onomatopoeia_obj_list) < choice_onomatopoeia_count:
+            pk = random.randint(min_pk['pk__min'], max_pk['pk__max'])
+            try:
+                onomatopoeia_obj = Onomatopoeia.objects.get(pk=pk)
+                onomatopoeia_obj_list.append(onomatopoeia_obj)
+            except ObjectDoesNotExist:
+                pass
+
+        return onomatopoeia_obj_list
+
+    def choice_user(self):
+        """
+        Get random choice a user.
+        :return: User object.
+        """
+
+        max_pk = User.objects.all().aggregate(Max('pk'))
+        min_pk = User.objects.all().aggregate(Min('pk'))
+
+        while True:
+            user_pk = random.randint(min_pk['pk__min'], max_pk['pk__max'])
+            try:
+                user = User.objects.get(pk=user_pk)
+                break
+            except ObjectDoesNotExist:
+                pass
+
+        return user
