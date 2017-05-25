@@ -76,33 +76,6 @@ class Command(BaseCommand):
         api_list = ['upcoming', 'top_rated', 'popular', 'now_playing']
         random_api_number = random.randint(0, len(api_list)-1)
 
-        # ページ数を把握するためにリクエストを投げる
-        url = 'https://api.themoviedb.org/3/movie/' + api_list[random_api_number]
-        query = {
-            'api_key': TMDB_APIKEY,
-            'language': language_list[0]
-        }
-        tmp_request = requests.get(url, params=query)
-        tmp_request_json = tmp_request.json()
-        total_pages = tmp_request_json['total_pages']
-
-        # ページを決めるためのルーレットホイールセレクションを行う(ページ頭を多めに)
-        rate_list = []
-        for i in range(0, total_pages):
-            if i in range(0, 3):
-                rate_list.append(total_pages * 10)
-            elif i in range(3, 6):
-                rate_list.append((total_pages * 1))
-            else:
-                rate_list.append((total_pages * 0.1))
-
-        arrow = random.randint(1, int(sum(rate_list)))
-        hit_number = 0
-        x = rate_list[hit_number]
-        while arrow > x:
-            hit_number += 1
-            x += rate_list[hit_number]
-
         # 日本語と英語のリクエストを投げる
         select_movie_index = 0
         movie = {}
@@ -111,7 +84,7 @@ class Command(BaseCommand):
             query = {
                 'api_key': TMDB_APIKEY,
                 'language': language,
-                'page': hit_number
+                'page': 1
             }
             request = requests.get(url, params=query)
             request_json = request.json()
