@@ -46,6 +46,7 @@
 
 ## 使用している外部サービス
 * さくらのレンタルサーバ
+* Twitter
 * [The Movie Database](https://www.themoviedb.org)
 * [オノマトペ辞典](http://sura-sura.com)
 
