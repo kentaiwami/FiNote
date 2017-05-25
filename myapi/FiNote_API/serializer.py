@@ -73,7 +73,7 @@ class StatusUpdateSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = AuthUser
-        fields = ('name',)
+        fields = ('username',)
 
 
 class GenreSerializer(serializers.ModelSerializer):
