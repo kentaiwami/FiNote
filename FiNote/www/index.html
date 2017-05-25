@@ -92,15 +92,15 @@
               <!-- ユーザ名とパスワードのフォーム -->
               <ons-list-header class="brown_color">入力項目</ons-list-header>
               <div class="form-row">
-                <input type="text" id="username" class="text-input--underbar width-full signup_form_input" placeholder="ユーザ名" value="">
+                <input type="text" id="username" class="text-input--underbar width-full list_signup_form_input" placeholder="ユーザ名" value="">
               </div>
 
               <div class="form-row">
-                <input type="text" id="email" class="text-input--underbar width-full signup_form_input" placeholder="メールアドレス" value="">
+                <input type="text" id="email" class="text-input--underbar width-full list_signup_form_input" placeholder="メールアドレス" value="">
               </div>
 
               <div class="form-row">
-                <input type="password" id="password" class="text-input--underbar width-full signup_form_input" placeholder="パスワード" value="">
+                <input type="password" id="password" class="text-input--underbar width-full list_signup_form_input" placeholder="パスワード" value="">
               </div>
 
               <div>
@@ -143,11 +143,11 @@
 
         <!-- ログイン画面 -->
         <ons-carousel-item id="signin_carousel">
-          <div class="login-form">
-            <input id="signin_username" type="text" class="text-input--underbar signin_form_input" placeholder="ユーザ名" value="">
-            <input id="signin_password" type="password" class="text-input--underbar signin_form_input" placeholder="パスワード" value="">
+          <div class="large_margin_form_area">
+            <input id="signin_username" type="text" class="text-input--underbar large_margin_form_input" placeholder="ユーザ名" value="">
+            <input id="signin_password" type="password" class="text-input--underbar large_margin_form_input" placeholder="パスワード" value="">
             <br><br>
-            <ons-button id="signin_button" modifier="large" class="large-button" onClick="Signin.tap_sign_in_button()" disabled>ログイン</ons-button>
+            <ons-button id="signin_button" modifier="large" class="large_button" onClick="Signin.tap_sign_in_button()" disabled>ログイン</ons-button>
           </div>
         </ons-carousel-item>
       </ons-carousel>
@@ -574,12 +574,12 @@
         <div class="center brown_color">パスワードの変更</div>
       </ons-toolbar>
 
-      <div class="login-form">
-        <input id="now_password" type="password" class="text-input--underbar signin_form_input" placeholder="現在のパスワード" value="">
-        <input id="new_password" type="password" class="text-input--underbar signin_form_input" placeholder="新しいパスワード" value="">
-        <input id="re_new_password" type="password" class="text-input--underbar signin_form_input" placeholder="新しいパスワード(確認用)" value="">
+      <div class="large_margin_form_area">
+        <input id="now_password" type="password" class="text-input--underbar large_margin_form_input" placeholder="現在のパスワード" value="">
+        <input id="new_password" type="password" class="text-input--underbar large_margin_form_input" placeholder="新しいパスワード" value="">
+        <input id="re_new_password" type="password" class="text-input--underbar large_margin_form_input" placeholder="新しいパスワード(確認用)" value="">
         <br><br>
-        <ons-button id="submit_change_password" modifier="large" class="large-button" onClick="Change_Password.tap_submit_button()" disabled>変更する</ons-button>
+        <ons-button id="submit_change_password" modifier="large" class="large_button" onClick="Change_Password.tap_submit_button()" disabled>変更する</ons-button>
       </div>
 
       <!-- パスワード変更成功時のアラート -->
@@ -608,10 +608,10 @@
         <div class="center brown_color">メールアドレスの変更</div>
       </ons-toolbar>
 
-      <div class="login-form">
-        <input id="new_email" type="text" class="text-input--underbar signin_form_input" placeholder="新しいメールアドレス" value="">
+      <div class="large_margin_form_area">
+        <input id="new_email" type="text" class="text-input--underbar large_margin_form_input" placeholder="新しいメールアドレス" value="">
         <br><br>
-        <ons-button id="submit_change_email" modifier="large" class="large-button" onClick="Change_Email.tap_submit_button()" disabled>変更する</ons-button>
+        <ons-button id="submit_change_email" modifier="large" class="large_button" onClick="Change_Email.tap_submit_button()" disabled>変更する</ons-button>
       </div>
 
       <!-- メールアドレス変更成功時のアラート -->

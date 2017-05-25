@@ -11,6 +11,7 @@ from django.core.exceptions import ObjectDoesNotExist
 import base64
 from django.core.files.base import ContentFile
 
+
 class SignUpViewSet(viewsets.ViewSet):
     queryset = User.objects.all()
     serializer_class = SignUpSerializer
@@ -150,7 +151,6 @@ class SignInNoTokenViewSet(viewsets.ViewSet):
                 raise ValidationError('ユーザ名かパスワードが違います')
 
 
-
 class ChangePasswordViewSet(viewsets.ViewSet):
     queryset = User.objects.all()
     serializer_class = ChangePasswordSerializer
@@ -185,8 +185,6 @@ class ChangePasswordViewSet(viewsets.ViewSet):
                     return JsonResponse({'token': str(token)})
                 else:
                     raise ValidationError('現在のパスワードが異なるため変更に失敗しました')
-
-
 
             except ObjectDoesNotExist:
                 raise ValidationError('ユーザが見つかりませんでした')
@@ -318,7 +316,9 @@ class MovieAddViewSet(viewsets.ViewSet):
         """
         When MovieAdd api access, run this method.
         This method is add movie, onomatopoeia and genre. If success all process, response genre id and name.
-        :param request: Request user's data.(username, movie_title, overview, movie_id(tmdb_id), genre_id_list, onomatopoeia, dvd and fav)
+        :param request: Request user's data.(username, movie_title, overview,
+                                             movie_id(tmdb_id), genre_id_list,
+                                             onomatopoeia, dvd and fav)
         :return: Genre id and name json data.
         
         :type request object

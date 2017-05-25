@@ -236,6 +236,12 @@ var ID = {
     var id_obj = {navigator: 'myNavigator'};
     return id_obj;
   },
+
+  get_localStorage_ID: function() {
+    var id_obj = {username: 'username', password: 'password', email: 'email',
+                  birthday: 'birthday', sex: 'sex', adult: 'adult', token: 'token', profile_img: 'profile_img', signup_flag: 'signup_flag'};
+    return id_obj;
+  }
 };
 
 
@@ -258,7 +264,7 @@ var Index = {
    */
   check_signup: function(){
     var storage = window.localStorage;
-    var signup_flag = storage.getItem('signup_flag');
+    var signup_flag = storage.getItem(ID.get_localStorage_ID().signup_flag);
 
     //ユーザ情報が登録されている場合は自動ログインを行う
     if (signup_flag == 'true') {
@@ -397,17 +403,16 @@ var Signup = {
 
       //ローカルに個人情報を保存
       var storage = window.localStorage;
-      storage.setItem('username', username);
-      storage.setItem('password', password);
-      storage.setItem('email', email);
-      storage.setItem('birthday', birthday);
-      storage.setItem('sex', sex);
-      storage.setItem('adult', false);
-      storage.setItem('token', json_data.token);
-      storage.setItem('profile_img', '');
-
-      //同時にこれらの情報が記録されているかを判断するフラグも保存する
-      storage.setItem('signup_flag', true);
+      storage.setItem(ID.get_localStorage_ID().username, username);
+      storage.setItem(ID.get_localStorage_ID().password, password);
+      storage.setItem(ID.get_localStorage_ID().email, email);
+      storage.setItem(ID.get_localStorage_ID().birthday, birthday);
+      storage.setItem(ID.get_localStorage_ID().sex, sex);
+      storage.setItem(ID.get_localStorage_ID().adult, false);
+      storage.setItem(ID.get_localStorage_ID().signup_flag, true);
+      storage.setItem(ID.get_localStorage_ID().token, json_data.token);
+      storage.setItem(ID.get_localStorage_ID().profile_img, '');
+      
 
       Utility.stop_spinner();
       document.getElementById(ID.get_signup_ID().success_alert).show();
@@ -540,14 +545,14 @@ var Signin = {
 
       // ローカルDBへユーザ情報を格納
       var storage = window.localStorage;
-      storage.setItem('username', backup_json[backup_json_length - 5].username);
-      storage.setItem('password', password);
-      storage.setItem('email', backup_json[backup_json_length - 4].email);
-      storage.setItem('birthday', backup_json[backup_json_length - 3].birthday);
-      storage.setItem('sex', backup_json[backup_json_length - 2].sex);
-      storage.setItem('token', backup_json[backup_json_length - 6].token);
-      storage.setItem('signup_flag', true);
-      storage.setItem('adult', false);
+      storage.setItem(ID.get_localStorage_ID().username, backup_json[backup_json_length - 5].username);
+      storage.setItem(ID.get_localStorage_ID().password, password);
+      storage.setItem(ID.get_localStorage_ID().email, backup_json[backup_json_length - 4].email);
+      storage.setItem(ID.get_localStorage_ID().birthday, backup_json[backup_json_length - 3].birthday);
+      storage.setItem(ID.get_localStorage_ID().sex, backup_json[backup_json_length - 2].sex);
+      storage.setItem(ID.get_localStorage_ID().token, backup_json[backup_json_length - 6].token);
+      storage.setItem(ID.get_localStorage_ID().signup_flag, true);
+      storage.setItem(ID.get_localStorage_ID().adult, false);
 
       // サーバから返ってきたレスポンスリストの1つ1つに対してpromiseを作成
       var promises = [];
@@ -816,9 +821,9 @@ var Movies = {
   draw_movie_content: function() {
     //自動ログイン
     var storage = window.localStorage;
-    var username = storage.getItem('username');
-    var signup_flag = storage.getItem('signup_flag');
-    var token = storage.getItem('token');
+    var username = storage.getItem(ID.get_localStorage_ID().username);
+    var signup_flag = storage.getItem(ID.get_localStorage_ID().signup_flag);
+    var token = storage.getItem(ID.get_localStorage_ID().token);
 
     //ユーザ情報が存在する場合はローディング画面を表示する
     var callback = function(){
@@ -1079,7 +1084,7 @@ var Movies = {
       }
 
       var storage = window.localStorage;
-      var username = storage.getItem('username');
+      var username = storage.getItem(ID.get_localStorage_ID().username);
       var request_data = {
         "username": username,
         "movie_id": result.rows.item(0).tmdb_id,
@@ -1508,7 +1513,7 @@ var Movies_detail = {
           promises = [Movieadd.set_onomatopoeia_local(feeling_name_list)];
         }else {
           var storage = window.localStorage;
-          var username = storage.getItem('username');
+          var username = storage.getItem(ID.get_localStorage_ID().username);
 
           var request_data = {
             "username": username,
@@ -1604,7 +1609,7 @@ var Movies_detail = {
         var query = 'UPDATE movie SET dvd = ?, fav = ? WHERE id = ?';
 
         var storage = window.localStorage;
-        var username = storage.getItem('username');
+        var username = storage.getItem(ID.get_localStorage_ID().username);
         var movie_tmdb_id = Movies_detail.current_movie.movie_record.tmdb_id;
         var request_data = {
           "username": username,
@@ -1672,7 +1677,7 @@ var Movies_detail = {
 
       var query = 'DELETE FROM movie WHERE id = ?';
       var storage = window.localStorage;
-      var username = storage.getItem('username');
+      var username = storage.getItem(ID.get_localStorage_ID().username);
       var request_data = {
         "username": username,
         "movie_id": movie_tmdb_id
@@ -1903,7 +1908,7 @@ var Movieadd_search = {
   create_request_movie_search: function(movie_title, language){
     return new Promise(function(resolve, reject) {
       var storage = window.localStorage;
-      var adult = storage.getItem('adult');
+      var adult = storage.getItem(ID.get_localStorage_ID().adult);
       console.log(adult);
 
       var request = new XMLHttpRequest();
@@ -2209,12 +2214,12 @@ var Movieadd = {
 
       // ローカルからユーザ名の取得
       var storage = window.localStorage;
-      var username = storage.getItem('username');
+      var username = storage.getItem(ID.get_localStorage_ID().username);
 
       // ツールバーとユーザアクション部分のボタンを無効にする
       // 気分リストへの登録件数の表示を透過させる
-      var button_list = [document.getElementById(ID.get_moveadd_ID().add_button),document.getElementById(ID.get_moveadd_ID().feeling_button),document.getElementById(ID.get_moveadd_ID().dvd_button),document.getElementById(ID.get_moveadd_ID().share_button),document.getElementById(ID.get_moveadd_ID().show_info_button),document.getElementById(ID.get_moveadd_ID().back_button)];
-      Utility.setAttribute_list_object(button_list, 'disabled');
+      var button_list = [ID.get_moveadd_ID().add_button,ID.get_moveadd_ID().feeling_button,ID.get_moveadd_ID().dvd_button,ID.get_moveadd_ID().share_button,ID.get_moveadd_ID().show_info_button,ID.get_moveadd_ID().back_button];
+      Utility.setAttribute_list_object(button_list, 'disabled', 'disabled');
       document.getElementById(ID.get_moveadd_ID().feeling_number).style.opacity = '.4';
 
       var user_onomatopoeia_list = Movieadd.userdata.feeling_name_list;
@@ -2538,9 +2543,9 @@ var Movieadd = {
         document.getElementById(ID.get_moveadd_ID().success_sns_alert).show();
 
         //映画追加画面のボタンオブジェクト
-          var button_list = [document.getElementById(ID.get_moveadd_ID().add_button),document.getElementById(ID.get_moveadd_ID().feeling_button),document.getElementById(ID.get_moveadd_ID().dvd_button),document.getElementById(ID.get_moveadd_ID().share_button),document.getElementById(ID.get_moveadd_ID().show_info_button),document.getElementById(ID.get_moveadd_ID().back_button)];
+          var button_list = [ID.get_moveadd_ID().add_button,ID.get_moveadd_ID().feeling_button,ID.get_moveadd_ID().dvd_button,ID.get_moveadd_ID().share_button,ID.get_moveadd_ID().show_info_button,ID.get_moveadd_ID().back_button];
 
-          Utility.setAttribute_list_object(button_list, 'disabled');
+          Utility.setAttribute_list_object(button_list, 'disabled', 'disabled');
 
           document.getElementById(ID.get_moveadd_ID().feeling_number).style.opacity = '.4';
           document.getElementById(ID.get_moveadd_ID().add_button).style.opacity = '.4';
@@ -2551,9 +2556,9 @@ var Movieadd = {
       Utility.show_error_alert('投稿エラー',msg,'OK');
 
       //映画追加画面のボタンオブジェクト
-        var button_list = [document.getElementById(ID.get_moveadd_ID().add_button),document.getElementById(ID.get_moveadd_ID().feeling_button),document.getElementById(ID.get_moveadd_ID().dvd_button),document.getElementById(ID.get_moveadd_ID().share_button),document.getElementById(ID.get_moveadd_ID().show_info_button),document.getElementById(ID.get_moveadd_ID().back_button)];
+        var button_list = [ID.get_moveadd_ID().add_button,ID.get_moveadd_ID().feeling_button,ID.get_moveadd_ID().dvd_button,ID.get_moveadd_ID().share_button,ID.get_moveadd_ID().show_info_button,ID.get_moveadd_ID().back_button];
 
-        Utility.setAttribute_list_object(button_list, 'disabled');
+        Utility.setAttribute_list_object(button_list, 'disabled', 'disabled');
         document.getElementById(ID.get_moveadd_ID().feeling_number).style.opacity = '.4';
         document.getElementById(ID.get_moveadd_ID().add_button).style.opacity = '.4';
     };
@@ -3211,9 +3216,9 @@ var Setting = {
    */
   show_contents: function() {
     var storage = window.localStorage;
-    var username = storage.getItem('username');
-    var email = storage.getItem('email');
-    var adult = storage.getItem('adult');
+    var username = storage.getItem(ID.get_localStorage_ID().username);
+    var email = storage.getItem(ID.get_localStorage_ID().email);
+    var adult = storage.getItem(ID.get_localStorage_ID().adult);
 
     var callback = function() {
       DB_method.count_record('profile_img').then(function(count_result) {
@@ -3289,7 +3294,7 @@ var Setting = {
 
         // チェック状態が変更されたらローカルDBへ保存
         var storage = window.localStorage;
-        storage.setItem('adult', event.value);
+        storage.setItem(ID.get_localStorage_ID().adult, event.value);
       }
     });
   },
@@ -3305,6 +3310,10 @@ var Setting = {
     Utility.pop_page();
   },
 
+
+  /**
+   * プロフ画像の選択、ローカルとサーバへの保存を行う
+   */
   tap_profile_img: function() {
     var cameraSuccess = function(image) {
       Utility.show_spinner(ID.get_setting_ID().page_id);
@@ -3313,7 +3322,7 @@ var Setting = {
       var query = 'UPDATE profile_img SET img = ? WHERE id = 1';
       var data = 'data:image/jpeg;base64,'+image;
       var api_request_data = {
-        "token": storage.getItem('token'),
+        "token": storage.getItem(ID.get_localStorage_ID().token),
         "img": data
       };
       var promises =
@@ -3349,6 +3358,7 @@ var Setting = {
       targetWidth: window.innerWidth * 0.2
     };
 
+    // 写真の選択を行う
     navigator.camera.getPicture(cameraSuccess, cameraError, options);
   }
 };
@@ -3409,7 +3419,7 @@ var Change_Password = {
     var re_new_pass = document.getElementById(ID.get_change_password_ID().re_new_password).value;
     var storage = window.localStorage;
 
-    if (now_pass != storage.getItem('password')) {
+    if (now_pass != storage.getItem(ID.get_localStorage_ID().password)) {
       Utility.show_error_alert('パスワード変更エラー', '現在のパスワードが間違っています', 'OK');
       Utility.stop_spinner();
     }else if(now_pass == new_pass) {
@@ -3418,17 +3428,17 @@ var Change_Password = {
     }else if(new_pass != re_new_pass) {
       Utility.show_error_alert('パスワード変更エラー', '新しいパスワードの入力を再度確認してください', 'OK');
       Utility.stop_spinner();
-    }else if(now_pass == storage.getItem('password')) {
+    }else if(now_pass == storage.getItem(ID.get_localStorage_ID().password)) {
       var data = {
-        "token": storage.getItem('token'),
+        "token": storage.getItem(ID.get_localStorage_ID().token),
         "now_password": now_pass,
         "new_password": new_pass
       };
 
       Utility.FiNote_API('changepassword', data, 'POST').then(function(token_obj) {
         var json_data = JSON.parse(token_obj);
-        storage.setItem('password', new_pass);
-        storage.setItem('token', json_data.token);
+        storage.setItem(ID.get_localStorage_ID().password, new_pass);
+        storage.setItem(ID.get_localStorage_ID().token, json_data.token);
 
         Utility.stop_spinner();
         var alert = document.getElementById(ID.get_change_password_ID().success_alert);
@@ -3498,7 +3508,7 @@ var Change_Email = {
     if(Utility.validateMail(new_email)) {
       var storage = window.localStorage;
       var data = {
-        "token": storage.getItem('token'),
+        "token": storage.getItem(ID.get_localStorage_ID().token),
         "new_email": new_email
       };
 
@@ -3507,7 +3517,7 @@ var Change_Email = {
 
         // json形式にしてからローカルへ新しいメールアドレスを保存
         var json_data = JSON.parse(new_email_obj);
-        storage.setItem('email', json_data.new_email);
+        storage.setItem(ID.get_localStorage_ID().email, json_data.new_email);
 
         // 新しいメールアドレスで設定画面の文字を上書き
         document.getElementById(ID.get_setting_ID().email).innerHTML = new_email;
@@ -3544,7 +3554,7 @@ var Change_Sex = {
   initialize: function() {
     var callback = function() {
       var storage = window.localStorage;
-      var now_sex = storage.getItem('sex');
+      var now_sex = storage.getItem(ID.get_localStorage_ID().sex);
 
       var radio_id = '';
       if (now_sex == 'M') {
@@ -3570,17 +3580,17 @@ var Change_Sex = {
 
     var storage = window.localStorage;
     var data = {
-      "token": storage.getItem('token'),
+      "token": storage.getItem(ID.get_localStorage_ID().token),
       "new_sex": sex
     };
 
     Utility.FiNote_API('changesex', data, 'POST').then(function(sex_obj) {
       // json形式にしてからローカルへ新しい性別を保存
       var json_data = JSON.parse(sex_obj);
-      storage.setItem('sex', json_data.new_sex);
+      storage.setItem(ID.get_localStorage_ID().sex, json_data.new_sex);
 
       Utility.stop_spinner();
-      console.log(storage.getItem('sex') + ' is seted.');
+      console.log(storage.getItem(ID.get_localStorage_ID().sex) + ' is seted.');
 
       // アラートの表示
       var alert = document.getElementById(ID.get_change_sex_ID().success_alert);
@@ -3662,13 +3672,13 @@ var Utility = {
    */
   show_localstorage: function(){
     var storage = window.localStorage;
-    var username = storage.getItem('username');
-    var password = storage.getItem('password');
-    var email = storage.getItem('email');
-    var birthday = storage.getItem('birthday');
-    var sex = storage.getItem('sex');
-    var signup_flag = storage.getItem('signup_flag');
-    var adult = storage.setItem('adult', false);
+    var username = storage.getItem(ID.get_localStorage_ID().username);
+    var password = storage.getItem(ID.get_localStorage_ID().password);
+    var email = storage.getItem(ID.get_localStorage_ID().email);
+    var birthday = storage.getItem(ID.get_localStorage_ID().birthday);
+    var sex = storage.getItem(ID.get_localStorage_ID().sex);
+    var signup_flag = storage.getItem(ID.get_localStorage_ID().signup_flag);
+    var adult = storage.setItem(ID.get_localStorage_ID().adult, false);
     var obj = {'username':username, 'password':password, 'email': email, 'birthday':birthday, 'sex':sex, 'signup_flag':signup_flag, 'adult': adult};
     console.log(obj);
   },
@@ -3750,12 +3760,12 @@ var Utility = {
       Index.formcheck[1] = true;
 
       var storage = window.localStorage;
-      storage.setItem('username', document.getElementById(ID.get_signup_ID().username).value);
-      storage.setItem('password', document.getElementById(ID.get_signup_ID().password).value);
-      storage.setItem('birthday', Number(document.getElementById(ID.get_signup_ID().birthday).value));
-      storage.setItem('sex', 'M');
-      storage.setItem('signup_flag', true);
-      storage.setItem('adult', false);
+      storage.setItem(ID.get_localStorage_ID().username, document.getElementById(ID.get_signup_ID().username).value);
+      storage.setItem(ID.get_localStorage_ID().password, document.getElementById(ID.get_signup_ID().password).value);
+      storage.setItem(ID.get_localStorage_ID().birthday, Number(document.getElementById(ID.get_signup_ID().birthday).value));
+      storage.setItem(ID.get_localStorage_ID().sex, 'M');
+      storage.setItem(ID.get_localStorage_ID().signup_flag, true);
+      storage.setItem(ID.get_localStorage_ID().adult, false);
     };
     Utility.check_page_init(ID.get_signup_ID().page_id,callback);
   },
@@ -3934,25 +3944,26 @@ var Utility = {
 
 
   /**
-   * 複数のオブジェクトに同じattributeをセットする
-   * @param {[Array]} object_list    [attributeをセットしたいオブジェクトを格納した配列]
-   * @param {[String]} attribute_name [セットしたいattribute名]
+   * 引数で渡されたidと属性を一括でセットする
+   * @param {[Array]} id_list          [属性をセットしたいidを含んだ配列]
+   * @param {[String]} attribute_name_0 [属性名]
+   * @param {[String]} attribute_name_1 [属性値]
    */
-  setAttribute_list_object: function(object_list, attribute_name) {
-    for(var i = 0; i < object_list.length; i++) {
-      object_list[i].setAttribute(attribute_name, attribute_name);
+  setAttribute_list_object: function(id_list, attribute_name_0, attribute_name_1) {
+    for(var i = 0; i < id_list.length; i++) {
+      document.getElementById(id_list[i]).setAttribute(attribute_name_0, attribute_name_1);
     }
   },
 
 
   /**
    * 複数のオブジェクトから同じattributeを取り除く
-   * @param  {[Array]} object_list    [attributeを取り除きたいオブジェクトを格納した配列]
-   * @param  {[String]} attribute_name [取り除きたいattribute名]
+   * @param  {[Array]} id_list    [属性を取り除きたいidを格納した配列]
+   * @param  {[String]} attribute_name [取り除きたい属性名]
    */
-  removeAttribute_list_object: function(object_list, attribute_name) {
-    for(var i = 0; i < object_list.length; i++) {
-      object_list[i].removeAttribute(attribute_name);
+  removeAttribute_list_object: function(id_list, attribute_name) {
+    for(var i = 0; i < id_list.length; i++) {
+      document.getElementById(id_list[i]).removeAttribute(attribute_name);
     }
   },
 

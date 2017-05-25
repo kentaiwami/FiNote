@@ -1,4 +1,7 @@
 @charset "UTF-8";
+/************************************************************
+                            Import
+ ************************************************************/
 .ct-label {
   fill: rgba(0, 0, 0, 0.4);
   color: rgba(0, 0, 0, 0.4);
@@ -741,11 +744,11 @@
   color: #462401;
 }
 
-.brown_bg_color, .large-button {
+.brown_bg_color, .large_button {
   background-color: #462401;
   color: #FFF;
 }
-.brown_bg_color:active, .large-button:active {
+.brown_bg_color:active, .large_button:active {
   background-color: #462401;
   color: #FFF;
 }
@@ -773,7 +776,7 @@
 }
 
 /************************************************************
-                          	Signup
+                            Form
  ************************************************************/
 .form-row {
   margin: .8rem;
@@ -783,35 +786,17 @@
   width: 100%;
 }
 
-.note {
-  margin: .6rem;
-  font-size: 0.75rem;
-  opacity: .8;
-}
-
-.vspc {
-  margin-top: 1.5rem;
-}
-
 .formarea {
   height: 93vh;
 }
 
-.signup_form_input {
-  padding: 10px 0px;
-  height: 3rem;
-}
-
-/************************************************************
-                            Signin
- ************************************************************/
-.login-form {
+.large_margin_form_area {
   text-align: center;
   width: 80%;
   margin: 60px auto 0;
 }
 
-.signin_form_input {
+.large_margin_form_input {
   display: block;
   width: 100%;
   height: 100%;
@@ -822,49 +807,9 @@
   outline: none;
 }
 
-.large-button {
-  width: 100%;
-  margin: 0 auto;
-}
-
-/************************************************************
-		                       Movies
-************************************************************/
-.center_message {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  margin-top: 5vh;
-  opacity: .6;
-}
-
-.list_img, .list_img_large {
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
-  width: 15vw;
-  height: auto;
-  background: url(../../img/loading.gif) no-repeat center;
-  object-fit: contain;
-}
-
-.list_title {
-  font-weight: 500;
-}
-
-.list_sub_title {
-  margin-top: .3rem;
-  font-size: 1rem;
-}
-
-.list_sub_title_small {
-  margin-top: 1rem;
-}
-
-.list_button_row {
-  position: absolute;
-  bottom: 3.5%;
-  right: 2%;
-  width: 40vw;
+.list_signup_form_input {
+  padding: 10px 0px;
+  height: 3rem;
 }
 
 .movies_search_input {
@@ -872,46 +817,6 @@
   margin: 2vw 5vw;
 }
 
-.movies_reset_button {
-  position: absolute;
-  top: 0%;
-  left: 80%;
-  visibility: hidden;
-}
-
-/************************************************************
-                        Movie Detail
-************************************************************/
-.poster_area {
-  margin: 1rem 0rem;
-}
-
-.poster {
-  display: block;
-  margin: 0 auto;
-  width: 40vw;
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
-}
-
-.small_overview, .small_overview_opacity {
-  font-size: 0.75rem;
-}
-
-.small_overview_opacity {
-  opacity: .5;
-}
-
-.delete_button {
-  width: 96vw;
-  margin-top: 3rem;
-  margin-right: auto;
-  margin-left: auto;
-  margin-bottom: 3rem;
-}
-
-/************************************************************
-                       Movie Add Search
-************************************************************/
 .search_form {
   width: 80vw;
 }
@@ -923,11 +828,22 @@
   padding: .4rem 0rem;
 }
 
-.reset_button {
-  position: absolute;
-  top: 0;
-  margin-left: 100%;
-  visibility: hidden;
+/************************************************************
+                            Message
+ ************************************************************/
+.note {
+  margin: .6rem;
+  font-size: 0.75rem;
+  opacity: .8;
+}
+
+.center_message, .feeling_no_message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 5vh;
+  opacity: .6;
 }
 
 .all_center_message {
@@ -939,17 +855,12 @@
   opacity: .6;
 }
 
-.list_img_large {
-  width: 25vw;
+.small_overview, .small_overview_opacity {
+  font-size: 0.75rem;
 }
 
-.list_title_bold {
-  font-weight: 500;
-}
-
-.list_sub_title_small {
-  font-size: 3.5vw;
-  line-height: 1rem;
+.small_overview_opacity {
+  opacity: .5;
 }
 
 .exist_message {
@@ -967,60 +878,6 @@
   margin-left: 0.1em;
   margin-right: 0.3em;
   content: '追加済み';
-}
-
-/************************************************************
-                          Movie Add
- ************************************************************/
-.btn_disable {
-  opacity: .4;
-}
-.btn_disable:active {
-  color: #462401;
-}
-
-.notification_space_small, .notification_space_large {
-  position: relative;
-  margin-top: -15vw;
-  margin-left: 13vw;
-  background-color: #462401;
-  font-size: .75rem;
-}
-
-.notification_space_large {
-  margin-left: 15vw;
-}
-
-.card {
-  height: 80vh;
-  background-color: #FFF;
-  background-repeat: no-repeat;
-  background-size: cover;
-  color: #FFF;
-}
-
-.modal__content {
-  font-size: 4vmin;
-}
-
-.card_modal_prev, .card_modal {
-  height: 80vh;
-  z-index: 0;
-  opacity: 0;
-}
-
-.card_modal {
-  position: fixed;
-  height: 87%;
-}
-
-.card_back_image {
-  width: 100%;
-  height: 80vh;
-  background-image: url("../../img/noimage.png");
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
 }
 
 .rating {
@@ -1050,6 +907,214 @@
   vertical-align: 0px;
 }
 
+.small_message, .list_small_message {
+  opacity: .5;
+  font-size: 0.75rem;
+}
+
+.feeling_no_message {
+  margin-top: 0;
+}
+
+.no_data_graph_message {
+  height: 40.4vh;
+  margin-top: 30vh;
+  opacity: .6;
+  text-align: center;
+}
+
+.profile-name {
+  font-size: 18px;
+  padding: 4px 0 2px 0;
+}
+
+.profile-email {
+  font-size: 15px;
+  opacity: .4;
+}
+
+/************************************************************
+                            Button
+************************************************************/
+.vspc {
+  margin-top: 1.5rem;
+}
+
+.large_button {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.movies_reset_button {
+  position: absolute;
+  top: 0%;
+  left: 80%;
+  visibility: hidden;
+}
+
+.delete_button {
+  width: 96vw;
+  margin-top: 3rem;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 3rem;
+}
+
+.reset_button {
+  position: absolute;
+  top: 0;
+  margin-left: 100%;
+  visibility: hidden;
+}
+
+.btn_disable {
+  opacity: .4;
+}
+.btn_disable:active {
+  color: #462401;
+}
+
+/************************************************************
+                            List
+************************************************************/
+.list_img, .list_img_large {
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
+  width: 15vw;
+  height: auto;
+  background: url(../../img/loading.gif) no-repeat center;
+  object-fit: contain;
+}
+
+.list_img_large {
+  width: 25vw;
+}
+
+.list_title {
+  font-weight: 500;
+}
+
+.list_title_bold {
+  font-weight: 500;
+}
+
+.list_sub_title {
+  margin-top: .3rem;
+  font-size: 1rem;
+}
+
+.list_sub_title_small {
+  margin-top: 1rem;
+  font-size: 3.5vw;
+  line-height: 1rem;
+}
+
+.list_button_row {
+  position: absolute;
+  bottom: 3.5%;
+  right: 2%;
+  width: 40vw;
+}
+
+.settings-header {
+  margin-bottom: -.8rem;
+  padding: 1.5rem 0px 0px .5rem;
+  opacity: .6;
+}
+
+.settings-list {
+  margin-top: 1rem;
+}
+
+.settings-logout {
+  margin-right: .5rem;
+  opacity: .6;
+}
+
+.list_small_message {
+  margin: .5rem;
+}
+
+/************************************************************
+                          Image
+************************************************************/
+.poster_area {
+  margin: 1rem 0rem;
+}
+
+.poster {
+  display: block;
+  margin: 0 auto;
+  width: 40vw;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
+}
+
+.card {
+  height: 80vh;
+  background-color: #FFF;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #FFF;
+}
+
+.card_back_image {
+  width: 100%;
+  height: 80vh;
+  background-image: url("../../img/noimage.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.profile-image {
+  width: 20vw;
+  height: 20vw;
+  border-radius: 4px;
+  border: inset 1px rgba(0, 0, 0, 0.3);
+  object-fit: cover;
+  background: url(../../img/loading.gif) no-repeat center;
+}
+
+/************************************************************
+                        Notification
+************************************************************/
+.notification_space_small, .notification_space_large {
+  position: relative;
+  margin-top: -15vw;
+  margin-left: 13vw;
+  background-color: #462401;
+  font-size: .75rem;
+}
+
+.notification_space_large {
+  margin-left: 15vw;
+}
+
+.alert {
+  text-align: center;
+  padding: 10px;
+}
+
+/************************************************************
+                            Modal
+************************************************************/
+.modal__content {
+  font-size: 4vmin;
+}
+
+.card_modal_prev, .card_modal {
+  height: 80vh;
+  z-index: 0;
+  opacity: 0;
+}
+
+.card_modal {
+  position: fixed;
+  height: 87%;
+}
+
+/************************************************************
+                            Row & Col
+ ************************************************************/
 .action-col {
   text-align: center;
   padding: 10px 0 8px;
@@ -1076,44 +1141,6 @@
   font-size: 12px;
 }
 
-.alert {
-  text-align: center;
-  padding: 10px;
-}
-
-/************************************************************
-                        Movie Add Status
-************************************************************/
-.center_button {
-  margin-top: 2.5vh;
-  padding: 2.5vh;
-}
-
-.small_message, .list_small_message {
-  opacity: .5;
-  font-size: 0.75rem;
-}
-
-/************************************************************
-                        Movie Add Feeling
-************************************************************/
-.feeling_no_message {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  opacity: .6;
-}
-
-/************************************************************
-                            User
-************************************************************/
-.chart_area {
-  margin: .987rem 0rem;
-  height: 40vw;
-  padding: .987rem 0rem;
-}
-
 .info-col {
   height: 60px;
   line-height: 1;
@@ -1137,56 +1164,20 @@
   color: #462401;
 }
 
-.no_data_graph_message {
-  height: 40.4vh;
-  margin-top: 30vh;
-  opacity: .6;
-  text-align: center;
+/************************************************************
+                            Chart
+************************************************************/
+.chart_area {
+  margin: .987rem 0rem;
+  height: 40vw;
+  padding: .987rem 0rem;
 }
 
 /************************************************************
-                          Setting
+                          Other
 ************************************************************/
 .profile-wrapper {
   padding: 16px 10px 0 10px;
-}
-
-.profile-image {
-  width: 20vw;
-  height: 20vw;
-  border-radius: 4px;
-  border: inset 1px rgba(0, 0, 0, 0.3);
-  object-fit: cover;
-  background: url(../../img/loading.gif) no-repeat center;
-}
-
-.profile-name {
-  font-size: 18px;
-  padding: 4px 0 2px 0;
-}
-
-.profile-email {
-  font-size: 15px;
-  opacity: .4;
-}
-
-.settings-header {
-  margin-bottom: -.8rem;
-  padding: 1.5rem 0px 0px .5rem;
-  opacity: .6;
-}
-
-.settings-list {
-  margin-top: 1rem;
-}
-
-.settings-logout {
-  margin-right: .5rem;
-  opacity: .6;
-}
-
-.list_small_message {
-  margin: .5rem;
 }
 
 /*# sourceMappingURL=index.css.map */
