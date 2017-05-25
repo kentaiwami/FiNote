@@ -78,13 +78,14 @@ class Command(BaseCommand):
 
         # 日本語と英語のリクエストを投げる
         select_movie_index = 0
+        select_page_random = random.randint(1, 3)
         movie = {}
         for i, language in enumerate(language_list):
             url = 'https://api.themoviedb.org/3/movie/' + api_list[random_api_number]
             query = {
                 'api_key': TMDB_APIKEY,
                 'language': language,
-                'page': 1
+                'page': select_page_random
             }
             request = requests.get(url, params=query)
             request_json = request.json()
