@@ -78,7 +78,7 @@ class Command(BaseCommand):
 
         # 日本語と英語のリクエストを投げる
         select_movie_index = 0
-        select_page_random = random.randint(1, 3)
+        select_page_random = random.randint(1, 4)
         movie = {}
         for i, language in enumerate(language_list):
             url = 'https://api.themoviedb.org/3/movie/' + api_list[random_api_number]
