@@ -118,7 +118,7 @@ class MovieAdd:
 
         # 映画オブジェクトの新規追加 or 取得
         movie_obj, created_movie = Movie.objects.get_or_create(
-            title=data['movie_title'],
+            tmdb_id=data['movie_id'],
             defaults={'title': data['movie_title'],
                       'tmdb_id': data['movie_id'],
                       'overview': data['overview'],
