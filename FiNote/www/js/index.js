@@ -397,7 +397,7 @@ var Signup = {
     };
 
     // 新規登録
-    Utility.FiNote_API('signup', data, 'POST').then(function(result) {
+    Utility.FiNote_API('signup', data, 'POST', 'v1').then(function(result) {
       /*登録後処理*/
       var json_data = JSON.parse(result);
 
@@ -539,7 +539,7 @@ var Signin = {
 
     var data = {"username": username, "password": password};
 
-    Utility.FiNote_API('signinnotoken', data, 'POST').then(function(result) {
+    Utility.FiNote_API('sign_in_no_token', data, 'POST', 'v1').then(function(result) {
       var backup_json = JSON.parse(result).results;
       var backup_json_length = backup_json.length;
 
@@ -839,7 +839,7 @@ var Movies = {
     };
     
 
-    Utility.FiNote_API('signinwithtoken', data, 'POST').then(function(result){
+    Utility.FiNote_API('sign_in_with_token', data, 'POST', 'v1').then(function(result){
       // ログイン後に映画情報をデータベースから取得
       var query = 'SELECT tmdb_id FROM movie';
       return DB_method.single_statement_execute(query,[]);
@@ -1093,7 +1093,7 @@ var Movies = {
       };
       var promises = [
         DB_method.single_statement_execute(query_obj.query,query_obj.data),
-        Utility.FiNote_API('statusupdate', request_data, 'POST')
+        Utility.FiNote_API('status_update', request_data, 'POST', 'v1')
       ];
 
     return DB_method.single_statement_execute(query_obj.query,query_obj.data);
@@ -1520,7 +1520,7 @@ var Movies_detail = {
             "movie_id": movie.tmdb_id,
             "onomatopoeia": feeling_name_list
           };
-          promises = [Movieadd.set_onomatopoeia_local(feeling_name_list), Utility.FiNote_API('onomatopoeiaupdate', request_data, 'POST')];
+          promises = [Movieadd.set_onomatopoeia_local(feeling_name_list), Utility.FiNote_API('onomatopoeia_update', request_data, 'POST', 'v1')];
         }
 
         Promise.all(promises).then(function(results) {
@@ -1620,8 +1620,9 @@ var Movies_detail = {
 
         var promises = [
           DB_method.single_statement_execute(query, [dvd_status, fav_status, movie_pk]),
-          Utility.FiNote_API('statusupdate', request_data, 'POST')
+          Utility.FiNote_API('status_update', request_data, 'POST', 'v1')
         ];
+
         Promise.all(promises).then(function(result) {
           var query_movie = 'SELECT * from movie WHERE id = ?';
           var query_onomatopoeia = 'SELECT * from onomatopoeia';
@@ -1685,7 +1686,7 @@ var Movies_detail = {
       
       var promises = [
         DB_method.single_statement_execute(query, [movie_pk]),
-        Utility.FiNote_API('deletebackup', request_data, 'POST')
+        Utility.FiNote_API('delete_backup', request_data, 'POST', 'v1')
       ];
 
       Promise.all(promises).then(function(result) {
@@ -2252,7 +2253,7 @@ var Movieadd = {
         "fav": fav
       };
 
-      Utility.FiNote_API('movieadd', data, 'POST').then(function(result) {
+      Utility.FiNote_API('movie_add', data, 'POST', 'v1').then(function(result) {
         var genre_obj_json = JSON.parse(result);
 
         /*********************ローカル保存処理を開始*********************/
@@ -3328,7 +3329,7 @@ var Setting = {
       var promises =
       [
         DB_method.single_statement_execute(query, [data]),
-        Utility.FiNote_API('setprofileimg', api_request_data, 'POST')
+        Utility.FiNote_API('set_profile_img', api_request_data, 'POST', 'v1')
       ];
 
       Promise.all(promises).then(function(result) {
@@ -3435,7 +3436,7 @@ var Change_Password = {
         "new_password": new_pass
       };
 
-      Utility.FiNote_API('changepassword', data, 'POST').then(function(token_obj) {
+      Utility.FiNote_API('change_password', data, 'POST', 'v1').then(function(token_obj) {
         var json_data = JSON.parse(token_obj);
         storage.setItem(ID.get_localStorage_ID().password, new_pass);
         storage.setItem(ID.get_localStorage_ID().token, json_data.token);
@@ -3512,7 +3513,7 @@ var Change_Email = {
         "new_email": new_email
       };
 
-      Utility.FiNote_API('changeemail', data, 'POST').then(function(new_email_obj) {
+      Utility.FiNote_API('change_email', data, 'POST', 'v1').then(function(new_email_obj) {
         Utility.stop_spinner();
 
         // json形式にしてからローカルへ新しいメールアドレスを保存
@@ -3584,7 +3585,7 @@ var Change_Sex = {
       "new_sex": sex
     };
 
-    Utility.FiNote_API('changesex', data, 'POST').then(function(sex_obj) {
+    Utility.FiNote_API('change_sex', data, 'POST', 'v1').then(function(sex_obj) {
       // json形式にしてからローカルへ新しい性別を保存
       var json_data = JSON.parse(sex_obj);
       storage.setItem(ID.get_localStorage_ID().sex, json_data.new_sex);
@@ -3982,11 +3983,12 @@ var Utility = {
    * @param {[String]} api_name [利用するAPIの名前]
    * @param {[Json]} data       [postする場合のデータ]
    * @param {[String]} method   [postなどのメソッド名]
+   * @param {[String]} version  [apiのバージョン(v1, v2…)]
    */
-  FiNote_API: function(api_name, data, method) {
+  FiNote_API: function(api_name, data, method, version) {
     return new Promise(function(resolve, reject) {
       var request = new XMLHttpRequest();
-      var request_url = 'http://kentaiwami.jp/FiNote/api/' + api_name + '/';
+      var request_url = 'http://kentaiwami.jp/FiNote/api/' + version + '/' + api_name + '/';
       request.open(method, request_url);
       request.setRequestHeader("Content-type", "application/json");
 

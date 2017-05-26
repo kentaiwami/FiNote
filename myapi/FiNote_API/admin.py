@@ -4,6 +4,7 @@ from .models import *
 
 class UserAdmin(admin.ModelAdmin):
     list_display = ('username', 'email', 'birthday', 'sex', 'img', 'password')
+    search_fields = ('username',)
 
 
 class GenreAdmin(admin.ModelAdmin):
