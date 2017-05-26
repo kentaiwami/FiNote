@@ -4,7 +4,7 @@ from django.db.models import Max, Min
 from rest_framework_jwt.serializers import User
 
 from FiNote_API.functions import MovieAdd, Backup
-from FiNote_API.models import Onomatopoeia
+from FiNote_API.models import Onomatopoeia, Movie
 import random
 import requests
 from myapi.settings import TMDB_APIKEY
@@ -76,9 +76,16 @@ class Command(BaseCommand):
         api_list = ['upcoming', 'top_rated', 'popular', 'now_playing']
         random_api_number = random.randint(0, len(api_list)-1)
 
+        # 映画登録件数が全APIで取得できる映画数の95%を超えたらページ数の上限を増やす処理
+        max_random = 1
+        ratio = Movie.objects.count() / (len(api_list) * 20 * max_random) * 100
+        while ratio > 95.0:
+            max_random += 1
+            ratio = Movie.objects.count() / (len(api_list) * 20 * max_random) * 100
+
         # 日本語と英語のリクエストを投げる
         select_movie_index = 0
-        select_page_random = random.randint(1, 4)
+        select_page_random = random.randint(1, max_random)
         movie = {}
         for i, language in enumerate(language_list):
             url = 'https://api.themoviedb.org/3/movie/' + api_list[random_api_number]
