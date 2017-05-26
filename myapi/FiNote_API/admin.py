@@ -18,6 +18,7 @@ class OnomatopoeiaAdmin(admin.ModelAdmin):
 
 class MovieAdmin(admin.ModelAdmin):
     list_display = ('title', 'tmdb_id', 'genres', 'users', 'onomatopoeias', 'overview', 'poster_path')
+    search_fields = ('title',)
 
     def genres(self, obj):
         return "\n".join([g.name for g in obj.genre.all()])
