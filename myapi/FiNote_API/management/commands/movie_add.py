@@ -114,6 +114,9 @@ class Command(BaseCommand):
             else:
                 title = movie['original_title']
 
+        if movie['poster_path'] is None:
+            movie['poster_path'] = ''
+
         json_movie = {"title": title,
                       "overview": movie['overview'],
                       "tmdb_id": movie['id'],
