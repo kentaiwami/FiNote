@@ -10,6 +10,10 @@ import requests
 from myapi.settings import TMDB_APIKEY
 
 
+output_value = {'range_page': '',
+                'select_page': '',
+                'api': ''}
+
 class Command(BaseCommand):
     help = 'Movie add random choice movies'
 
@@ -153,8 +157,10 @@ class Command(BaseCommand):
                       "poster_path": movie['poster_path'],
                       "genre_ids": movie['genre_ids']}
 
-        self.stdout.write(self.style.SUCCESS('range page: 1 to ' + str(max_random)))
-        self.stdout.write(self.style.SUCCESS('select page: ' + str(hit_number)))
+        # 出力用に変数へ保存
+        output_value['range_page'] = str(max_random+1)
+        output_value['select_page'] = str(hit_number)
+        output_value['api'] = api_list[random_api_number]
 
         return json_movie
 
@@ -228,6 +234,10 @@ class Command(BaseCommand):
         for onomatopoeia in param['onomatopoeia']:
             onomatopoeia_str += onomatopoeia.__str__() + ','
         onomatopoeia_str = onomatopoeia_str[:-1]
+
+        self.stdout.write(self.style.SUCCESS('range_page: 1 to ' + output_value['range_page']))
+        self.stdout.write(self.style.SUCCESS('select_page: ' + output_value['select_page']))
+        self.stdout.write(self.style.SUCCESS('api: ' + output_value['api']))
 
         try:
             self.stdout.write(self.style.SUCCESS('username: ' + param['user'].username))
