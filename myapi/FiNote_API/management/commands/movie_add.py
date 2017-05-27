@@ -83,16 +83,35 @@ class Command(BaseCommand):
             max_random += 1
             ratio = Movie.objects.count() / (len(api_list) * 20 * max_random) * 100
 
+        # ルーレットホイールセレクションで先頭ページを多めに設定
+        rate_list = []
+        for i in range(0, max_random+1):
+            if i in range(0, 2):
+                rate_list.append(100)
+            elif i in range(2, 4):
+                rate_list.append(50)
+            else:
+                rate_list.append(5)
+
+        arrow = random.randint(0, int(sum(rate_list)))
+        hit_number = 0
+        x = rate_list[hit_number]
+        while arrow > x:
+            hit_number += 1
+            x += rate_list[hit_number]
+
+        # リクエストの際はページ数が1からなので+1をする
+        hit_number += 1
+
         # 日本語と英語のリクエストを投げる
         select_movie_index = 0
-        select_page_random = random.randint(1, max_random)
         movie = {}
         for i, language in enumerate(language_list):
             url = 'https://api.themoviedb.org/3/movie/' + api_list[random_api_number]
             query = {
                 'api_key': TMDB_APIKEY,
                 'language': language,
-                'page': select_page_random
+                'page': hit_number
             }
             request = requests.get(url, params=query)
             request_json = request.json()
@@ -101,6 +120,10 @@ class Command(BaseCommand):
                 try:
                     select_movie_index = random.randint(0, len(request_json['results']) - 1)
                 except KeyError:
+                    self.stdout.write(self.style.ERROR('KeyError'))
+                    self.stdout.write(self.style.ERROR('api: ' + api_list[random_api_number]))
+                    self.stdout.write(self.style.ERROR('page: ' + str(hit_number)))
+                    self.stdout.write(self.style.ERROR('page_max: ' + str(max_random)))
                     self.stdout.write(self.style.ERROR('KeyError'))
                     return {}
 
@@ -129,6 +152,9 @@ class Command(BaseCommand):
                       "tmdb_id": movie['id'],
                       "poster_path": movie['poster_path'],
                       "genre_ids": movie['genre_ids']}
+
+        self.stdout.write(self.style.SUCCESS('range page: 1 to ' + str(max_random)))
+        self.stdout.write(self.style.SUCCESS('select page: ' + str(hit_number)))
 
         return json_movie
 
