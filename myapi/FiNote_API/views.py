@@ -484,9 +484,7 @@ class RecentlyMovieViewSet(viewsets.ModelViewSet):
 
         serializer = RecentlyMovieSerializer(queryset, many=True)
 
-        res_json = {'results': serializer.data}
-
-        return Response(res_json['results'])
+        return Response(serializer.data)
 
 
 class UserViewSet(viewsets.ModelViewSet):
