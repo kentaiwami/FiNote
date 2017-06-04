@@ -1,3 +1,4 @@
+from django.db.models import Count
 from rest_framework import serializers
 from .models import *
 
@@ -68,6 +69,12 @@ class StatusUpdateSerializer(serializers.Serializer):
     movie_id = serializers.IntegerField(allow_null=False, required=True)
     dvd = serializers.IntegerField(default=0)
     fav = serializers.IntegerField(default=0)
+
+
+class RecentlyMovieSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Movie
+        fields = ('title', 'overview', 'poster_path')
 
 
 class UserSerializer(serializers.ModelSerializer):

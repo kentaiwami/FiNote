@@ -1,5 +1,5 @@
 import os
-
+from django.db.models import Count
 from django.http import JsonResponse
 from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
@@ -10,16 +10,17 @@ from .serializer import *
 from django.core.exceptions import ObjectDoesNotExist
 import base64
 from django.core.files.base import ContentFile
+import datetime
 
 
 class SignUpViewSet(viewsets.ViewSet):
-    queryset = User.objects.all()
+    queryset = AuthUser.objects.all()
     serializer_class = SignUpSerializer
 
     def create(self, request):
         """
         When SignUp api access, run this method.
-        This method is check sign in form data, create new user and response token.
+        This method checks sign in form data, create new user and response token.
         :param request: User request data.(username, email, password, birthday year and sex)
         :return content: Username and token.
         
@@ -67,13 +68,13 @@ class SignUpViewSet(viewsets.ViewSet):
 
 
 class SignInWithTokenViewSet(viewsets.ViewSet):
-    queryset = User.objects.all()
+    queryset = AuthUser.objects.all()
     serializer_class = SignInWithTokenSerializer
 
     def create(self, request):
         """
         When SignInWithToken api access, run this method.
-        This method is check username and token. If success signup, response username.
+        This method checks username and token. If success signup, response username.
         :param request: Request user's data.(username and token)
         :return: Username
         
@@ -100,10 +101,17 @@ class SignInWithTokenViewSet(viewsets.ViewSet):
 
 
 class SignInNoTokenViewSet(viewsets.ViewSet):
-    queryset = User.objects.all()
+    queryset = AuthUser.objects.all()
     serializer_class = SignInNoTokenSerializer
 
     def create(self, request):
+        """
+        When SignInNoToken api access, run this method.
+        This method checks username and password. If success signup, response user's data.
+        :param request: Username and password
+        :return: User's movies and profile data.
+        """
+
         if request.method == 'POST':
             data = request.data
 
@@ -152,13 +160,13 @@ class SignInNoTokenViewSet(viewsets.ViewSet):
 
 
 class ChangePasswordViewSet(viewsets.ViewSet):
-    queryset = User.objects.all()
+    queryset = AuthUser.objects.all()
     serializer_class = ChangePasswordSerializer
 
     def create(self, request):
         """
         When ChangePassword api access, run this method.
-        This method is change password and return token.
+        This method changes password and return token.
         :param request: Include token, now_password and new_password
         :return: User's token.
         """
@@ -191,13 +199,13 @@ class ChangePasswordViewSet(viewsets.ViewSet):
 
 
 class ChangeEmailViewSet(viewsets.ViewSet):
-    queryset = User.objects.all()
+    queryset = AuthUser.objects.all()
     serializer_class = ChangeEmailSerializer
 
     def create(self, request):
         """
         When ChangeEmail api access, run this method.
-        This method is change email and return new_email.
+        This method changes email and return new_email.
         :param request: Include token and new_email
         :return: User's new email.
         """
@@ -226,13 +234,13 @@ class ChangeEmailViewSet(viewsets.ViewSet):
 
 
 class ChangeSexViewSet(viewsets.ViewSet):
-    queryset = User.objects.all()
+    queryset = AuthUser.objects.all()
     serializer_class = ChangeSexSerializer
 
     def create(self, request):
         """
         When ChangeSex api access, run this method.
-        This method is change sex and return new_sex.
+        This method changes sex and return new_sex.
         :param request: Include token and new_sex
         :return: User's new sex.
         """
@@ -263,13 +271,13 @@ class ChangeSexViewSet(viewsets.ViewSet):
 
 
 class SetProfileImgViewSet(viewsets.ViewSet):
-    queryset = User.objects.all()
+    queryset = AuthUser.objects.all()
     serializer_class = SetProfileImgSerializer
 
     def create(self, request):
         """
         When SetProfileImg api access, run this method.
-        This method is set img and return token.
+        This method sets img and return token.
         :param request: Include token and img base64 string.
         :return: User's token.
         """
@@ -315,7 +323,7 @@ class MovieAddViewSet(viewsets.ViewSet):
     def create(self, request):
         """
         When MovieAdd api access, run this method.
-        This method is add movie, onomatopoeia and genre. If success all process, response genre id and name.
+        This method adds movie, onomatopoeia and genre. If success all process, response genre id and name.
         :param request: Request user's data.(username, movie_title, overview,
                                              movie_id(tmdb_id), genre_id_list,
                                              onomatopoeia, dvd and fav)
@@ -377,7 +385,7 @@ class OnomatopoeiaUpdateViewSet(viewsets.ViewSet):
     def create(self, request):
         """
         When OnomatopoeiaUpdate api access, run this method.
-        This method is update movie and back up table onomatopoeia column or add onomatopoeia.
+        This method updates movie and back up table onomatopoeia column or add onomatopoeia.
         If success all process, response user name.
         :param request: Request user's data.(username, movie_id(tmdb_id) and onomatopoeia list)
         :return: User name.
@@ -403,13 +411,13 @@ class OnomatopoeiaUpdateViewSet(viewsets.ViewSet):
 
 
 class DeleteBackupViewSet(viewsets.ViewSet):
-    queryset = Onomatopoeia.objects.all()
+    queryset = BackUp.objects.all()
     serializer_class = DeleteBackupSerializer
 
     def create(self, request):
         """
         When DeleteBackup api access, run this method.
-        This method is delete backup data, remove movie table's user column.
+        This method deletes backup data, remove movie table's user column.
         :param request: Request user's data.(username and movie_id(tmdb_id))
         :return: User name.
         
@@ -431,13 +439,13 @@ class DeleteBackupViewSet(viewsets.ViewSet):
 
 
 class StatusUpdateViewSet(viewsets.ViewSet):
-    queryset = Onomatopoeia.objects.all()
+    queryset = AuthUser.objects.all()
     serializer_class = StatusUpdateSerializer
 
     def create(self, request):
         """
         When StatusUpdate api access, run this method.
-        This method is update dvd and favorite status.
+        This method updates dvd and favorite status.
         :param request: Request user's data.(username, movie_id(tmdb_id), dvd and fav)
         :return: User name.
         
@@ -447,9 +455,38 @@ class StatusUpdateViewSet(viewsets.ViewSet):
         if request.method == 'POST':
             usr_obj = AuthUser.objects.get(username=request.data['username'])
             movie_obj = Movie.objects.get(tmdb_id=request.data['movie_id'])
-            BackUp.objects.filter(username=usr_obj, movie=movie_obj).update(dvd=request.data['dvd'], fav=request.data['fav'])
+            BackUp.objects.filter(username=usr_obj, movie=movie_obj)\
+                .update(dvd=request.data['dvd'], fav=request.data['fav'])
 
             return Response(request.data['username'])
+
+
+class RecentlyMovieViewSet(viewsets.ModelViewSet):
+    queryset = Movie.objects.all()
+    serializer_class = RecentlyMovieSerializer
+
+    def list(self, request, *args, **kwargs):
+        """
+        When RecentlyMovie api access, run this method.
+        This method gets recently updated and many users movies.
+        :param request: This param is not used.
+        :param args: This param is not used.
+        :param kwargs: This param is not used.
+        :return: Recently updated and many users movies.
+        """
+
+        today = datetime.date.today() + datetime.timedelta(days=1)
+        one_week_ago = today - datetime.timedelta(days=7)
+
+        queryset = Movie.objects.filter(updated_at__range=(one_week_ago, today))\
+            .annotate(user_count=Count('user'))\
+            .order_by('-user_count', '-updated_at').values()
+
+        serializer = RecentlyMovieSerializer(queryset, many=True)
+
+        res_json = {'results': serializer.data}
+
+        return Response(res_json['results'])
 
 
 class UserViewSet(viewsets.ModelViewSet):
