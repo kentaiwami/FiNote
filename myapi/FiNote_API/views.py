@@ -10,6 +10,7 @@ from django.core.exceptions import ObjectDoesNotExist
 import base64
 from django.core.files.base import ContentFile
 import datetime
+from operator import attrgetter
 
 
 class SignUpViewSet(viewsets.ViewSet):
@@ -401,7 +402,8 @@ class OnomatopoeiaUpdateViewSet(viewsets.ViewSet):
                 raise ValidationError('不正な形式です')
 
             # Movieテーブルのオノマトペカラムに新規追加(削除はしない)
-            onomatopoeia_obj_list = OnomatopoeiaUpdate.movie_update_onomatopoeia(self, request.data, r_onomatopoeia_list)
+            onomatopoeia_obj_list = OnomatopoeiaUpdate.\
+            movie_update_onomatopoeia(self, request.data, r_onomatopoeia_list)
 
             # BackUpテーブルのオノマトペカラムに上書き(削除と追加)
             Backup.onomatopoeia_update_backup(self, request.data, onomatopoeia_obj_list)
@@ -454,7 +456,7 @@ class StatusUpdateViewSet(viewsets.ViewSet):
         if request.method == 'POST':
             usr_obj = AuthUser.objects.get(username=request.data['username'])
             movie_obj = Movie.objects.get(tmdb_id=request.data['movie_id'])
-            BackUp.objects.filter(username=usr_obj, movie=movie_obj)\
+            BackUp.objects.filter(username=usr_obj, movie=movie_obj) \
                 .update(dvd=request.data['dvd'], fav=request.data['fav'])
 
             return Response(request.data['username'])
@@ -478,13 +480,28 @@ class RecentlyMovieViewSet(viewsets.ModelViewSet):
         today = datetime.date.today() + datetime.timedelta(days=1)
         one_week_ago = today - datetime.timedelta(days=7)
 
-        queryset = Movie.objects.annotate(user_count=Count('user'))\
-        .filter(updated_at__range=(one_week_ago, today), user_count__gt=1)\
+        queryset = Movie.objects.annotate(user_count=Count('user')) \
+        .filter(updated_at__range=(one_week_ago, today), user_count__gt=1) \
         .order_by('-user_count', '-updated_at')[:200].values()
 
         serializer = RecentlyMovieSerializer(queryset, many=True)
 
         return Response(serializer.data)
+
+
+class MovieUserCount(object):
+    def __init__(self, movie):
+        """
+        Management class that movie and user counts by age.
+        :param movie: Target a movie.
+        """
+
+        self.movie = movie
+        self.count_10 = 0
+        self.count_20 = 0
+        self.count_30 = 0
+        self.count_40 = 0
+        self.count_50 = 0
 
 
 class MovieByAgeViewSet(viewsets.ModelViewSet):
@@ -493,8 +510,86 @@ class MovieByAgeViewSet(viewsets.ModelViewSet):
     http_method_names = ['get']
 
     def list(self, request, *args, **kwargs):
+        """
+        When MovieByAge api access, run this method.
+        This method gets user counts and age movies.
+        :param request: This param is not used.
+        :param args: This param is not used.
+        :param kwargs: This param is not used.
+        :return: User counts desc movies by age.
+        """
 
-        return Response('hoge')
+        movies = Movie.objects.annotate(user_count=Count('user')).filter(user_count__gt=1).order_by('-user_count')[:50]
+
+        # 該当映画と年代別の登録数のクラスをリストに格納
+        count_class_list = []
+        for movie in movies:
+            tmp_count_class = MovieUserCount(movie)
+
+            for user in movie.user.all():
+                self.update_movie_count_class(tmp_count_class, user.birthday)
+
+            count_class_list.append(tmp_count_class)
+
+        # ユーザの登録数が多い順にソート
+        sorted_count_class_list_10 = sorted(count_class_list, key=attrgetter('count_10'), reverse=True)
+        sorted_count_class_list_20 = sorted(count_class_list, key=attrgetter('count_20'), reverse=True)
+        sorted_count_class_list_30 = sorted(count_class_list, key=attrgetter('count_30'), reverse=True)
+        sorted_count_class_list_40 = sorted(count_class_list, key=attrgetter('count_40'), reverse=True)
+        sorted_count_class_list_50 = sorted(count_class_list, key=attrgetter('count_50'), reverse=True)
+        sorted_list_collection = [sorted_count_class_list_10,
+                                  sorted_count_class_list_20,
+                                  sorted_count_class_list_30,
+                                  sorted_count_class_list_40,
+                                  sorted_count_class_list_50]
+
+        # dictionaryを作成
+        res = []
+        for i, sorted_count_class_list in enumerate(sorted_list_collection):
+            dict_list_tmp = []
+            for sorted_count_class in sorted_count_class_list:
+                dict_tmp = {"title": sorted_count_class.movie.title,
+                            "overview": sorted_count_class.movie.overview,
+                            "poster_path": sorted_count_class.movie.poster_path,
+                            "10": sorted_count_class.count_10,
+                            "20": sorted_count_class.count_20,
+                            "30": sorted_count_class.count_30,
+                            "40": sorted_count_class.count_40,
+                            "50": sorted_count_class.count_50}
+
+                dict_list_tmp.append(dict_tmp)
+
+            res.append({str((i + 1) * 10): dict_list_tmp})
+
+        return Response(res)
+
+    def update_movie_count_class(self, count_class, birth_year):
+        """
+        This method updates age count in count_class.
+        :param count_class: Custom management class.
+        :param birth_year: User's birth year.
+        :return: Nothing.
+
+        :type count_class class object
+        :type birth_year int
+        """
+
+        this_year = datetime.date.today().year
+
+        if birth_year > this_year - 10 or birth_year in range(this_year - 19, this_year - 9):
+            count_class.count_10 += 1
+
+        elif birth_year in range(this_year - 29, this_year - 19):
+            count_class.count_20 += 1
+
+        elif birth_year in range(this_year - 39, this_year - 29):
+            count_class.count_30 += 1
+
+        elif birth_year in range(this_year - 49, this_year - 39):
+            count_class.count_40 += 1
+
+        else:
+            count_class.count_50 += 1
 
 
 class UserViewSet(viewsets.ModelViewSet):
