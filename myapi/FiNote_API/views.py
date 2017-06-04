@@ -478,9 +478,9 @@ class RecentlyMovieViewSet(viewsets.ModelViewSet):
         today = datetime.date.today() + datetime.timedelta(days=1)
         one_week_ago = today - datetime.timedelta(days=7)
 
-        queryset = Movie.objects.filter(updated_at__range=(one_week_ago, today))\
-            .annotate(user_count=Count('user'))\
-            .order_by('-user_count', '-updated_at').values()
+        queryset = Movie.objects.annotate(user_count=Count('user'))\
+        .filter(updated_at__range=(one_week_ago, today), user_count__gt=1)\
+        .order_by('-user_count', '-updated_at')[:200].values()
 
         serializer = RecentlyMovieSerializer(queryset, many=True)
 
