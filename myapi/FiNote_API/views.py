@@ -1,5 +1,4 @@
 import os
-from django.db.models import Count
 from django.http import JsonResponse
 from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
@@ -464,6 +463,7 @@ class StatusUpdateViewSet(viewsets.ViewSet):
 class RecentlyMovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = RecentlyMovieSerializer
+    http_method_names = ['get']
 
     def list(self, request, *args, **kwargs):
         """
@@ -487,26 +487,41 @@ class RecentlyMovieViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
+class MovieByAgeViewSet(viewsets.ModelViewSet):
+    queryset = Movie.objects.all()
+    serializer_class = MovieByAgeSerializer
+    http_method_names = ['get']
+
+    def list(self, request, *args, **kwargs):
+
+        return Response('hoge')
+
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset = AuthUser.objects.all()
     serializer_class = UserSerializer
+    http_method_names = ['get']
 
 
 class GenreViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
+    http_method_names = ['get']
 
 
 class OnomatopoeiaViewSet(viewsets.ModelViewSet):
     queryset = Onomatopoeia.objects.all()
     serializer_class = OnomatopoeiaSerializer
+    http_method_names = ['get']
 
 
 class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
+    http_method_names = ['get']
 
 
 class OnomatopoeiaCountViewSet(viewsets.ModelViewSet):
     queryset = OnomatopoeiaCount.objects.all()
     serializer_class = OnomatopoeiaCountSerializer
+    http_method_names = ['get']
