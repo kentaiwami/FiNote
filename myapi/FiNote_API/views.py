@@ -632,6 +632,12 @@ class SearchMovieByOnomatopoeiaViewSet(viewsets.ViewSet):
     serializer_class = SearchMovieByOnomatopoeiaSerializer
 
     def create(self, request):
+        """
+        When SearchMovieByOnomatopoeia api access, run this method.
+        This method gets movies that include target onomatopoeia.
+        :param request: Target onomatopoeia.
+        :return: Hit movies information(title, overview and poster_path).
+        """
 
         serializer = SearchMovieByOnomatopoeiaSerializer(data=request.data)
 
