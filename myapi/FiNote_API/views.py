@@ -454,13 +454,20 @@ class StatusUpdateViewSet(viewsets.ViewSet):
         :type request object
         """
 
-        if request.method == 'POST':
-            usr_obj = AuthUser.objects.get(username=request.data['username'])
-            movie_obj = Movie.objects.get(tmdb_id=request.data['movie_id'])
-            BackUp.objects.filter(username=usr_obj, movie=movie_obj) \
+        serializer = StatusUpdateSerializer(data=request.data)
+
+        if serializer.is_valid() and request.method == 'POST':
+            try:
+                usr_obj = AuthUser.objects.get(username=request.data['username'])
+                movie_obj = Movie.objects.get(tmdb_id=request.data['movie_id'])
+                BackUp.objects.filter(username=usr_obj, movie=movie_obj) \
                 .update(dvd=request.data['dvd'], fav=request.data['fav'])
+            except ObjectDoesNotExist:
+                raise ValidationError('該当するデータが見つかりませんでした')
 
             return Response(request.data['username'])
+        else:
+            return Response(serializer.errors)
 
 
 class RecentlyMovieViewSet(viewsets.ModelViewSet):
