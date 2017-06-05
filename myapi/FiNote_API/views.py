@@ -394,7 +394,9 @@ class OnomatopoeiaUpdateViewSet(viewsets.ViewSet):
         :type request object
         """
 
-        if request.method == 'POST':
+        serializer = OnomatopoeiaUpdateSerializer(data=request.data)
+
+        if serializer.is_valid() and request.method == 'POST':
             r_onomatopoeia_list = request.data['onomatopoeia']
 
             if type(r_onomatopoeia_list) is str:
@@ -411,6 +413,9 @@ class OnomatopoeiaUpdateViewSet(viewsets.ViewSet):
 
             return Response(request.data['username'])
 
+        else:
+            return Response(serializer.error_messages)
+
 
 class DeleteBackupViewSet(viewsets.ViewSet):
     queryset = BackUp.objects.all()
@@ -426,18 +431,25 @@ class DeleteBackupViewSet(viewsets.ViewSet):
         :type request object
         """
 
-        if request.method == 'POST':
+        serializer = DeleteBackupSerializer(data=request.data)
+
+        if serializer.is_valid() and request.method == 'POST':
             # バックアップの削除
-            usr_obj = AuthUser.objects.get(username=request.data['username'])
-            movie_obj = Movie.objects.get(tmdb_id=request.data['movie_id'])
-            backup_obj = BackUp.objects.filter(username=usr_obj, movie=movie_obj)
-            backup_obj.delete()
+            try:
+                usr_obj = AuthUser.objects.get(username=request.data['username'])
+                movie_obj = Movie.objects.get(tmdb_id=request.data['movie_id'])
+                backup_obj = BackUp.objects.filter(username=usr_obj, movie=movie_obj)
+                backup_obj.delete()
 
-            # Movieテーブルの該当レコードのuserカラムからユーザとの関連を削除
-            if movie_obj.user.all().filter(username=usr_obj).exists():
-                movie_obj.user.remove(usr_obj)
+                # Movieテーブルの該当レコードのuserカラムからユーザとの関連を削除
+                if movie_obj.user.all().filter(username=usr_obj).exists():
+                    movie_obj.user.remove(usr_obj)
 
-            return Response(request.data['username'])
+                return Response(request.data['username'])
+            except ObjectDoesNotExist:
+                raise ValidationError('該当するデータが見つかりませんでした')
+        else:
+            return Response(serializer.error_messages)
 
 
 class StatusUpdateViewSet(viewsets.ViewSet):
@@ -467,7 +479,7 @@ class StatusUpdateViewSet(viewsets.ViewSet):
 
             return Response(request.data['username'])
         else:
-            return Response(serializer.errors)
+            return Response(serializer.error_messages)
 
 
 class RecentlyMovieViewSet(viewsets.ModelViewSet):
