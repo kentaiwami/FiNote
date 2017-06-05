@@ -1,4 +1,3 @@
-from django.db.models import Count
 from rest_framework import serializers
 from .models import *
 
@@ -122,3 +121,7 @@ class OnomatopoeiaCountSerializer(serializers.ModelSerializer):
     class Meta:
         model = OnomatopoeiaCount
         fields = ('count', 'onomatopoeia', 'movie')
+
+
+class SearchMovieByOnomatopoeiaSerializer(serializers.Serializer):
+    onomatopoeia_name = serializers.CharField(max_length=100, allow_null=False, required=True, allow_blank=False)

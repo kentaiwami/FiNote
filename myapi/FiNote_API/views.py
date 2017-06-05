@@ -1,4 +1,5 @@
 import os
+from django.db.models import Count
 from django.http import JsonResponse
 from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
@@ -619,6 +620,37 @@ class MovieReactionViewSet(viewsets.ViewSet):
 
             except ObjectDoesNotExist:
                 raise ValidationError('該当する映画が見つかりませんでした')
+
+
+class SearchMovieByOnomatopoeiaViewSet(viewsets.ViewSet):
+    queryset = Movie.objects.all()
+    serializer_class = SearchMovieByOnomatopoeiaSerializer
+
+    def create(self, request):
+
+        serializer = SearchMovieByOnomatopoeiaSerializer(data=request.data)
+
+        if serializer.is_valid() and request.method == 'POST':
+            # リクエスト文字を含むオノマトペを取得
+            onomatopoeia_name = request.data['onomatopoeia_name']
+            onomatopoeia_list = Onomatopoeia.objects.filter(name__contains=onomatopoeia_name)
+
+            # 上記で取得したオノマトペを含む映画を取得
+            movie_list = []
+            for onomatopoeia in onomatopoeia_list:
+                movies = Movie.objects.filter(onomatopoeia=onomatopoeia)
+                movie_list += list(movies)
+
+            # 映画の情報をdictとして生成
+            res = []
+            for movie in movie_list:
+                res.append({"title": movie.title,
+                            "overview": movie.overview,
+                            "poster_path": movie.poster_path})
+
+            return Response(res)
+        else:
+            raise ValidationError('必要なパラメータが含まれていません')
 
 
 class UserViewSet(viewsets.ModelViewSet):
