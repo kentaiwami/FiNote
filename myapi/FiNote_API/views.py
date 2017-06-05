@@ -605,7 +605,9 @@ class MovieReactionViewSet(viewsets.ViewSet):
         :return: Onomatopoeia name and count.
         """
 
-        if request.method == 'POST':
+        serializer = MovieReactionSerializer(data=request.data)
+
+        if serializer.is_valid() and request.method == 'POST':
             try:
                 movie = Movie.objects.get(tmdb_id=request.data['tmdb_id'])
 
@@ -620,6 +622,9 @@ class MovieReactionViewSet(viewsets.ViewSet):
 
             except ObjectDoesNotExist:
                 raise ValidationError('該当する映画が見つかりませんでした')
+
+        else:
+            raise ValidationError('正しいパラメータ値ではありません')
 
 
 class SearchMovieByOnomatopoeiaViewSet(viewsets.ViewSet):

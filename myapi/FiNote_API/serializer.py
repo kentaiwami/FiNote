@@ -70,22 +70,6 @@ class StatusUpdateSerializer(serializers.Serializer):
     fav = serializers.IntegerField(default=0)
 
 
-class RecentlyMovieSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Movie
-        fields = ('title', 'overview', 'poster_path')
-
-
-class MovieByAgeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Movie
-        fields = ('title', 'overview', 'poster_path')
-
-
-class MovieReactionSerializer(serializers.Serializer):
-    tmdb_id = serializers.IntegerField(allow_null=False, required=True)
-
-
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = AuthUser
@@ -121,6 +105,21 @@ class OnomatopoeiaCountSerializer(serializers.ModelSerializer):
     class Meta:
         model = OnomatopoeiaCount
         fields = ('count', 'onomatopoeia', 'movie')
+
+class RecentlyMovieSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Movie
+        fields = ('title', 'overview', 'poster_path')
+
+
+class MovieByAgeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Movie
+        fields = ('title', 'overview', 'poster_path')
+
+
+class MovieReactionSerializer(serializers.Serializer):
+    tmdb_id = serializers.IntegerField(allow_null=False, required=True)
 
 
 class SearchMovieByOnomatopoeiaSerializer(serializers.Serializer):
