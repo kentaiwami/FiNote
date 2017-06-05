@@ -563,8 +563,7 @@ class MovieByAgeViewSet(viewsets.ModelViewSet):
 
         return Response(res)
 
-    @staticmethod
-    def update_movie_count_class(count_class, birth_year):
+    def update_movie_count_class(self, count_class, birth_year):
         """
         This method updates age count in count_class.
         :param count_class: Custom management class.
@@ -597,8 +596,7 @@ class MovieReactionViewSet(viewsets.ViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieReactionSerializer
 
-    @staticmethod
-    def create(request):
+    def create(self, request):
         """
         When MovieReaction api access, run this method.
         This method gets onomatopoeia and count.
