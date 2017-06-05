@@ -563,7 +563,8 @@ class MovieByAgeViewSet(viewsets.ModelViewSet):
 
         return Response(res)
 
-    def update_movie_count_class(self, count_class, birth_year):
+    @staticmethod
+    def update_movie_count_class(count_class, birth_year):
         """
         This method updates age count in count_class.
         :param count_class: Custom management class.
@@ -592,13 +593,34 @@ class MovieByAgeViewSet(viewsets.ModelViewSet):
             count_class.count_50 += 1
 
 
-class MovieReactionViewSet(viewsets.ModelViewSet):
+class MovieReactionViewSet(viewsets.ViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieReactionSerializer
-    http_method_names = ['get']
 
-    def list(self, request, *args, **kwargs):
-        return Response('ho')
+    @staticmethod
+    def create(request):
+        """
+        When MovieReaction api access, run this method.
+        This method gets onomatopoeia and count.
+        :param request: Target tmdb_id.
+        :return: Onomatopoeia name and count.
+        """
+
+        if request.method == 'POST':
+            try:
+                movie = Movie.objects.get(tmdb_id=request.data['tmdb_id'])
+
+                counts = OnomatopoeiaCount.objects.filter(movie=movie)
+
+                res = []
+                for count in counts:
+                    res.append({"name": count.onomatopoeia.name,
+                                "count": count.count})
+
+                return Response(res)
+
+            except ObjectDoesNotExist:
+                raise ValidationError('該当する映画が見つかりませんでした')
 
 
 class UserViewSet(viewsets.ModelViewSet):
