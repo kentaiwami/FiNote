@@ -635,7 +635,7 @@ var Signin = {
       return new Promise(function(resolve, reject) {
 
         // ローカルDBに映画が未保存の場合
-        if (Signin.exist.movie_title_array.indexOf(movie.movie__title) == -1) {
+        if (Signin.exist.movie_title_array.indexOf(movie.movie__title) === -1) {
           // 画像のダウンロード
           var base_url = 'https://image.tmdb.org/t/p/w300_and_h450_bestv2';
           var image = new Image();
@@ -762,13 +762,13 @@ var Signin = {
             var new_genre_id = '';
             var new_onomatopoeia_id = '';
 
-            if (now_genre_id.indexOf(genre_id) == -1) {
+            if (now_genre_id.indexOf(genre_id) === -1) {
               new_genre_id = result[2].rows.item(0).genre_id + ',' + genre_id;
             }else {
               new_genre_id = now_genre_id;
             }
 
-            if (now_onomatopoeia_id.indexOf(onomatopoeia_id) == -1) {
+            if (now_onomatopoeia_id.indexOf(onomatopoeia_id) === -1) {
               new_onomatopoeia_id = result[2].rows.item(0).onomatopoeia_id + ',' + onomatopoeia_id;
             }else {
               new_onomatopoeia_id = now_onomatopoeia_id;
@@ -814,7 +814,7 @@ var Signin = {
     var query = '';
     var promises = [];
 
-    if (Signin.exist.genre_array.indexOf(movie.movie__genre__name) == -1) {
+    if (Signin.exist.genre_array.indexOf(movie.movie__genre__name) === -1) {
       genre_insert_flag = true;
       query = 'INSERT INTO genre(genre_id, name) VALUES(?,?)';
       promises.push(DB_method.single_statement_execute(query, [movie.movie__genre__genre_id, movie.movie__genre__name]));
@@ -825,7 +825,7 @@ var Signin = {
     }
 
     // ローカルDBにオノマトペが保存しているかに応じてクエリを変える
-    if (Signin.exist.onomatopoeia_array.indexOf(movie.onomatopoeia__name) == -1) {
+    if (Signin.exist.onomatopoeia_array.indexOf(movie.onomatopoeia__name) === -1) {
       onomatopoeia_insert_flag = true;
       query = 'INSERT INTO onomatopoeia(name) VALUES(?)';
       promises.push(DB_method.single_statement_execute(query, [movie.onomatopoeia__name]));
@@ -991,7 +991,7 @@ var Movies = {
           var onomatopoeia_names = '';
           for(var j = 0; j < result[2].rows.length; j++) {
             var onomatopoeia = result[2].rows.item(j);
-            if (onomatopoeia_id_list.indexOf(String(onomatopoeia.id)) != -1) {
+            if (onomatopoeia_id_list.indexOf(String(onomatopoeia.id)) !== -1) {
               onomatopoeia_name_list.push(onomatopoeia.name);
             }
           }
@@ -1347,7 +1347,7 @@ var Movies_detail = {
 
     for (var i = 0; i < result_onomatopoeia.rows.length; i++) {
       var onomatopoeia_obj = result_onomatopoeia.rows.item(i);
-      if (onomatopoeia_id_list.indexOf(String(onomatopoeia_obj.id)) != -1) {
+      if (onomatopoeia_id_list.indexOf(String(onomatopoeia_obj.id)) !== -1) {
         onomatopoeia_name_list.push(onomatopoeia_obj.name);
       }
     }
@@ -1865,7 +1865,7 @@ var Movieadd_search = {
 
             // ローカルに保存済みの映画はチェックマークと追加済みのメッセージを表示
             var index = local_tmdb_id.indexOf(list_data[i].id);
-            if (index == -1) {
+            if (index === -1) {
               exist_message = '';
               modifier = 'longdivider chevron';
               tappable = 'tappable onClick="Movieadd_search.tap_list(this)"';
@@ -2107,7 +2107,7 @@ var Movieadd = {
     card.style.backgroundImage = 'url(' + img_url + ')';
 
     //noimageとサムネイルでサイズ設定を変える
-    if (img_url.indexOf('noimage.png') != -1) {
+    if (img_url.indexOf('noimage.png') !== -1) {
       card.style.backgroundSize = 'contain';
     }else {
       card.style.backgroundSize = 'cover';
@@ -2386,7 +2386,7 @@ var Movieadd = {
         //ローカルから取得したリストにジャンルID(ユーザ登録)が含まれていなければpromiseに登録する
         var promises = [];
         for(i = 0; i < genre_id_list.length; i++) {
-          if (genre_id_list_local.indexOf(genre_id_list[i]) == -1) {
+          if (genre_id_list_local.indexOf(genre_id_list[i]) === -1) {
             var genre_id = genre_id_list[i];
             var name = genre_obj_json[genre_id];
 
@@ -2453,7 +2453,7 @@ var Movieadd = {
           //ローカルから取得したリストにオノマトペ(ユーザ登録)が含まれていなければpromiseに登録する
           var promises = [];
           for(var i = 0; i < onomatopoeia_name_list.length; i++) {
-            if (onomatopoeia_name_list_local.indexOf(onomatopoeia_name_list[i]) == -1) {
+            if (onomatopoeia_name_list_local.indexOf(onomatopoeia_name_list[i]) === -1) {
               var query = 'INSERT INTO onomatopoeia(name) VALUES(?)';
               var data = [onomatopoeia_name_list[i]];
               promises.push(DB_method.single_statement_execute(query,data));
@@ -2761,7 +2761,7 @@ var Feeling = {
       feeling_name = feeling_name.replace(/\s+/g, '');
 
       //既出でない場合
-      if (Movieadd.userdata.feeling_name_list.indexOf(feeling_name) == -1) {
+      if (Movieadd.userdata.feeling_name_list.indexOf(feeling_name) === -1) {
         //リスト追加と表示
         Movieadd.userdata.feeling_name_list.push(feeling_name);
         Feeling.show_contents();
@@ -2781,7 +2781,7 @@ var Feeling = {
     }else {
       // changeの場合
       var value = document.getElementById(ID.get_feeling_ID().edit_input).value;
-      if (Movieadd.userdata.feeling_name_list.indexOf(value) == -1) {
+      if (Movieadd.userdata.feeling_name_list.indexOf(value) === -1) {
         Movieadd.userdata.feeling_name_list[Feeling.data.tap_id] = value;
         document.getElementById(ID.get_feeling_ID().edit_dialog).hide();
         Feeling.show_contents();
