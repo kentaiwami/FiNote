@@ -343,11 +343,7 @@ var Index = {
     var password = document.getElementById(ID.get_signup_ID().password).value;
     var email = document.getElementById(ID.get_signup_ID().email).value;
 
-    if (username.length === 0 || email.length === 0 || password.length < 6) {
-      Index.formcheck[0] = false;
-    }else{
-      Index.formcheck[0] = true;
-    }
+    Index.formcheck[0] = !(username.length === 0 || email.length === 0 || password.length < 6);
     
     Index.change_abled_signup_button();
   },
