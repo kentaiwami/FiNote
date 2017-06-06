@@ -307,7 +307,7 @@ var Index = {
     var signup_flag = storage.getItem(ID.get_localStorage_ID().signup_flag);
 
     //ユーザ情報が登録されている場合は自動ログインを行う
-    if (signup_flag == 'true') {
+    if (signup_flag === 'true') {
       Movies.draw_movie_content();
     //ユーザ情報が登録されていない場合はsignupへ遷移
     }else {
@@ -362,7 +362,7 @@ var Index = {
     }else{
       document.getElementById(ID.get_signup_ID().signup_button).setAttribute('disabled', 'disabled');
     }
-  },
+  }
 };
 
 
