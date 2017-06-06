@@ -596,10 +596,10 @@ var Signin = {
         promises.push(Signin.movie_restore(backup_json[i]));
       }
 
-      promises.reduce(function(prev, curr, index, array) {
+      promises.reduce(function(prev, curr) {
         return prev.then(curr);
       }, Promise.resolve())
-      .then(function(result) {
+      .then(function() {
         // サーバから取得したプロフ画像の文字列に応じて何もしないか、テーブルへ挿入するかを変える
         var profile_img_str = backup_json[backup_json_length - 1].profile_img;
         var query = '';
