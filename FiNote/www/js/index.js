@@ -1882,21 +1882,18 @@ var Movieadd_search = {
 
             var title = Utility.get_movie_ja_title(list_data[i]);
 
-            var list_item_doc =
-            '<ons-list-item id="'+ i +'" modifier="' + modifier + '"'+' ' + tappable + '>'+
-            '<div class="left">'+
-            '<img id="'+ i +'_img" class="list_img_large" src="'+ list_data_poster[i] +'">'+
-            '</div>'+
+            list_doc += '<ons-list-item id="' + i + '" modifier="' + modifier + '"' + ' ' + tappable + '>' +
+                        '<div class="left">' +
+                        '<img id="' + i + '_img" class="list_img_large" src="' + list_data_poster[i] + '">' +
+                        '</div>' +
 
-            '<div class="center">'+
-            '<span class="list_title_bold">'+ title +'</span>'+
-            '<span id="overview_'+i +'" class="list_sub_title_small">'+ list_data[i].overview +'</span>'+
-            '<span class="list_sub_title_small">'+ movie_releasedate +'</span>'+
-            '</div>'+
-            exist_message+
-            '</ons-list-item>';
-
-            list_doc += list_item_doc;
+                        '<div class="center">' +
+                        '<span class="list_title_bold">' + title + '</span>' +
+                        '<span id="overview_' + i + '" class="list_sub_title_small">' + list_data[i].overview + '</span>' +
+                        '<span class="list_sub_title_small">' + movie_releasedate + '</span>' +
+                        '</div>' +
+                        exist_message +
+                        '</ons-list-item>';
           }
 
           movieadd_SearchList.innerHTML = list_doc;
@@ -1938,7 +1935,7 @@ var Movieadd_search = {
    * @return {string}               - 検索結果をjsonに変換したもの
    */
   create_request_movie_search: function(movie_title, language){
-    return new Promise(function(resolve, reject) {
+    return new Promise(function(resolve) {
       var storage = window.localStorage;
       var adult = storage.getItem(ID.get_localStorage_ID().adult);
       console.log(adult);
@@ -1996,7 +1993,7 @@ var Movieadd_search = {
           var nodata_id = overview_nodata[j];
           var en_id = en_results[k].id;
 
-          if (nodata_id == en_id) {
+          if (nodata_id === en_id) {
             list_data.push(en_results[k]);
           }
         }
@@ -2204,7 +2201,7 @@ var Movieadd = {
 
     //整数部と少数部を取得
     var integer = Math.floor(result);
-    var few = String(result).split(".")[1];
+    var few = Number(String(result).split(".")[1]);
 
     //星と数値を書き込む
     var innerHTML_string = '';
@@ -2212,7 +2209,7 @@ var Movieadd = {
     for(var i = 0; i < 5; i++){
       if (i < integer) {
         innerHTML_string += '<ons-icon icon="ion-ios-star" fixed-width="false"></ons-icon>';
-      }else if (few == 5 && few_write === false) {
+      }else if (few === 5 && few_write === false) {
         innerHTML_string += '<ons-icon icon="ion-ios-star-half" fixed-width="false"></ons-icon>';
         few_write = true;
       }else{
@@ -2571,7 +2568,7 @@ var Movieadd = {
     };
 
     var onSuccess = function(result) {
-      if (result.completed === true && result.app != 'com.apple.UIKit.activity.PostToFacebook') {
+      if (result.completed === true && result.app !== 'com.apple.UIKit.activity.PostToFacebook') {
         document.getElementById(ID.get_moveadd_ID().success_sns_alert).show();
 
         //映画追加画面のボタンオブジェクト
