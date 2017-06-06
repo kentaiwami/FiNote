@@ -803,7 +803,7 @@ var Signin = {
 
   /**
    * ローカルDBにジャンルが保存しているかに応じてクエリを変える
-   * @param  {string} movie - サーバから取得したBackUp1レコード
+   * @param  {Object} movie - サーバから取得したBackUp1レコード
    * @return {Object}       - DBへ問い合わせをするpromiseのarray,
                               ジャンルのINSERTを行うかのフラグ,
                               オノマトペのINSERTを行うかのフラグ
