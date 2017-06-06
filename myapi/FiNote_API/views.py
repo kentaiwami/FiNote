@@ -142,6 +142,7 @@ class SignInNoTokenViewSet(viewsets.ViewSet):
                         file_path = settings.MEDIA_ROOT + '/' + str(get_user.img)
                         with open(file_path, "rb") as image_file:
                             encoded_string = b'data:image/jpeg;base64,' + base64.b64encode(image_file.read())
+                            encoded_string = encoded_string.decode('utf-8')
 
                     response_list = list(backup_obj)
                     response_list.append({'token': str(token)})
@@ -149,7 +150,7 @@ class SignInNoTokenViewSet(viewsets.ViewSet):
                     response_list.append({'email': str(get_user.email)})
                     response_list.append({'birthday': int(get_user.birthday)})
                     response_list.append({'sex': str(get_user.sex)})
-                    response_list.append({'profile_img': str(encoded_string.encode('utf-8'))})
+                    response_list.append({'profile_img': encoded_string})
 
                     return JsonResponse({'results': response_list})
 
