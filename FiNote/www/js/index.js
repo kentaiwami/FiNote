@@ -4090,7 +4090,7 @@ var Utility = {
   /**
    * メールアドレスのバリデーションを行う
    * @param  {string} val - チェックを行いたいメールアドレス
-   * @return {bool}       - 有効ならtrue、無効ならfalse
+   * @return {boolean}       - 有効ならtrue、無効ならfalse
    */
   validateMail: function(val){
     return val.match(/.+@.+\..+/) !== null;
