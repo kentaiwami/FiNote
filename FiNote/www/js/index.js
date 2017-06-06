@@ -528,7 +528,7 @@ var Signup = {
 
   /**
    * 性別を選択するチェックボックスの状態から性別の識別子を返す
-   * @return {[String]} [M or F]
+   * @return {string} - M or F
    */
   get_sex: function(){
     var M = document.getElementById(ID.get_signup_ID().radio).checked;
@@ -537,7 +537,7 @@ var Signup = {
     }else{
       return 'F';
     }
-  },
+  }
 };
 
 
@@ -631,8 +631,8 @@ var Signin = {
 
   /**
    * サーバから取得したリスト(BackUpレコード)1つに対してリストア処理を行う
-   * @param  {[Object]} movie [サーバから取得したBackUpのレコード(1つ)]
-   * @return {[Function]}
+   * @param  {Object} movie - サーバから取得したBackUpのレコード(1つ)
+   * @return {Function}
    */
   movie_restore: function(movie) {
     return function() {
@@ -807,10 +807,10 @@ var Signin = {
 
   /**
    * ローカルDBにジャンルが保存しているかに応じてクエリを変える
-   * @param  {[Json]} movie [サーバから取得したBackUp1レコード]
-   * @return {[Object]}     [DBへ問い合わせをするpromiseのarray,
-                             ジャンルのINSERTを行うかのフラグ,
-                             オノマトペのINSERTを行うかのフラグ]
+   * @param  {string} movie - サーバから取得したBackUp1レコード
+   * @return {Object}       - DBへ問い合わせをするpromiseのarray,
+                              ジャンルのINSERTを行うかのフラグ,
+                              オノマトペのINSERTを行うかのフラグ
    */
   create_genre_onomatopoeia_query: function(movie) {
     var genre_insert_flag = false;
@@ -961,7 +961,7 @@ var Movies = {
 
   /**
    * 受け取ったデータベースの検索結果からリストを描画する関数
-   * @param  {[Array]} result [各テーブルの検索結果を格納した配列]
+   * @param  {Array} result - 各テーブルの検索結果を格納した配列
    */
   draw_movies_list: function(result) {
     return new Promise(function(resolve,reject) {
@@ -1083,8 +1083,8 @@ var Movies = {
 
   /**
    * moviesのDVDやFAVボタンを押した際にデータベースとサーバのバックアップの値を更新する関数
-   * @param  {[String]} id [dvdorfav + タップした映画のprimary key]
-   * @param  {[Integer]} flag    [0:DVD, 1:FAV]
+   * @param  {string} id - dvd or fav + タップした映画のprimary key
+   * @param  {number} flag    - 0:DVD, 1:FAV
    */
   tap_dvd_fav: function(id,flag) {
     Utility.show_spinner(ID.get_movies_ID().page_id);
@@ -1174,7 +1174,7 @@ var Movies = {
 
   /**
    * 検索フォームに文字が入力されるたびに、リセットボタンを表示・非表示にするかを決定するイベントを追加する
-   * @param {[String]} event_name [focus or blur]
+   * @param {string} event_name - focus or blur
    */
   set_event_movies_search_input: function(event_name) {
     if (event_name == 'focus') {
@@ -1300,7 +1300,7 @@ var Movies = {
     Global_variable.movie_update_flag = true;
     Movies.update_movies();
     Utility.stop_spinner();
-  },
+  }
 };
 
 
@@ -1315,7 +1315,7 @@ var Movies_detail = {
 
   /**
    * moviesのinfoボタンを押した際に詳細画面へと遷移させる
-   * @param  {[Integer]} id [タップした映画のprimary key]
+   * @param  {number} id - タップした映画のprimary key
    */
   show_contents: function(id) {
     var query = 'SELECT * from movie WHERE id = ?';
@@ -1339,9 +1339,9 @@ var Movies_detail = {
 
   /**
    * 詳細画面の初期化が完了した後に描画を実行するコールバック関数を作成する
-   * @param  {[Object]} movie_record [ローカルに保存されているタップされた映画オブジェクト]
-   * @param  {[Object]} result_onomatopoeia [ローカルに保存されているオノマトペオブジェクト]
-   * @return {[Function]}            [描画を行うコールバック関数]
+   * @param  {Object} movie_record        - ローカルに保存されているタップされた映画オブジェクト
+   * @param  {Object} result_onomatopoeia - ローカルに保存されているオノマトペオブジェクト
+   * @return {Function}                   - 描画を行うコールバック関数
    */
   create_show_contents_callback: function(movie_record, result_onomatopoeia) {
     // 画面に表示するオノマトペのテキストを生成する
@@ -1511,7 +1511,7 @@ var Movies_detail = {
 
   /**
    * 詳細画面の映画ポスター部分がタップされた際に、表示中のポスターをモーダルで表示する関数
-   * @param  {[html Object]} poster_img [img要素]
+   * @param  {Object} poster_img - img要素
    */
   tap_img: function(poster_img) {
     var src = poster_img.getAttribute('src');
@@ -1942,9 +1942,9 @@ var Movieadd_search = {
   
   /**
    * 映画をタイトルで検索するリクエストを生成して実行する
-   * @param  {[String]} movie_title [検索したい映画タイトル]
-   * @param  {[String]} language    [jaで日本語情報、enで英語情報]
-   * @return {[Json]}             [検索結果をjsonに変換したもの]
+   * @param  {string} movie_title   - 検索したい映画タイトル
+   * @param  {string} language      - jaで日本語情報、enで英語情報
+   * @return {string}               - 検索結果をjsonに変換したもの
    */
   create_request_movie_search: function(movie_title, language){
     return new Promise(function(resolve, reject) {
@@ -1974,9 +1974,9 @@ var Movieadd_search = {
 
   /**
    * jaとenの検索結果を1つの配列にまとめる
-   * @param  {[Array]} ja_results_json [jaリクエストの配列
-   * @param  {[Array]} en_results_json [enリクエストの配列]
-   * @return {[Array]}       [jaとen検索結果をまとめた配列]
+   * @param  {Array} ja_results_json - jaリクエストの配列
+   * @param  {Array} en_results_json - enリクエストの配列
+   * @return {Array}                 - jaとen検索結果をまとめた配列
    */
   create_list_data: function(ja_results_json,en_results_json){
     if (ja_results_json.length === 0 && en_results_json.length === 0) {
@@ -2018,8 +2018,8 @@ var Movieadd_search = {
 
   /**
    * サムネイルとして表示する画像を取得する
-   * @param  {[Array]} list_data [映画オブジェクトの配列]
-   * @return {[String]}           [画像のパス]
+   * @param  {Array} list_data - 映画オブジェクトの配列
+   * @return {string}          - 画像のパス
    */
   get_poster: function(list_data){
     var image_url_array = [];
@@ -2052,7 +2052,7 @@ var Movieadd_search = {
 
   /**
    * リストをタップした際に動作する
-   * @param  {[Object]} obj [タップしたオブジェクト]
+   * @param  {Object} obj - タップしたオブジェクト
    */
   tap_list: function(obj){
     var list_data = Movieadd_search.show_list_data;
@@ -2093,8 +2093,8 @@ var Movieadd = {
 
   /**
    * [映画追加画面のコンテンツを表示する]
-   * @param  {[Array]} list_data [検索結果の映画オブジェクトが格納された配列]
-   * @param  {[Integer]} tap_id    [映画検索画面のリストのうちタップされたリスト番号]
+   * @param  {Array} list_data  - 検索結果の映画オブジェクトが格納された配列
+   * @param  {number} tap_id    - 映画検索画面のリストのうちタップされたリスト番号
    */
   show_contents: function(list_data,tap_id){
 
@@ -2168,7 +2168,7 @@ var Movieadd = {
     var movie_detail_info = document.getElementById(ID.get_moveadd_ID().detail_info);
     movie_detail_info.style.transition = 'opacity 0.5s';
 
-    if (movie_detail_info.style.opacity == 1) {
+    if (movie_detail_info.style.opacity === '1') {
       movie_detail_info.style.opacity = '0';
     }else {
       movie_detail_info.style.opacity = '1';
@@ -2178,7 +2178,7 @@ var Movieadd = {
 
   /**
    * 映画のレーティングを最大評価5に合うように計算して表示する
-   * @param  {[Integer]} vote_average [最大評価10.0の評価値]
+   * @param  {number} vote_average - 最大評価10.0の評価値
    */
   show_vote_average: function(vote_average){
     //検索結果のvote_averageはMAX10なので半分にする
@@ -2365,7 +2365,7 @@ var Movieadd = {
 
   /**
    * ローカルDBのgenreテーブルにサーバから受け取ったgenre_idとnameを格納
-   * @param {[Json]} genre_obj_json [サーバから受け取ったgenre_idをkey、nameをvalueにしたjson]
+   * @param {string} genre_obj_json - サーバから受け取ったgenre_idをkey、nameをvalueにしたjson
    */
   set_genre_local: function(genre_obj_json) {
     var exist_genre_id_list = [];
@@ -2439,7 +2439,7 @@ var Movieadd = {
 
   /**
    * ローカルDBのonomatopoeiaテーブルにonomatopoeiaの名前を格納する
-   * @param {[Array]} onomatopoeia_name_list [ユーザが追加したオノマトペリスト]
+   * @param {Array} onomatopoeia_name_list - ユーザが追加したオノマトペリスト
    */
   set_onomatopoeia_local: function(onomatopoeia_name_list) {
     var exist_onomatopoeia_id_list = [];
@@ -2624,7 +2624,7 @@ var Movieadd = {
     }else {
       document.getElementById(ID.get_moveadd_ID().add_button).style.opacity = '1';
     }
-  },
+  }
 };
 
 
@@ -2754,8 +2754,8 @@ var Feeling = {
 
   /**
    * アラートを閉じるor閉じてリストへ追加する関数
-   * @param  {[String]} func_id [cancel or add or change]
-   * @param  {[String]} dialog_id [feeling_add_dialog or feeling_edit_dialog]
+   * @param  {string} func_id   - cancel or add or change
+   * @param  {string} dialog_id - feeling_add_dialog or feeling_edit_dialog
    */
   hide_input_alert: function(func_id, dialog_id){
     if (func_id == 'cancel') {
@@ -2799,7 +2799,7 @@ var Feeling = {
 
   /**
    * リストの編集ボタンをタップした際に、入力用のアラートを表示する
-   * @param  {[Integer]} i [タップしたリストの配列の添え字]
+   * @param  {number} i - タップしたリストの配列の添え字
    */
   tap_edit: function(i) {
     Feeling.data.tap_id = i;
@@ -2815,7 +2815,7 @@ var Feeling = {
 
   /**
    * リストの削除ボタンをタップした際に、確認用のアラートを表示して削除を行う
-   * @param  {[Integer]} i [タップしたリストの配列の添え字]
+   * @param  {number} i - タップしたリストの配列の添え字
    */
   tap_delete: function(i) {
     Feeling.data.tap_id = i;
@@ -2900,7 +2900,7 @@ var Movieadd_status = {
     }
 
     Utility.pop_page();
-  },
+  }
 };
 
 
@@ -3095,8 +3095,8 @@ var User = {
   /**
    * ジャンルとオノマトペを名前とカウント数でまとめた連想配列の作成と、
    * DVDとお気に入りの登録数を求める関数
-   * @param  {[Object]} results [0がmovie、1がgenre、2がonomatopoeia]
-   * @return {[Object]}         [連想配列とカウント数をまとめたオブジェクト]
+   * @param  {Object} results - 0がmovie、1がgenre、2がonomatopoeia
+   * @return {Object}         - 連想配列とカウント数をまとめたオブジェクト
    */
   create_name_count_obj_and_counts: function(results) {
     // ジャンルとオノマトペのpkと名前からなる連想配列を作成
@@ -3184,9 +3184,9 @@ var User = {
 
   /**
    * グラフを描画する
-   * @param  {[String]} id           [描画したいdiv要素のid]
-   * @param  {[Integer]} total_count  [円グラフの合計値]
-   * @param  {[Array]} series_array [表示するデータ]
+   * @param  {string} id           - 描画したいdiv要素のid
+   * @param  {number} total_count  - 円グラフの合計値
+   * @param  {Array} series_array  - 表示するデータ
    */
   draw_chart: function(id, total_count, series_array) {
     var intViewportWidth = window.innerWidth;
@@ -3194,7 +3194,7 @@ var User = {
     var sum = function(a, b) { return a + b;};
 
     var chart = new Chartist.Pie('#'+id, {
-      series: series_array,
+      series: series_array
     }, {
       labelInterpolationFnc: function(value) {
         return Math.round(value / series_array.reduce(sum) * 100) + '%';
@@ -3491,7 +3491,7 @@ var Change_Password = {
         Utility.show_error_alert('エラー発生', err, 'OK');
       });
     }
-  },
+  }
 };
 
 
@@ -3576,7 +3576,7 @@ var Change_Email = {
       Utility.stop_spinner();
       Utility.show_error_alert('エラー', '有効なメールアドレスを入力してください', 'OK');
     }
-  },
+  }
 };
 
 
@@ -3614,7 +3614,7 @@ var Change_Sex = {
 
   /**
    * 引き渡された性別の識別子をサーバとローカルに保存する
-   * @param  {[String]} sex [M or F]
+   * @param  {string} sex - M or F
    */
   save_data: function(sex) {
     Utility.show_spinner(ID.get_change_sex_ID().page_id);
@@ -3642,7 +3642,7 @@ var Change_Sex = {
       Utility.stop_spinner();
       Utility.show_error_alert('エラー発生', err, 'OK');
     });
-  },
+  }
 };
 
 
@@ -3762,10 +3762,10 @@ var Utility = {
 
   /**
    * htmlファイル、アニメーション、delay時間を指定するとアニメーションを行って画面遷移する
-   * @param  {[String]} html_name      [画面遷移したいhtmlファイル名]
-   * @param  {[String]} animation_name [アニメーション名]
-   * @param  {[Integer]} delaytime      [Timeoutの時間]
-   * @param  {[Function]} callback     [push_page実施後のコールバック]
+   * @param  {string} html_name      - 画面遷移したいhtmlファイル名
+   * @param  {string} animation_name - アニメーション名
+   * @param  {number} delaytime      - Timeoutの時間
+   * @param  {Function} callback     - push_page実施後のコールバック
    */
   push_page: function(html_name, animation_name, delaytime, callback) {
     var showpage = function(){
@@ -3816,7 +3816,7 @@ var Utility = {
 
   /**
    * 指定した親要素にスピナーを表示する
-   * @param  {[String]} parent [親要素のid]
+   * @param  {string} parent - 親要素のid
    */
   show_spinner: function(parent){
     var opts = {
@@ -3854,7 +3854,7 @@ var Utility = {
 
 
   /**
-   * [スピナーの表示を止める]
+   * スピナーの表示を止める
    */
   stop_spinner: function(){
     Utility.spinner.spin();
@@ -3864,9 +3864,9 @@ var Utility = {
 
   /**
    * エラーのアラートを表示する
-   * @param  {[String]} title       [タイトル]
-   * @param  {[String]} message     [メッセージ]
-   * @param  {[String]} buttonLabel [ボタンのラベル]
+   * @param  {string} title       - タイトル
+   * @param  {string} message     - メッセージ
+   * @param  {string} buttonLabel - ボタンのラベル
    */
   show_error_alert: function(title,message,buttonLabel) {
     ons.notification.alert(
@@ -3880,11 +3880,11 @@ var Utility = {
 
   /**
    * confirmアラートを表示する
-   * @param  {[String]} title        [タイトル]
-   * @param  {[String]} message      [メッセージ]
-   * @param  {[Array]} buttonLabels  [ボタンのラベルを文字列で格納した配列]
-   * @param  {[Function]} func0      [ボタンのラベル配列の0番目をタップすると実行される関数]
-   * @param  {[Function]} func1      [ボタンのラベル配列の1番目をタップすると実行される関数]
+   * @param  {string} title        - タイトル
+   * @param  {string} message      - メッセージ
+   * @param  {Array} buttonLabels  - ボタンのラベルを文字列で格納した配列
+   * @param  {Function} func0      - ボタンのラベル配列の0番目をタップすると実行される関数
+   * @param  {Function} func1      - ボタンのラベル配列の1番目をタップすると実行される関数
    */
   show_confirm_alert: function(title, message, buttonLabels, func0, func1) {
     ons.notification.confirm(
@@ -3905,7 +3905,7 @@ var Utility = {
 
   /**
    * TMDBに関するエラーアラートを表示する
-   * @param  {[Integer]} err_status [エラーのHTTPstatus]
+   * @param  {number} err_status - エラーのHTTPstatus
    */
   show_tmdb_error: function(err_status) {
     switch(err_status) {
@@ -3927,9 +3927,9 @@ var Utility = {
 
   /**
    * 画像をbase64エンコードする
-   * @param  {[Image]} image_src [img要素]
-   * @param  {[String]} mine_type [データ型]
-   * @return {[Promise]}           [成功時：画像をbase64エンコードした文字列]
+   * @param  {Image} image_src  - img要素
+   * @param  {string} mine_type - データ型
+   * @return {Promise}          - 成功時：画像をbase64エンコードした文字列
    */
   image_to_base64: function(image_src, mine_type) {
     return new Promise(function(resolve,reject) {
@@ -3947,8 +3947,8 @@ var Utility = {
 
   /**
    * ローカルのImage Fileをbase64へ変換する
-   * @param  {[String]} image_path [変換したい画像のパス]
-   * @return {[Promise]}            [base64文字列]
+   * @param  {string} image_path - 変換したい画像のパス
+   * @return {Promise}           - base64文字列
    */
   local_image_to_base64: function(image_path) {
     return new Promise(function(resolve,reject) {
@@ -3972,8 +3972,8 @@ var Utility = {
 
   /**
    * base64をデコードする
-   * @param  {[String]}   base64img [base64の文字列]
-   * @param  {[Function]} callback  [変換後のコールバック]
+   * @param  {string}   base64img - base64の文字列
+   * @param  {Function} callback  - 変換後のコールバック
    */
   base64_to_image: function(base64img, callback) {
     var img = new Image();
@@ -3986,9 +3986,9 @@ var Utility = {
 
   /**
    * 引数で渡されたidと属性を一括でセットする
-   * @param {[Array]} id_list          [属性をセットしたいidを含んだ配列]
-   * @param {[String]} attribute_name_0 [属性名]
-   * @param {[String]} attribute_name_1 [属性値]
+   * @param {Array} id_list           - 属性をセットしたいidを含んだ配列
+   * @param {string} attribute_name_0 - 属性名
+   * @param {string} attribute_name_1 - 属性値
    */
   setAttribute_list_object: function(id_list, attribute_name_0, attribute_name_1) {
     for(var i = 0; i < id_list.length; i++) {
@@ -3999,8 +3999,8 @@ var Utility = {
 
   /**
    * 複数のオブジェクトから同じattributeを取り除く
-   * @param  {[Array]} id_list    [属性を取り除きたいidを格納した配列]
-   * @param  {[String]} attribute_name [取り除きたい属性名]
+   * @param  {Array} id_list          - 属性を取り除きたいidを格納した配列
+   * @param  {string} attribute_name  - 取り除きたい属性名
    */
   removeAttribute_list_object: function(id_list, attribute_name) {
     for(var i = 0; i < id_list.length; i++) {
@@ -4011,7 +4011,7 @@ var Utility = {
 
   /**
    * キーボードのアクセサリーバーの表示・非表示を設定する
-   * @param  {[Bool]} bool [description]
+   * @param  {bool} bool - description
    */
   hideKeyboardAccessoryBar:function(bool) {
     cordova.plugins.Keyboard.hideKeyboardAccessoryBar(bool);
@@ -4020,10 +4020,10 @@ var Utility = {
 
   /**
    * FiNoteのAPIを実行してpromiseを受け取る
-   * @param {[String]} api_name [利用するAPIの名前]
-   * @param {[Json]} data       [postする場合のデータ]
-   * @param {[String]} method   [postなどのメソッド名]
-   * @param {[String]} version  [apiのバージョン(v1, v2…)]
+   * @param {string} api_name - 利用するAPIの名前
+   * @param {string} data     - postする場合のデータ
+   * @param {string} method   - postなどのメソッド名
+   * @param {string} version  - apiのバージョン(v1, v2…)
    */
   FiNote_API: function(api_name, data, method, version) {
     return new Promise(function(resolve, reject) {
@@ -4049,8 +4049,8 @@ var Utility = {
 
   /**
    * できるだけ日本語の映画タイトルを返す関数
-   * @param  {[Json]} movie_json [TMDBから取得した映画データ]
-   * @return {[String]}            [映画のタイトル]
+   * @param  {string} movie_json - TMDBから取得した映画データ
+   * @return {string}            - 映画のタイトル
    */
   get_movie_ja_title: function(movie_json) {
     if (movie_json.original_language == 'ja') {
@@ -4072,8 +4072,8 @@ var Utility = {
   /**
    * by kawanet(https://gist.github.com/kawanet/5553478)
    * ひらがなをカタカナに変換する
-   * @param  {[String]} src [変換したい文字列]
-   * @return {[String]}     [文字列中のひらがなをカタカナに変換した文字列]
+   * @param  {string} src - 変換したい文字列
+   * @return {string}     - 文字列中のひらがなをカタカナに変換した文字列
    */
   hiraganaToKatagana: function(src) {
     return src.replace(/[\u3041-\u3096]/g, function(match) {
@@ -4086,8 +4086,8 @@ var Utility = {
   /**
    * by kawanet(https://gist.github.com/kawanet/5553478)
    * カタカナをひらがなに変換する
-   * @param  {[String]} src [変換したい文字列]
-   * @return {[String]}     [文字列中のカタカナをひらがなに変換した文字列]
+   * @param  {string} src - 変換したい文字列
+   * @return {string}     - 文字列中のカタカナをひらがなに変換した文字列
    */
   katakanaToHiragana: function(src) {
     return src.replace(/[\u30a1-\u30f6]/g, function(match) {
@@ -4099,8 +4099,8 @@ var Utility = {
 
   /**
    * 標準的な1次元配列を昇順 or 降順でソートする
-   * @param  {[Array]} array [ソート前の配列]
-   * @param  {[Integer]} flag  [0なら昇順、1なら降順]
+   * @param  {Array} array - ソート前の配列
+   * @param  {number} flag  - 0なら昇順、1なら降順
    */
   sort_array: function(array, flag) {
     if (flag === 0) {
@@ -4121,8 +4121,8 @@ var Utility = {
 
   /**
    * メールアドレスのバリデーションを行う
-   * @param  {[String]} val [チェックを行いたいメールアドレス]
-   * @return {[Bool]}     [有効ならtrue、無効ならfalse]
+   * @param  {string} val - チェックを行いたいメールアドレス
+   * @return {bool}       - 有効ならtrue、無効ならfalse
    */
   validateMail: function(val){
     if(val.match(/.+@.+\..+/) === null){
@@ -4147,8 +4147,8 @@ var DB_method = {
 
   /**
    * 指定したテーブルのレコード件数を返す
-   * @param  {[String]} table_name [レコード件数を取得したいテーブル名]
-   * @return {[Promise]}            [成功時：レコード件数、失敗時：エラーメッセージ]
+   * @param  {string} table_name - レコード件数を取得したいテーブル名
+   * @return {Promise}           - 成功時：レコード件数、失敗時：エラーメッセージ
    */
   count_record: function(table_name) {
     return new Promise(function(resolve,reject) {
@@ -4186,9 +4186,9 @@ var DB_method = {
 
   /**
    * シングルSQLを実行する関数
-   * @param  {[String]} query     [クエリー文]
-   * @param  {[Array]} data_list [クエリー内に埋め込む値を格納した配列]
-   * @return {[Promise]}           [成功時：クエリーの実行結果，失敗時：エラーメッセージ]
+   * @param  {string} query     - クエリー文
+   * @param  {Array} data_list  - クエリー内に埋め込む値を格納した配列
+   * @return {Promise}          - 成功時：クエリーの実行結果，失敗時：エラーメッセージ
    */
   single_statement_execute: function(query,data_list) {
     return new Promise(function(resolve,reject) {
@@ -4202,7 +4202,7 @@ var DB_method = {
         reject(error.message);
       });
     });
-  },
+  }
 };
 
 app.initialize();
