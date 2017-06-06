@@ -639,9 +639,8 @@ var Signin = {
           // 画像のダウンロード
           var base_url = 'https://image.tmdb.org/t/p/w300_and_h450_bestv2';
           var image = new Image();
-          image.src = base_url + movie.movie__poster_path;
+            image.src = base_url + movie.movie__poster_path;
           image.onload = function () {
-            var image_b64 = '';
 
             var promises = [];
             var query = '';
@@ -863,7 +862,7 @@ var Movies = {
 
     //ユーザ情報が存在する場合はローディング画面を表示する
     var callback = function(){
-      if (signup_flag == 'true') {
+      if (signup_flag === 'true') {
         document.getElementById(ID.get_index_ID().page_id).innerHTML = '<img  src="img/splash.gif" alt="" / width="100%" height="100%">';
       }
     };
@@ -875,7 +874,7 @@ var Movies = {
     };
     
 
-    Utility.FiNote_API('sign_in_with_token', data, 'POST', 'v1').then(function(result){
+    Utility.FiNote_API('sign_in_with_token', data, 'POST', 'v1').then(function(){
       // ログイン後に映画情報をデータベースから取得
       var query = 'SELECT tmdb_id FROM movie';
       return DB_method.single_statement_execute(query,[]);
@@ -974,13 +973,13 @@ var Movies = {
           var movie_record = result[0].rows.item(i);
           var button_class = {dvd:'', fav:''};
 
-          if (movie_record.dvd == 1) {
+          if (movie_record.dvd === 1) {
             button_class.dvd = 'brown_color';
           }else {
             button_class.dvd = 'gray_color';
           }
 
-          if (movie_record.fav == 1) {
+          if (movie_record.fav === 1) {
             button_class.fav = 'brown_color';
           }else {
             button_class.fav = 'gray_color';
@@ -1000,50 +999,48 @@ var Movies = {
 
           var add_month = ('00' + movie_record.add_month).slice(-2);
           var add_day = ('00' + movie_record.add_day).slice(-2);
-          var list = '<ons-list-item modifier="longdivider">'+
-                     '<div class="left">'+
-                     '<img class="list_img" src="' + movie_record.poster + '">'+
-                     '</div>'+
+            lists_html += '<ons-list-item modifier="longdivider">' +
+                          '<div class="left">' +
+                          '<img class="list_img" src="' + movie_record.poster + '">' +
+                          '</div>' +
 
-                     '<div class="center">'+
-                     '<span class="list-item__title list_title">'+
-                     movie_record.title+
-                     '</span>'+
-                     '<span class="list-item__subtitle list_sub_title">'+
-                     onomatopoeia_names+
-                     '</span>'+
-                     '<span class="list-item__subtitle list_sub_title_small">'+
-                     '追加日:'+
-                     movie_record.add_year+'-'+
-                     add_month+'-'+
-                     add_day+
-                     '</span>'+
-                     '</div>'+
+                          '<div class="center">' +
+                          '<span class="list-item__title list_title">' +
+                          movie_record.title +
+                          '</span>' +
+                          '<span class="list-item__subtitle list_sub_title">' +
+                          onomatopoeia_names +
+                          '</span>' +
+                          '<span class="list-item__subtitle list_sub_title_small">' +
+                          '追加日:' +
+                          movie_record.add_year + '-' +
+                          add_month + '-' +
+                          add_day +
+                          '</span>' +
+                          '</div>' +
 
-                     '<div class="right">'+
-                     '<ons-row class="list_button_row">'+
-                     '<ons-col>'+
-                     '<ons-button class="' + button_class.dvd + '" id="dvd_'+ movie_record.id +'" onClick="Movies.tap_dvd_fav(this.id,0)" modifier="quiet">'+
-                     '<ons-icon icon="ion-disc" size="20px"></ons-icon>'+
-                     '</ons-button>'+
-                     '</ons-col>'+
+                          '<div class="right">' +
+                          '<ons-row class="list_button_row">' +
+                          '<ons-col>' +
+                          '<ons-button class="' + button_class.dvd + '" id="dvd_' + movie_record.id + '" onClick="Movies.tap_dvd_fav(this.id,0)" modifier="quiet">' +
+                          '<ons-icon icon="ion-disc" size="20px"></ons-icon>' +
+                          '</ons-button>' +
+                          '</ons-col>' +
 
-                     '<ons-col>'+
-                     '<ons-button class="' + button_class.fav + '" id="fav_' + movie_record.id + '" onClick="Movies.tap_dvd_fav(this.id,1)" modifier="quiet">'+
-                     '<ons-icon size="20px" icon="ion-android-favorite"></ons-icon>'+
-                     '</ons-button>'+
-                     '</ons-col>'+
+                          '<ons-col>' +
+                          '<ons-button class="' + button_class.fav + '" id="fav_' + movie_record.id + '" onClick="Movies.tap_dvd_fav(this.id,1)" modifier="quiet">' +
+                          '<ons-icon size="20px" icon="ion-android-favorite"></ons-icon>' +
+                          '</ons-button>' +
+                          '</ons-col>' +
 
-                     '<ons-col>'+
-                     '<ons-button class="brown_bg_color_quiet" id=' + movie_record.id + ' onClick="Movies_detail.show_contents(this.id)" modifier="quiet">'+
-                     '<ons-icon size="20px" icon="ion-more"></ons-icon>'+
-                     '</ons-button>'+
-                     '</ons-col>'+
-                     '</ons-row>'+
-                     '</div>'+
-                     '</ons-list-item>';
-
-          lists_html += list;
+                          '<ons-col>' +
+                          '<ons-button class="brown_bg_color_quiet" id=' + movie_record.id + ' onClick="Movies_detail.show_contents(this.id)" modifier="quiet">' +
+                          '<ons-icon size="20px" icon="ion-more"></ons-icon>' +
+                          '</ons-button>' +
+                          '</ons-col>' +
+                          '</ons-row>' +
+                          '</div>' +
+                          '</ons-list-item>';
         }
 
         // 映画の検索結果の件数が0の場合は、メッセージの表示とリスト表示エリアの初期化をする
@@ -1127,37 +1124,37 @@ var Movies = {
         "dvd": dvd_status,
         "fav": fav_status
       };
-      var promises = [
-        DB_method.single_statement_execute(query_obj.query,query_obj.data),
-        Utility.FiNote_API('status_update', request_data, 'POST', 'v1')
+
+      return [
+          DB_method.single_statement_execute(query_obj.query, query_obj.data),
+          Utility.FiNote_API('status_update', request_data, 'POST', 'v1')
       ];
+    }).then(function(promises) {
+      Promise.all(promises).then(function () {
+        /*** 更新後にボタンの色を変更する ***/
+        var lead_id = '';
+        var class_name = 'brown_color';
 
-    return DB_method.single_statement_execute(query_obj.query,query_obj.data);
-    }).then(function(result) {
-      /*** 更新後にボタンの色を変更する ***/
+        if (flag === 0) {
+          lead_id = 'dvd';
+        }else {
+          lead_id = 'fav';
+        }
 
-      var lead_id = '';
-      var class_name = 'brown_color';
+        var element = document.getElementById(lead_id + '_' + pk);
+        var has_class = element.classList.contains('gray_color');
 
-      if (flag === 0) {
-        lead_id = 'dvd';
-      }else {
-        lead_id = 'fav';
-      }
+        if (has_class) {
+          element.classList.remove('gray_color');
+          element.classList.add(class_name);
+        }else {
+          element.classList.remove(class_name);
+          element.classList.add('gray_color');
+        }
 
-      var element = document.getElementById(lead_id + '_' + pk);
-      var has_class = element.classList.contains('gray_color');
-
-      if (has_class) {
-        element.classList.remove('gray_color');
-        element.classList.add(class_name);
-      }else {
-        element.classList.remove(class_name);
-        element.classList.add('gray_color');
-      }
-
-      Utility.stop_spinner();
-      button.removeAttribute('disabled');
+        Utility.stop_spinner();
+        button.removeAttribute('disabled');
+      });
     })
     .catch(function(err) {
       console.log(err);
@@ -1173,10 +1170,10 @@ var Movies = {
    * @param {string} event_name - focus or blur
    */
   set_event_movies_search_input: function(event_name) {
-    if (event_name == 'focus') {
+    if (event_name === 'focus') {
       document.getElementById(ID.get_movies_ID().search_input).addEventListener('input', Movies.show_hide_reset_button, false);
 
-    } else if (event_name == 'blur') {
+    } else if (event_name === 'blur') {
       document.getElementById(ID.get_movies_ID().search_input).removeEventListener('input', Movies.show_hide_reset_button, false);
     }
   },
