@@ -696,7 +696,7 @@ var Signin = {
               query = 'INSERT INTO movie(title, tmdb_id, genre_id, onomatopoeia_id, poster, overview, dvd, fav, add_year, add_month, add_day) VALUES(?,?,?,?,?,?,?,?,?,?,?)';
 
               return DB_method.single_statement_execute(query, insert_data);
-            }).then(function(insert_result) {
+            }).then(function() {
               // 既に追加済みとして映画タイトル、ジャンル名、オノマトペ名を記録
               if (genre_insert_flag) {
                 Signin.exist.genre_array.push(movie.movie__genre__name);
@@ -777,7 +777,7 @@ var Signin = {
 
             return DB_method.single_statement_execute(query_exist, [new_genre_id, new_onomatopoeia_id, Number(movie.movie__tmdb_id)]);
           })
-          .then(function(update_result) {
+          .then(function() {
             // 既に追加済みとして映画タイトル、ジャンル名、オノマトペ名を記録
             if (genre_insert_flag_exist) {
               Signin.exist.genre_array.push(movie.movie__genre__name);
@@ -1242,7 +1242,7 @@ var Movies = {
       })
       .then(function(result) {
         // 結果を描画関数に渡してリストを描画、その後に上書き
-        Movies.draw_movies_list(result).then(function(resolve) {
+        Movies.draw_movies_list(result).then(function() {
           // データなし、リストヘッダーの表示文字を上書き
           if (result[0].rows.length === 0) {
             var no_data_message = document.getElementById(ID.get_movies_ID().nodata_message_p);
