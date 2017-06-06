@@ -2688,10 +2688,10 @@ var Feeling = {
    */
   feeling_input_name_addEvent: function(){
     document.addEventListener('postshow', function(event) {
-      if (event.target.id == ID.get_feeling_ID().add_dialog) {
+      if (event.target.id === ID.get_feeling_ID().add_dialog) {
         document.getElementById(ID.get_feeling_ID().add_button).setAttribute('disabled', 'disabled');
         document.getElementById(ID.get_feeling_ID().input).focus();
-      }else if (event.target.id == ID.get_feeling_ID().edit_dialog) {
+      }else if (event.target.id === ID.get_feeling_ID().edit_dialog) {
         document.getElementById(ID.get_feeling_ID().edit_input).focus();
       }
     });
@@ -2746,9 +2746,9 @@ var Feeling = {
    * @param  {string} dialog_id - feeling_add_dialog or feeling_edit_dialog
    */
   hide_input_alert: function(func_id, dialog_id){
-    if (func_id == 'cancel') {
+    if (func_id === 'cancel') {
       document.getElementById(dialog_id).hide();
-    }else if (func_id == 'add' ){
+    }else if (func_id === 'add' ){
       var feeling_name = document.getElementById(ID.get_feeling_ID().input).value;
       feeling_name = feeling_name.replace(/\s+/g, '');
 
@@ -2853,11 +2853,7 @@ var Movieadd_status = {
     for(var i = 0; i < id_list.length; i++) {
       var switch_dom = document.getElementById(id_list[i]);
 
-      if (check_list[i] === true) {
-        switch_dom.checked = true;
-      }else {
-        switch_dom.checked = false;
-      }
+      switch_dom.checked = check_list[i] === true;
     }
   },
 
@@ -2869,23 +2865,10 @@ var Movieadd_status = {
     //スイッチボタンの状態を保存する
     var dvd_switch_status = document.getElementById(ID.get_movieadd_status_ID().dvd).checked;
     var fav_switch_status = document.getElementById(ID.get_movieadd_status_ID().fav).checked;
-    var dvd_status = 0;
-    var fav_status = 0;
-    if (dvd_switch_status === true) {
-      Movieadd.userdata.dvd = true;
-      dvd_status = 1;
-    }else {
-      Movieadd.userdata.dvd = false;
-      dvd_status = 0;
-    }
 
-    if (fav_switch_status === true) {
-      Movieadd.userdata.fav = true;
-      fav_status = 1;
-    }else {
-      Movieadd.userdata.fav = false;
-      fav_status = 0;
-    }
+    Movieadd.userdata.dvd = dvd_switch_status === true;
+
+    Movieadd.userdata.fav = fav_switch_status === true;
 
     Utility.pop_page();
   }
@@ -2907,7 +2890,7 @@ var User = {
    */
   show_event: function(page_id, callback) {
     document.addEventListener('show', function(event) {
-      if (event.target.id == page_id) {
+      if (event.target.id === page_id) {
         console.log(event.target.id + ' is show');
 
         DB_method.count_record('movie').then(function(movie_count) {
@@ -3013,7 +2996,7 @@ var User = {
       var g_array_name = [];
       for(var i = 0; i < o_array_count.length; i++) {
         for(o_key in params.o_obj) {
-          if (o_array_count[i] == params.o_obj[o_key]) {
+          if (o_array_count[i] === params.o_obj[o_key]) {
             o_array_name.push(o_key);
             delete params.o_obj[o_key];
             break;
@@ -3023,7 +3006,7 @@ var User = {
 
       for(i = 0; i < g_array_count.length; i++) {
         for(g_key in params.g_obj) {
-          if (g_array_count[i] == params.g_obj[g_key]) {
+          if (g_array_count[i] === params.g_obj[g_key]) {
             g_array_name.push(g_key);
             delete params.g_obj[g_key];
             break;
@@ -3111,11 +3094,11 @@ var User = {
       var movie_record = results[0].rows.item(i);
       
       // DVDとFAVの件数をカウント
-      if (movie_record.dvd == 1) {
+      if (movie_record.dvd === 1) {
         dvd_count += 1;
       }
 
-      if (movie_record.fav == 1) {
+      if (movie_record.fav === 1) {
         fav_count += 1;
       }
 
@@ -3150,16 +3133,14 @@ var User = {
     for(var genre_key in genre_pk_name_obj) {
       if (genre_key in genre_pk_count_obj) {
         var genre_name = genre_pk_name_obj[genre_key];
-        var genre_count = genre_pk_count_obj[genre_key];
-        genre_name_count_obj[genre_name] = genre_count;
+          genre_name_count_obj[genre_name] = genre_pk_count_obj[genre_key];
       }
     }
 
     for(var onomatopoeia_key in onomatopoeia_pk_name_obj) {
       if (onomatopoeia_key in onomatopoeia_pk_count_obj) {
         var onomatopoeia_name = onomatopoeia_pk_name_obj[onomatopoeia_key];
-        var onomatopoeia_count = onomatopoeia_pk_count_obj[onomatopoeia_key];
-        onomatopoeia_name_count_obj[onomatopoeia_name] = onomatopoeia_count;
+          onomatopoeia_name_count_obj[onomatopoeia_name] = onomatopoeia_pk_count_obj[onomatopoeia_key];
       }
     }
 
@@ -3257,7 +3238,7 @@ var Setting = {
 
         // アダルト作品のフラグからチェック状態を変更
         var adult_check = document.getElementById(ID.get_setting_ID().adult_check);
-        if (adult == 'true') {
+        if (adult === 'true') {
           adult_check.setAttribute('checked', 'checked');
         }else {
           adult_check.removeAttribute('checked');
@@ -3318,7 +3299,7 @@ var Setting = {
    */
   add_event_adult_check: function() {
     document.addEventListener('change', function(event) {
-      if (event.target.id == ID.get_setting_ID().adult_check) {
+      if (event.target.id === ID.get_setting_ID().adult_check) {
         console.log(event.target.id + ' is changed ' + event.value);
 
         // チェック状態が変更されたらローカルDBへ保存
@@ -3360,7 +3341,7 @@ var Setting = {
         Utility.FiNote_API('set_profile_img', api_request_data, 'POST', 'v1')
       ];
 
-      Promise.all(promises).then(function(result) {
+      Promise.all(promises).then(function() {
         Utility.stop_spinner();
 
         // プロフィール画像を描画
@@ -3448,16 +3429,16 @@ var Change_Password = {
     var re_new_pass = document.getElementById(ID.get_change_password_ID().re_new_password).value;
     var storage = window.localStorage;
 
-    if (now_pass != storage.getItem(ID.get_localStorage_ID().password)) {
+    if (now_pass !== storage.getItem(ID.get_localStorage_ID().password)) {
       Utility.show_error_alert('パスワード変更エラー', '現在のパスワードが間違っています', 'OK');
       Utility.stop_spinner();
-    }else if(now_pass == new_pass) {
+    }else if(now_pass === new_pass) {
       Utility.show_error_alert('パスワード変更エラー', '現在のパスワードと新しいパスワードは同じにできません', 'OK');
       Utility.stop_spinner();
-    }else if(new_pass != re_new_pass) {
+    }else if(new_pass !== re_new_pass) {
       Utility.show_error_alert('パスワード変更エラー', '新しいパスワードの入力を再度確認してください', 'OK');
       Utility.stop_spinner();
-    }else if(now_pass == storage.getItem(ID.get_localStorage_ID().password)) {
+    }else if(now_pass === storage.getItem(ID.get_localStorage_ID().password)) {
       var data = {
         "token": storage.getItem(ID.get_localStorage_ID().token),
         "now_password": now_pass,
@@ -3586,7 +3567,7 @@ var Change_Sex = {
       var now_sex = storage.getItem(ID.get_localStorage_ID().sex);
 
       var radio_id = '';
-      if (now_sex == 'M') {
+      if (now_sex === 'M') {
         radio_id = ID.get_change_sex_ID().radio_m;
       }else {
         radio_id = ID.get_change_sex_ID().radio_f;
@@ -3720,7 +3701,7 @@ var Utility = {
    */
   check_page_init: function(pageid,callback){
     document.addEventListener('init', function(event) {
-      if (event.target.id == pageid) {
+      if (event.target.id === pageid) {
         console.log(pageid + ' is inited');
         callback();
         document.removeEventListener('init', arguments.callee);
@@ -3734,8 +3715,7 @@ var Utility = {
    * @return {[Object]} [description]
    */
   get_database: function(){
-    var db = window.sqlitePlugin.openDatabase({name: 'my_db.db', location: 'default'});
-    return db;
+      return window.sqlitePlugin.openDatabase({name: 'my_db.db', location: 'default'});
   },
 
 
@@ -3920,7 +3900,7 @@ var Utility = {
    * @return {Promise}          - 成功時：画像をbase64エンコードした文字列
    */
   image_to_base64: function(image_src, mine_type) {
-    return new Promise(function(resolve,reject) {
+    return new Promise(function(resolve) {
       var canvas = document.createElement('canvas');
       canvas.width  = image_src.width;
       canvas.height = image_src.height;
@@ -3939,11 +3919,11 @@ var Utility = {
    * @return {Promise}           - base64文字列
    */
   local_image_to_base64: function(image_path) {
-    return new Promise(function(resolve,reject) {
+    return new Promise(function(resolve) {
       var xhr = new XMLHttpRequest();
       xhr.open("GET", image_path, true);
       xhr.responseType = "blob";
-      xhr.onload = function (e) {
+      xhr.onload = function () {
         console.log(this.response);
         var reader = new FileReader();
         reader.onload = function(event) {
@@ -4041,7 +4021,7 @@ var Utility = {
    * @return {string}            - 映画のタイトル
    */
   get_movie_ja_title: function(movie_json) {
-    if (movie_json.original_language == 'ja') {
+    if (movie_json.original_language === 'ja') {
       if (movie_json.original_title !== '') {
         return movie_json.original_title;
       }else {
@@ -4113,11 +4093,7 @@ var Utility = {
    * @return {bool}       - 有効ならtrue、無効ならfalse
    */
   validateMail: function(val){
-    if(val.match(/.+@.+\..+/) === null){
-      return false;
-    } else {
-      return true;
-    }
+    return val.match(/.+@.+\..+/) !== null;
   }
 };
 
