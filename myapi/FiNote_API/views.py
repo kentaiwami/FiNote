@@ -149,7 +149,7 @@ class SignInNoTokenViewSet(viewsets.ViewSet):
                     response_list.append({'email': str(get_user.email)})
                     response_list.append({'birthday': int(get_user.birthday)})
                     response_list.append({'sex': str(get_user.sex)})
-                    response_list.append({'profile_img': str(encoded_string.decode('utf-8'))})
+                    response_list.append({'profile_img': str(encoded_string.encode('utf-8'))})
 
                     return JsonResponse({'results': response_list})
 
