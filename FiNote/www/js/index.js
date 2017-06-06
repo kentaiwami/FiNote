@@ -1438,8 +1438,7 @@ var Movies_detail = {
    * @param  {[String]} onomatopoeia_text [画面表示用になっているオノマトペのテキスト]
    */
   push_page_feeling: function(onomatopoeia_text) {
-    var onomatopoeia_name_list = onomatopoeia_text.split('、');
-    Movieadd.userdata.feeling_name_list = onomatopoeia_name_list;
+      Movieadd.userdata.feeling_name_list = onomatopoeia_text.split('、');
 
     var callback = function() {
       // 詳細画面から表示した気分リストであることを登録
