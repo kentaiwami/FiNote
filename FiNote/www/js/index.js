@@ -1480,7 +1480,7 @@ var Movies_detail = {
     };
 
     var onSuccess = function(result) {
-      if (result.completed === true && result.app != 'com.apple.UIKit.activity.PostToFacebook') {
+      if (result.completed === true && result.app !== 'com.apple.UIKit.activity.PostToFacebook') {
         document.getElementById(ID.get_movies_detail_ID().alert).show();
       }
     };
@@ -1532,7 +1532,7 @@ var Movies_detail = {
     Global_variable.movie_update_flag = true;
     
     document.addEventListener('postpop', function(event) {
-      if (event.enterPage.pushedOptions.page == ID.get_movies_detail_ID().tmp_id) {
+      if (event.enterPage.pushedOptions.page === ID.get_movies_detail_ID().tmp_id) {
         Utility.show_spinner(ID.get_movies_detail_ID().page_id);
 
         // 編集済みの気分リスト
@@ -1569,7 +1569,7 @@ var Movies_detail = {
 
           return DB_method.single_statement_execute(query, query_data);
         })
-        .then(function(result) {
+        .then(function() {
           var query_movie = 'SELECT * from movie WHERE tmdb_id = ?';
           var query_onomatopoeia = 'SELECT * from onomatopoeia';
 
@@ -1585,13 +1585,13 @@ var Movies_detail = {
             var movie_record = results[0].rows.item(0);
             var result_onomatopoeia = results[1];
 
-            return new Promise(function(resolve, reject) {
+            return new Promise(function(resolve) {
               var callback = Movies_detail.create_show_contents_callback(movie_record, result_onomatopoeia);
               callback();
               resolve('resolve');
             });
           })
-          .then(function(result) {
+          .then(function() {
             Utility.stop_spinner();
           });
         })
@@ -1613,7 +1613,7 @@ var Movies_detail = {
     Global_variable.movie_update_flag = true;
 
     document.addEventListener('prepop', function(event) {
-      if (event.enterPage.pushedOptions.page == ID.get_movies_detail_ID().tmp_id) {
+      if (event.enterPage.pushedOptions.page === ID.get_movies_detail_ID().tmp_id) {
         Utility.show_spinner(ID.get_movieadd_status_ID().page_id);
 
         //スイッチボタンの状態を保存する
@@ -1655,28 +1655,27 @@ var Movies_detail = {
           Utility.FiNote_API('status_update', request_data, 'POST', 'v1')
         ];
 
-        Promise.all(promises).then(function(result) {
+        Promise.all(promises).then(function() {
           var query_movie = 'SELECT * from movie WHERE id = ?';
           var query_onomatopoeia = 'SELECT * from onomatopoeia';
-          var promises = [
-            DB_method.single_statement_execute(query_movie,[movie_pk]),
-            DB_method.single_statement_execute(query_onomatopoeia, [])
-          ];
 
-          return promises;
+          return [
+              DB_method.single_statement_execute(query_movie, [movie_pk]),
+              DB_method.single_statement_execute(query_onomatopoeia, [])
+          ];
         })
         .then(function(promises) {
           Promise.all(promises).then(function(results) {
             var movie_record = results[0].rows.item(0);
             var result_onomatopoeia = results[1];
 
-            return new Promise(function(resolve, reject) {
+            return new Promise(function(resolve) {
               var callback = Movies_detail.create_show_contents_callback(movie_record, result_onomatopoeia);
               callback();
               resolve('resolve');
             });
           })
-          .then(function(result) {
+          .then(function() {
             Utility.stop_spinner();
           });
         })
@@ -1721,7 +1720,7 @@ var Movies_detail = {
         Utility.FiNote_API('delete_backup', request_data, 'POST', 'v1')
       ];
 
-      Promise.all(promises).then(function(result) {
+      Promise.all(promises).then(function() {
         Utility.stop_spinner();
         Utility.show_confirm_alert('削除の完了', '映画の削除が完了しました', ['OK'], func_after_deleted, func_none);
       })
@@ -1768,7 +1767,7 @@ var Movieadd_search = {
 
     //テキスト未確定入力時にリセットボタンを押した時
     var element = document.activeElement;
-    if (element.getAttribute('id') == ID.get_movieadd_search_ID().form) {
+    if (element.getAttribute('id') === ID.get_movieadd_search_ID().form) {
       document.getElementById(ID.get_movieadd_search_ID().form).blur();
       document.getElementById(ID.get_movieadd_search_ID().form).focus();
 
@@ -1784,10 +1783,10 @@ var Movieadd_search = {
    * @param {[String]} event_name [focusまたはblurを受け取る]
    */
   set_event_movieadd_search_input: function(event_name) {
-    if (event_name == 'focus') {
+    if (event_name === 'focus') {
       document.getElementById(ID.get_movieadd_search_ID().form).addEventListener('input', Movieadd_search.show_hide_reset_button, false);
 
-    } else if (event_name == 'blur') {
+    } else if (event_name === 'blur') {
       document.getElementById(ID.get_movieadd_search_ID().form).removeEventListener('input', Movieadd_search.show_hide_reset_button, false);
     }
   },
