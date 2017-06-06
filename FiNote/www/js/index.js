@@ -378,7 +378,7 @@ var Top = {
    */
   check_post_change: function(){
     document.addEventListener('postchange', function(event) {
-      if (event.target.id == 'top_carousel') {
+      if (event.target.id === 'top_carousel') {
         console.log('active carousel is ' + event.activeIndex);
 
         var toolbar_center = document.getElementById(ID.get_top_ID().toolbar_center);
