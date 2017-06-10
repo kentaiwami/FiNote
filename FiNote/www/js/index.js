@@ -2891,7 +2891,28 @@ var Social = {
   show_event: function (page_id) {
     document.addEventListener('show', function(event) {
       if (event.target.id === page_id) {
+        Utility.show_spinner(ID.get_social_ID().page_id);
         console.log(event.target.id + ' is show');
+
+        Utility.FiNote_API('recently_movie','', 'GET', 'v1')
+        .then(function(result) {
+          Utility.stop_spinner();
+
+          //結果を描画
+          var movie_list = document.getElementById('movie_list');
+          var html = '';
+          var json_result = JSON.parse(result);
+          for(var i = 0; i < json_result.length; i++) {
+            html += json_result[i].title + '<br>';
+          }
+
+          movie_list.innerHTML = html;
+        })
+        .catch(function(err) {
+          console.log(err);
+          Utility.stop_spinner();
+          Utility.show_error_alert('APIエラー', err, 'OK');
+        });
       }
     })
   }
