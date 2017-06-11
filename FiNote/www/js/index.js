@@ -212,7 +212,8 @@ var ID = {
 
   get_social_ID: function () {
     return {
-      tmp_id: 'social.html', page_id: 'social'
+      tmp_id: 'social.html', page_id: 'social', movie_list: 'social_movie_list', modal: 'social_movie_list_modal',
+      modal_rank: 'social_movie_list_rank', modal_title: 'social_movie_list_title', modal_overview: 'social_movie_list_overview'
     };
   },
 
@@ -2904,7 +2905,7 @@ var Social = {
           Utility.stop_spinner();
 
           //結果を描画
-          var movie_list = document.getElementById('movie_list');
+          var social_movie_list = document.getElementById(ID.get_social_ID().movie_list);
           var html = '<ons-row>';
           var json_result = JSON.parse(result);
           for(var i = 0; i < json_result.length; i++) {
@@ -2916,7 +2917,7 @@ var Social = {
             escaped_overview = escaped_overview.replace(/'/g, "`");
 
             html += '<ons-col width="50vw">' +
-                    '<img onclick="Social.show_movie_detail(\'' + escaped_title + '\', \'' + escaped_overview + '\', \'' + image_url + '\')" class="cover_img" src=' + image_url + '>'+
+                    '<img onclick="Social.show_movie_detail(' + (i+1)+', \'' + escaped_title + '\', \'' + escaped_overview + '\')" class="cover_img" src=' + image_url + '>'+
                     '</ons-col>';
 
             if(i % 2 === 1) {
@@ -2924,7 +2925,7 @@ var Social = {
             }
           }
 
-          movie_list.innerHTML = html;
+          social_movie_list.innerHTML = html;
         })
         .catch(function(err) {
           console.log(err);
@@ -2938,13 +2939,31 @@ var Social = {
 
 	/**
    * 詳細情報をモーダルで表示する
+   * @param {number} rank        - ランキング
 	 * @param {string} title       - 映画のタイトル
 	 * @param {string} overview    - 映画の概要
-	 * @param {string} poster_path - 映画の画像URL(外部)
 	 */
-  show_movie_detail: function (title, overview, poster_path) {
+  show_movie_detail: function (rank, title, overview) {
+    var modal_rank = document.getElementById(ID.get_social_ID().modal_rank);
+    var modal_title = document.getElementById(ID.get_social_ID().modal_title);
+    var modal_overview = document.getElementById(ID.get_social_ID().modal_overview);
+    var modal = document.getElementById(ID.get_social_ID().modal);
 
-	}
+    modal_rank.innerHTML = rank + '位';
+    modal_title.innerHTML = title;
+    modal_overview.innerHTML = overview;
+
+    modal.show();
+	},
+
+
+	/**
+   * モーダルを閉じる関数
+	 */
+	hide_modal: function() {
+    var modal = document.getElementById(ID.get_social_ID().modal);
+    modal.hide();
+  }
 };
 
 

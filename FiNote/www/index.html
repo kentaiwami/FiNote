@@ -455,7 +455,17 @@
 		</div>
     </ons-toolbar>
 
-	<div id="movie_list"></div>
+	<!-- APIの結果を描画する要素-->
+	<div id="social_movie_list"></div>
+
+	<!-- ポスターをタップした際に表示するモーダル-->
+	<ons-modal id="social_movie_list_modal" onclick="Social.hide_modal()" animation="fade">
+		<div>
+			<p id="social_movie_list_rank"></p>
+			<p id="social_movie_list_title"></p>
+			<p id="social_movie_list_overview"></p>
+	  	</div>
+	</ons-modal>
 
 </ons-page>
 </ons-template>
