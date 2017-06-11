@@ -2911,10 +2911,14 @@ var Social = {
           for(var i = 0; i < json_result.length; i++) {
             var base_url = 'https://image.tmdb.org/t/p/w300_and_h450_bestv2';
             var image_url = base_url + json_result[i].poster_path;
+
             var escaped_title = json_result[i].title.replace(/"/g, "“");
             escaped_title = escaped_title.replace(/'/g, "`");
+            escaped_title = escaped_title.replace(/\r/g, "");
+
             var escaped_overview = json_result[i].overview.replace(/"/g, "“");
             escaped_overview = escaped_overview.replace(/'/g, "`");
+            escaped_overview = escaped_overview.replace(/\r/g, "");
 
             html += '<ons-col width="50vw">' +
                     '<img onclick="Social.show_movie_detail(' + (i+1)+', \'' + escaped_title + '\', \'' + escaped_overview + '\')" class="cover_img" src=' + image_url + '>'+
@@ -3184,7 +3188,7 @@ var User = {
 
     for(i = 0; i < results[0].rows.length; i++) {
       var movie_record = results[0].rows.item(i);
-      
+
       // DVDとFAVの件数をカウント
       if (movie_record.dvd === 1) {
         dvd_count += 1;
