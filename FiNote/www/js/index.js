@@ -2905,11 +2905,13 @@ var Social = {
           for(var i = 0; i < json_result.length; i++) {
             var base_url = 'https://image.tmdb.org/t/p/w300_and_h450_bestv2';
             var image_url = base_url + json_result[i].poster_path;
-            var escaped_title = json_result[i].title.replace(/(["'])/gi, " ");
-            var escaped_overview = json_result[i].overview.replace(/(["'])/gi, " ");
+            var escaped_title = json_result[i].title.replace(/"/g, "“");
+            escaped_title = escaped_title.replace(/'/g, "`");
+            var escaped_overview = json_result[i].overview.replace(/"/g, "“");
+            escaped_overview = escaped_overview.replace(/'/g, "`");
 
             html += '<ons-col width="50vw">' +
-                    '<img onclick="Social.show_movie_detail(\'' + escaped_title + '\',\'' + escaped_overview + '\')" class="cover_img" src=' + image_url + '>'+
+                    '<img onclick="Social.show_movie_detail(\'' + escaped_title + '\', \'' + escaped_overview + '\', \'' + image_url + '\')" class="cover_img" src=' + image_url + '>'+
                     '</ons-col>';
 
             if(i % 2 === 1) {
@@ -2928,9 +2930,10 @@ var Social = {
     })
   },
   
-  show_movie_detail: function (hoge, hoge2) {
+  show_movie_detail: function (hoge, hoge2, hoge3) {
     console.log(hoge);
     console.log(hoge2);
+    console.log(hoge3);
 	}
 };
 
