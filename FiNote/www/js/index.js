@@ -645,7 +645,7 @@ var Signin = {
           // 画像のダウンロード
           var base_url = 'https://image.tmdb.org/t/p/w300_and_h450_bestv2';
           var image = new Image();
-            image.src = base_url + movie.movie__poster_path;
+          image.src = base_url + movie.movie__poster_path;
           image.onload = function () {
 
             var promises = [];
@@ -2900,10 +2900,21 @@ var Social = {
 
           //結果を描画
           var movie_list = document.getElementById('movie_list');
-          var html = '';
+          var html = '<ons-row>';
           var json_result = JSON.parse(result);
           for(var i = 0; i < json_result.length; i++) {
-            html += json_result[i].title + '<br>';
+            var base_url = 'https://image.tmdb.org/t/p/w300_and_h450_bestv2';
+            var image_url = base_url + json_result[i].poster_path;
+            var escaped_title = json_result[i].title.replace(/(["'])/gi, " ");
+            var escaped_overview = json_result[i].overview.replace(/(["'])/gi, " ");
+
+            html += '<ons-col width="50vw">' +
+                    '<img onclick="Social.show_movie_detail(\'' + escaped_title + '\',\'' + escaped_overview + '\')" class="cover_img" src=' + image_url + '>'+
+                    '</ons-col>';
+
+            if(i % 2 === 1) {
+              html += '</ons-row><ons-row>'
+            }
           }
 
           movie_list.innerHTML = html;
@@ -2915,7 +2926,12 @@ var Social = {
         });
       }
     })
-  }
+  },
+  
+  show_movie_detail: function (hoge, hoge2) {
+    console.log(hoge);
+    console.log(hoge2);
+	}
 };
 
 
