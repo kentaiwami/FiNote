@@ -2934,11 +2934,16 @@ var Social = {
       }
     })
   },
-  
-  show_movie_detail: function (hoge, hoge2, hoge3) {
-    console.log(hoge);
-    console.log(hoge2);
-    console.log(hoge3);
+
+
+	/**
+   * 詳細情報をモーダルで表示する
+	 * @param {string} title       - 映画のタイトル
+	 * @param {string} overview    - 映画の概要
+	 * @param {string} poster_path - 映画の画像URL(外部)
+	 */
+  show_movie_detail: function (title, overview, poster_path) {
+
 	}
 };
 
