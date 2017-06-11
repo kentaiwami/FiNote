@@ -2888,7 +2888,12 @@ var Movieadd_status = {
                         social.html
  ************************************************************/
 var Social = {
-  show_event: function (page_id) {
+
+	/**
+   * socialタブがタップされて、表示される度にAPIを叩いて結果を描画する
+	 * @param  {string} page_id   - page_id(social)
+	 */
+	show_event: function (page_id) {
     document.addEventListener('show', function(event) {
       if (event.target.id === page_id) {
         Utility.show_spinner(ID.get_social_ID().page_id);

@@ -1078,6 +1078,9 @@
   max-width: 100%;
   height: auto;
 }
+.cover_img:active {
+  opacity: .4;
+}
 
 /************************************************************
                         Notification

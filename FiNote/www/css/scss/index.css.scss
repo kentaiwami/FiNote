@@ -400,6 +400,10 @@ $font-small: .75rem;
 .cover_img {
   max-width: 100%;
   height: auto;
+
+  &:active {
+    opacity: .7;
+  }
 }
 
 /************************************************************
