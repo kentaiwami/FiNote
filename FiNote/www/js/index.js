@@ -2988,7 +2988,42 @@ var Social = {
       ]
     }).then(function(index){
       console.log('index: ', index);
+
+      switch (index){
+        case 0:
+          console.log('tap 気分の比較一覧');
+          break;
+
+        case 1:
+          console.log('tap 他の人の気分を検索');
+          break;
+
+        case 2:
+          Social.draw_movie_by_age();
+          break;
+      }
     })
+	},
+
+  draw_movie_by_age: function () {
+	  var social_movie_list = document.getElementById(ID.get_social_ID().movie_list);
+	  social_movie_list.innerHTML = '';
+
+	  Utility.show_spinner(ID.get_social_ID().page_id);
+
+    Utility.FiNote_API('movie_by_age', '', 'GET', 'v1').then(function(result) {
+      Utility.stop_spinner();
+
+      var json_result = JSON.parse(result);
+
+      //  TODO
+
+    })
+    .catch(function(err) {
+      console.log(err);
+      Utility.stop_spinner();
+      Utility.show_error_alert('APIエラー', err, 'OK');
+    });
 	}
 };
 
