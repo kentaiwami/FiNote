@@ -2965,9 +2965,31 @@ var Social = {
    * モーダルを閉じる関数
 	 */
 	hide_modal: function() {
-    var modal = document.getElementById(ID.get_social_ID().modal);
-    modal.hide();
-  }
+		var modal = document.getElementById(ID.get_social_ID().modal);
+		modal.hide();
+	},
+
+
+	/**
+   * 表示切り替え用のアクションシートを表示する
+	 */
+	show_action_sheet: function () {
+	  ons.openActionSheet({
+      title: '表示を切り替える',
+      cancelable: true,
+      buttons: [
+        '気分の比較一覧',
+        '他の人の気分を検索',
+        '年代別の映画ランキング',
+        {
+          label: 'キャンセル',
+          icon: 'md-close'
+        }
+      ]
+    }).then(function(index){
+      console.log('index: ', index);
+    })
+	}
 };
 
 
