@@ -2894,7 +2894,7 @@ var Social = {
    * socialタブがタップされて、表示される度にAPIを叩いて結果を描画する
 	 * @param  {string} page_id   - page_id(social)
 	 */
-	show_event: function (page_id) {
+	show_recently_movie_list: function (page_id) {
     document.addEventListener('show', function(event) {
       if (event.target.id === page_id) {
         Utility.show_spinner(ID.get_social_ID().page_id);
@@ -4291,4 +4291,4 @@ app.initialize();
 
 // ユーザ情報画面を表示するたびに、DBからデータを取得して表示データを更新する
 User.show_event(ID.get_user_ID().page_id, User.show_contents);
-Social.show_event(ID.get_social_ID().page_id);
+Social.show_recently_movie_list(ID.get_social_ID().page_id);
