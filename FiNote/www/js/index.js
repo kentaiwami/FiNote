@@ -2953,7 +2953,10 @@ var Social = {
 
     if(count != -1 ) {
       modal_users_count.innerHTML = count + '人がこの映画を追加しています';
+    }else{
+      modal_users_count.innerHTML = '';
     }
+
 
     modal_rank.innerHTML = rank + '位';
     modal_title.innerHTML = title;
