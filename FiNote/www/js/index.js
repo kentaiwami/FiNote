@@ -213,7 +213,8 @@ var ID = {
   get_social_ID: function () {
     return {
       tmp_id: 'social.html', page_id: 'social', movie_list: 'social_movie_list', modal: 'social_movie_list_modal',
-      modal_rank: 'social_movie_list_rank', modal_title: 'social_movie_list_title', modal_overview: 'social_movie_list_overview'
+      modal_rank: 'social_movie_list_rank', modal_title: 'social_movie_list_title', modal_overview: 'social_movie_list_overview',
+      users_count: 'social_movie_list_users_count'
     };
   },
 
@@ -2912,16 +2913,11 @@ var Social = {
             var base_url = 'https://image.tmdb.org/t/p/w300_and_h450_bestv2';
             var image_url = base_url + json_result[i].poster_path;
 
-            var escaped_title = json_result[i].title.replace(/"/g, "“");
-            escaped_title = escaped_title.replace(/'/g, "`");
-            escaped_title = escaped_title.replace(/\r/g, "");
-
-            var escaped_overview = json_result[i].overview.replace(/"/g, "“");
-            escaped_overview = escaped_overview.replace(/'/g, "`");
-            escaped_overview = escaped_overview.replace(/\r/g, "");
+            var escaped_title = Utility.escaped_string(json_result[i].title);
+            var escaped_overview = Utility.escaped_string(json_result[i].overview);
 
             html += '<ons-col width="50vw">' +
-                    '<img onclick="Social.show_movie_detail(' + (i+1)+', \'' + escaped_title + '\', \'' + escaped_overview + '\')" class="cover_img" src=' + image_url + '>'+
+                    '<img onclick="Social.show_movie_detail(' + (i+1)+', -1, \'' + escaped_title + '\', \'' + escaped_overview + '\')" class="cover_img" src=' + image_url + '>'+
                     '</ons-col>';
 
             if(i % 2 === 1) {
@@ -2944,14 +2940,20 @@ var Social = {
 	/**
    * 詳細情報をモーダルで表示する
    * @param {number} rank        - ランキング
+   * @param {number} count       - ユーザの登録人数
 	 * @param {string} title       - 映画のタイトル
 	 * @param {string} overview    - 映画の概要
 	 */
-  show_movie_detail: function (rank, title, overview) {
+  show_movie_detail: function (rank, count, title, overview) {
     var modal_rank = document.getElementById(ID.get_social_ID().modal_rank);
+    var modal_users_count = document.getElementById(ID.get_social_ID().users_count);
     var modal_title = document.getElementById(ID.get_social_ID().modal_title);
     var modal_overview = document.getElementById(ID.get_social_ID().modal_overview);
     var modal = document.getElementById(ID.get_social_ID().modal);
+
+    if(count != -1 ) {
+      modal_users_count.innerHTML = count + '人がこの映画を追加しています';
+    }
 
     modal_rank.innerHTML = rank + '位';
     modal_title.innerHTML = title;
@@ -3005,7 +3007,11 @@ var Social = {
     })
 	},
 
-  draw_movie_by_age: function () {
+
+	/**
+   * 年代別の映画ランキングを描画する関数
+	 */
+	draw_movie_by_age: function () {
 	  var social_movie_list = document.getElementById(ID.get_social_ID().movie_list);
 	  social_movie_list.innerHTML = '';
 
@@ -3016,8 +3022,43 @@ var Social = {
 
       var json_result = JSON.parse(result);
 
-      //  TODO
+      var base_url = 'https://image.tmdb.org/t/p/w300_and_h450_bestv2';
+      var html = '';
+      var count = 10;
 
+      //全年代の映画ポスターを描画するhtmlを生成
+      for(var i = 0; i < json_result.length; i++ ) {
+        var by_age = String(count);
+        var by_age_results = json_result[i][by_age];
+
+        html += '<ons-list-header>' + by_age + '代</ons-list-header><div class="my_slick_class">';
+
+        //1つの年代
+        for(var j = 0; j < by_age_results.length; j++ ){
+          var img_url = base_url + by_age_results[j].poster_path;
+          var escaped_title = Utility.escaped_string(by_age_results[j].title);
+          var escaped_overview = Utility.escaped_string(by_age_results[j].overview);
+          var user_count = by_age_results[j][by_age];
+
+          html += '<div><img onclick="Social.show_movie_detail(' + (j+1)+', '+user_count+', \'' + escaped_title + '\', \'' + escaped_overview + '\')" class="img_30vh_height" src="' + img_url + '"></div>';
+        }
+
+        count += 10;
+        html += '</div>';
+      }
+
+      social_movie_list.innerHTML = '<ons-list>' + html + '</ons-list>';
+
+      //slickの設定
+      $(document).ready(function(){
+        $('.my_slick_class').slick({
+          infinite: false,
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          dots: true,
+          arrows: false
+        });
+      });
     })
     .catch(function(err) {
       console.log(err);
@@ -4247,7 +4288,20 @@ var Utility = {
    */
   validateMail: function(val){
     return val.match(/.+@.+\..+/) !== null;
-  }
+  },
+
+
+	/**
+   * ダブル・シングルコーテーションや¥rを置き換えた文字列を返す
+	 * @param {string} str - エスケープ前の文字列
+	 */
+  escaped_string: function (str) {
+    var escaped_str = str.replace(/"/g, "“");
+    escaped_str = escaped_str.replace(/'/g, "`");
+    escaped_str = escaped_str.replace(/\r/g, "");
+
+    return escaped_str;
+	}
 };
 
 
