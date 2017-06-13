@@ -70,6 +70,8 @@ class Movie(models.Model):
     tmdb_id = models.CharField(max_length=100, unique=True)
     overview = models.CharField(max_length=1000, default='')
     poster_path = models.CharField(max_length=1000, default='')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     genre = models.ManyToManyField(Genre)
     user = models.ManyToManyField(AuthUser, blank=True)
     onomatopoeia = models.ManyToManyField(Onomatopoeia)

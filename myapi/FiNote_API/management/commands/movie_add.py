@@ -4,11 +4,15 @@ from django.db.models import Max, Min
 from rest_framework_jwt.serializers import User
 
 from FiNote_API.functions import MovieAdd, Backup
-from FiNote_API.models import Onomatopoeia
+from FiNote_API.models import Onomatopoeia, Movie
 import random
 import requests
 from myapi.settings import TMDB_APIKEY
 
+
+output_value = {'range_page': '',
+                'select_page': '',
+                'api': ''}
 
 class Command(BaseCommand):
     help = 'Movie add random choice movies'
@@ -76,6 +80,33 @@ class Command(BaseCommand):
         api_list = ['upcoming', 'top_rated', 'popular', 'now_playing']
         random_api_number = random.randint(0, len(api_list)-1)
 
+        # 映画登録件数が全APIで取得できる映画数の95%を超えたらページ数の上限を増やす処理
+        max_random = 1
+        ratio = Movie.objects.count() / (len(api_list) * 20 * max_random) * 100
+        while ratio > 95.0:
+            max_random += 1
+            ratio = Movie.objects.count() / (len(api_list) * 20 * max_random) * 100
+
+        # ルーレットホイールセレクションで先頭ページを多めに設定
+        rate_list = []
+        for i in range(0, max_random+1):
+            if i in range(0, 2):
+                rate_list.append(100)
+            elif i in range(2, 4):
+                rate_list.append(50)
+            else:
+                rate_list.append(5)
+
+        arrow = random.randint(0, int(sum(rate_list)))
+        hit_number = 0
+        x = rate_list[hit_number]
+        while arrow > x:
+            hit_number += 1
+            x += rate_list[hit_number]
+
+        # リクエストの際はページ数が1からなので+1をする
+        hit_number += 1
+
         # 日本語と英語のリクエストを投げる
         select_movie_index = 0
         movie = {}
@@ -84,7 +115,7 @@ class Command(BaseCommand):
             query = {
                 'api_key': TMDB_APIKEY,
                 'language': language,
-                'page': 1
+                'page': hit_number
             }
             request = requests.get(url, params=query)
             request_json = request.json()
@@ -93,6 +124,10 @@ class Command(BaseCommand):
                 try:
                     select_movie_index = random.randint(0, len(request_json['results']) - 1)
                 except KeyError:
+                    self.stdout.write(self.style.ERROR('KeyError'))
+                    self.stdout.write(self.style.ERROR('api: ' + api_list[random_api_number]))
+                    self.stdout.write(self.style.ERROR('page: ' + str(hit_number)))
+                    self.stdout.write(self.style.ERROR('page_max: ' + str(max_random)))
                     self.stdout.write(self.style.ERROR('KeyError'))
                     return {}
 
@@ -113,11 +148,19 @@ class Command(BaseCommand):
             else:
                 title = movie['original_title']
 
+        if movie['poster_path'] is None:
+            movie['poster_path'] = ''
+
         json_movie = {"title": title,
                       "overview": movie['overview'],
                       "tmdb_id": movie['id'],
                       "poster_path": movie['poster_path'],
                       "genre_ids": movie['genre_ids']}
+
+        # 出力用に変数へ保存
+        output_value['range_page'] = str(max_random+1)
+        output_value['select_page'] = str(hit_number)
+        output_value['api'] = api_list[random_api_number]
 
         return json_movie
 
@@ -191,6 +234,10 @@ class Command(BaseCommand):
         for onomatopoeia in param['onomatopoeia']:
             onomatopoeia_str += onomatopoeia.__str__() + ','
         onomatopoeia_str = onomatopoeia_str[:-1]
+
+        self.stdout.write(self.style.SUCCESS('range_page: 1 to ' + output_value['range_page']))
+        self.stdout.write(self.style.SUCCESS('select_page: ' + output_value['select_page']))
+        self.stdout.write(self.style.SUCCESS('api: ' + output_value['api']))
 
         try:
             self.stdout.write(self.style.SUCCESS('username: ' + param['user'].username))

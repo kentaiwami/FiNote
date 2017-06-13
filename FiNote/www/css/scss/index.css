@@ -1074,6 +1074,18 @@
   background: url(../../img/loading.gif) no-repeat center;
 }
 
+.cover_img {
+  max-width: 100%;
+  height: auto;
+}
+.cover_img:active {
+  opacity: .7;
+}
+
+.img_30vh_height {
+  max-height: 30vh;
+}
+
 /************************************************************
                         Notification
 ************************************************************/

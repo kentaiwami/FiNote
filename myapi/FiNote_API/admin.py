@@ -4,6 +4,7 @@ from .models import *
 
 class UserAdmin(admin.ModelAdmin):
     list_display = ('username', 'email', 'birthday', 'sex', 'img', 'password')
+    search_fields = ('username',)
 
 
 class GenreAdmin(admin.ModelAdmin):
@@ -16,7 +17,8 @@ class OnomatopoeiaAdmin(admin.ModelAdmin):
 
 
 class MovieAdmin(admin.ModelAdmin):
-    list_display = ('title', 'tmdb_id', 'genres', 'users', 'onomatopoeias', 'overview', 'poster_path')
+    list_display = ('title', 'created_at', 'updated_at', 'tmdb_id', 'genres', 'users', 'onomatopoeias', 'overview')
+    search_fields = ('title',)
 
     def genres(self, obj):
         return "\n".join([g.name for g in obj.genre.all()])
