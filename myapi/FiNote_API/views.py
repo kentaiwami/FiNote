@@ -540,7 +540,7 @@ class MovieByAgeViewSet(viewsets.ModelViewSet):
         :return: User counts desc movies by age.
         """
 
-        movies = Movie.objects.annotate(user_count=Count('user')).filter(user_count__gt=1).order_by('-user_count')[:50]
+        movies = Movie.objects.annotate(user_count=Count('user')).filter(user_count__gt=1).order_by('-user_count')[:15]
 
         # 該当映画と年代別の登録数のクラスをリストに格納
         count_class_list = []
