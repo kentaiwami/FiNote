@@ -2891,49 +2891,53 @@ var Movieadd_status = {
  ************************************************************/
 var Social = {
 
+  draw_recently_movie_list: function () {
+    var social_movie_list = document.getElementById(ID.get_social_ID().movie_list);
+    social_movie_list.innerHTML = '';
+
+    Utility.show_spinner(ID.get_social_ID().page_id);
+
+    Utility.FiNote_API('recently_movie','', 'GET', 'v1').then(function(result) {
+      Utility.stop_spinner();
+
+      //結果を描画
+      var html = '<ons-row>';
+      var json_result = JSON.parse(result);
+      for(var i = 0; i < json_result.length; i++) {
+        var base_url = 'https://image.tmdb.org/t/p/w300_and_h450_bestv2';
+        var image_url = base_url + json_result[i].poster_path;
+
+        var escaped_title = Utility.escaped_string(json_result[i].title);
+        var escaped_overview = Utility.escaped_string(json_result[i].overview);
+
+        html += '<ons-col width="50vw">' +
+                '<img onclick="Social.show_movie_detail(' + (i+1)+', -1, \'' + escaped_title + '\', \'' + escaped_overview + '\')" class="cover_img" src=' + image_url + '>'+
+                '</ons-col>';
+
+        if(i % 2 === 1) {
+          html += '</ons-row><ons-row>'
+        }
+      }
+
+      social_movie_list.innerHTML = html;
+    })
+    .catch(function(err) {
+      console.log(err);
+      Utility.stop_spinner();
+      Utility.show_error_alert('APIエラー', err, 'OK');
+    });
+	},
+
 	/**
    * socialタブがタップされて、表示される度にAPIを叩いて結果を描画する
 	 * @param  {string} page_id   - page_id(social)
 	 */
-	show_recently_movie_list: function (page_id) {
+	run_draw_recently_movie_list: function (page_id) {
     document.addEventListener('show', function(event) {
       if (event.target.id === page_id) {
-        Utility.show_spinner(ID.get_social_ID().page_id);
-        console.log(event.target.id + ' is show');
-
-        Utility.FiNote_API('recently_movie','', 'GET', 'v1')
-        .then(function(result) {
-          Utility.stop_spinner();
-
-          //結果を描画
-          var social_movie_list = document.getElementById(ID.get_social_ID().movie_list);
-          var html = '<ons-row>';
-          var json_result = JSON.parse(result);
-          for(var i = 0; i < json_result.length; i++) {
-            var base_url = 'https://image.tmdb.org/t/p/w300_and_h450_bestv2';
-            var image_url = base_url + json_result[i].poster_path;
-
-            var escaped_title = Utility.escaped_string(json_result[i].title);
-            var escaped_overview = Utility.escaped_string(json_result[i].overview);
-
-            html += '<ons-col width="50vw">' +
-                    '<img onclick="Social.show_movie_detail(' + (i+1)+', -1, \'' + escaped_title + '\', \'' + escaped_overview + '\')" class="cover_img" src=' + image_url + '>'+
-                    '</ons-col>';
-
-            if(i % 2 === 1) {
-              html += '</ons-row><ons-row>'
-            }
-          }
-
-          social_movie_list.innerHTML = html;
-        })
-        .catch(function(err) {
-          console.log(err);
-          Utility.stop_spinner();
-          Utility.show_error_alert('APIエラー', err, 'OK');
-        });
+        Social.draw_recently_movie_list();
       }
-    })
+    });
   },
 
 
@@ -2956,7 +2960,6 @@ var Social = {
     }else{
       modal_users_count.innerHTML = '';
     }
-
 
     modal_rank.innerHTML = rank + '位';
     modal_title.innerHTML = title;
@@ -2983,9 +2986,10 @@ var Social = {
       title: '表示を切り替える',
       cancelable: true,
       buttons: [
+        '人気ランキング',
         '気分の比較一覧',
         '他の人の気分を検索',
-        '年代別の映画ランキング',
+        '年代別の追加数ランキング',
         {
           label: 'キャンセル',
           icon: 'md-close'
@@ -2995,15 +2999,23 @@ var Social = {
       console.log('index: ', index);
 
       switch (index){
+        //人気ランキング
         case 0:
+          Social.draw_recently_movie_list();
+          break;
+
+        //気分の比較一覧
+        case 1:
           console.log('tap 気分の比較一覧');
           break;
 
-        case 1:
+        //他の人の気分を検索
+        case 2:
           console.log('tap 他の人の気分を検索');
           break;
 
-        case 2:
+        //年代別の追加数ランキング
+        case 3:
           Social.draw_movie_by_age();
           break;
       }
@@ -4383,4 +4395,4 @@ app.initialize();
 
 // ユーザ情報画面を表示するたびに、DBからデータを取得して表示データを更新する
 User.show_event(ID.get_user_ID().page_id, User.show_contents);
-Social.show_recently_movie_list(ID.get_social_ID().page_id);
+Social.run_draw_recently_movie_list(ID.get_social_ID().page_id);
