@@ -2924,7 +2924,11 @@ var Social = {
     }
 
     var social_movie_list = document.getElementById(ID.get_social_ID().movie_list);
-    social_movie_list.innerHTML = html;
+    if(json_result.length == 0 ) {
+      social_movie_list.innerHTML = '<p class="all_center_message">入力した気分を登録している映画は<br>見つかりませんでした</p>';
+    }else {
+     social_movie_list.innerHTML = html;
+    }
   },
 
 
