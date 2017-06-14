@@ -3116,7 +3116,7 @@ var Social = {
    * 「他の人が追加した気分で映画を検索する」機能に表示する検索フォームのhtml
 	 */
 	get_search_form: function () {
-		return  '<div id="' + ID.get_social_ID().search_area + '">' +
+		return  '<div id="' + ID.get_social_ID().search_area + '" style="position: fixed;">' +
             '<form action="javascript:Social.post_and_draw_search_movie_by_onomatopoeia()">' +
             '<input id="' + ID.get_social_ID().social_movies_input + '" type="search" value="" placeholder="他の人が追加した気分で検索" class="search-input movies_search_input" onfocus="Social.set_event_social_movies_search_input(\'focus\')" onblur="Social.set_event_social_movies_search_input(\'blur\')">' +
             '</form>' +
@@ -3196,6 +3196,16 @@ var Social = {
       Utility.stop_spinner();
       Utility.show_error_alert('APIエラー', err, 'OK');
     });
+  },
+
+  get_movie_reactions: function () {
+	  // ローカルの映画テーブルからtmdb_id、onomatopoeia_idを全件取得
+    // [1] onomatopoeia_idでローカルのオノマトペ名を取得
+    // [2] movie_reactionAPIを叩いて、1映画ずつ付与されているオノマトペを取得
+    // listにしてから、jsonでまとめる
+    // return json
+    // * [1],[2]は平行してOK
+    // * {"}
   }
 };
 

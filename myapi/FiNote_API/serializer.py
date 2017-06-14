@@ -119,7 +119,7 @@ class MovieByAgeSerializer(serializers.ModelSerializer):
 
 
 class MovieReactionSerializer(serializers.Serializer):
-    tmdb_id = serializers.IntegerField(allow_null=False, required=True)
+    tmdb_id_list = serializers.CharField(allow_null=False, required=True)
 
 
 class SearchMovieByOnomatopoeiaSerializer(serializers.Serializer):

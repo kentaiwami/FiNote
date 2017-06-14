@@ -618,30 +618,36 @@ class MovieReactionViewSet(viewsets.ViewSet):
     serializer_class = MovieReactionSerializer
 
     def create(self, request):
+
         """
         When MovieReaction api access, run this method.
         This method gets onomatopoeia and count.
-        :param request: Target tmdb_id.
-        :return: Onomatopoeia name and count.
+        :param request: Target tmdb_id list.
+        :return: Onomatopoeia name and count group by tmdb_id.
         """
 
         serializer = MovieReactionSerializer(data=request.data)
 
         if serializer.is_valid() and request.method == 'POST':
-            try:
-                movie = Movie.objects.get(tmdb_id=request.data['tmdb_id'])
+            tmdb_id_list = MovieAdd.conversion_str_to_list(self, request.data['tmdb_id_list'], 'int')
+            res = []
 
-                counts = OnomatopoeiaCount.objects.filter(movie=movie)
+            for tmdb_id in tmdb_id_list:
+                onomatopoeia_counts = []
+                try:
+                    movie = Movie.objects.get(tmdb_id=tmdb_id)
+                    counts = OnomatopoeiaCount.objects.filter(movie=movie)
 
-                res = []
-                for count in counts:
-                    res.append({"name": count.onomatopoeia.name,
-                                "count": count.count})
+                    for count in counts:
+                        onomatopoeia_counts.append({"name": count.onomatopoeia.name,
+                                    "count": count.count})
 
-                return Response(res)
+                    res.append({str(tmdb_id): onomatopoeia_counts})
 
-            except ObjectDoesNotExist:
-                raise ValidationError('該当する映画が見つかりませんでした')
+                except ObjectDoesNotExist:
+                    pass
+
+            return Response(res)
 
         else:
             raise ValidationError('正しいパラメータ値ではありません')
