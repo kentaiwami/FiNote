@@ -2924,7 +2924,7 @@ var Social = {
     }
 
     var social_movie_list = document.getElementById(ID.get_social_ID().movie_list);
-    if(json_result.length == 0 ) {
+    if(json_result.length === 0 ) {
       social_movie_list.innerHTML = '<p class="all_center_message">入力した気分を登録している映画は<br>見つかりませんでした</p>';
     }else {
      social_movie_list.innerHTML = html;
@@ -3034,7 +3034,7 @@ var Social = {
 
         //気分の比較一覧
         case 1:
-          console.log('tap 気分の比較一覧');
+          Social.get_movie_reactions();
           break;
 
         //気分で追加されている映画を検索
@@ -3198,15 +3198,74 @@ var Social = {
     });
   },
 
-  get_movie_reactions: function () {
-	  // ローカルの映画テーブルからtmdb_id、onomatopoeia_idを全件取得
-    // [1] onomatopoeia_idでローカルのオノマトペ名を取得
-    // [2] movie_reactionAPIを叩いて、1映画ずつ付与されているオノマトペを取得
-    // listにしてから、jsonでまとめる
-    // return json
-    // * [1],[2]は平行してOK
-    // * {"}
-  }
+
+	/**
+   *「気分の比較」を描画するために必要な情報(映画に紐付いているオノマトペ、ローカルの映画情報)を取得し、描画関数へ渡す
+	 */
+	get_movie_reactions: function () {
+	  var social_movie_list = document.getElementById(ID.get_social_ID().movie_list);
+	  social_movie_list.innerHTML = '';
+
+	  Utility.show_spinner(ID.get_social_ID().page_id);
+
+	  var local_movie_results = {};
+
+	  var query = 'SELECT title, poster, overview, tmdb_id, onomatopoeia_id from movie';
+	  DB_method.single_statement_execute(query, []).then(function(result) {
+	    local_movie_results = result;
+
+	    //POSTするtmdb_idの配列文字列を生成
+	    var list_data = '[';
+	    for(var i = 0; i < result.rows.length; i++ ) {
+	      list_data += result.rows.item(i).tmdb_id + ',';
+			}
+			list_data = list_data.substr(0, list_data.length-1);
+	    list_data += ']';
+
+	    var post_data = {"tmdb_id_list": list_data};
+	    var onomatopoeia_query = 'SELECT id,name from onomatopoeia';
+
+			return Promise.all(
+			  [DB_method.single_statement_execute(onomatopoeia_query, []),
+				Utility.FiNote_API('movie_reaction', post_data, 'POST', 'v1')]
+      );
+    })
+    .then(function(promises) {
+      Utility.stop_spinner();
+      Social.draw_movie_reactions(promises[0], promises[1], local_movie_results);
+    })
+    .catch(function(err) {
+      Utility.stop_spinner();
+      console.log(err);
+      Utility.show_error_alert('エラー発生', err, 'OK');
+    });
+  },
+
+  draw_movie_reactions: function (local_onomatopoeia, api_results, local_movies) {
+    var html = '';
+    for(var i = 0; i < local_movies.rows.length; i++ ) {
+      var movie = local_movies.rows.item(i);
+      html += '<ons-list-item modifier="longdivider">'+
+              '<div class="left">'+
+              '<img class="list_img_large" src="' + movie.poster + '">'+
+              '</div>'+
+
+              '<div class="origin_list_width">'+
+              '<div class="harf_list_height_top">'+
+              '<ons-icon size="30px" icon="ion-person" class="brown_color"></ons-icon>'+
+              '<p class="list_p">ハラハラ, ドキドキ, モヤモヤ</p>'+
+              '</div>'+
+              '<div class="harf_list_height">'+
+              '<ons-icon size="30px" icon="ion-earth" class="brown_color"></ons-icon>'+
+              '<p class="list_p">ハラハラ, ドキドキ, モヤモヤ</p>'+
+              '</div>'+
+              '</div>'+
+              '</ons-list-item>';
+    }
+
+    var social_movie_list = document.getElementById(ID.get_social_ID().movie_list);
+    social_movie_list.innerHTML = '<ons-list>' + html + '</ons-list>';
+	}
 };
 
 
