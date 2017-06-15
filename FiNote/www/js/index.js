@@ -2891,6 +2891,12 @@ var Movieadd_status = {
                         social.html
  ************************************************************/
 var Social = {
+	/**
+   * @param {Object} local_onomatopoeia   - ローカルに保存されているオノマトペ全件(id,name)
+   * @param {Object} reaction_api_results - movie_reaction APIの結果
+   * @param {Object} local_movies         - ローカルに保存されている映画全件(title, poster, overview, tmdb_id, onomatopoeia_id)
+	 */
+	data: {local_onomatopoeia: {}, reaction_api_results: {}, local_movies: {}},
 
 	/**
    * 2カラムで映画のポスターを表示する関数
@@ -3210,7 +3216,7 @@ var Social = {
 
 	  var local_movie_results = {};
 
-	  var query = 'SELECT title, poster, overview, tmdb_id, onomatopoeia_id from movie';
+	  var query = 'SELECT title, poster, overview, tmdb_id, onomatopoeia_id from movie order by id DESC';
 	  DB_method.single_statement_execute(query, []).then(function(result) {
 	    local_movie_results = result;
 
@@ -3231,8 +3237,14 @@ var Social = {
       );
     })
     .then(function(promises) {
+      var api_results = JSON.parse(promises[1]);
       Utility.stop_spinner();
-      Social.draw_movie_reactions(promises[0], promises[1], local_movie_results);
+      Social.draw_movie_reactions(promises[0], api_results, local_movie_results);
+
+      //詳細画面で表示するために情報を保存
+      Social.data.local_onomatopoeia = promises[0];
+      Social.data.reaction_api_results = api_results;
+      Social.data.local_movies = local_movie_results;
     })
     .catch(function(err) {
       Utility.stop_spinner();
@@ -3241,10 +3253,54 @@ var Social = {
     });
   },
 
+
+	/**
+   * ローカルの映画に付与されているオノマトペと、サーバ上で登録されているオノマトペを比較するリストを描画する関数
+	 * @param {Object} local_onomatopoeia - ローカルに保存されているオノマトペ全件(id,name)
+	 * @param {Object} api_results        - movie_reaction APIの結果
+	 * @param {Object} local_movies       - ローカルに保存されている映画全件(title, poster, overview, tmdb_id, onomatopoeia_id)
+	 */
   draw_movie_reactions: function (local_onomatopoeia, api_results, local_movies) {
+	  var draw_limit = 6;
     var html = '';
+
     for(var i = 0; i < local_movies.rows.length; i++ ) {
       var movie = local_movies.rows.item(i);
+
+      //ローカルのオノマトペを生成
+      var movie_onomatopoeia_array = movie.onomatopoeia_id.split(',');
+      var local_onomatopoeia_html = '';
+      for(var j = 0; j < draw_limit; j++ ) {
+        for(var k = 0; k < local_onomatopoeia.rows.length; k++ ) {
+          var onomatopoeia_record = local_onomatopoeia.rows.item(k);
+          if(String(onomatopoeia_record.id) === movie_onomatopoeia_array[j]) {
+            local_onomatopoeia_html += onomatopoeia_record.name + ', ';
+            break;
+          }
+        }
+      }
+      local_onomatopoeia_html = local_onomatopoeia_html.substr(0, local_onomatopoeia_html.length-2);
+
+      //サーバ上に登録されているオノマトペを生成
+      var server_onomatopoeia_html = '';
+      for(j = 0; j < api_results.length; j++ ) {
+        var key = Object.keys(api_results[j])[0];
+
+        if(key === String(movie.tmdb_id)) {
+          var for_count = draw_limit;                     // 映画に付与されているオノマトペがdraw_limitより少ない場合は、
+          if(api_results[j][key].length < draw_limit ) {  // 全て描画するようにfor文の回数を調整する
+            for_count = api_results[j][key].length;
+          }
+
+          for(k = 0; k < for_count; k++ ) {
+            var value = api_results[j][key];
+            server_onomatopoeia_html += value[k]['name'] + ', ';
+          }
+          break;
+        }
+      }
+      server_onomatopoeia_html = server_onomatopoeia_html.substr(0, server_onomatopoeia_html.length-2);
+
       html += '<ons-list-item modifier="longdivider">'+
               '<div class="left">'+
               '<img class="list_img_large" src="' + movie.poster + '">'+
@@ -3253,11 +3309,12 @@ var Social = {
               '<div class="origin_list_width">'+
               '<div class="harf_list_height_top">'+
               '<ons-icon size="30px" icon="ion-person" class="brown_color"></ons-icon>'+
-              '<p class="list_p">ハラハラ, ドキドキ, モヤモヤ</p>'+
+              '<p class="list_p">' + local_onomatopoeia_html + '</p>'+
               '</div>'+
+
               '<div class="harf_list_height">'+
               '<ons-icon size="30px" icon="ion-earth" class="brown_color"></ons-icon>'+
-              '<p class="list_p">ハラハラ, ドキドキ, モヤモヤ</p>'+
+              '<p class="list_p">' + server_onomatopoeia_html + '</p>'+
               '</div>'+
               '</div>'+
               '</ons-list-item>';

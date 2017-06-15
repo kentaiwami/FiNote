@@ -636,7 +636,7 @@ class MovieReactionViewSet(viewsets.ViewSet):
                 onomatopoeia_counts = []
                 try:
                     movie = Movie.objects.get(tmdb_id=tmdb_id)
-                    counts = OnomatopoeiaCount.objects.filter(movie=movie)
+                    counts = OnomatopoeiaCount.objects.filter(movie=movie).order_by('-count')
 
                     for count in counts:
                         onomatopoeia_counts.append({"name": count.onomatopoeia.name,
