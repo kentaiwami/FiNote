@@ -3624,9 +3624,10 @@ var User = {
 
     var sum = function(a, b) { return a + b;};
 
-    var chart = new Chartist.Pie('#'+id, {
+    new Chartist.Pie('#'+id, {
       series: series_array
-    }, {
+    },
+    {
       labelInterpolationFnc: function(value) {
         return Math.round(value / series_array.reduce(sum) * 100) + '%';
       },
