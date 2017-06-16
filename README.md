@@ -52,3 +52,4 @@
 ## 参考にしたサイト
 * [ひらがら、カタカナの変換を行うJavaScript関数](https://gist.github.com/kawanet/5553478)
 * [CHARTIST.JS](http://gionkunz.github.io/chartist-js/index.html)
+* [slick](http://kenwheeler.github.io/slick/)
