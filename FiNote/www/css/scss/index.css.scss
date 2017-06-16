@@ -144,19 +144,10 @@ $font-small: .75rem;
   opacity: .8;
 }
 
-.center_message {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  margin-top: 5vh;
-  opacity: .6;
-}
-
 .all_center_message {
   text-align: center;
   position: absolute;
-  top: 50%;
+  top: 45%;
   left: 0;
   right: 0;
   opacity: .6;
@@ -217,11 +208,6 @@ $font-small: .75rem;
 .small_message {
   opacity: .5;
   font-size: $font-small;
-}
-
-.feeling_no_message {
-  @extend .center_message;
-  margin-top: 0;
 }
 
 .no_data_graph_message {

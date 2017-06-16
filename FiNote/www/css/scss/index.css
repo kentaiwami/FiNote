@@ -836,19 +836,10 @@
   opacity: .8;
 }
 
-.center_message, .feeling_no_message {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  margin-top: 5vh;
-  opacity: .6;
-}
-
 .all_center_message {
   text-align: center;
   position: absolute;
-  top: 50%;
+  top: 45%;
   left: 0;
   right: 0;
   opacity: .6;
@@ -908,10 +899,6 @@
 .small_message, .list_small_message {
   opacity: .5;
   font-size: 0.75rem;
-}
-
-.feeling_no_message {
-  margin-top: 0;
 }
 
 .no_data_graph_message {

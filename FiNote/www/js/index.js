@@ -3220,31 +3220,42 @@ var Social = {
 	  DB_method.single_statement_execute(query, []).then(function(result) {
 	    local_movie_results = result;
 
-	    //POSTするtmdb_idの配列文字列を生成
-	    var list_data = '[';
-	    for(var i = 0; i < result.rows.length; i++ ) {
-	      list_data += result.rows.item(i).tmdb_id + ',';
-			}
-			list_data = list_data.substr(0, list_data.length-1);
-	    list_data += ']';
+	    if(local_movie_results.rows.length === 0) {
+        //  メッセージ表示
+        return -1;
+      }else {
+	      //POSTするtmdb_idの配列文字列を生成
+        var list_data = '[';
+        for(var i = 0; i < result.rows.length; i++ ) {
+          list_data += result.rows.item(i).tmdb_id + ',';
+        }
+        list_data = list_data.substr(0, list_data.length-1);
+        list_data += ']';
 
-	    var post_data = {"tmdb_id_list": list_data};
-	    var onomatopoeia_query = 'SELECT id,name from onomatopoeia';
+        var post_data = {"tmdb_id_list": list_data};
+        var onomatopoeia_query = 'SELECT id,name from onomatopoeia';
 
-			return Promise.all(
-			  [DB_method.single_statement_execute(onomatopoeia_query, []),
-				Utility.FiNote_API('movie_reaction', post_data, 'POST', 'v1')]
-      );
+        return Promise.all(
+          [DB_method.single_statement_execute(onomatopoeia_query, []),
+          Utility.FiNote_API('movie_reaction', post_data, 'POST', 'v1')]
+        );
+      }
     })
     .then(function(promises) {
-      var api_results = JSON.parse(promises[1]);
-      Utility.stop_spinner();
-      Social.draw_movie_reactions(promises[0], api_results, local_movie_results);
+      if(promises === -1 ) {
+        var social_movie_list = document.getElementById(ID.get_social_ID().movie_list);
+        social_movie_list.innerHTML = '<p class="all_center_message">映画を追加すると比較結果が表示されます</p>';
+      }else {
+        var api_results = JSON.parse(promises[1]);
+        Social.draw_movie_reactions(promises[0], api_results, local_movie_results);
 
-      //詳細画面で表示するために情報を保存
-      Social.data.local_onomatopoeia = promises[0];
-      Social.data.reaction_api_results = api_results;
-      Social.data.local_movies = local_movie_results;
+        //詳細画面で表示するために情報を保存
+        Social.data.local_onomatopoeia = promises[0];
+        Social.data.reaction_api_results = api_results;
+        Social.data.local_movies = local_movie_results;
+      }
+
+      Utility.stop_spinner();
     })
     .catch(function(err) {
       Utility.stop_spinner();
