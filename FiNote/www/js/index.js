@@ -1079,7 +1079,7 @@ var Movies = {
    * 登録済みの映画がないメッセージを表示する関数
    */
   draw_no_data_message: function() {
-    nodata_message_p.innerHTML = '登録された映画はありません';
+    nodata_message_p.innerHTML = '追加済みの映画はありません';
   },
 
 
