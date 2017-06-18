@@ -312,12 +312,24 @@ var Index = {
    * サインアップしているかを確認する
    */
   check_signup: function(){
+
+    Utility.draw_loading_img(ID.get_index_ID().page_id);
+
     var storage = window.localStorage;
     var signup_flag = storage.getItem(ID.get_localStorage_ID().signup_flag);
 
     //ユーザ情報が登録されている場合は自動ログインを行う
     if (signup_flag === 'true') {
-      Movies.draw_movie_content();
+      // TODO ここでローカルDBの映画情報を更新？
+      Utility.FiNote_API('recently_movie', '', 'GET', 'v1')
+      .then(function(result) {
+        console.log(result);
+        Movies.draw_movie_content();
+      })
+      .catch(function(err) {
+        console.log(err);
+      });
+
     //ユーザ情報が登録されていない場合はsignupへ遷移
     }else {
       Utility.push_page(ID.get_top_ID().tmp_id,'fade',1000, '');
@@ -578,6 +590,11 @@ var Signin = {
    * サインインボタンを押した際に、ユーザ情報とサーバから取得した映画情報を保存する
    */
   tap_sign_in_button: function() {
+    // 共通で使用する配列の初期化
+    Signin.exist.movie_title_array = [];
+    Signin.exist.genre_array = [];
+    Signin.exist.onomatopoeia_array = [];
+
     Utility.show_spinner(ID.get_signin_ID().signin_carousel);
     var username = document.getElementById(ID.get_signin_ID().username).value;
     var password = document.getElementById(ID.get_signin_ID().password).value;
@@ -866,16 +883,7 @@ var Movies = {
     //自動ログイン
     var storage = window.localStorage;
     var username = storage.getItem(ID.get_localStorage_ID().username);
-    var signup_flag = storage.getItem(ID.get_localStorage_ID().signup_flag);
     var token = storage.getItem(ID.get_localStorage_ID().token);
-
-    //ユーザ情報が存在する場合はローディング画面を表示する
-    var callback = function(){
-      if (signup_flag === 'true') {
-        document.getElementById(ID.get_index_ID().page_id).innerHTML = '<img  src="img/splash.gif" alt="" / width="100%" height="100%">';
-      }
-    };
-    Utility.check_page_init(ID.get_index_ID().page_id,callback);
 
     var data = {
       "username": username,
@@ -4535,6 +4543,18 @@ var Utility = {
     escaped_str = escaped_str.replace(/\r/g, "");
 
     return escaped_str;
+	},
+
+
+	/**
+   * 指定したページIDにsplash画像を書き込む
+	 * @param {string} page_id - 画像を書き込みたいページID
+	 */
+	draw_loading_img: function (page_id) {
+    var callback = function(){
+      document.getElementById(page_id).innerHTML = '<img  src="img/splash.gif" alt="" width="100%" height="100%">';
+    };
+    Utility.check_page_init(page_id,callback);
 	}
 };
 
