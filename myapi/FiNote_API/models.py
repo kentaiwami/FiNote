@@ -66,9 +66,9 @@ class Onomatopoeia(models.Model):
 
 
 class Movie(models.Model):
-    title = models.CharField(max_length=200, unique=True)
+    title = models.CharField(max_length=200)
     tmdb_id = models.CharField(max_length=100, unique=True)
-    overview = models.CharField(max_length=1000, default='')
+    overview = models.TextField(max_length=1000, default='')
     poster_path = models.CharField(max_length=1000, default='')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -17,7 +17,7 @@ class OnomatopoeiaAdmin(admin.ModelAdmin):
 
 
 class MovieAdmin(admin.ModelAdmin):
-    list_display = ('title', 'created_at', 'updated_at', 'tmdb_id', 'genres', 'users', 'onomatopoeias', 'overview')
+    list_display = ('pk', 'title', 'created_at', 'updated_at', 'tmdb_id', 'genres', 'users', 'onomatopoeias', 'overview')
     search_fields = ('title',)
 
     def genres(self, obj):
