@@ -457,6 +457,14 @@
 		</div>
     </ons-toolbar>
 
+	<!-- 気分で検索する際に表示する検索フォーム-->
+	<div id="social_movies_search_area" style="display: none;">
+		<form action="javascript:Social.post_and_draw_get_movie_by_onomatopoeia()">
+			<input id="search_social_movies_input" type="search" value="" placeholder="他の人が追加した気分で検索" class="search-input movies_search_input" onfocus="Social.set_event_social_movies_search_input('focus')" onblur="Social.set_event_social_movies_search_input('blur')">
+		</form>
+		<ons-button id="social_movies_reset_button" onClick="Social.tap_reset_button()" class="movies_reset_button" modifier="quiet"><ons-icon class="brown_color" icon="ion-close-circled"></ons-icon></ons-button>
+	</div>
+
 	<!-- APIの結果を描画する要素-->
 	<div id="social_movie_list"></div>
 

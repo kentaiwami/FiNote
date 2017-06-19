@@ -976,14 +976,14 @@ var Movies = {
    * @param  {Array} result - 各テーブルの検索結果を格納した配列
    */
   draw_movies_list: function(result) {
-    return new Promise(function(resolve,reject) {
+    return new Promise(function(resolve) {
       DB_method.count_record('movie').then(function(movie_count_result) {
         //result[0]：movie
         //result[1]：genre
         //result[2]：onomatopoeia
 
         var movie_collection_list = document.getElementById(ID.get_movies_ID().list);
-        movie_count = result[0].rows.length;
+        var movie_count = result[0].rows.length;
 
         var lists_html = '';
         for(var i = 0; i < movie_count; i++) {
@@ -1399,54 +1399,52 @@ var Movies_detail = {
       Movieadd.userdata.fav = false;
     }
 
-    var callback = function(){
-    var poster_html = '<img onClick="Movies_detail.tap_img(this)" class="poster" src="' + movie_record.poster + '">';
-    document.getElementById(ID.get_movies_detail_ID().poster).innerHTML = poster_html;
+		return function () {
+			document.getElementById(ID.get_movies_detail_ID().poster).innerHTML =
+				'<img onClick="Movies_detail.tap_img(this)" class="poster" src="' + movie_record.poster + '">';
 
-    var movie_detail_html = '<ons-list modifier="inset">'+
-                            '<ons-list-header>ステータス</ons-list-header>'+
-                            '<ons-list-item onClick="Movies_detail.push_page_feeling(\''+onomatopoeia_text+'\')" modifier="chevron" tappable>'+
-                            onomatopoeia_text+
-                            '</ons-list-item>'+
+			document.getElementById(ID.get_movies_detail_ID().detail).innerHTML =
+				'<ons-list modifier="inset">' +
+				'<ons-list-header>ステータス</ons-list-header>' +
+				'<ons-list-item onClick="Movies_detail.push_page_feeling(\'' + onomatopoeia_text + '\')" modifier="chevron" tappable>' +
+				onomatopoeia_text +
+				'</ons-list-item>' +
 
-                            '<ons-list-item onClick="Movies_detail.push_page_status()" modifier="chevron" tappable>'+
-                            '<ons-icon icon="ion-disc" class="list-item__icon brown_bg_color_quiet"></ons-icon>'+
-                            dvd+
-                            '<ons-icon icon="ion-android-favorite" class="list-item__icon brown_bg_color_quiet"></ons-icon>'+
-                            fav+
-                            '</ons-list-item>'+
-                            '</ons-list>'+
+				'<ons-list-item onClick="Movies_detail.push_page_status()" modifier="chevron" tappable>' +
+				'<ons-icon icon="ion-disc" class="list-item__icon brown_bg_color_quiet"></ons-icon>' +
+				dvd +
+				'<ons-icon icon="ion-android-favorite" class="list-item__icon brown_bg_color_quiet"></ons-icon>' +
+				fav +
+				'</ons-list-item>' +
+				'</ons-list>' +
 
-                            '<ons-list modifier="inset">'+
-                            '<ons-list-header>映画情報</ons-list-header>'+
-                            '<ons-list-item>'+
-                            movie_record.title+
-                            '</ons-list-item>'+
+				'<ons-list modifier="inset">' +
+				'<ons-list-header>映画情報</ons-list-header>' +
+				'<ons-list-item>' +
+				movie_record.title +
+				'</ons-list-item>' +
 
-                            '<ons-list-item class="'+ class_name +'">'+
-                            overview+
-                            '</ons-list-item>'+
+				'<ons-list-item class="' + class_name + '">' +
+				overview +
+				'</ons-list-item>' +
 
-                            '<ons-list-item class="small_overview">'+
-                            '追加日: ' + movie_record.add_year + '-' + ('00' + movie_record.add_month).slice(-2) + '-' + ('00' + movie_record.add_day).slice(-2)+
-                            '</ons-list-item>'+
-                            '</ons-list>'+
+				'<ons-list-item class="small_overview">' +
+				'追加日: ' + movie_record.add_year + '-' + ('00' + movie_record.add_month).slice(-2) + '-' + ('00' + movie_record.add_day).slice(-2) +
+				'</ons-list-item>' +
+				'</ons-list>' +
 
-                            '<ons-list modifier="inset">'+
-                            '<ons-list-header>SNS</ons-list-header>'+
-                            '<ons-list-item tappable onClick="Movies_detail.sns_share()">'+
-                            '<ons-icon icon="ion-share" class="list-item__icon brown_bg_color_quiet"></ons-icon>'+
-                            'この映画をシェアする'+
-                            '</ons-list-item>'+
-                            '</ons-list>'+
+				'<ons-list modifier="inset">' +
+				'<ons-list-header>SNS</ons-list-header>' +
+				'<ons-list-item tappable onClick="Movies_detail.sns_share()">' +
+				'<ons-icon icon="ion-share" class="list-item__icon brown_bg_color_quiet"></ons-icon>' +
+				'この映画をシェアする' +
+				'</ons-list-item>' +
+				'</ons-list>' +
 
-                            '<ons-button onClick="Movies_detail.tap_delete_button()" class="delete_button" modifier="large">'+
-                            '削除'+
-                            '</ons-button>';
-    document.getElementById(ID.get_movies_detail_ID().detail).innerHTML = movie_detail_html;
-    };
-
-    return callback;
+				'<ons-button onClick="Movies_detail.tap_delete_button()" class="delete_button" modifier="large">' +
+				'削除' +
+				'</ons-button>';
+		};
   },
 
 
@@ -1576,7 +1574,7 @@ var Movies_detail = {
           var insertID_list = results[0];
           var onomatopoeia_csv = '';
           //オノマトペIDのcsvを作成
-          for(i = 0; i < insertID_list.length; i++) {
+          for(var i = 0; i < insertID_list.length; i++) {
             onomatopoeia_csv += insertID_list[i] + ',';
           }
           onomatopoeia_csv = onomatopoeia_csv.substr(0, onomatopoeia_csv.length-1);
@@ -1592,7 +1590,7 @@ var Movies_detail = {
 
           promises = [
             DB_method.single_statement_execute(query_movie, [movie.tmdb_id]),
-            DB_method.single_statement_execute(query_onomatopoeia, []),
+            DB_method.single_statement_execute(query_onomatopoeia, [])
           ];
 
           return promises;
@@ -2387,7 +2385,7 @@ var Movieadd = {
         //ジャンルIDとpkの(ローカル)配列を作成
         var genre_pk_list_local = [];
         var genre_id_list_local = [];
-        for(i = 0; i < results.rows.length; i++) {
+        for(var i = 0; i < results.rows.length; i++ ) {
           genre_pk_list_local.push(results.rows.item(i).id);
           genre_id_list_local.push(results.rows.item(i).genre_id);
         }
@@ -2454,14 +2452,14 @@ var Movieadd = {
         DB_method.single_statement_execute('SELECT id, name FROM onomatopoeia', []).then(function(results) {
           var onomatopoeia_id_list_local = [];
           var onomatopoeia_name_list_local = [];
-          for(i = 0; i < results.rows.length; i++) {
+          for(var i = 0; i < results.rows.length; i++) {
             onomatopoeia_id_list_local.push(results.rows.item(i).id);
             onomatopoeia_name_list_local.push(results.rows.item(i).name);
           }
 
           //ローカルから取得したリストにオノマトペ(ユーザ登録)が含まれていなければpromiseに登録する
           var promises = [];
-          for(var i = 0; i < onomatopoeia_name_list.length; i++) {
+          for(i = 0; i < onomatopoeia_name_list.length; i++) {
             if (onomatopoeia_name_list_local.indexOf(onomatopoeia_name_list[i]) === -1) {
               var query = 'INSERT INTO onomatopoeia(name) VALUES(?)';
               var data = [onomatopoeia_name_list[i]];
@@ -3043,22 +3041,26 @@ var Social = {
       switch (index){
         //最新ランキング
         case 0:
+          document.getElementById(ID.get_social_ID().search_area).style.display = 'none';
           Social.draw_get_recently_movie_list();
           break;
 
         //気分の比較一覧
         case 1:
+          document.getElementById(ID.get_social_ID().search_area).style.display = 'none';
           Social.get_movie_reactions();
           break;
 
         //気分で追加されている映画を検索
         case 2:
           Utility.hideKeyboardAccessoryBar(true);
-          document.getElementById(ID.get_social_ID().movie_list).innerHTML = Social.get_search_form();
+          document.getElementById(ID.get_social_ID().movie_list).innerHTML = '';
+          document.getElementById(ID.get_social_ID().search_area).style.display = 'inline-block';
           break;
 
         //年代別の人気ランキング
         case 3:
+          document.getElementById(ID.get_social_ID().search_area).style.display = 'none';
           Social.draw_get_movie_by_age();
           break;
       }
@@ -3127,19 +3129,6 @@ var Social = {
 
 
 	/**
-   * 「他の人が追加した気分で映画を検索する」機能に表示する検索フォームのhtml
-	 */
-	get_search_form: function () {
-		return  '<div id="' + ID.get_social_ID().search_area + '" style="position: fixed;">' +
-            '<form action="javascript:Social.post_and_draw_get_movie_by_onomatopoeia()">' +
-            '<input id="' + ID.get_social_ID().social_movies_input + '" type="search" value="" placeholder="他の人が追加した気分で検索" class="search-input movies_search_input" onfocus="Social.set_event_social_movies_search_input(\'focus\')" onblur="Social.set_event_social_movies_search_input(\'blur\')">' +
-            '</form>' +
-            '<ons-button id="' + ID.get_social_ID().social_movies_reset_button + '" onClick="Social.tap_reset_button()" class="movies_reset_button" modifier="quiet"><ons-icon class="brown_color" icon="ion-close-circled"></ons-icon></ons-button>' +
-            '</div>';
-	},
-
-
-	/**
    * 検索フォームに文字入力されるたびに発火するイベントを登録する関数
 	 * @param {string} event_name - focus or blur
 	 */
@@ -3169,11 +3158,15 @@ var Social = {
 
 	/**
    * 検索フォームに表示されたリセットボタンを押した際に、
-   * 画面を再描画して検索フォームへフォーカスを当てる関数
+   * フォームに入力されている値を初期化してフォームへフォーカスを当てる関数
 	 */
 	tap_reset_button: function () {
-	  document.getElementById(ID.get_social_ID().movie_list).innerHTML = Social.get_search_form();
-	  document.getElementById(ID.get_social_ID().social_movies_input).focus();
+	  var input = document.getElementById(ID.get_social_ID().social_movies_input);
+    input.value = '';
+	  input.focus();
+
+	  //リセットボタンの非表示
+	  Social.social_form_show_hide_reset_button();
   },
 
 
@@ -3181,6 +3174,7 @@ var Social = {
    * 検索フォームへ入力された気分が登録されている映画を取得して描画する関数
 	 */
 	post_and_draw_get_movie_by_onomatopoeia: function () {
+	  document.getElementById(ID.get_social_ID().movie_list).innerHTML = '';
 	  Utility.show_spinner(ID.get_social_ID().page_id);
 	  document.getElementById(ID.get_social_ID().social_movies_input).blur();
 
@@ -3192,18 +3186,6 @@ var Social = {
 
       //結果を描画
       Social.draw_2_column_poster(result, -1, false);
-
-      //描画した結果を一時的に保存
-      var social_movie_list = document.getElementById(ID.get_social_ID().movie_list);
-      var social_movie_list_tmp = social_movie_list.innerHTML;
-
-      //フォームのhtmlを先頭に、結果を後にするように連結して書き込み
-      var form_html = Social.get_search_form();
-      social_movie_list.innerHTML = form_html + social_movie_list_tmp;
-
-      //フォームが再描画されるので、入力していた値を代入。かつ、リセットボタンの描画
-      document.getElementById(ID.get_social_ID().social_movies_input).value = value;
-      Social.social_form_show_hide_reset_button();
 		})
     .catch(function(err) {
       console.log(err);
