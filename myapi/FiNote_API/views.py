@@ -743,13 +743,13 @@ class OnomatopoeiaViewSet(viewsets.ModelViewSet):
     http_method_names = ['get']
 
 
-class MovieViewSet(viewsets.ModelViewSet):
+class GetMoviesViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
-    serializer_class = MovieSerializer
+    serializer_class = GetMoviesSerializer
     http_method_names = ['get']
 
 
-class OnomatopoeiaCountViewSet(viewsets.ModelViewSet):
+class GetOnomatopoeiaCountViewSet(viewsets.ModelViewSet):
     queryset = OnomatopoeiaCount.objects.all()
-    serializer_class = OnomatopoeiaCountSerializer
+    serializer_class = GetOnomatopoeiaCountSerializer
     http_method_names = ['get']

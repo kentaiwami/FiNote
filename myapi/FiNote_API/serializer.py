@@ -88,7 +88,7 @@ class OnomatopoeiaSerializer(serializers.ModelSerializer):
         fields = ('name',)
 
 
-class MovieSerializer(serializers.ModelSerializer):
+class GetMoviesSerializer(serializers.ModelSerializer):
     genre = GenreSerializer(many=True)
     user = UserSerializer(many=True)
     onomatopoeia = OnomatopoeiaSerializer(many=True)
@@ -98,9 +98,9 @@ class MovieSerializer(serializers.ModelSerializer):
         fields = ('title', 'tmdb_id', 'genre', 'user', 'onomatopoeia')
 
 
-class OnomatopoeiaCountSerializer(serializers.ModelSerializer):
+class GetOnomatopoeiaCountSerializer(serializers.ModelSerializer):
     onomatopoeia = OnomatopoeiaSerializer(many=False)
-    movie = MovieSerializer(many=False)
+    movie = GetMoviesSerializer(many=False)
 
     class Meta:
         model = OnomatopoeiaCount
