@@ -70,28 +70,28 @@ class StatusUpdateSerializer(serializers.Serializer):
     fav = serializers.IntegerField(default=0)
 
 
-class UserSerializer(serializers.ModelSerializer):
+class GetUsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = AuthUser
         fields = ('username',)
 
 
-class GenreSerializer(serializers.ModelSerializer):
+class GetGenresSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
         fields = ('name',)
 
 
-class OnomatopoeiaSerializer(serializers.ModelSerializer):
+class GetOnomatopoeiaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Onomatopoeia
         fields = ('name',)
 
 
 class GetMoviesSerializer(serializers.ModelSerializer):
-    genre = GenreSerializer(many=True)
-    user = UserSerializer(many=True)
-    onomatopoeia = OnomatopoeiaSerializer(many=True)
+    genre = GetGenresSerializer(many=True)
+    user = GetUsersSerializer(many=True)
+    onomatopoeia = GetOnomatopoeiaSerializer(many=True)
 
     class Meta:
         model = Movie
@@ -99,7 +99,7 @@ class GetMoviesSerializer(serializers.ModelSerializer):
 
 
 class GetOnomatopoeiaCountSerializer(serializers.ModelSerializer):
-    onomatopoeia = OnomatopoeiaSerializer(many=False)
+    onomatopoeia = GetOnomatopoeiaSerializer(many=False)
     movie = GetMoviesSerializer(many=False)
 
     class Meta:

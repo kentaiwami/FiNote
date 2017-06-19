@@ -725,21 +725,21 @@ class GetMovieByIDViewSet(viewsets.ViewSet):
             raise ValidationError('正しいパラメータ値ではありません')
 
 
-class UserViewSet(viewsets.ModelViewSet):
+class GetUsersViewSet(viewsets.ModelViewSet):
     queryset = AuthUser.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = GetUsersSerializer
     http_method_names = ['get']
 
 
-class GenreViewSet(viewsets.ModelViewSet):
+class GetGenresViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all()
-    serializer_class = GenreSerializer
+    serializer_class = GetGenresSerializer
     http_method_names = ['get']
 
 
-class OnomatopoeiaViewSet(viewsets.ModelViewSet):
+class GetOnomatopoeiaViewSet(viewsets.ModelViewSet):
     queryset = Onomatopoeia.objects.all()
-    serializer_class = OnomatopoeiaSerializer
+    serializer_class = GetOnomatopoeiaSerializer
     http_method_names = ['get']
 
 
