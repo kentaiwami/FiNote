@@ -33,6 +33,7 @@ var app = {
       console.log('Open database ERROR: ' +JSON.stringify(err) +' ' + err.message);
     });
     // DB_method.delete_all_record();
+    Index.check_signup();
   }
 };
 
@@ -312,9 +313,6 @@ var Index = {
    * サインアップしているかを確認する
    */
   check_signup: function(){
-
-    Utility.draw_loading_img(ID.get_index_ID().page_id);
-
     var storage = window.localStorage;
     var signup_flag = storage.getItem(ID.get_localStorage_ID().signup_flag);
 
@@ -4523,6 +4521,7 @@ var Utility = {
    * 指定したページIDにsplash画像を書き込む
 	 * @param {string} page_id - 画像を書き込みたいページID
 	 */
+	// TODO 未使用なのでスピナーの代わりに使えないか検討
 	draw_loading_img: function (page_id) {
     var callback = function(){
       document.getElementById(page_id).innerHTML = '<img  src="img/splash.gif" alt="" width="100%" height="100%">';
