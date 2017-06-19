@@ -23,21 +23,6 @@
 </head>
 
 <body>
-<script>
-    //ブラウザでの確認のため強制的に遷移させるテストコード
-    // Utility.check_page_init('index',function(){Utility.push_page('movieadd_search.html', 'push', 0, '');});
-    // Utility.browser_signup();
-
-    //エラー表示用
-    window.onerror = function(msg, url, line, col, error) {
-        console.log(line);
-      console.log(msg);
-    };
-
-    //サインアップしているかどうかをチェックする
-    Index.check_signup();
-</script>
-
 <!-- ページ管理をするnavigatorを設置 -->
 <ons-navigator id="myNavigator" page="index.html"></ons-navigator>
 
@@ -695,5 +680,19 @@
 </ons-page>
 </ons-template>
 <!-- ●●●●●●●●● ここまでchange_sex.html ●●●●●●●●● -->
+
+<script>
+	//ブラウザでの確認のため強制的に遷移させるテストコード
+    // Utility.check_page_init('index',function(){Utility.push_page('movieadd_search.html', 'push', 0, '');});
+    // Utility.browser_signup();
+
+    //エラー表示用
+	window.onerror = function(msg, url, line, col, error) {
+        console.log(line);
+      console.log(msg);
+    };
+
+	Index.check_signup();
+</script>
 </body>
 </html>

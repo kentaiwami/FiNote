@@ -320,15 +320,7 @@ var Index = {
 
     //ユーザ情報が登録されている場合は自動ログインを行う
     if (signup_flag === 'true') {
-      // TODO ここでローカルDBの映画情報を更新？
-      Utility.FiNote_API('get_recently_movie', '', 'GET', 'v1')
-      .then(function(result) {
-        console.log(result);
         Movies.draw_movie_content();
-      })
-      .catch(function(err) {
-        console.log(err);
-      });
 
     //ユーザ情報が登録されていない場合はsignupへ遷移
     }else {
