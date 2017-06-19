@@ -3131,7 +3131,7 @@ var Social = {
 	 */
 	get_search_form: function () {
 		return  '<div id="' + ID.get_social_ID().search_area + '" style="position: fixed;">' +
-            '<form action="javascript:Social.post_and_draw_search_movie_by_onomatopoeia()">' +
+            '<form action="javascript:Social.post_and_draw_get_movie_by_onomatopoeia()">' +
             '<input id="' + ID.get_social_ID().social_movies_input + '" type="search" value="" placeholder="他の人が追加した気分で検索" class="search-input movies_search_input" onfocus="Social.set_event_social_movies_search_input(\'focus\')" onblur="Social.set_event_social_movies_search_input(\'blur\')">' +
             '</form>' +
             '<ons-button id="' + ID.get_social_ID().social_movies_reset_button + '" onClick="Social.tap_reset_button()" class="movies_reset_button" modifier="quiet"><ons-icon class="brown_color" icon="ion-close-circled"></ons-icon></ons-button>' +
@@ -3180,14 +3180,14 @@ var Social = {
 	/**
    * 検索フォームへ入力された気分が登録されている映画を取得して描画する関数
 	 */
-	post_and_draw_search_movie_by_onomatopoeia: function () {
+	post_and_draw_get_movie_by_onomatopoeia: function () {
 	  Utility.show_spinner(ID.get_social_ID().page_id);
 	  document.getElementById(ID.get_social_ID().social_movies_input).blur();
 
 	  var value = document.getElementById(ID.get_social_ID().social_movies_input).value;
     var data = {"onomatopoeia_name": value};
 
-		Utility.FiNote_API('search_movie_by_onomatopoeia', data, 'POST', 'v1').then(function(result) {
+		Utility.FiNote_API('get_movie_by_onomatopoeia', data, 'POST', 'v1').then(function(result) {
       Utility.stop_spinner();
 
       //結果を描画

@@ -652,19 +652,19 @@ class MovieReactionViewSet(viewsets.ViewSet):
             raise ValidationError('正しいパラメータ値ではありません')
 
 
-class SearchMovieByOnomatopoeiaViewSet(viewsets.ViewSet):
+class GetMovieByOnomatopoeiaViewSet(viewsets.ViewSet):
     queryset = Movie.objects.all()
-    serializer_class = SearchMovieByOnomatopoeiaSerializer
+    serializer_class = GetMovieByOnomatopoeiaSerializer
 
     def create(self, request):
         """
-        When SearchMovieByOnomatopoeia api access, run this method.
+        When GetMovieByOnomatopoeia api access, run this method.
         This method gets movies that include target onomatopoeia.
         :param request: Target onomatopoeia.
         :return: Hit movies information(title, overview and poster_path).
         """
 
-        serializer = SearchMovieByOnomatopoeiaSerializer(data=request.data)
+        serializer = GetMovieByOnomatopoeiaSerializer(data=request.data)
 
         if serializer.is_valid() and request.method == 'POST':
             # リクエスト文字を含むオノマトペを取得

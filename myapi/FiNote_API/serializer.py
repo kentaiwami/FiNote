@@ -123,7 +123,7 @@ class MovieReactionSerializer(serializers.Serializer):
     tmdb_id_list = serializers.CharField(allow_null=False, required=True)
 
 
-class SearchMovieByOnomatopoeiaSerializer(serializers.Serializer):
+class GetMovieByOnomatopoeiaSerializer(serializers.Serializer):
     onomatopoeia_name = serializers.CharField(max_length=100, allow_null=False, required=True, allow_blank=False)
 
 

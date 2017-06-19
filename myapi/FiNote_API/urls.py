@@ -21,5 +21,5 @@ router.register(r'v1/onomatopoeia_count', OnomatopoeiaCountViewSet, 'onomatopoei
 router.register(r'v1/recently_movie', RecentlyMovieViewSet, 'recently_movie')
 router.register(r'v1/movie_by_age', MovieByAgeViewSet, 'movie_by_age')
 router.register(r'v1/movie_reaction', MovieReactionViewSet, 'movie_reaction')
-router.register(r'v1/search_movie_by_onomatopoeia', SearchMovieByOnomatopoeiaViewSet, 'search_movie_by_onomatopoeia')
+router.register(r'v1/get_movie_by_onomatopoeia', GetMovieByOnomatopoeiaViewSet, 'get_movie_by_onomatopoeia')
 router.register(r'v1/get_movie_by_id', GetMovieByIDViewSet, 'get_movie_by_id')
