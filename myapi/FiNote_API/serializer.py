@@ -113,7 +113,7 @@ class RecentlyMovieSerializer(serializers.ModelSerializer):
         fields = ('title', 'overview', 'poster_path')
 
 
-class MovieByAgeSerializer(serializers.ModelSerializer):
+class GetMovieByAgeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
         fields = ('title', 'overview', 'poster_path')

@@ -3059,7 +3059,7 @@ var Social = {
 
         //年代別の人気ランキング
         case 3:
-          Social.draw_movie_by_age();
+          Social.draw_get_movie_by_age();
           break;
       }
     })
@@ -3069,13 +3069,13 @@ var Social = {
 	/**
    * 年代別の映画ランキングを描画する関数
 	 */
-	draw_movie_by_age: function () {
+	draw_get_movie_by_age: function () {
 	  var social_movie_list = document.getElementById(ID.get_social_ID().movie_list);
 	  social_movie_list.innerHTML = '';
 
 	  Utility.show_spinner(ID.get_social_ID().page_id);
 
-    Utility.FiNote_API('movie_by_age', '', 'GET', 'v1').then(function(result) {
+    Utility.FiNote_API('get_movie_by_age', '', 'GET', 'v1').then(function(result) {
       Utility.stop_spinner();
 
       var json_result = JSON.parse(result);

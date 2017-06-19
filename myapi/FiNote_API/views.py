@@ -524,9 +524,9 @@ class MovieUserCount(object):
         self.count_50 = 0
 
 
-class MovieByAgeViewSet(viewsets.ModelViewSet):
+class GetMovieByAgeViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
-    serializer_class = MovieByAgeSerializer
+    serializer_class = GetMovieByAgeSerializer
     http_method_names = ['get']
 
     def list(self, request, *args, **kwargs):
