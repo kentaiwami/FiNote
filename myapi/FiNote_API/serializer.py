@@ -106,6 +106,7 @@ class OnomatopoeiaCountSerializer(serializers.ModelSerializer):
         model = OnomatopoeiaCount
         fields = ('count', 'onomatopoeia', 'movie')
 
+
 class RecentlyMovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
@@ -124,3 +125,7 @@ class MovieReactionSerializer(serializers.Serializer):
 
 class SearchMovieByOnomatopoeiaSerializer(serializers.Serializer):
     onomatopoeia_name = serializers.CharField(max_length=100, allow_null=False, required=True, allow_blank=False)
+
+
+class GetMovieByIDSerializer(serializers.Serializer):
+    tmdb_id_list = serializers.CharField(allow_null=False, required=True)

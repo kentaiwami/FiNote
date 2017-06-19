@@ -343,19 +343,19 @@ class MovieAddViewSet(viewsets.ViewSet):
                 r_genre_id_list = []
 
             if type(r_genre_id_list) is str:
-                r_genre_id_list = MovieAdd.conversion_str_to_list(self, r_genre_id_list, 'int')
+                r_genre_id_list = conversion_str_to_list(r_genre_id_list, 'int')
             elif type(r_genre_id_list) is not list:
                 raise ValidationError('不正な形式です')
 
-            genre_obj_dict, genre_obj_list = MovieAdd.genre(self, r_genre_id_list)
+            genre_obj_dict, genre_obj_list = get_or_create_genre(r_genre_id_list)
 
             # オノマトペの登録とpkの取得
             if type(r_onomatopoeia_list) is str:
-                r_onomatopoeia_list = MovieAdd.conversion_str_to_list(self, r_onomatopoeia_list, 'str')
+                r_onomatopoeia_list = conversion_str_to_list(r_onomatopoeia_list, 'str')
             elif type(r_onomatopoeia_list) is not list:
                 raise ValidationError('不正な形式です')
 
-            onomatopoeia_obj_list = MovieAdd.onomatopoeia(self, r_onomatopoeia_list)
+            onomatopoeia_obj_list = get_or_create_onomatopoeia(r_onomatopoeia_list)
 
             # 映画の保存
             data = {'username': request.data['username'],
@@ -365,7 +365,7 @@ class MovieAddViewSet(viewsets.ViewSet):
                     'poster_path': request.data['poster_path']
                     }
 
-            MovieAdd.movie(self, genre_obj_list, onomatopoeia_obj_list, data)
+            add_movie(genre_obj_list, onomatopoeia_obj_list, data)
 
             # バックアップの保存
             backup_data = {'username': request.data['username'],
@@ -375,7 +375,7 @@ class MovieAddViewSet(viewsets.ViewSet):
                            'fav': request.data['fav']
                            }
 
-            Backup.movieadd_backup(self, backup_data)
+            movieadd_backup(backup_data)
 
             return JsonResponse(genre_obj_dict)
 
@@ -401,16 +401,15 @@ class OnomatopoeiaUpdateViewSet(viewsets.ViewSet):
             r_onomatopoeia_list = request.data['onomatopoeia']
 
             if type(r_onomatopoeia_list) is str:
-                r_onomatopoeia_list = MovieAdd.conversion_str_to_list(self, r_onomatopoeia_list, 'str')
+                r_onomatopoeia_list = conversion_str_to_list(r_onomatopoeia_list, 'str')
             elif type(request.data['onomatopoeia']) is not list:
                 raise ValidationError('不正な形式です')
 
             # Movieテーブルのオノマトペカラムに新規追加(削除はしない)
-            onomatopoeia_obj_list = OnomatopoeiaUpdate.\
-            movie_update_onomatopoeia(self, request.data, r_onomatopoeia_list)
+            onomatopoeia_obj_list = movie_update_onomatopoeia(request.data, r_onomatopoeia_list)
 
             # BackUpテーブルのオノマトペカラムに上書き(削除と追加)
-            Backup.onomatopoeia_update_backup(self, request.data, onomatopoeia_obj_list)
+            onomatopoeia_update_backup(request.data, onomatopoeia_obj_list)
 
             return Response(request.data['username'])
 
@@ -474,7 +473,7 @@ class StatusUpdateViewSet(viewsets.ViewSet):
                 usr_obj = AuthUser.objects.get(username=request.data['username'])
                 movie_obj = Movie.objects.get(tmdb_id=request.data['movie_id'])
                 BackUp.objects.filter(username=usr_obj, movie=movie_obj) \
-                .update(dvd=request.data['dvd'], fav=request.data['fav'])
+                    .update(dvd=request.data['dvd'], fav=request.data['fav'])
             except ObjectDoesNotExist:
                 raise ValidationError('該当するデータが見つかりませんでした')
 
@@ -502,8 +501,8 @@ class RecentlyMovieViewSet(viewsets.ModelViewSet):
         one_week_ago = today - datetime.timedelta(days=7)
 
         queryset = Movie.objects.annotate(user_count=Count('user')) \
-        .filter(updated_at__range=(one_week_ago, today), user_count__gt=1) \
-        .order_by('-user_count', '-updated_at')[:200].values()
+                       .filter(updated_at__range=(one_week_ago, today), user_count__gt=1) \
+                       .order_by('-user_count', '-updated_at')[:200].values()
 
         serializer = RecentlyMovieSerializer(queryset, many=True)
 
@@ -629,7 +628,7 @@ class MovieReactionViewSet(viewsets.ViewSet):
         serializer = MovieReactionSerializer(data=request.data)
 
         if serializer.is_valid() and request.method == 'POST':
-            tmdb_id_list = MovieAdd.conversion_str_to_list(self, request.data['tmdb_id_list'], 'int')
+            tmdb_id_list = conversion_str_to_list(request.data['tmdb_id_list'], 'int')
             res = []
 
             for tmdb_id in tmdb_id_list:
@@ -640,7 +639,7 @@ class MovieReactionViewSet(viewsets.ViewSet):
 
                     for count in counts:
                         onomatopoeia_counts.append({"name": count.onomatopoeia.name,
-                                    "count": count.count})
+                                                    "count": count.count})
 
                     res.append({str(tmdb_id): onomatopoeia_counts})
 
@@ -688,6 +687,42 @@ class SearchMovieByOnomatopoeiaViewSet(viewsets.ViewSet):
             return Response(res)
         else:
             raise ValidationError('必要なパラメータが含まれていません')
+
+
+class GetMovieByIDViewSet(viewsets.ViewSet):
+    queryset = Movie.objects.all()
+    serializer_class = GetMovieByIDSerializer
+
+    def create(self, request):
+
+        """
+        When GetMovieByID api access, run this method.
+        This method gets movie's title, overview and poster_path.
+        :param request: Target tmdb_id list.
+        :return: Movie's title, overview and poster_path.
+        """
+
+        serializer = MovieReactionSerializer(data=request.data)
+
+        if serializer.is_valid() and request.method == 'POST':
+            tmdb_id_list = conversion_str_to_list(request.data['tmdb_id_list'], 'int')
+            res = []
+
+            for tmdb_id in tmdb_id_list:
+                try:
+                    movie = Movie.objects.get(tmdb_id=tmdb_id)
+
+                    res.append({movie.tmdb_id: {"title": movie.title,
+                                                "overview": movie.overview,
+                                                "poster_path": movie.poster_path}})
+
+                except ObjectDoesNotExist:
+                    pass
+
+            return Response(res)
+
+        else:
+            raise ValidationError('正しいパラメータ値ではありません')
 
 
 class UserViewSet(viewsets.ModelViewSet):
