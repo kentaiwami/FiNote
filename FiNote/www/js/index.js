@@ -3397,6 +3397,9 @@ var User = {
    * @return {[Promise]} [空のresolve]
    */
   show_contents: function() {
+
+    var draw_graph_contents_count = 15;
+
     return new Promise(function(resolve, reject) {
       Utility.show_spinner(ID.get_user_ID().page_id);
 
@@ -3521,12 +3524,12 @@ var User = {
       var list_sum = function sum(a) {
         return a.reduce(function(x, y) { return x + y; });
       };
-      var o_total_count = list_sum(o_array_count.slice(0, 15));
-      var g_total_count = list_sum(g_array_count.slice(0, 15));
+      var o_total_count = list_sum(o_array_count.slice(0, draw_graph_contents_count));
+      var g_total_count = list_sum(g_array_count.slice(0, draw_graph_contents_count));
 
       // チャートの描画
-      User.draw_chart(ID.get_user_ID().chart1, o_total_count, o_array_count.slice(0, 15));
-      User.draw_chart(ID.get_user_ID().chart2, g_total_count, g_array_count.slice(0, 15));
+      User.draw_chart(ID.get_user_ID().chart1, o_total_count, o_array_count.slice(0, draw_graph_contents_count));
+      User.draw_chart(ID.get_user_ID().chart2, g_total_count, g_array_count.slice(0, draw_graph_contents_count));
 
       Utility.stop_spinner();
       resolve();
