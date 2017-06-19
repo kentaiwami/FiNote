@@ -119,7 +119,7 @@ class MovieByAgeSerializer(serializers.ModelSerializer):
         fields = ('title', 'overview', 'poster_path')
 
 
-class MovieReactionSerializer(serializers.Serializer):
+class GetMovieReactionSerializer(serializers.Serializer):
     tmdb_id_list = serializers.CharField(allow_null=False, required=True)
 
 

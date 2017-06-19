@@ -2901,7 +2901,7 @@ var Movieadd_status = {
 var Social = {
 	/**
    * @param {Object} local_onomatopoeia   - ローカルに保存されているオノマトペ全件(id,name)
-   * @param {Object} reaction_api_results - movie_reaction APIの結果
+   * @param {Object} reaction_api_results - get_movie_reaction APIの結果
    * @param {Object} local_movies         - ローカルに保存されている映画全件(title, poster, overview, tmdb_id, onomatopoeia_id)
 	 */
 	data: {local_onomatopoeia: {}, reaction_api_results: {}, local_movies: {}},
@@ -3245,7 +3245,7 @@ var Social = {
 
         return Promise.all(
           [DB_method.single_statement_execute(onomatopoeia_query, []),
-          Utility.FiNote_API('movie_reaction', post_data, 'POST', 'v1')]
+          Utility.FiNote_API('get_movie_reaction', post_data, 'POST', 'v1')]
         );
       }
     })
@@ -3255,7 +3255,7 @@ var Social = {
         social_movie_list.innerHTML = '<p class="all_center_message">映画を追加すると比較結果が表示されます</p>';
       }else {
         var api_results = JSON.parse(promises[1]);
-        Social.draw_movie_reactions(promises[0], api_results, local_movie_results);
+        Social.draw_get_movie_reactions(promises[0], api_results, local_movie_results);
 
         //詳細画面で表示するために情報を保存
         Social.data.local_onomatopoeia = promises[0];
@@ -3276,10 +3276,10 @@ var Social = {
 	/**
    * ローカルの映画に付与されているオノマトペと、サーバ上で登録されているオノマトペを比較するリストを描画する関数
 	 * @param {Object} local_onomatopoeia - ローカルに保存されているオノマトペ全件(id,name)
-	 * @param {Object} api_results        - movie_reaction APIの結果
+	 * @param {Object} api_results        - get_movie_reaction APIの結果
 	 * @param {Object} local_movies       - ローカルに保存されている映画全件(title, poster, overview, tmdb_id, onomatopoeia_id)
 	 */
-  draw_movie_reactions: function (local_onomatopoeia, api_results, local_movies) {
+  draw_get_movie_reactions: function (local_onomatopoeia, api_results, local_movies) {
 	  var draw_limit = 6;
     var html = '';
 

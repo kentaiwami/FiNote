@@ -612,9 +612,9 @@ class MovieByAgeViewSet(viewsets.ModelViewSet):
             count_class.count_50 += 1
 
 
-class MovieReactionViewSet(viewsets.ViewSet):
+class GetMovieReactionViewSet(viewsets.ViewSet):
     queryset = Movie.objects.all()
-    serializer_class = MovieReactionSerializer
+    serializer_class = GetMovieReactionSerializer
 
     def create(self, request):
 
@@ -625,7 +625,7 @@ class MovieReactionViewSet(viewsets.ViewSet):
         :return: Onomatopoeia name and count group by tmdb_id.
         """
 
-        serializer = MovieReactionSerializer(data=request.data)
+        serializer = GetMovieReactionSerializer(data=request.data)
 
         if serializer.is_valid() and request.method == 'POST':
             tmdb_id_list = conversion_str_to_list(request.data['tmdb_id_list'], 'int')
@@ -702,7 +702,7 @@ class GetMovieByIDViewSet(viewsets.ViewSet):
         :return: Movie's title, overview and poster_path.
         """
 
-        serializer = MovieReactionSerializer(data=request.data)
+        serializer = GetMovieByIDSerializer(data=request.data)
 
         if serializer.is_valid() and request.method == 'POST':
             tmdb_id_list = conversion_str_to_list(request.data['tmdb_id_list'], 'int')
