@@ -1144,7 +1144,7 @@ var Movies = {
 
       return [
           DB_method.single_statement_execute(query_obj.query, query_obj.data),
-          Utility.FiNote_API('status_update', request_data, 'POST', 'v1')
+          Utility.FiNote_API('update_status', request_data, 'POST', 'v1')
       ];
     }).then(function(promises) {
       Promise.all(promises).then(function () {
@@ -1569,7 +1569,7 @@ var Movies_detail = {
             "movie_id": movie.tmdb_id,
             "onomatopoeia": feeling_name_list
           };
-          promises = [Movieadd.set_onomatopoeia_local(feeling_name_list), Utility.FiNote_API('onomatopoeia_update', request_data, 'POST', 'v1')];
+          promises = [Movieadd.set_onomatopoeia_local(feeling_name_list), Utility.FiNote_API('update_onomatopoeia', request_data, 'POST', 'v1')];
         }
 
         Promise.all(promises).then(function(results) {
@@ -1669,7 +1669,7 @@ var Movies_detail = {
 
         var promises = [
           DB_method.single_statement_execute(query, [dvd_status, fav_status, movie_pk]),
-          Utility.FiNote_API('status_update', request_data, 'POST', 'v1')
+          Utility.FiNote_API('update_status', request_data, 'POST', 'v1')
         ];
 
         Promise.all(promises).then(function() {
@@ -3774,7 +3774,7 @@ var Setting = {
       var promises =
       [
         DB_method.single_statement_execute(query, [data]),
-        Utility.FiNote_API('set_profile_img', api_request_data, 'POST', 'v1')
+        Utility.FiNote_API('update_profile_img', api_request_data, 'POST', 'v1')
       ];
 
       Promise.all(promises).then(function() {
@@ -3958,7 +3958,7 @@ var Change_Email = {
         "new_email": new_email
       };
 
-      Utility.FiNote_API('change_email', data, 'POST', 'v1').then(function(new_email_obj) {
+      Utility.FiNote_API('update_email', data, 'POST', 'v1').then(function(new_email_obj) {
         Utility.stop_spinner();
 
         // json形式にしてからローカルへ新しいメールアドレスを保存
@@ -4030,7 +4030,7 @@ var Change_Sex = {
       "new_sex": sex
     };
 
-    Utility.FiNote_API('change_sex', data, 'POST', 'v1').then(function(sex_obj) {
+    Utility.FiNote_API('update_sex', data, 'POST', 'v1').then(function(sex_obj) {
       // json形式にしてからローカルへ新しい性別を保存
       var json_data = JSON.parse(sex_obj);
       storage.setItem(ID.get_localStorage_ID().sex, json_data.new_sex);

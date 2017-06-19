@@ -20,28 +20,28 @@ class SignInNoTokenSerializer(serializers.Serializer):
     password = serializers.CharField(allow_blank=False, required=True)
 
 
-class ChangePasswordSerializer(serializers.Serializer):
+class UpdatePasswordSerializer(serializers.Serializer):
     token = serializers.CharField(allow_blank=False, allow_null=False, required=True)
     now_password = serializers.CharField(allow_blank=False, allow_null=False, required=True)
     new_password = serializers.CharField(allow_blank=False, allow_null=False, required=True)
 
 
-class ChangeEmailSerializer(serializers.Serializer):
+class UpdateEmailSerializer(serializers.Serializer):
     token = serializers.CharField(allow_blank=False, allow_null=False, required=True)
     new_email = serializers.EmailField(allow_blank=False, allow_null=False, required=True)
 
 
-class ChangeSexSerializer(serializers.Serializer):
+class UpdateSexSerializer(serializers.Serializer):
     token = serializers.CharField(allow_blank=False, allow_null=False, required=True)
     new_sex = serializers.CharField(allow_blank=False, allow_null=False, required=True)
 
 
-class SetProfileImgSerializer(serializers.Serializer):
+class UpdateProfileImgSerializer(serializers.Serializer):
     token = serializers.CharField(allow_blank=False, allow_null=False, required=True)
     img = serializers.CharField(allow_blank=True, allow_null=False, required=True)
 
 
-class MovieAddSerializer(serializers.Serializer):
+class AddMovieSerializer(serializers.Serializer):
     username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
     movie_title = serializers.CharField(allow_blank=False, allow_null=False, required=True)
     overview = serializers.CharField(allow_blank=False, allow_null=False, required=True)
@@ -52,7 +52,7 @@ class MovieAddSerializer(serializers.Serializer):
     fav = serializers.IntegerField(default=0)
 
 
-class OnomatopoeiaUpdateSerializer(serializers.Serializer):
+class UpdateOnomatopoeiaSerializer(serializers.Serializer):
     username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
     movie_id = serializers.IntegerField(allow_null=False, required=True)
     onomatopoeia = serializers.CharField(allow_blank=False, allow_null=False)
@@ -63,7 +63,7 @@ class DeleteBackupSerializer(serializers.Serializer):
     movie_id = serializers.IntegerField(allow_null=False, required=True)
 
 
-class StatusUpdateSerializer(serializers.Serializer):
+class UpdateStatusSerializer(serializers.Serializer):
     username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
     movie_id = serializers.IntegerField(allow_null=False, required=True)
     dvd = serializers.IntegerField(default=0)

@@ -161,9 +161,9 @@ class SignInNoTokenViewSet(viewsets.ViewSet):
                 raise ValidationError('ユーザ名かパスワードが違います')
 
 
-class ChangePasswordViewSet(viewsets.ViewSet):
+class UpdatePasswordViewSet(viewsets.ViewSet):
     queryset = AuthUser.objects.all()
-    serializer_class = ChangePasswordSerializer
+    serializer_class = UpdatePasswordSerializer
 
     def create(self, request):
         """
@@ -200,9 +200,9 @@ class ChangePasswordViewSet(viewsets.ViewSet):
                 raise ValidationError('ユーザが見つかりませんでした')
 
 
-class ChangeEmailViewSet(viewsets.ViewSet):
+class UpdateEmailViewSet(viewsets.ViewSet):
     queryset = AuthUser.objects.all()
-    serializer_class = ChangeEmailSerializer
+    serializer_class = UpdateEmailSerializer
 
     def create(self, request):
         """
@@ -220,7 +220,7 @@ class ChangeEmailViewSet(viewsets.ViewSet):
             if not data['new_email']:
                 raise ValidationError('新しいメールアドレスが含まれていません')
 
-            serializer = ChangeEmailSerializer(data=data)
+            serializer = UpdateEmailSerializer(data=data)
             if serializer.is_valid():
                 try:
                     user_id = Token.objects.get(key=data['token']).user_id
@@ -235,9 +235,9 @@ class ChangeEmailViewSet(viewsets.ViewSet):
                 return Response(serializer.errors)
 
 
-class ChangeSexViewSet(viewsets.ViewSet):
+class UpdateSexViewSet(viewsets.ViewSet):
     queryset = AuthUser.objects.all()
-    serializer_class = ChangeSexSerializer
+    serializer_class = UpdateSexSerializer
 
     def create(self, request):
         """
@@ -257,7 +257,7 @@ class ChangeSexViewSet(viewsets.ViewSet):
             if not (data['new_sex'] == 'M' or data['new_sex'] == 'F'):
                 raise ValidationError('性別の入力形式が正しくありません')
 
-            serializer = ChangeSexSerializer(data=data)
+            serializer = UpdateSexSerializer(data=data)
             if serializer.is_valid():
                 try:
                     user_id = Token.objects.get(key=data['token']).user_id
@@ -272,9 +272,9 @@ class ChangeSexViewSet(viewsets.ViewSet):
                 return Response(serializer.errors)
 
 
-class SetProfileImgViewSet(viewsets.ViewSet):
+class UpdateProfileImgViewSet(viewsets.ViewSet):
     queryset = AuthUser.objects.all()
-    serializer_class = SetProfileImgSerializer
+    serializer_class = UpdateProfileImgSerializer
 
     def create(self, request):
         """
@@ -318,9 +318,9 @@ class SetProfileImgViewSet(viewsets.ViewSet):
                 raise ValidationError('ユーザが見つかりませんでした')
 
 
-class MovieAddViewSet(viewsets.ViewSet):
+class AddMovieViewSet(viewsets.ViewSet):
     queryset = Movie.objects.all()
-    serializer_class = MovieAddSerializer
+    serializer_class = AddMovieSerializer
 
     def create(self, request):
         """
@@ -380,9 +380,9 @@ class MovieAddViewSet(viewsets.ViewSet):
             return JsonResponse(genre_obj_dict)
 
 
-class OnomatopoeiaUpdateViewSet(viewsets.ViewSet):
+class UpdateOnomatopoeiaViewSet(viewsets.ViewSet):
     queryset = Onomatopoeia.objects.all()
-    serializer_class = OnomatopoeiaUpdateSerializer
+    serializer_class = UpdateOnomatopoeiaSerializer
 
     def create(self, request):
         """
@@ -395,7 +395,7 @@ class OnomatopoeiaUpdateViewSet(viewsets.ViewSet):
         :type request object
         """
 
-        serializer = OnomatopoeiaUpdateSerializer(data=request.data)
+        serializer = UpdateOnomatopoeiaSerializer(data=request.data)
 
         if serializer.is_valid() and request.method == 'POST':
             r_onomatopoeia_list = request.data['onomatopoeia']
@@ -452,9 +452,9 @@ class DeleteBackupViewSet(viewsets.ViewSet):
             return Response(serializer.error_messages)
 
 
-class StatusUpdateViewSet(viewsets.ViewSet):
+class UpdateStatusViewSet(viewsets.ViewSet):
     queryset = AuthUser.objects.all()
-    serializer_class = StatusUpdateSerializer
+    serializer_class = UpdateStatusSerializer
 
     def create(self, request):
         """
@@ -466,7 +466,7 @@ class StatusUpdateViewSet(viewsets.ViewSet):
         :type request object
         """
 
-        serializer = StatusUpdateSerializer(data=request.data)
+        serializer = UpdateStatusSerializer(data=request.data)
 
         if serializer.is_valid() and request.method == 'POST':
             try:
