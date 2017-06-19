@@ -321,7 +321,7 @@ var Index = {
     //ユーザ情報が登録されている場合は自動ログインを行う
     if (signup_flag === 'true') {
       // TODO ここでローカルDBの映画情報を更新？
-      Utility.FiNote_API('recently_movie', '', 'GET', 'v1')
+      Utility.FiNote_API('get_recently_movie', '', 'GET', 'v1')
       .then(function(result) {
         console.log(result);
         Movies.draw_movie_content();
@@ -2949,13 +2949,13 @@ var Social = {
 	/**
    * 最新ランキングの表示を実行する関数
 	 */
-	draw_recently_movie_list: function () {
+	draw_get_recently_movie_list: function () {
     var social_movie_list = document.getElementById(ID.get_social_ID().movie_list);
     social_movie_list.innerHTML = '';
 
     Utility.show_spinner(ID.get_social_ID().page_id);
 
-    Utility.FiNote_API('recently_movie','', 'GET', 'v1').then(function(result) {
+    Utility.FiNote_API('get_recently_movie','', 'GET', 'v1').then(function(result) {
       Utility.stop_spinner();
 
       //結果を描画
@@ -2973,10 +2973,10 @@ var Social = {
    * socialタブがタップされて、表示される度にAPIを叩いて結果を描画する
 	 * @param  {string} page_id   - page_id(social)
 	 */
-	run_draw_recently_movie_list: function (page_id) {
+	run_draw_get_recently_movie_list: function (page_id) {
     document.addEventListener('show', function(event) {
       if (event.target.id === page_id) {
-        Social.draw_recently_movie_list();
+        Social.draw_get_recently_movie_list();
       }
     });
   },
@@ -3043,7 +3043,7 @@ var Social = {
       switch (index){
         //最新ランキング
         case 0:
-          Social.draw_recently_movie_list();
+          Social.draw_get_recently_movie_list();
           break;
 
         //気分の比較一覧
@@ -4634,4 +4634,4 @@ app.initialize();
 
 // ユーザ情報画面を表示するたびに、DBからデータを取得して表示データを更新する
 User.show_event(ID.get_user_ID().page_id, User.show_contents);
-Social.run_draw_recently_movie_list(ID.get_social_ID().page_id);
+Social.run_draw_get_recently_movie_list(ID.get_social_ID().page_id);

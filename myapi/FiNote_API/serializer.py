@@ -107,7 +107,7 @@ class OnomatopoeiaCountSerializer(serializers.ModelSerializer):
         fields = ('count', 'onomatopoeia', 'movie')
 
 
-class RecentlyMovieSerializer(serializers.ModelSerializer):
+class GetRecentlyMovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
         fields = ('title', 'overview', 'poster_path')

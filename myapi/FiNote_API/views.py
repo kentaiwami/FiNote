@@ -482,9 +482,9 @@ class StatusUpdateViewSet(viewsets.ViewSet):
             return Response(serializer.error_messages)
 
 
-class RecentlyMovieViewSet(viewsets.ModelViewSet):
+class GetRecentlyMovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
-    serializer_class = RecentlyMovieSerializer
+    serializer_class = GetRecentlyMovieSerializer
     http_method_names = ['get']
 
     def list(self, request, *args, **kwargs):
@@ -504,7 +504,7 @@ class RecentlyMovieViewSet(viewsets.ModelViewSet):
                        .filter(updated_at__range=(one_week_ago, today), user_count__gt=1) \
                        .order_by('-user_count', '-updated_at')[:200].values()
 
-        serializer = RecentlyMovieSerializer(queryset, many=True)
+        serializer = GetRecentlyMovieSerializer(queryset, many=True)
 
         return Response(serializer.data)
 
