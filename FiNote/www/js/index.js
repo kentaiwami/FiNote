@@ -3436,22 +3436,16 @@ var User = {
       // DVDとお気に入りの登録数をそれぞれ取得
       var params = User.create_name_count_obj_and_counts(result);
 
-
-      // オノマトペとジャンルの合計数をそれぞれ求める
-      // グラフの描画関数に渡す配列を作成する
-      var o_total = 0;
-      var g_total = 0;
+      // グラフの描画関数に渡す1つ1つの出現回数を格納した配列を作成する
       var o_array_count = [];
       var g_array_count = [];
       for(var o_key in params.o_obj) {
         var o_value = params.o_obj[o_key];
-        o_total += o_value;
         o_array_count.push(o_value);
       }
 
       for(var g_key in params.g_obj) {
         var g_value = params.g_obj[g_key];
-        g_total += g_value;
         g_array_count.push(g_value);
       }
 
@@ -3523,9 +3517,16 @@ var User = {
       favorites_count.innerHTML = String(params.favs);
 
 
+      // オノマトペとジャンルの合計数をそれぞれ求める
+      var list_sum = function sum(a) {
+        return a.reduce(function(x, y) { return x + y; });
+      };
+      var o_total_count = list_sum(o_array_count.slice(0, 15));
+      var g_total_count = list_sum(g_array_count.slice(0, 15));
+
       // チャートの描画
-      User.draw_chart(ID.get_user_ID().chart1, o_total, o_array_count);
-      User.draw_chart(ID.get_user_ID().chart2, g_total, g_array_count);
+      User.draw_chart(ID.get_user_ID().chart1, o_total_count, o_array_count.slice(0, 15));
+      User.draw_chart(ID.get_user_ID().chart2, g_total_count, g_array_count.slice(0, 15));
 
       Utility.stop_spinner();
       resolve();
@@ -3630,18 +3631,13 @@ var User = {
   draw_chart: function(id, total_count, series_array) {
     var intViewportWidth = window.innerWidth;
 
-    var sum = function(a, b) { return a + b;};
-
     new Chartist.Pie('#'+id, {
       series: series_array
     },
     {
-      labelInterpolationFnc: function(value) {
-        return Math.round(value / series_array.reduce(sum) * 100) + '%';
-      },
       donut: true,
       donutWidth: 30,
-      showLabel: true,
+      showLabel: false,
       width: intViewportWidth * 0.45,
       height: intViewportWidth * 0.45,
       total: total_count
