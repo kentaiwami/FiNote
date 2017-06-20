@@ -9,12 +9,12 @@ var app = {
 
   bindEvents: function() {
     document.addEventListener('deviceready', this.onDeviceReady, false);
-    setTimeout(function() {
-      navigator.splashscreen.hide();}, 500);
   },
 
 
   onDeviceReady: function() {
+    navigator.splashscreen.hide();
+
     //ステータスバーの自動調整を無効にする
     ons.disableAutoStatusBarFill();
 
@@ -318,7 +318,7 @@ var Index = {
 
     //ユーザ情報が登録されている場合は自動ログインを行う
     if (signup_flag === 'true') {
-        Movies.draw_movie_content();
+      Movies.draw_movie_content();
 
     //ユーザ情報が登録されていない場合はsignupへ遷移
     }else {
@@ -870,24 +870,44 @@ var Movies = {
    * 自動ログイン後に映画一覧画面の表示を行う
    */
   draw_movie_content: function() {
-    //自動ログイン
+    var movie_count = 0;
+
+    //サインインに必要なパラメータの取得、ポストデータの整形
     var storage = window.localStorage;
     var username = storage.getItem(ID.get_localStorage_ID().username);
     var token = storage.getItem(ID.get_localStorage_ID().token);
-
-    var data = {
+    var sign_in_post_data = {
       "username": username,
       "token": token
     };
-    
 
-    Utility.FiNote_API('sign_in_with_token', data, 'POST', 'v1').then(function(){
-      // ログイン後に映画情報をデータベースから取得
-      var query = 'SELECT tmdb_id FROM movie';
-      return DB_method.single_statement_execute(query,[]);
+    var query = 'SELECT tmdb_id FROM movie';
+
+    var promises = [
+      Utility.FiNote_API('sign_in_with_token', sign_in_post_data, 'POST', 'v1'),
+      DB_method.single_statement_execute(query, [])
+    ];
+
+    Promise.all(promises)
+    .then(function(results){
+      movie_count = results[1].rows.length;
+
+      var local_tmdb_id_list_str = '[';
+      for(var i = 0; i < results[1].rows.length; i++) {
+        local_tmdb_id_list_str += results[1].rows.item(i).tmdb_id + ',';
+      }
+      local_tmdb_id_list_str = local_tmdb_id_list_str.substr(0, local_tmdb_id_list_str.length-1);
+      local_tmdb_id_list_str += ']';
+
+      var post_data = {"tmdb_id_list": local_tmdb_id_list_str};
+
+      return Utility.FiNote_API('get_movie_by_id', post_data, 'POST', 'v1');
     })
-    .then(function(movie_result) {
-      var movie_count = movie_result.rows.length;
+    .then(function(movie_info_results) {
+      console.log(movie_info_results.length);
+      return '';
+    })
+    .then(function() {
       var draw_content = function(){};
 
       //ローカルに保存されている映画情報の件数で表示内容を変える
