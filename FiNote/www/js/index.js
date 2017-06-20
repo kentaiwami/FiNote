@@ -4189,31 +4189,31 @@ var Utility = {
 
   spinner: {},        //spinnerオブジェクト格納用
 
-  /**
-   * 指定した親要素にスピナーを表示する
-   * @param  {string} parent - 親要素のid
-   */
-  show_spinner: function(parent){
-    var opts = {
-      lines: 13, //線の数
-      length: 8, //線の長さ
-      width: 3, //線の幅
-      radius: 16, //スピナーの内側の広さ
-      corners: 1, //角の丸み
-      rotate: 74, //向き
-      direction: 1, //1：時計回り -1：反時計回り
-      color: '#000', // 色
-      speed: 2.0, // 一秒間に回転する回数
-      trail: 71, //残像の長さ
-      shadow: true, // 影
-      hwaccel: true, // ？
-      className: 'spinner', // クラス名
-      zIndex: 2e9, // Z-index
-      top: '50%', // relative TOP
-      left: '50%', // relative LEFT
-      opacity: 0.25, //透明度
-      fps: 40 //fps
-    };
+	/**
+	 * 指定した親要素にスピナーを表示する
+	 * @param  {string} parent - 親要素のid
+	 */
+	show_spinner: function (parent) {
+		var opts = {
+		  lines: 17,            //線の数
+			length: 0,            //線の長さ
+			width: 7,             //線の幅
+			radius: 40,           //スピナーの内側の広さ
+			corners: 1,           //角の丸み
+			rotate: 0,           //向き
+			direction: 1,         //1：時計回り -1：反時計回り
+			color: '#462401',        // 色
+			speed: 2.0,           // 一秒間に回転する回数
+			trail: 71,            //残像の長さ
+			shadow: false,         // 影
+			hwaccel: false,        // ？
+			className: 'spinner', // クラス名
+			zIndex: 2e9,          // Z-index
+			top: '50%',           // relative TOP
+			left: '50%',          // relative LEFT
+			opacity: 0.25,        //透明度
+			fps: 40               //fps
+		};
 
     //重複表示を避けるため既にオブジェクトに格納されていない時のみ処理を行う
     if (Object.keys(Utility.spinner).length === 0) {
@@ -4513,20 +4513,7 @@ var Utility = {
     escaped_str = escaped_str.replace(/'/g, "`");
     escaped_str = escaped_str.replace(/\r/g, "");
 
-    return escaped_str;
-	},
-
-
-	/**
-   * 指定したページIDにsplash画像を書き込む
-	 * @param {string} page_id - 画像を書き込みたいページID
-	 */
-	// TODO 未使用なのでスピナーの代わりに使えないか検討
-	draw_loading_img: function (page_id) {
-    var callback = function(){
-      document.getElementById(page_id).innerHTML = '<img  src="img/splash.gif" alt="" width="100%" height="100%">';
-    };
-    Utility.check_page_init(page_id,callback);
+		return escaped_str;
 	}
 };
 
