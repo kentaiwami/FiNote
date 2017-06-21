@@ -1947,8 +1947,7 @@ var Movieadd_search = {
 
 
   /**
-   * 検索窓にテキストを入力するたびに入力したテキストを取得する
-   * 検索窓の文字数が1以上ならリセットボタンを表示させる
+   * 検索ボタンが押されたら入力したテキストでTMDB検索結果を描画する
    */
   get_search_movie_title_val: function(){
     var text = document.getElementById(ID.get_movieadd_search_ID().form).value;
