@@ -318,7 +318,7 @@ var Index = {
 
     //ユーザ情報が登録されている場合は自動ログインを行う
     if (signup_flag === 'true') {
-      Movies.draw_movie_content();
+      Movies.run_draw_movie_content();
 
     //ユーザ情報が登録されていない場合はsignupへ遷移
     }else {
@@ -514,7 +514,7 @@ var Signup = {
     }
 
     var config = {
-      title: '', 
+      title: '',
       items: items_array,
 
       selectedValue: fastvalue,
@@ -522,12 +522,12 @@ var Signup = {
       cancelButtonLabel: 'キャンセル'
     };
 
-    window.plugins.listpicker.showPicker(config, function(item) { 
+    window.plugins.listpicker.showPicker(config, function(item) {
       birthday.value = item;
       Index.formcheck[1] = true;
       Index.change_abled_signup_button();
     },
-    function() { 
+    function() {
       console.log("You have cancelled");
     });
   },
@@ -630,7 +630,7 @@ var Signin = {
         console.log(result);
         console.log('******* restore all done *******');
         Utility.stop_spinner();
-        Movies.draw_movie_content();
+        Movies.run_draw_movie_content();
       });
     })
     .catch(function(err) {
@@ -866,11 +866,20 @@ var Signin = {
 * @type {Object}
 */
 var Movies = {
+
+  //ローカルに保存されている映画の数を保存する
+  movie_count:{count: 0},
+
   /**
    * 自動ログイン後に映画一覧画面の表示を行う
+   * 1. サインイン
+   * 2. サーバからローカルに保存されている映画情報の取得
    */
-  draw_movie_content: function() {
-    var movie_count = 0;
+  run_draw_movie_content: function() {
+    Movies.movie_count.count = 0;
+
+    //ローカルへのDB問い合わせの結果を保存する共通変数
+    var local_movies = {};
 
     //サインインに必要なパラメータの取得、ポストデータの整形
     var storage = window.localStorage;
@@ -881,7 +890,7 @@ var Movies = {
       "token": token
     };
 
-    var query = 'SELECT tmdb_id FROM movie';
+    var query = 'SELECT tmdb_id, title, overview FROM movie';
 
     var promises = [
       Utility.FiNote_API('sign_in_with_token', sign_in_post_data, 'POST', 'v1'),
@@ -890,8 +899,16 @@ var Movies = {
 
     Promise.all(promises)
     .then(function(results){
-      movie_count = results[1].rows.length;
+      Movies.movie_count.count = results[1].rows.length;
 
+      //映画を登録していない場合は、空リストをreturnする(サーバが返すのと同じ)
+      if(Movies.movie_count.count === 0) {
+        return '[]';
+      }
+
+      local_movies = results[1];
+
+      //サーバへPOSTする文字列を生成
       var local_tmdb_id_list_str = '[';
       for(var i = 0; i < results[1].rows.length; i++) {
         local_tmdb_id_list_str += results[1].rows.item(i).tmdb_id + ',';
@@ -904,29 +921,125 @@ var Movies = {
       return Utility.FiNote_API('get_movie_by_id', post_data, 'POST', 'v1');
     })
     .then(function(movie_info_results) {
-      console.log(movie_info_results.length);
-      return '';
-    })
-    .then(function() {
-      var draw_content = function(){};
+      var movie_info_results_json = JSON.parse(movie_info_results);
+      var loaded_count = 0;
+      var sql_and_data_list = [];
+      var base64_obj_list = [];
 
-      //ローカルに保存されている映画情報の件数で表示内容を変える
-      if (movie_count === 0) {
-        draw_content = Movies.draw_no_data_message;
-      }else {
-        Global_variable.movie_update_flag = true;
-        draw_content = Movies.update_movies;
+      //映画を登録していない場合は、映画一覧表示へ即座に遷移
+      //登録している場合は、ローカルデータの更新処理を実行
+      if(Movies.movie_count.count === 0) {
+        Utility.check_page_init(ID.get_movies_ID().page_id,Movies.draw_no_data_message);
+        Utility.push_page(ID.get_tab_ID().tmp_id,'fade',0, '');
+			}else {
+        for(var i = 0; i < local_movies.rows.length; i++ ){
+        var local_movie = local_movies.rows.item(i);
+        var sql_base = 'UPDATE movie SET poster = ?,';
+        var sql_data = {};
+
+        //該当するtmdb_idを持つオブジェクトを抽出
+        var movie_info_result = movie_info_results_json.filter(function(item){
+          if (Object.keys(item)[0] === String(local_movie.tmdb_id)) return true;
+        });
+
+        //タイトルの判定と追加
+        if(local_movie.title !== movie_info_result[0][local_movie.tmdb_id].title) {
+          sql_base += 'title = ?,';
+          sql_data['title'] = movie_info_result[0][local_movie.tmdb_id].title;
+        }
+
+        //概要文の判定と追加
+        if(local_movie.overview !== movie_info_result[0][local_movie.tmdb_id].overview) {
+          sql_base += 'overview = ?,';
+          sql_data['overview'] = movie_info_result[0][local_movie.tmdb_id].overview;
+        }
+
+        sql_data['tmdb_id'] = local_movie.tmdb_id;
+
+        //最後のカンマを削除、条件の追加
+        sql_base = sql_base.substr(0, sql_base.length-1);
+        sql_base += ' WHERE tmdb_id = ?';
+
+        sql_and_data_list.push({"sql": sql_base, "data": sql_data});
+
+        // ポスターの取得
+        var base_url = 'https://image.tmdb.org/t/p/w300_and_h450_bestv2';
+        var image = new Image();
+        image.src = base_url + movie_info_result[0][local_movie.tmdb_id].poster_path;
+        image.onload = (function(image, i){
+          return function(){
+            base64_obj_list.push({"promise": Utility.image_to_base64(image, 'image/jpeg'), "i": i});
+            loaded_count += 1;
+
+            if(loaded_count === local_movies.rows.length) {
+						  Movies.local_movies_update_and_draw_movies(base64_obj_list, sql_and_data_list);
+            }
+           }
+       })(image, i);
+      }
       }
 
-      Utility.check_page_init(ID.get_movies_ID().page_id,draw_content);
-    })
-    .then(function() {
-      Utility.push_page(ID.get_tab_ID().tmp_id,'fade',0, '');
     })
     .catch(function(err) {
       //ログインエラー or レコード件数取得エラー
       console.log(err);
     });
+  },
+
+
+	/**
+   * サーバ内の映画タイトル、概要が異なった際に更新を行う。ポスターは必ず更新する。
+   * 更新処理後に映画一覧画面へ遷移する。
+	 * @param {Array} base64_obj_list   - base64のpromiseとソート用の添え字の連想配列を格納した1次元配列
+	 * @param {Array} sql_and_data_list - sql文と更新するデータの連想配列を格納した1次元配列
+	 */
+  local_movies_update_and_draw_movies: function (base64_obj_list, sql_and_data_list) {
+    //画像の読み込み完了順になっているので、
+    //映画の順番に並び替え後、promiseを抽出した配列を作成
+    Utility.ObjArraySort(base64_obj_list, 'i');
+    var base64_promises = [];
+    base64_obj_list.forEach(function(obj) {
+      base64_promises.push(obj['promise'])
+    });
+
+    Promise.all(base64_promises)
+    .then(function(base64_list) {
+      var promises = [];
+
+      sql_and_data_list.forEach(function(obj, index) {
+        var sql;
+        var sql_data = [];
+
+        sql = obj['sql'];
+        sql_data.push(base64_list[index]);
+
+        //title,overview,tmdb_idの取り出し
+        Object.keys(obj['data']).forEach(function(key) {
+          sql_data.push(obj['data'][key]);
+        });
+
+        promises.push(DB_method.single_statement_execute(sql, sql_data));
+      });
+
+      return Promise.all(promises);
+    })
+    .then(function() {
+    var draw_content = function(){};
+
+    //ローカルに保存されている映画情報の件数で表示内容を変える
+    if (Movies.movie_count.count === 0) {
+      draw_content = Movies.draw_no_data_message;
+    }else {
+      Global_variable.movie_update_flag = true;
+      draw_content = Movies.update_movies;
+    }
+      Utility.check_page_init(ID.get_movies_ID().page_id,draw_content);
+    })
+    .then(function() {
+      Utility.push_page(ID.get_tab_ID().tmp_id,'fade',0, '');
+    });
+
+    console.log('********* All image load Done *************');
   },
 
 
@@ -4534,7 +4647,28 @@ var Utility = {
     escaped_str = escaped_str.replace(/\r/g, "");
 
 		return escaped_str;
-	}
+	},
+
+
+	/**
+   * 連想配列を指定したkeyでソートする関数
+	 * @param {Array} ary     - ソートしたい連想配列
+	 * @param {string} key    - ソートする際のkey
+	 * @param {string} order  - desc or asc(no param)
+	 */
+  ObjArraySort: function (ary, key, order) {
+    var reverse = 1;
+    if(order && order.toLowerCase() === "desc")
+        reverse = -1;
+    ary.sort(function(a, b) {
+        if(a[key] < b[key])
+            return -1 * reverse;
+        else if(a[key] === b[key])
+            return 0;
+        else
+            return reverse;
+    });
+}
 };
 
 
