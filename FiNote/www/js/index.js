@@ -1960,7 +1960,7 @@ var Movieadd_search = {
 
       //日本語と英語のリクエスト、ローカルDBから記録した映画リストの取得を行う
       var query = 'SELECT tmdb_id, dvd FROM movie';
-      var promises = [Movieadd_search.create_request_movie_search(text,'ja'),Movieadd_search.create_request_movie_search(text,'en'), DB_method.single_statement_execute(query,[])];
+      var promises = [Movieadd_search.create_request_movie_search_in_tmdb(text,'ja'),Movieadd_search.create_request_movie_search_in_tmdb(text,'en'), DB_method.single_statement_execute(query,[])];
 
       Promise.all(promises).then(function(results) {
         //idだけの配列を作成
@@ -2071,7 +2071,7 @@ var Movieadd_search = {
    * @param  {string} language      - jaで日本語情報、enで英語情報
    * @return {string}               - 検索結果をjsonに変換したもの
    */
-  create_request_movie_search: function(movie_title, language){
+  create_request_movie_search_in_tmdb: function(movie_title, language){
     return new Promise(function(resolve) {
       var storage = window.localStorage;
       var adult = storage.getItem(ID.get_localStorage_ID().adult);
