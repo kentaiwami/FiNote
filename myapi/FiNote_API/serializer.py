@@ -129,3 +129,7 @@ class GetMovieByOnomatopoeiaSerializer(serializers.Serializer):
 
 class GetMovieByIDSerializer(serializers.Serializer):
     tmdb_id_list = serializers.CharField(allow_null=False, required=True)
+
+
+class GetOriginalMovieTitleSerializer(serializers.Serializer):
+    movie_title = serializers.CharField(allow_null=False, required=True)

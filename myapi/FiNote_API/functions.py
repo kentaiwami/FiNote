@@ -1,3 +1,5 @@
+import lxml.html
+from rest_framework.response import Response
 from FiNote_API.models import *
 from myapi.settings import TMDB_APIKEY
 import requests
@@ -241,3 +243,60 @@ def onomatopoeia_update_backup(request_data, onomatopoeia_obj_list):
 
     for onomatopoeia_obj in onomatopoeia_obj_list:
         backup_obj.onomatopoeia.add(onomatopoeia_obj)
+
+
+def get_movie_link(search_url):
+    """
+    This method gets movie url link list and html dom.
+    :param search_url: A url that include search text and pagination number.
+    :return: Movie url link list and html dom.
+
+    :type search_url: str
+    """
+    target_html = requests.get(search_url).text
+    dom = lxml.html.fromstring(target_html)
+
+    # 検索結果が存在するかのチェック
+    try:
+        rslt_movie_dom = dom.get_element_by_id('rslt-movie')
+    except KeyError:
+        return Response('')
+
+    a_tags = rslt_movie_dom.findall('.//a')
+    url_list = []
+
+    for a_tag in a_tags:
+        href = a_tag.attrib['href']
+        url_list.append(href)
+
+    url_list = list(set(url_list))
+
+    return url_list, dom
+
+
+def get_original_movie_title(detail_movie_url):
+    """
+    This method gets original movie title.
+    :param detail_movie_url: Movie url link that include movie number.
+    :return: If not found 原題, return empty str. Else original movie title.
+
+    :type detail_movie_url str
+    """
+    target_html = requests.get(detail_movie_url).text
+    dom = lxml.html.fromstring(target_html)
+    dataBoxes = dom.cssselect('.dataBox')
+
+    for dataBox in dataBoxes:
+        index = -1
+        th_list = dataBox.findall('.//th')
+        td_list = dataBox.findall('.//td')
+
+        for i, th in enumerate(th_list):
+            if th.text == '原題':
+                index = i
+                break
+
+        if index == -1:
+            return ''
+        else:
+            return td_list[index].text

@@ -48,8 +48,9 @@
 * Twitter
 * [The Movie Database](https://www.themoviedb.org)
 * [オノマトペ辞典](http://sura-sura.com)
+* [映画.com](http://eiga.com)
 
-## 参考にしたサイト
-* [ひらがら、カタカナの変換を行うJavaScript関数](https://gist.github.com/kawanet/5553478)
+## 参考サイト
+* [Onsen UI](https://onsen.io)
 * [CHARTIST.JS](http://gionkunz.github.io/chartist-js/index.html)
 * [slick](http://kenwheeler.github.io/slick/)

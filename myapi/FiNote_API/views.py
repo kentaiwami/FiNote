@@ -3,7 +3,6 @@ from django.db.models import Count
 from django.http import JsonResponse
 from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
-from rest_framework.response import Response
 from rest_framework_jwt.serializers import User
 from FiNote_API.functions import *
 from .serializer import *
@@ -721,6 +720,61 @@ class GetMovieByIDViewSet(viewsets.ViewSet):
 
             return Response(res)
 
+        else:
+            raise ValidationError('正しいパラメータ値ではありません')
+
+
+class GetOriginalMovieTitleViewSet(viewsets.ViewSet):
+    queryset = Movie.objects.all()
+    serializer_class = GetOriginalMovieTitleSerializer
+
+    def create(self, request):
+        """
+        When GetEigaComSearchResults api access, run this method.
+        This method gets search results in eiga.com website.
+        :param request: Search movie title.
+        :return: Movie's original title.
+        """
+
+        serializer = GetOriginalMovieTitleSerializer(data=request.data)
+
+        if serializer.is_valid() and request.method == 'POST':
+            res = []
+
+            # 初期検索結果のhtmlを取得して結果を保存
+            first_movie_search_link_list, dom = get_movie_link('http://eiga.com/search/' + request.data['movie_title'] + '/movie/')
+
+            for first_movie_search_link in first_movie_search_link_list:
+                res.append({get_original_movie_title('http://eiga.com' + first_movie_search_link)})
+
+            # ページネーションのリストを生成
+            pagination_list_tmp = []
+            pagination_dom_list = dom.cssselect('.pagination')
+            for pagination_dom in pagination_dom_list:
+                for pagination_a in pagination_dom.findall('.//a'):
+                    try:
+                        int(pagination_a.text)
+                    except ValueError:
+                        pass
+
+                    pagination_list_tmp.append(pagination_a.attrib['href'])
+
+            # 順番にソート後、10が一番最初に来るので、削除して最後に追加
+            if len(pagination_list_tmp) != 0:
+                pagination_list = list(set(pagination_list_tmp))
+                pagination_list.sort()
+                tmp = pagination_list[0]
+                del pagination_list[0]
+                pagination_list.append(tmp)
+
+                # ページ2〜のそれぞれの映画の原題を入手
+                for pagination in pagination_list:
+                    search_results, dom = get_movie_link('http://eiga.com' + pagination)
+
+                    for search_result in search_results:
+                        res.append({get_original_movie_title('http://eiga.com' + search_result)})
+
+            return Response(list([x for x in res if x != {''}]))
         else:
             raise ValidationError('正しいパラメータ値ではありません')
 
