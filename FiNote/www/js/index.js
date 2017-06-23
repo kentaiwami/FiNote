@@ -2441,7 +2441,7 @@ var Movieadd = {
           var onomatopoeia_csv = '';
 
           //ジャンルIDのcsvを作成
-          for(i = 0; i < genre_pk_array.length; i++) {
+          for(var i = 0; i < genre_pk_array.length; i++) {
             genre_csv += genre_pk_array[i] + ',';
           }
           genre_csv = genre_csv.substr(0, genre_csv.length-1);
@@ -4260,7 +4260,7 @@ var Utility = {
 
   /**
    * TMDBのAPIキーを返す
-   * @return {[String]} [TMDBのAPIキー]
+   * @return {string} [TMDBのAPIキー]
    */
   get_tmdb_apikey: function(){
     return 'dcf593b3416b09594c1f13fabd1b9802';
