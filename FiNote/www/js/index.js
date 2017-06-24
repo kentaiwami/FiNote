@@ -1951,9 +1951,6 @@ var Movieadd_search = {
    */
   get_search_movie_title_val: function(){
     // TODO この関数内で映画.comから原題を取得し、tmdbから検索結果を受け取る
-
-
-
     var text = document.getElementById(ID.get_movieadd_search_ID().form).value;
     var no_match_message = document.getElementById(ID.get_movieadd_search_ID().nodata_message);
     no_match_message.innerHTML = '';
@@ -1966,18 +1963,15 @@ var Movieadd_search = {
       //テキストエリアのスピナー表示
       Utility.show_spinner(ID.get_movieadd_search_ID().nodata_message);
 
-      //日本語と英語のリクエスト、ローカルDBから記録した映画リストの取得、原題の取得を行う
+      //日本語と英語のリクエスト、ローカルDBから記録した映画リストの取得
       var query = 'SELECT tmdb_id, dvd FROM movie';
-      var post_data = {"movie_title": text};
       var promises = [
         Movieadd_search.create_request_movie_search_in_tmdb(text,'ja'),
         Movieadd_search.create_request_movie_search_in_tmdb(text,'en'),
-        DB_method.single_statement_execute(query,[]),
-        Utility.FiNote_API('get_original_movie_title', post_data, 'POST', 'v1')
+        DB_method.single_statement_execute(query,[])
       ];
 
       Promise.all(promises).then(function(results) {
-        console.log(results[3]);
         //idだけの配列を作成
         var local_tmdb_id = [];
         var local_dvd = [];
@@ -2052,7 +2046,7 @@ var Movieadd_search = {
 
           movieadd_SearchList.innerHTML = list_doc;
 
-          movieadd_SearchList.innerHTML +=  '<a href="javascript:void(0);" onclick="Movieadd_search.hoge()" class="center_link_block">'+
+          movieadd_SearchList.innerHTML +=  '<a href="javascript:void(0);" onclick="Movieadd_search.search_and_draw_original_title()" class="center_link_block">'+
                                             '原題でさらに検索</a>';
 
           //overviewが長すぎて範囲内に収まらない場合に文字列をカットする処理
@@ -2083,7 +2077,21 @@ var Movieadd_search = {
     }
   },
 
-  hoge: function () {
+  search_and_draw_original_title: function () {
+    Utility.show_spinner(ID.get_movieadd_search_ID().nodata_message);
+
+    var text = document.getElementById(ID.get_movieadd_search_ID().form).value;
+    var post_data = {"movie_title": text};
+
+    Utility.FiNote_API('get_original_movie_title', post_data, 'POST', 'v1')
+    .then(function(result) {
+      console.log(result);
+      Utility.stop_spinner();
+    })
+    .catch(function(err) {
+      console.log(err);
+      Utility.stop_spinner();
+    });
     console.log('************');
 	},
 

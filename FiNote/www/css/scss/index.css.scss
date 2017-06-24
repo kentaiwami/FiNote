@@ -228,6 +228,11 @@ $font-small: .75rem;
 }
 
 .center_link_block {
+
+  &:active {
+    background-color: #EEE;
+  }
+
   display: inline-block;
   width: 100%;
   max-height: 3rem;

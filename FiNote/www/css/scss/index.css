@@ -927,6 +927,9 @@
   color: #00F;
   text-align: center;
 }
+.center_link_block:active {
+  background-color: #EEE;
+}
 
 /************************************************************
                             Button
