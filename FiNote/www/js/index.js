@@ -1950,7 +1950,6 @@ var Movieadd_search = {
    * 検索ボタンが押されたら入力したテキストでTMDB検索結果を描画する
    */
   get_search_movie_title_val: function(){
-    // TODO この関数内で映画.comから原題を取得し、tmdbから検索結果を受け取る
     var text = document.getElementById(ID.get_movieadd_search_ID().form).value;
     var no_match_message = document.getElementById(ID.get_movieadd_search_ID().nodata_message);
     no_match_message.innerHTML = '';
@@ -1960,7 +1959,6 @@ var Movieadd_search = {
       ja_tmdb_result = {};
       en_tmdb_result = {};
 
-      //テキストエリアのスピナー表示
       Utility.show_spinner(ID.get_movieadd_search_ID().nodata_message);
 
       //日本語と英語のリクエスト、ローカルDBから記録した映画リストの取得
