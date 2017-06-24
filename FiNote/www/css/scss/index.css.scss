@@ -227,6 +227,16 @@ $font-small: .75rem;
   opacity: .4;
 }
 
+.center_link_block {
+  display: inline-block;
+  width: 100%;
+  max-height: 3rem;
+  padding: 1rem 0;
+  background-color: #FFF;
+  color: #00F;
+  text-align: center;
+}
+
 
 /************************************************************
                             Button

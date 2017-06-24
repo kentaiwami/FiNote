@@ -11,6 +11,7 @@ import base64
 from django.core.files.base import ContentFile
 import datetime
 from operator import attrgetter
+import threading
 
 
 class SignUpViewSet(viewsets.ViewSet):
@@ -724,6 +725,37 @@ class GetMovieByIDViewSet(viewsets.ViewSet):
             raise ValidationError('正しいパラメータ値ではありません')
 
 
+class GetMovieLinkMultiThread(threading.Thread):
+    def __init__(self, pagination_link):
+        threading.Thread.__init__(self)
+        self.pagination_link = pagination_link
+        self.result = {}
+        self.dom_tmp = {}
+
+    def run(self):
+        print("start: " + str(self.pagination_link))
+        self.result, self.dom_tmp = get_movie_link(self.pagination_link)
+        print("end: " + str(self.pagination_link))
+
+    def getResult(self):
+        return self.result
+
+
+class GetOriginalMovieTitleMultiThread(threading.Thread):
+    def __init__(self, detail_movie_url):
+        threading.Thread.__init__(self)
+        self.detail_movie_url = detail_movie_url
+        self.result = ''
+
+    def run(self):
+        print("start: " + str(self.detail_movie_url))
+        self.result = get_original_movie_title(self.detail_movie_url)
+        print("end: " + str(self.detail_movie_url))
+
+    def getResult(self):
+        return self.result
+
+
 class GetOriginalMovieTitleViewSet(viewsets.ViewSet):
     queryset = Movie.objects.all()
     serializer_class = GetOriginalMovieTitleSerializer
@@ -742,7 +774,8 @@ class GetOriginalMovieTitleViewSet(viewsets.ViewSet):
             res = []
 
             # 初期検索結果のhtmlを取得して結果を保存
-            first_movie_search_link_list, dom = get_movie_link('http://eiga.com/search/' + request.data['movie_title'] + '/movie/')
+            first_movie_search_link_list, dom = get_movie_link(
+                'http://eiga.com/search/' + request.data['movie_title'] + '/movie/')
 
             for first_movie_search_link in first_movie_search_link_list:
                 res.append({get_original_movie_title('http://eiga.com' + first_movie_search_link)})
@@ -759,20 +792,40 @@ class GetOriginalMovieTitleViewSet(viewsets.ViewSet):
 
                     pagination_list_tmp.append(pagination_a.attrib['href'])
 
-            # 順番にソート後、10が一番最初に来るので、削除して最後に追加
             if len(pagination_list_tmp) != 0:
                 pagination_list = list(set(pagination_list_tmp))
-                pagination_list.sort()
-                tmp = pagination_list[0]
-                del pagination_list[0]
-                pagination_list.append(tmp)
 
-                # ページ2〜のそれぞれの映画の原題を入手
-                for pagination in pagination_list:
-                    search_results, dom = get_movie_link('http://eiga.com' + pagination)
+                # ページネーションのマルチスレッド
+                thread_pagination_list = []
+                thread_pagination_results = []
+                for i, pagination in enumerate(pagination_list):
+                    thread_pagination = GetMovieLinkMultiThread('http://eiga.com' + pagination)
+                    thread_pagination_list.append(thread_pagination)
 
-                    for search_result in search_results:
-                        res.append({get_original_movie_title('http://eiga.com' + search_result)})
+                for thread_pagination in thread_pagination_list:
+                    thread_pagination.start()
+
+                for thread_pagination in thread_pagination_list:
+                    thread_pagination.join()
+                    thread_pagination_results.extend(thread_pagination.getResult())
+
+                # 原題抽出のマルチスレッド
+                thread_get_original_movie_title_list = []
+                get_original_movie_title_list = []
+                for i, detail_movie_link in enumerate(thread_pagination_results):
+                    thread_get_original_movie_title = GetOriginalMovieTitleMultiThread(
+                        'http://eiga.com' + detail_movie_link)
+                    thread_get_original_movie_title_list.append(thread_get_original_movie_title)
+
+                for thread_get_original_movie_title in thread_get_original_movie_title_list:
+                    thread_get_original_movie_title.start()
+
+                for thread_get_original_movie_title in thread_get_original_movie_title_list:
+                    thread_get_original_movie_title.join()
+                    get_original_movie_title_list.append(thread_get_original_movie_title.getResult())
+
+                for original_movie_title in get_original_movie_title_list:
+                    res.append({original_movie_title})
 
             return Response(list([x for x in res if x != {''}]))
         else:

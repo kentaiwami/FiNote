@@ -1950,19 +1950,34 @@ var Movieadd_search = {
    * 検索ボタンが押されたら入力したテキストでTMDB検索結果を描画する
    */
   get_search_movie_title_val: function(){
+    // TODO この関数内で映画.comから原題を取得し、tmdbから検索結果を受け取る
+
+
+
     var text = document.getElementById(ID.get_movieadd_search_ID().form).value;
     var no_match_message = document.getElementById(ID.get_movieadd_search_ID().nodata_message);
     no_match_message.innerHTML = '';
 
     if (text.length > 0) {
+      //検索フォームに入力された値で検索した結果を保存する変数の初期化
+      ja_tmdb_result = {};
+      en_tmdb_result = {};
+
       //テキストエリアのスピナー表示
       Utility.show_spinner(ID.get_movieadd_search_ID().nodata_message);
 
-      //日本語と英語のリクエスト、ローカルDBから記録した映画リストの取得を行う
+      //日本語と英語のリクエスト、ローカルDBから記録した映画リストの取得、原題の取得を行う
       var query = 'SELECT tmdb_id, dvd FROM movie';
-      var promises = [Movieadd_search.create_request_movie_search_in_tmdb(text,'ja'),Movieadd_search.create_request_movie_search_in_tmdb(text,'en'), DB_method.single_statement_execute(query,[])];
+      var post_data = {"movie_title": text};
+      var promises = [
+        Movieadd_search.create_request_movie_search_in_tmdb(text,'ja'),
+        Movieadd_search.create_request_movie_search_in_tmdb(text,'en'),
+        DB_method.single_statement_execute(query,[]),
+        Utility.FiNote_API('get_original_movie_title', post_data, 'POST', 'v1')
+      ];
 
       Promise.all(promises).then(function(results) {
+        console.log(results[3]);
         //idだけの配列を作成
         var local_tmdb_id = [];
         var local_dvd = [];
@@ -1979,10 +1994,10 @@ var Movieadd_search = {
 
         //データによって表示するコンテンツを動的に変える
         if (list_data.length === 0) {
-          no_match_message.innerHTML = '検索結果なし';          
+          no_match_message.innerHTML = '検索結果なし';
           Movieadd_search.not_show_list();
         }else{
-          no_match_message.innerHTML = '';                               
+          no_match_message.innerHTML = '';
           var list_data_poster = Movieadd_search.get_poster(list_data);
 
           //サムネイル取得後にリストを表示する
@@ -2019,7 +2034,8 @@ var Movieadd_search = {
 
             var title = Utility.get_movie_ja_title(list_data[i]);
 
-            list_doc += '<ons-list-item id="' + i + '" modifier="' + modifier + '"' + ' ' + tappable + '>' +
+            list_doc += '<ons-list>'+
+                        '<ons-list-item id="' + i + '" modifier="' + modifier + '"' + ' ' + tappable + '>' +
                         '<div class="left">' +
                         '<img id="' + i + '_img" class="list_img_large" src="' + list_data_poster[i] + '">' +
                         '</div>' +
@@ -2030,10 +2046,14 @@ var Movieadd_search = {
                         '<span class="list_sub_title_small">' + movie_releasedate + '</span>' +
                         '</div>' +
                         exist_message +
-                        '</ons-list-item>';
+                        '</ons-list-item>'+'' +
+                        '</ons-list>';
           }
 
           movieadd_SearchList.innerHTML = list_doc;
+
+          movieadd_SearchList.innerHTML +=  '<a href="javascript:void(0);" onclick="Movieadd_search.hoge()" class="center_link_block">'+
+                                            '原題でさらに検索</a>';
 
           //overviewが長すぎて範囲内に収まらない場合に文字列をカットする処理
           for(i = 0; i < list_data.length; i++) {
@@ -2050,19 +2070,22 @@ var Movieadd_search = {
             }
 
             if (flag) {
-              document.getElementById('overview_'+i).innerHTML += '…';
+              document.getElementById('overview_' + i).innerHTML += '…';
             }
           }
         }
-
-      }, function(reason) {
-        console.log(reason);
+      }).catch(function(err) {
+        console.log(err);
       });
 
     } else {
       no_match_message.innerHTML = '';
     }
   },
+
+  hoge: function () {
+    console.log('************');
+	},
 
   
   /**
