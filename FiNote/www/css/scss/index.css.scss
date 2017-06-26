@@ -242,6 +242,11 @@ $font-small: .75rem;
   text-align: center;
 }
 
+.center_link {
+  @extend .center_link_block;
+  background-color: transparent;
+}
+
 
 /************************************************************
                             Button

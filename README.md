@@ -48,7 +48,6 @@
 * Twitter
 * [The Movie Database](https://www.themoviedb.org)
 * [オノマトペ辞典](http://sura-sura.com)
-* [映画.com](http://eiga.com)
 
 ## 参考サイト
 * [Onsen UI](https://onsen.io)

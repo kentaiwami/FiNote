@@ -131,5 +131,10 @@ class GetMovieByIDSerializer(serializers.Serializer):
     tmdb_id_list = serializers.CharField(allow_null=False, required=True)
 
 
-class GetOriginalMovieTitleSerializer(serializers.Serializer):
+class GetSearchMovieTitleResultsSerializer(serializers.Serializer):
     movie_title = serializers.CharField(allow_null=False, required=True)
+    page_number = serializers.IntegerField(allow_null=False, required=True)
+
+
+class GetOriginalTitleSerializer(serializers.Serializer):
+    id = serializers.IntegerField(allow_null=False, required=True)

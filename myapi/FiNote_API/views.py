@@ -1,4 +1,6 @@
 import os
+import re
+import ssl
 from django.db.models import Count
 from django.http import JsonResponse
 from rest_framework import viewsets
@@ -11,7 +13,15 @@ import base64
 from django.core.files.base import ContentFile
 import datetime
 from operator import attrgetter
-import threading
+from rest_framework.response import Response
+import urllib.request
+import urllib.parse
+from bs4 import BeautifulSoup
+
+
+# [0]: GetSearchMovieTitleResultsViewSet
+# [1]: GetOriginalTitleViewSet
+test_flag = [False, False]
 
 
 class SignUpViewSet(viewsets.ViewSet):
@@ -725,109 +735,100 @@ class GetMovieByIDViewSet(viewsets.ViewSet):
             raise ValidationError('正しいパラメータ値ではありません')
 
 
-class GetMovieLinkMultiThread(threading.Thread):
-    def __init__(self, pagination_link):
-        threading.Thread.__init__(self)
-        self.pagination_link = pagination_link
-        self.result = {}
-        self.dom_tmp = {}
-
-    def run(self):
-        print("start: " + str(self.pagination_link))
-        self.result, self.dom_tmp = get_movie_link(self.pagination_link)
-        print("end: " + str(self.pagination_link))
-
-    def getResult(self):
-        return self.result
-
-
-class GetOriginalMovieTitleMultiThread(threading.Thread):
-    def __init__(self, detail_movie_url):
-        threading.Thread.__init__(self)
-        self.detail_movie_url = detail_movie_url
-        self.result = ''
-
-    def run(self):
-        print("start: " + str(self.detail_movie_url))
-        self.result = get_original_movie_title(self.detail_movie_url)
-        print("end: " + str(self.detail_movie_url))
-
-    def getResult(self):
-        return self.result
-
-
-class GetOriginalMovieTitleViewSet(viewsets.ViewSet):
+class GetSearchMovieTitleResultsViewSet(viewsets.ViewSet):
     queryset = Movie.objects.all()
-    serializer_class = GetOriginalMovieTitleSerializer
+    serializer_class = GetSearchMovieTitleResultsSerializer
 
     def create(self, request):
         """
-        When GetEigaComSearchResults api access, run this method.
-        This method gets search results in eiga.com website.
-        :param request: Search movie title.
-        :return: Movie's original title.
+        When GetSearchMovieTitleResults api access, run this method.
+        This method gets search results in yahoo movie website.
+        :param request: Search movie title and page number.
+        :return: Movie's title, movie's id and total results count.
         """
 
-        serializer = GetOriginalMovieTitleSerializer(data=request.data)
+        serializer = GetSearchMovieTitleResultsSerializer(data=request.data)
 
         if serializer.is_valid() and request.method == 'POST':
             res = []
 
-            # 初期検索結果のhtmlを取得して結果を保存
-            first_movie_search_link_list, dom = get_movie_link(
-                'http://eiga.com/search/' + request.data['movie_title'] + '/movie/')
+            context = ssl._create_unverified_context()
+            url, param = get_url_param(test_flag[0], 'search', request.data)
+            html = urllib.request.urlopen(url + '?' + urllib.parse.urlencode(param), context=context)
+            soup = BeautifulSoup(html, "html.parser")
 
-            for first_movie_search_link in first_movie_search_link_list:
-                res.append({get_original_movie_title('http://eiga.com' + first_movie_search_link)})
+            # 検索結果の合計件数を抽出
+            srchform_div = soup.find(id='srchform')
+            srchform_div_label = srchform_div.find(class_='label')
 
-            # ページネーションのリストを生成
-            pagination_list_tmp = []
-            pagination_dom_list = dom.cssselect('.pagination')
-            for pagination_dom in pagination_dom_list:
-                for pagination_a in pagination_dom.findall('.//a'):
-                    try:
-                        int(pagination_a.text)
-                    except ValueError:
-                        pass
+            # 検索結果が0の場合はこの時点で結果を返す
+            if srchform_div_label is None:
+                return Response({'total': 0, 'results': []})
 
-                    pagination_list_tmp.append(pagination_a.attrib['href'])
+            small_list = srchform_div_label.find_all('small')
+            del small_list[0]
 
-            if len(pagination_list_tmp) != 0:
-                pagination_list = list(set(pagination_list_tmp))
+            match = re.findall(r'[0-9]+', small_list[0].string)
+            total_resutls_count = int(match[0])
 
-                # ページネーションのマルチスレッド
-                thread_pagination_list = []
-                thread_pagination_results = []
-                for i, pagination in enumerate(pagination_list):
-                    thread_pagination = GetMovieLinkMultiThread('http://eiga.com' + pagination)
-                    thread_pagination_list.append(thread_pagination)
+            # 映画のタイトルとIDを抽出
+            lst = soup.find(id='lst')
+            li_tag_list = lst.find_all('li', class_='col')
 
-                for thread_pagination in thread_pagination_list:
-                    thread_pagination.start()
+            title_id_list = []
+            for li_tag in li_tag_list:
+                title = li_tag.find('h3', class_='text-xsmall text-overflow').attrs['title']
+                id = li_tag.attrs['data-cinema-id']
+                title_id_list.append({'title': title, 'id': id})
 
-                for thread_pagination in thread_pagination_list:
-                    thread_pagination.join()
-                    thread_pagination_results.extend(thread_pagination.getResult())
+            res.append({'total': total_resutls_count})
+            res.append({'results': title_id_list})
 
-                # 原題抽出のマルチスレッド
-                thread_get_original_movie_title_list = []
-                get_original_movie_title_list = []
-                for i, detail_movie_link in enumerate(thread_pagination_results):
-                    thread_get_original_movie_title = GetOriginalMovieTitleMultiThread(
-                        'http://eiga.com' + detail_movie_link)
-                    thread_get_original_movie_title_list.append(thread_get_original_movie_title)
+            return Response({'total': total_resutls_count, 'results': title_id_list})
 
-                for thread_get_original_movie_title in thread_get_original_movie_title_list:
-                    thread_get_original_movie_title.start()
+        else:
+            raise ValidationError('正しいパラメータ値ではありません')
 
-                for thread_get_original_movie_title in thread_get_original_movie_title_list:
-                    thread_get_original_movie_title.join()
-                    get_original_movie_title_list.append(thread_get_original_movie_title.getResult())
 
-                for original_movie_title in get_original_movie_title_list:
-                    res.append({original_movie_title})
+class GetOriginalTitleViewSet(viewsets.ViewSet):
+    queryset = Movie.objects.all()
+    serializer_class = GetOriginalTitleSerializer
 
-            return Response(list([x for x in res if x != {''}]))
+    def create(self, request):
+        """
+        When GetOriginalTitle api access, run this method.
+        This method gets original movie title in yahoo movie website.
+        :param request: Search movie title and id number.
+        :return: Movie's original title.
+        """
+
+        serializer = GetOriginalTitleSerializer(data=request.data)
+
+        if serializer.is_valid() and request.method == 'POST':
+            original_title = ''
+
+            context = ssl._create_unverified_context()
+            url, param = get_url_param(test_flag[1], 'origin', request.data)
+            html = urllib.request.urlopen(url + '?' + urllib.parse.urlencode(param), context=context)
+            soup = BeautifulSoup(html, "html.parser")
+
+            mvinf = soup.find(id='mvinf')
+            tr_tag_list = mvinf.find_all('tr')
+
+            # 製作国が日本以外なら保存した原題を返す
+            for tr_tag in tr_tag_list:
+                th_tag = tr_tag.find('th')
+
+                if th_tag.string == '原題':
+                    original_title = tr_tag.find('td').string
+                    continue
+
+                if th_tag.string == '製作国':
+                    if tr_tag.find('li').string != '日本':
+                        return Response(original_title)
+                    break
+
+            return Response('')
         else:
             raise ValidationError('正しいパラメータ値ではありません')
 

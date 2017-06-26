@@ -918,7 +918,7 @@
   opacity: .4;
 }
 
-.center_link_block {
+.center_link_block, .center_link {
   display: inline-block;
   width: 100%;
   max-height: 3rem;
@@ -927,8 +927,12 @@
   color: #00F;
   text-align: center;
 }
-.center_link_block:active {
+.center_link_block:active, .center_link:active {
   background-color: #EEE;
+}
+
+.center_link {
+  background-color: transparent;
 }
 
 /************************************************************

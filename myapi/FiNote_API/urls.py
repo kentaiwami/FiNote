@@ -23,4 +23,5 @@ router.register(r'v1/get_movie_by_age', GetMovieByAgeViewSet, 'get_movie_by_age'
 router.register(r'v1/get_movie_reaction', GetMovieReactionViewSet, 'get_movie_reaction')
 router.register(r'v1/get_movie_by_onomatopoeia', GetMovieByOnomatopoeiaViewSet, 'get_movie_by_onomatopoeia')
 router.register(r'v1/get_movie_by_id', GetMovieByIDViewSet, 'get_movie_by_id')
-router.register(r'v1/get_original_movie_title', GetOriginalMovieTitleViewSet, 'get_original_movie_title')
+router.register(r'v1/get_search_movie_title_results', GetSearchMovieTitleResultsViewSet, 'get_search_movie_title_results')
+router.register(r'v1/get_original_title', GetOriginalTitleViewSet, 'get_original_title')

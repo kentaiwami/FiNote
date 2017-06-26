@@ -42,6 +42,7 @@
         <list>
           <option value="E122" />
           <option value="E501" />
+          <option value="E127" />
         </list>
       </option>
     </inspection_tool>
@@ -58,6 +59,8 @@
       <option name="ignoredNames">
         <list>
           <option value="type" />
+          <option value="id" />
+          <option value="format" />
         </list>
       </option>
     </inspection_tool>
