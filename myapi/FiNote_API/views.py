@@ -21,7 +21,7 @@ from bs4 import BeautifulSoup
 
 # [0]: GetSearchMovieTitleResultsViewSet
 # [1]: GetOriginalTitleViewSet
-test_flag = [False, False]
+test_flag = [True, True]
 
 
 class SignUpViewSet(viewsets.ViewSet):
