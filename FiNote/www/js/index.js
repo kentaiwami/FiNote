@@ -26,4 +26,4 @@ app.initialize();
 User.show_event(ID.get_user_ID().page_id, User.show_contents);
 
 //ソーシャル画面を表示するたびに、表示実行を行う関数を登録
-Utility.addEventListener(ID.get_social_ID().page_id, 'show', Social.draw_get_recently_movie_list);
+Utility.document_addEventListener(ID.get_social_ID().page_id, 'show', Social.draw_get_recently_movie_list);
