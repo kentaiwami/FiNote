@@ -57,7 +57,7 @@ var Utility = {
 
 
 	/**
-   * 指定したIDを持つ要素に指定したイベントとコールバックを追加する
+   * 指定したIDを持つ要素に指定したイベントが発火した際のコールバックを追加する
 	 * @param {string} target_id  - イベントを追加したい要素のID
 	 * @param {string} event_name - 指定したいイベント名
 	 * @param {function} callback - イベント発火時に実行したい関数
