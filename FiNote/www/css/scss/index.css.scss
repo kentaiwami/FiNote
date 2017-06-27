@@ -173,9 +173,9 @@ $font-small: .75rem;
 
 .exist_message:after {
   position: relative;
-  bottom: -0.16em;
-  margin-left: 0.1em;
-  margin-right: 0.3em;
+  bottom: -.16em;
+  margin-left: .1em;
+  margin-right: .3em;
   content: '追加済み';
 }
 
@@ -265,7 +265,7 @@ $font-small: .75rem;
   position: absolute;
   top: 0;
   left: 80%;
-  margin-top: -0.2%;
+  margin-top: -.2%;
   visibility: hidden;
 }
 
@@ -389,7 +389,7 @@ $font-small: .75rem;
   display: block;
   margin: 0 auto;
   width: 40vw;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .5);
 }
 
 .card {
@@ -409,7 +409,7 @@ $font-small: .75rem;
   width: 20vw;
   height: 20vw;
   border-radius: 4px;
-  border: inset 1px rgba(0, 0, 0, 0.3);
+  border: inset 1px rgba(0, 0, 0, .3);
   object-fit: cover;
   background: url(../../img/loading.gif) no-repeat center;
 }
@@ -508,13 +508,13 @@ $font-small: .75rem;
 .info-num {
   font-size: 16px;
   font-weight: 500;
-  opacity: 0.8;
+  opacity: .8;
 }
 
 .info-unit {
   margin-top: 6px;
   font-size: 14px;
-  opacity: 0.4;
+  opacity: .4;
 }
 
 .ct-label {

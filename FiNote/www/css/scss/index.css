@@ -864,9 +864,9 @@
 
 .exist_message:after {
   position: relative;
-  bottom: -0.16em;
-  margin-left: 0.1em;
-  margin-right: 0.3em;
+  bottom: -.16em;
+  margin-left: .1em;
+  margin-right: .3em;
   content: '追加済み';
 }
 
@@ -951,7 +951,7 @@
   position: absolute;
   top: 0;
   left: 80%;
-  margin-top: -0.2%;
+  margin-top: -.2%;
   visibility: hidden;
 }
 
@@ -1176,13 +1176,13 @@
 .info-num {
   font-size: 16px;
   font-weight: 500;
-  opacity: 0.8;
+  opacity: .8;
 }
 
 .info-unit {
   margin-top: 6px;
   font-size: 14px;
-  opacity: 0.4;
+  opacity: .4;
 }
 
 .ct-label {
