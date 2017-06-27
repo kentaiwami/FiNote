@@ -21,7 +21,7 @@ var ID = {
 
 
   get_tab_ID: function() {
-      return {tmp_id: 'tab.html', page_id: 'tab'};
+      return {tmp_id: 'tab.html', page_id: 'tab', tab: 'tabbar'};
   },
 
 
