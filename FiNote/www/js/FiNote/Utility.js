@@ -56,6 +56,21 @@ var Utility = {
   },
 
 
+	/**
+   * 指定したIDを持つ要素に指定したイベントとコールバックを追加する
+	 * @param {string} target_id  - イベントを追加したい要素のID
+	 * @param {string} event_name - 指定したいイベント名
+	 * @param {function} callback - hoge
+	 */
+  addEventListener: function (target_id, event_name, callback) {
+    document.addEventListener(event_name, function(event) {
+      if (event.target.id === target_id) {
+        callback();
+      }
+    });
+	},
+
+
   /**
    * データベースのオブジェクトを返す
    * @return {[Object]} [description]

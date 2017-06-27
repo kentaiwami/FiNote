@@ -72,18 +72,6 @@ var Social = {
     });
 	},
 
-	/**
-   * socialタブがタップされて、表示される度にAPIを叩いて結果を描画する
-	 * @param  {string} page_id   - page_id(social)
-	 */
-	run_draw_get_recently_movie_list: function (page_id) {
-    document.addEventListener('show', function(event) {
-      if (event.target.id === page_id) {
-        Social.draw_get_recently_movie_list();
-      }
-    });
-  },
-
 
 	/**
    * 詳細情報をモーダルで表示する
