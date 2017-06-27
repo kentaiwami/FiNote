@@ -27,20 +27,6 @@ var Global_variable = {
       return '<ons-back-button class="brown_color"></ons-back-button>';
     }
   },
-
-
-  /**
-   * ステータスのツールバー左に表示するボタンを動的に変える
-   * @param  {number} flag - 0なら映画追加画面、1なら映画詳細画面からのステータス画面]
-   * @return {string}      - ボタンのhtml
-   */
-  get_toolbar_status: function(flag) {
-    if (flag === 0) {
-      return '<ons-toolbar-button onClick="Utility.pop_page(Movieadd_status.close_movieadd_status())"><ons-icon id="status_toolbar_left_icon" class="brown_color" icon="ion-close-round"></ons-icon></ons-toolbar-button>';
-    }else {
-      return '<ons-back-button onClick="Movies_detail.tap_status_back_button()" class="brown_color"></ons-back-button>';
-    }
-  }
 };
 
 
@@ -2826,13 +2812,26 @@ var Feeling = {
 var Movieadd_status = {
 
   /**
+   * ステータスのツールバー左に表示するボタンを動的に変える
+   * @param  {number} flag - 0なら映画追加画面、1なら映画詳細画面からのステータス画面]
+   * @return {string}      - ボタンのhtml
+   */
+  get_toolbar_status: function(flag) {
+    if (flag === 0) {
+      return '<ons-toolbar-button onClick="Utility.pop_page(Movieadd_status.close_movieadd_status())"><ons-icon id="status_toolbar_left_icon" class="brown_color" icon="ion-close-round"></ons-icon></ons-toolbar-button>';
+    }else {
+      return '<ons-back-button onClick="Movies_detail.tap_status_back_button()" class="brown_color"></ons-back-button>';
+    }
+  },
+
+  /**
    * 保存しているスイッチボタンの状態をもとにチェックをつける
    */
   show_contents: function(){
     //flagに応じてツールバーの戻る・閉じるボタンを動的に変える
     var toolbar_left = document.getElementById(ID.get_movieadd_status_ID().toolbar);
     toolbar_left.innerHTML = '';
-    toolbar_left.innerHTML = Global_variable.get_toolbar_status(Global_variable.status_flag);
+    toolbar_left.innerHTML = Movieadd_status.get_toolbar_status(Global_variable.status_flag);
 
     var small_message = document.getElementById(ID.get_movieadd_status_ID().small_message);
     if (Global_variable.status_flag === 0) {
