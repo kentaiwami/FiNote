@@ -30,7 +30,7 @@ User.show_event(ID.get_user_ID().page_id, User.show_contents);
 Utility.document_addEventListener(ID.get_social_ID().page_id, 'show', Social.draw_get_recently_movie_list);
 
 
-//アクティブになっているタブをサイド選択した場合に、スクロールを行うイベントを登録
+//アクティブになっているタブを再度選択した場合に、スクロールを行うイベントを登録
 Utility.document_addEventListener(ID.get_tab_ID().tab, 'reactive', function () {
   console.log(event.tabItem._page);
 
