@@ -8,7 +8,6 @@ from rest_framework.exceptions import ValidationError
 from rest_framework_jwt.serializers import User
 from FiNote_API.functions import *
 from .serializer import *
-from django.core.exceptions import ObjectDoesNotExist
 import base64
 from django.core.files.base import ContentFile
 import datetime
@@ -17,6 +16,7 @@ from rest_framework.response import Response
 import urllib.request
 import urllib.parse
 from bs4 import BeautifulSoup
+from FiNote_API.thread import *
 
 
 # [0]: GetSearchMovieTitleResultsViewSet
@@ -641,20 +641,17 @@ class GetMovieReactionViewSet(viewsets.ViewSet):
             tmdb_id_list = conversion_str_to_list(request.data['tmdb_id_list'], 'int')
             res = []
 
+            thread_list = []
             for tmdb_id in tmdb_id_list:
-                onomatopoeia_counts = []
-                try:
-                    movie = Movie.objects.get(tmdb_id=tmdb_id)
-                    counts = OnomatopoeiaCount.objects.filter(movie=movie).order_by('-count')
+                thread = GetMovieReactionThread(tmdb_id)
+                thread_list.append(thread)
+                thread.start()
 
-                    for count in counts:
-                        onomatopoeia_counts.append({"name": count.onomatopoeia.name,
-                                                    "count": count.count})
+            for thread in thread_list:
+                thread.join()
 
-                    res.append({str(tmdb_id): onomatopoeia_counts})
-
-                except ObjectDoesNotExist:
-                    pass
+                if thread.getResult() is not None:
+                    res.append(thread.getResult())
 
             return Response(res)
 
