@@ -201,5 +201,12 @@ var ID = {
       profile_img: 'profile_img',
       signup_flag: 'signup_flag'
     };
-  }
+  },
+
+  get_simple_ID: function () {
+    return {
+      tmp_id: 'simple.html', page_id: 'simple',
+      toolbar_left: 'simple_toolbar_left', toolbar_center: 'simple_toolbar_center', content: 'simple_content'
+    };
+	}
 };

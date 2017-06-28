@@ -24,11 +24,11 @@ var User = {
           }else {
             document.getElementById(ID.get_user_ID().graph_area).innerHTML =
             '<ons-list>'+
-            '<ons-list-item modifier="longdivider" onclick="">'+
+            '<ons-list-item modifier="longdivider" onclick="User.show_detail_list(true)">'+
             '<div class="left"><div class="ct-chart ct-perfect-fourth chart_area" id="chart1"></div></div>'+
             '<div class="right"><ons-list class="taped_area" id="onomatopoeia_top3"></ons-list></div>'+
             '</ons-list-item>'+
-            '<ons-list-item modifier="longdivider" onclick="">'+
+            '<ons-list-item modifier="longdivider" onclick="User.show_detail_list(false)">'+
             '<div class="left"><div class="ct-chart ct-perfect-fourth chart_area" id="chart2"></div></div>'+
             '<div class="right"><ons-list id="genre_top3"></div></div>'+
             '</ons-list-item>'+
@@ -252,5 +252,45 @@ var User = {
         reject(err);
       });
 		});
+	},
+
+
+	/**
+   * 詳細リストを表示する関数
+	 * @param {boolean} flag - trueならオノマトペの処理、falseならジャンルの処理
+	 */
+	show_detail_list: function (flag) {
+    var callback = function () {
+      var toolbar_center = document.getElementById(ID.get_simple_ID().toolbar_center);
+      var content = document.getElementById(ID.get_simple_ID().content);
+      var obj_list = [];
+      var header = '';
+      var content_list_item = '';
+
+      if(flag) {
+        toolbar_center.innerHTML = '追加した気分の一覧';
+        obj_list = User.info.onomatopoeia_count;
+        header = '名前と使用回数';
+      }else {
+				toolbar_center.innerHTML = 'ジャンルの一覧';
+				obj_list = User.info.genre_count;
+				header = '名前と関連映画数';
+			}
+
+      obj_list.forEach(function (obj) {
+        content_list_item +=  '<ons-list-item modifier="longdivider">' +
+                              '<div class="left">'+obj['name']+ ' (' + obj['count'] + '回)</div>'+
+                              '</ons-list-item>';
+			});
+
+      content.innerHTML = '<ons-list>'+
+                          '<ons-list-header>' + header + '</ons-list-header>'+
+                          content_list_item+
+                          '</ons-list>';
+
+		};
+
+    Utility.check_page_init(ID.get_simple_ID().page_id, callback);
+    Utility.push_page(ID.get_simple_ID().tmp_id, 'lift', 0, '');
 	}
 };

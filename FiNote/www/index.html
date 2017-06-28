@@ -703,6 +703,28 @@
 </ons-template>
 <!-- ●●●●●●●●● ここまでchange_sex.html ●●●●●●●●● -->
 
+
+
+
+
+<!-- ●●●●●●●●● ここからsimple.html ●●●●●●●●● -->
+<ons-template id="simple.html">
+<ons-page id="simple">
+	<!--ツールバー-->
+    <ons-toolbar>
+        <div class="left brown_color" onClick="Utility.pop_page()">
+            <ons-toolbar-button><ons-icon id="simple_toolbar_left" class="brown_color" icon="ion-close-round"></ons-icon></ons-toolbar-button>
+        </div>
+        <div class="center brown_color" id="simple_toolbar_center"></div>
+    </ons-toolbar>
+
+	<!-- コンテンツ -->
+	<div id="simple_content"></div>
+</ons-page>
+</ons-template>
+<!-- ●●●●●●●●● ここまでsimple.html ●●●●●●●●● -->
+
+
 <script>
 	//ブラウザでの確認のため強制的に遷移させるテストコード
     // Utility.check_page_init('index',function(){Utility.push_page('movieadd_search.html', 'push', 0, '');});
