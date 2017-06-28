@@ -375,6 +375,11 @@ var Social = {
       }
       local_onomatopoeia_html = local_onomatopoeia_html.substr(0, local_onomatopoeia_html.length-2);
 
+      //表示されているオノマトペの個数よりも本来の個数が多ければ三点リーダを表示
+      if(draw_limit < movie_onomatopoeia_array.length) {
+      	local_onomatopoeia_html += '…';
+			}
+
       //サーバ上に登録されているオノマトペを生成
       var server_onomatopoeia_html = '';
       for(j = 0; j < api_results.length; j++ ) {
@@ -395,7 +400,12 @@ var Social = {
       }
       server_onomatopoeia_html = server_onomatopoeia_html.substr(0, server_onomatopoeia_html.length-2);
 
-      html += '<ons-list-item modifier="longdivider">'+
+      //表示されているオノマトペの個数よりも本来の個数が多ければ三点リーダを表示
+      // if(draw_limit < api_results.length) {
+      // 	server_onomatopoeia_html += '…';
+			// }
+
+      html += '<ons-list-item modifier="longdivider chevron" tappable>'+
               '<div class="left">'+
               '<img class="list_img_large" src="' + movie.poster + '">'+
               '</div>'+
