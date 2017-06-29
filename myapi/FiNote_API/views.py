@@ -28,7 +28,8 @@ class SignUpViewSet(viewsets.ViewSet):
     queryset = AuthUser.objects.all()
     serializer_class = SignUpSerializer
 
-    def create(self, request):
+    @staticmethod
+    def create(request):
         """
         When SignUp api access, run this method.
         This method checks sign in form data, create new user and response token.
@@ -82,7 +83,8 @@ class SignInWithTokenViewSet(viewsets.ViewSet):
     queryset = AuthUser.objects.all()
     serializer_class = SignInWithTokenSerializer
 
-    def create(self, request):
+    @staticmethod
+    def create(request):
         """
         When SignInWithToken api access, run this method.
         This method checks username and token. If success signup, response username.
@@ -115,7 +117,8 @@ class SignInNoTokenViewSet(viewsets.ViewSet):
     queryset = AuthUser.objects.all()
     serializer_class = SignInNoTokenSerializer
 
-    def create(self, request):
+    @staticmethod
+    def create(request):
         """
         When SignInNoToken api access, run this method.
         This method checks username and password. If success signup, response user's data.
@@ -175,7 +178,8 @@ class UpdatePasswordViewSet(viewsets.ViewSet):
     queryset = AuthUser.objects.all()
     serializer_class = UpdatePasswordSerializer
 
-    def create(self, request):
+    @staticmethod
+    def create(request):
         """
         When ChangePassword api access, run this method.
         This method changes password and return token.
@@ -214,7 +218,8 @@ class UpdateEmailViewSet(viewsets.ViewSet):
     queryset = AuthUser.objects.all()
     serializer_class = UpdateEmailSerializer
 
-    def create(self, request):
+    @staticmethod
+    def create(request):
         """
         When ChangeEmail api access, run this method.
         This method changes email and return new_email.
@@ -249,7 +254,8 @@ class UpdateSexViewSet(viewsets.ViewSet):
     queryset = AuthUser.objects.all()
     serializer_class = UpdateSexSerializer
 
-    def create(self, request):
+    @staticmethod
+    def create(request):
         """
         When ChangeSex api access, run this method.
         This method changes sex and return new_sex.
@@ -286,7 +292,8 @@ class UpdateProfileImgViewSet(viewsets.ViewSet):
     queryset = AuthUser.objects.all()
     serializer_class = UpdateProfileImgSerializer
 
-    def create(self, request):
+    @staticmethod
+    def create(request):
         """
         When SetProfileImg api access, run this method.
         This method sets img and return token.
@@ -332,7 +339,8 @@ class AddMovieViewSet(viewsets.ViewSet):
     queryset = Movie.objects.all()
     serializer_class = AddMovieSerializer
 
-    def create(self, request):
+    @staticmethod
+    def create(request):
         """
         When MovieAdd api access, run this method.
         This method adds movie, onomatopoeia and genre. If success all process, response genre id and name.
@@ -394,7 +402,8 @@ class UpdateOnomatopoeiaViewSet(viewsets.ViewSet):
     queryset = Onomatopoeia.objects.all()
     serializer_class = UpdateOnomatopoeiaSerializer
 
-    def create(self, request):
+    @staticmethod
+    def create(request):
         """
         When OnomatopoeiaUpdate api access, run this method.
         This method updates movie and back up table onomatopoeia column or add onomatopoeia.
@@ -431,7 +440,8 @@ class DeleteBackupViewSet(viewsets.ViewSet):
     queryset = BackUp.objects.all()
     serializer_class = DeleteBackupSerializer
 
-    def create(self, request):
+    @staticmethod
+    def create(request):
         """
         When DeleteBackup api access, run this method.
         This method deletes backup data, remove movie table's user column.
@@ -466,7 +476,8 @@ class UpdateStatusViewSet(viewsets.ViewSet):
     queryset = AuthUser.objects.all()
     serializer_class = UpdateStatusSerializer
 
-    def create(self, request):
+    @staticmethod
+    def create(request):
         """
         When StatusUpdate api access, run this method.
         This method updates dvd and favorite status.
@@ -593,7 +604,8 @@ class GetMovieByAgeViewSet(viewsets.ModelViewSet):
 
         return Response(res)
 
-    def update_movie_count_class(self, count_class, birth_year):
+    @staticmethod
+    def update_movie_count_class(count_class, birth_year):
         """
         This method updates age count in count_class.
         :param count_class: Custom management class.
@@ -626,7 +638,8 @@ class GetMovieReactionViewSet(viewsets.ViewSet):
     queryset = Movie.objects.all()
     serializer_class = GetMovieReactionSerializer
 
-    def create(self, request):
+    @staticmethod
+    def create(request):
 
         """
         When MovieReaction api access, run this method.
@@ -663,7 +676,8 @@ class GetMovieByOnomatopoeiaViewSet(viewsets.ViewSet):
     queryset = Movie.objects.all()
     serializer_class = GetMovieByOnomatopoeiaSerializer
 
-    def create(self, request):
+    @staticmethod
+    def create(request):
         """
         When GetMovieByOnomatopoeia api access, run this method.
         This method gets movies that include target onomatopoeia.
@@ -700,7 +714,8 @@ class GetMovieByIDViewSet(viewsets.ViewSet):
     queryset = Movie.objects.all()
     serializer_class = GetMovieByIDSerializer
 
-    def create(self, request):
+    @staticmethod
+    def create(request):
 
         """
         When GetMovieByID api access, run this method.
@@ -736,7 +751,8 @@ class GetSearchMovieTitleResultsViewSet(viewsets.ViewSet):
     queryset = Movie.objects.all()
     serializer_class = GetSearchMovieTitleResultsSerializer
 
-    def create(self, request):
+    @staticmethod
+    def create(request):
         """
         When GetSearchMovieTitleResults api access, run this method.
         This method gets search results in yahoo movie website.
@@ -791,7 +807,8 @@ class GetOriginalTitleViewSet(viewsets.ViewSet):
     queryset = Movie.objects.all()
     serializer_class = GetOriginalTitleSerializer
 
-    def create(self, request):
+    @staticmethod
+    def create(request):
         """
         When GetOriginalTitle api access, run this method.
         This method gets original movie title in yahoo movie website.
