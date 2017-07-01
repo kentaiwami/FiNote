@@ -7,7 +7,7 @@ class GetMovieReactionThread(threading.Thread):
     def __init__(self, tmdb_id):
         super(GetMovieReactionThread, self).__init__()
         self.tmdb_id = tmdb_id
-        self.result = {}
+        self.result = {'init': 0}
 
     def run(self):
         print('start: ', self.tmdb_id)

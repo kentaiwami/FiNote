@@ -660,9 +660,11 @@ class GetMovieReactionViewSet(viewsets.ViewSet):
                 thread_list.append(thread)
                 thread.start()
 
+            # 全てのスレッドが完了するまで待機(ブロック)
             for thread in thread_list:
                 thread.join()
 
+            for thread in thread_list:
                 if thread.getResult() is not None:
                     res.append(thread.getResult())
 

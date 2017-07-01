@@ -10,6 +10,13 @@ var Social = {
 	data: {local_onomatopoeia: {}, reaction_api_results: {}, local_movies: {}},
 
 	/**
+	 * 気分の比較で一度にリクエストする映画の数を制御する際に使用
+	 * @param {Number} first_limit 	- 最初にリクエストする映画の数
+	 * @param {Number} after       	- 最初以降にリクエストする映画の数
+	 */
+	control: {first_limit: 5, after_limit: 5},
+
+	/**
    * 2カラムで映画のポスターを表示する関数
 	 * @param {string} result - APIレスポンスのjson文字列
 	 * @param {number} count - ユーザ数のカウント
@@ -297,19 +304,17 @@ var Social = {
 
 	  Utility.show_spinner(ID.get_social_ID().page_id);
 
-	  var local_movie_results = {};
-
 	  var query = 'SELECT title, poster, overview, tmdb_id, onomatopoeia_id from movie order by id DESC';
 	  DB_method.single_statement_execute(query, []).then(function(result) {
-	    local_movie_results = result;
+	    Social.data.local_movies = result;
 
-	    if(local_movie_results.rows.length === 0) {
+	    if(Social.data.local_movies.rows.length === 0) {
         //  メッセージ表示
         return -1;
       }else {
 	      //POSTするtmdb_idの配列文字列を生成
         var list_data = '[';
-        for(var i = 0; i < result.rows.length; i++ ) {
+				for(var i = 0; i < Social.control.first_limit; i++ ) {
           list_data += result.rows.item(i).tmdb_id + ',';
         }
         list_data = list_data.substr(0, list_data.length-1);
@@ -325,27 +330,71 @@ var Social = {
       }
     })
     .then(function(promises) {
+    	Utility.stop_spinner();
+
       if(promises === -1 ) {
         var social_movie_list = document.getElementById(ID.get_social_ID().movie_list);
         social_movie_list.innerHTML = '<p class="all_center_message">映画を追加すると比較結果が表示されます</p>';
       }else {
         var api_results = JSON.parse(promises[1]);
-        Social.draw_get_movie_reactions(promises[0], api_results, local_movie_results);
 
-        //詳細画面で表示するために情報を保存
-        Social.data.local_onomatopoeia = promises[0];
-        Social.data.reaction_api_results = api_results;
-        Social.data.local_movies = local_movie_results;
-      }
+				//詳細画面で表示するために情報を保存
+				Social.data.local_onomatopoeia = promises[0];
+				Social.data.reaction_api_results = api_results;
 
-      Utility.stop_spinner();
-    })
-    .catch(function(err) {
-      Utility.stop_spinner();
-      console.log(err);
-      Utility.show_error_alert('エラー発生', err, 'OK');
-    });
-  },
+				//描画
+				Social.draw_get_movie_reactions(promises[0], api_results, Social.data.local_movies);
+
+
+				var post_remain_data = Social.create_post_remain_data();
+
+			}
+		})
+		.catch(function (err) {
+			Utility.stop_spinner();
+			console.log(err);
+			Utility.show_error_alert('エラー発生', err, 'OK');
+		});
+	},
+
+
+	/**
+	 * 画面表示時にリクエストしたデータ以外のポスト用データを生成する関数
+	 * @returns {Array} - {"tmdb_id_list": "[x,x,x,]"}を格納した1次元配列
+	 */
+	create_post_remain_data: function () {
+		var post_data_list = [];
+
+		var now_index = Social.control.first_limit;
+		var last_flag = false;
+
+		while(1) {
+			var end_index = now_index + Social.control.after_limit;
+
+			if(end_index >= Social.data.local_movies.rows.length) {
+				end_index = Social.data.local_movies.rows.length;
+				last_flag = true;
+			}
+
+			var list_data = '[';
+			for(var i = now_index; i < end_index; i++ ) {
+				list_data += Social.data.local_movies.rows.item(i).tmdb_id + ',';
+			}
+			list_data = list_data.substr(0, list_data.length-1);
+			list_data += ']';
+
+			var post_data = {"tmdb_id_list": list_data};
+			post_data_list.push(post_data);
+
+			if(last_flag) {
+				break;
+			}
+
+			now_index += Social.control.after_limit;
+		}
+
+		return post_data_list;
+	},
 
 
 	/**
