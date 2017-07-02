@@ -313,9 +313,15 @@ var Social = {
         //  メッセージ表示
         return -1;
       }else {
+	    	//登録している映画がリミット値より少ない場合にforループ回数の調整
+	    	var for_count = Social.control.first_limit;
+	    	if(Social.control.first_limit > result.rows.length) {
+	    		for_count = result.rows.length;
+				}
+
 	      //POSTするtmdb_idの配列文字列を生成
         var list_data = '[';
-				for(var i = 0; i < Social.control.first_limit; i++ ) {
+				for(var i = 0; i < for_count; i++ ) {
           list_data += result.rows.item(i).tmdb_id + ',';
         }
         list_data = list_data.substr(0, list_data.length-1);
