@@ -270,16 +270,19 @@ var User = {
       if(flag) {
         toolbar_center.innerHTML = '追加した気分の一覧';
         obj_list = User.info.onomatopoeia_count;
-        header = '名前と使用回数';
+        header = '名前と追加した映画の本数';
       }else {
 				toolbar_center.innerHTML = 'ジャンルの一覧';
 				obj_list = User.info.genre_count;
-				header = '名前と関連映画数';
+				header = '名前と映画の本数';
 			}
 
       obj_list.forEach(function (obj) {
         content_list_item +=  '<ons-list-item modifier="longdivider">' +
-                              '<div class="left">'+obj['name']+ ' (' + obj['count'] + '回)</div>'+
+                              '<div class="left">'+obj['name']+'</div>'+
+                              '<div class="right">' +
+                              '<ons-icon icon="ion-android-film" class="list-item__icon brown_color"></ons-icon>'+ obj['count']+
+                              '</div> '+
                               '</ons-list-item>';
 			});
 
