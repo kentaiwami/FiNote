@@ -14,7 +14,7 @@ var Social = {
 	 * @param {Number} first_limit 	- 最初にリクエストする映画の数
 	 * @param {Number} after       	- 最初以降にリクエストする映画の数
 	 */
-	control: {first_limit: 5, after_limit: 5},
+	control: {first_limit: 5, after_limit: 10},
 
 	/**
    * 2カラムで映画のポスターを表示する関数
@@ -342,12 +342,55 @@ var Social = {
 				Social.data.local_onomatopoeia = promises[0];
 				Social.data.reaction_api_results = api_results;
 
-				//描画
+				//リストの描画(Social.control.first_limitの分はローカルとサーバを表示、それ以外はローカルのみ)
 				Social.draw_get_movie_reactions(promises[0], api_results, Social.data.local_movies);
 
+				//Social.control.after_limitの値ごとにtmdb_idをまとめる
+				//ex.) [{"tmdb_id_list": "[x,x,x]"}, {...}, {...}]
+				var post_remain_data_list = Social.create_post_remain_data();
 
-				var post_remain_data = Social.create_post_remain_data();
+				//Social.create_post_remain_dataでまとめたtmdb_idのオブジェクトを、2つずつのlistとしてまとめる
+				//ex.) [[{"tmdb_id_list": "[x,x,x]"},{"tmdb_id_list": "[x,x,x]"}], [...], [...]]
+				var two_obj_list = [];
+				var s = 0;
+				var e = 2;
 
+				while(post_remain_data_list.slice(s, e).length !== 0) {
+					two_obj_list.push(post_remain_data_list.slice(s, e));
+					s = e;
+					e += 2;
+				}
+
+				//Promiseの生成と実行
+				var all_promise;
+				two_obj_list.forEach(function (obj_list, index) {
+					//5.5秒おきに、post通信を行う関数の作成
+					var post_ajax = function () {
+						return new Promise(function(resolve) {
+							setTimeout(function () {
+								console.log(index);
+
+								//オブジェクトの個数分だけpromiseを生成
+								var promises = [];
+								obj_list.forEach(function (obj) {
+									promises.push(Utility.FiNote_API('get_movie_reaction', obj, 'POST', 'v1'));
+								});
+
+								Promise.all(promises).then(function (results) {
+									console.log(results);
+									resolve();
+								});
+							}, 5500);
+						});
+					};
+
+					//最初の関数代入だけ実行形式で代入する
+					if(index === 0) {
+						all_promise = post_ajax();
+					}else {
+						all_promise = all_promise.then(post_ajax);
+					}
+				});
 			}
 		})
 		.catch(function (err) {
