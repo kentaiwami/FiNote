@@ -10,11 +10,12 @@ var Social = {
 	data: {local_onomatopoeia: {}, reaction_api_results: {}, local_movies: {}},
 
 	/**
-	 * 気分の比較で一度にリクエストする映画の数を制御する際に使用
-	 * @param {Number} first_limit 	- 最初にリクエストする映画の数
-	 * @param {Number} after       	- 最初以降にリクエストする映画の数
+	 * 気分の比較で使用
+	 * @param {Number} first_limit 							- 最初にリクエストする映画の数
+	 * @param {Number} after       							- 最初以降にリクエストする映画の数
+	 * @param {Number} onomatopoeia_draw_limit 	- 気分の比較画面に表示するオノマトペの個数
 	 */
-	control: {first_limit: 20, after_limit: 10},
+	control: {first_limit: 20, after_limit: 10, onomatopoeia_draw_limit: 6},
 
 	/**
    * 2カラムで映画のポスターを表示する関数
@@ -380,7 +381,17 @@ var Social = {
 								});
 
 								Promise.all(promises).then(function (results) {
-									console.log(results);
+									results.forEach(function (result) {
+										var json_val = JSON.parse(result);
+
+										//結果の描画
+										Social.draw_get_movie_remain_data(json_val);
+
+										//結果の統合
+										Array.prototype.push.apply(Social.data.reaction_api_results, json_val);
+									});
+
+									// console.log(Social.data.reaction_api_results);
 									resolve();
 								});
 							}, 5500);
@@ -444,13 +455,45 @@ var Social = {
 
 
 	/**
+	 * 後から問い合わせしたデータを受け取り、対応するリストにオノマトペを書き込む関数
+	 * @param {Object} remain_data - 問い合わせの結果 ex.) [{"123": [{"name":xxx},{"name":xxx}]]
+	 */
+	draw_get_movie_remain_data: function (remain_data) {
+
+		//映画の数だけループ
+		remain_data.forEach(function (obj) {
+			var tmdb_id = Object.keys(obj)[0];
+			var list_p = document.getElementById(tmdb_id);
+			var html = '';
+			var limit_flag = false;
+
+			//付与されているオノマトペの数だけループ
+			obj[tmdb_id].some(function (onomatopoeia_obj, index) {
+				if(index+1 > Social.control.onomatopoeia_draw_limit) {
+					limit_flag = true;
+					return true;
+				}
+				html += onomatopoeia_obj['name'] + ', ';
+			});
+
+			html = html.substr(0, html.length-2);
+
+			if(limit_flag) {
+				html += '…';
+			}
+
+			list_p.innerHTML = html;
+		});
+	},
+
+
+	/**
    * ローカルの映画に付与されているオノマトペと、サーバ上で登録されているオノマトペを比較するリストを描画する関数
 	 * @param {Object} local_onomatopoeia - ローカルに保存されているオノマトペ全件(id,name)
 	 * @param {Object} api_results        - get_movie_reaction APIの結果
 	 * @param {Object} local_movies       - ローカルに保存されている映画全件(title, poster, overview, tmdb_id, onomatopoeia_id)
 	 */
   draw_get_movie_reactions: function (local_onomatopoeia, api_results, local_movies) {
-	  var draw_limit = 6;
     var html = '';
 
     for(var i = 0; i < local_movies.rows.length; i++ ) {
@@ -459,7 +502,7 @@ var Social = {
       //ローカルのオノマトペを生成
       var movie_onomatopoeia_array = movie.onomatopoeia_id.split(',');
       var local_onomatopoeia_html = '';
-      for(var j = 0; j < draw_limit; j++ ) {
+      for(var j = 0; j < Social.control.onomatopoeia_draw_limit; j++ ) {
         for(var k = 0; k < local_onomatopoeia.rows.length; k++ ) {
           var onomatopoeia_record = local_onomatopoeia.rows.item(k);
           if(String(onomatopoeia_record.id) === movie_onomatopoeia_array[j]) {
@@ -471,7 +514,7 @@ var Social = {
       local_onomatopoeia_html = local_onomatopoeia_html.substr(0, local_onomatopoeia_html.length-2);
 
       //表示されているオノマトペの個数よりも本来の個数が多ければ三点リーダを表示
-      if(draw_limit < movie_onomatopoeia_array.length) {
+      if(Social.control.onomatopoeia_draw_limit < movie_onomatopoeia_array.length) {
       	local_onomatopoeia_html += '…';
 			}
 
@@ -481,8 +524,8 @@ var Social = {
         var key = Object.keys(api_results[j])[0];
 
         if(key === String(movie.tmdb_id)) {
-          var for_count = draw_limit;                     // 映画に付与されているオノマトペがdraw_limitより少ない場合は、
-          if(api_results[j][key].length < draw_limit ) {  // 全て描画するようにfor文の回数を調整する
+          var for_count = Social.control.onomatopoeia_draw_limit;                     // 映画に付与されているオノマトペがdraw_limitより少ない場合は、
+          if(api_results[j][key].length < Social.control.onomatopoeia_draw_limit ) {  // 全て描画するようにfor文の回数を調整する
             for_count = api_results[j][key].length;
           }
 
@@ -496,7 +539,7 @@ var Social = {
       server_onomatopoeia_html = server_onomatopoeia_html.substr(0, server_onomatopoeia_html.length-2);
 
       //表示されているオノマトペの個数よりも本来の個数が多ければ三点リーダを表示
-      if(draw_limit < api_results.length) {
+      if(Social.control.onomatopoeia_draw_limit < api_results.length) {
       	server_onomatopoeia_html += '…';
 			}
 
@@ -513,7 +556,7 @@ var Social = {
 
               '<div class="harf_list_height">'+
               '<ons-icon size="30px" icon="ion-earth" class="brown_color"></ons-icon>'+
-              '<p class="list_p">' + server_onomatopoeia_html + '</p>'+
+              '<p class="list_p" id="'+movie.tmdb_id+'">' + server_onomatopoeia_html + '</p>'+
               '</div>'+
               '</div>'+
               '</ons-list-item>';
