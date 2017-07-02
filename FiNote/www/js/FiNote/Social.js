@@ -496,9 +496,9 @@ var Social = {
       server_onomatopoeia_html = server_onomatopoeia_html.substr(0, server_onomatopoeia_html.length-2);
 
       //表示されているオノマトペの個数よりも本来の個数が多ければ三点リーダを表示
-      // if(draw_limit < api_results.length) {
-      // 	server_onomatopoeia_html += '…';
-			// }
+      if(draw_limit < api_results.length) {
+      	server_onomatopoeia_html += '…';
+			}
 
       html += '<ons-list-item modifier="longdivider chevron" tappable>'+
               '<div class="left">'+
