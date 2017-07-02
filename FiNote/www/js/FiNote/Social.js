@@ -14,7 +14,7 @@ var Social = {
 	 * @param {Number} first_limit 	- 最初にリクエストする映画の数
 	 * @param {Number} after       	- 最初以降にリクエストする映画の数
 	 */
-	control: {first_limit: 5, after_limit: 10},
+	control: {first_limit: 20, after_limit: 10},
 
 	/**
    * 2カラムで映画のポスターを表示する関数
@@ -323,6 +323,7 @@ var Social = {
         var post_data = {"tmdb_id_list": list_data};
         var onomatopoeia_query = 'SELECT id,name from onomatopoeia';
 
+        console.time('1');
         return Promise.all(
           [DB_method.single_statement_execute(onomatopoeia_query, []),
           Utility.FiNote_API('get_movie_reaction', post_data, 'POST', 'v1')]
@@ -331,6 +332,8 @@ var Social = {
     })
     .then(function(promises) {
     	Utility.stop_spinner();
+    	console.timeEnd('1');
+
 
       if(promises === -1 ) {
         var social_movie_list = document.getElementById(ID.get_social_ID().movie_list);

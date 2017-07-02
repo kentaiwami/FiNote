@@ -15,11 +15,10 @@ class GetMovieReactionThread(threading.Thread):
         onomatopoeia_counts = []
         try:
             movie = Movie.objects.get(tmdb_id=self.tmdb_id)
-            counts = OnomatopoeiaCount.objects.filter(movie=movie).order_by('-count')
+            some_onomatopoeia = movie.onomatopoeia.all()
 
-            for count in counts:
-                onomatopoeia_counts.append({"name": count.onomatopoeia.name,
-                                            "count": count.count})
+            for onomatopoeia in some_onomatopoeia:
+                onomatopoeia_counts.append({"name": onomatopoeia.name})
 
             self.result = {str(self.tmdb_id): onomatopoeia_counts}
 
