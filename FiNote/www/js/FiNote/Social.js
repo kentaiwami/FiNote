@@ -331,7 +331,6 @@ var Social = {
         var post_data = {"tmdb_id_list": list_data};
         var onomatopoeia_query = 'SELECT id,name from onomatopoeia';
 
-        console.time('1');
         return Promise.all(
           [DB_method.single_statement_execute(onomatopoeia_query, []),
           Utility.FiNote_API('get_movie_reaction', post_data, 'POST', 'v1')]
@@ -340,8 +339,6 @@ var Social = {
     })
     .then(function(promises) {
     	Utility.stop_spinner();
-    	console.timeEnd('1');
-
 
       if(promises === -1 ) {
         var social_movie_list = document.getElementById(ID.get_social_ID().movie_list);
@@ -379,7 +376,7 @@ var Social = {
 					var post_ajax = function () {
 						return new Promise(function(resolve) {
 							setTimeout(function () {
-								console.log('Social comparison onomatopoeia' + (index+1)+' count request');
+								console.log('Social comparison onomatopoeia ' + (index+1)+' count request');
 
 								//オブジェクトの個数分だけpromiseを生成
 								var promises = [];
@@ -498,6 +495,7 @@ var Social = {
 	show_detail_comparison_onomatopoeia: function (index) {
 		var tmdb_id = Object.keys(Social.data.reaction_api_results[index])[0];
 
+		//オノマトペ名だけのリスト文字列を生成
 		var onomatopoeia_name_list_str = '[';
 		Social.data.reaction_api_results[index][tmdb_id].forEach(function (onomatopoeia_obj) {
 			onomatopoeia_name_list_str += onomatopoeia_obj['name'] + ',';
