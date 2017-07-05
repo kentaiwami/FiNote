@@ -379,7 +379,7 @@ var Social = {
 					var post_ajax = function () {
 						return new Promise(function(resolve) {
 							setTimeout(function () {
-								console.log(index);
+								console.log('Social comparison onomatopoeia' + (index+1)+' count request');
 
 								//オブジェクトの個数分だけpromiseを生成
 								var promises = [];
@@ -507,12 +507,9 @@ var Social = {
 
 		var post_data = {"tmdb_id": tmdb_id, "onomatopoeia_name_list": onomatopoeia_name_list_str};
 
-		console.time('1');
 		Utility.FiNote_API('get_onomatopoeia_count_by_movie_id', post_data, 'POST', 'v1').then(function (results) {
 			var json_results = JSON.parse(results);
 			console.log(json_results.length);
-
-			console.timeEnd('1');
 		})
 		.catch(function (err) {
 			Utility.show_error_alert('', err, 'OK');
