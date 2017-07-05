@@ -645,7 +645,7 @@ class GetMovieReactionViewSet(viewsets.ViewSet):
         When MovieReaction api access, run this method.
         This method gets onomatopoeia and count.
         :param request: Target tmdb_id list.
-        :return: Onomatopoeia name and count group by tmdb_id.
+        :return: Onomatopoeia name group by tmdb_id.
         """
 
         serializer = GetMovieReactionSerializer(data=request.data)
@@ -665,8 +665,7 @@ class GetMovieReactionViewSet(viewsets.ViewSet):
                 thread.join()
 
             for thread in thread_list:
-                if thread.getResult() is not None:
-                    res.append(thread.getResult())
+                res.append(thread.getResult())
 
             return Response(res)
 
@@ -845,6 +844,61 @@ class GetOriginalTitleViewSet(viewsets.ViewSet):
                     break
 
             return Response('')
+        else:
+            raise ValidationError('正しいパラメータ値ではありません')
+
+
+class GetOnomatopoeiaCountByMovieIDViewSet(viewsets.ViewSet):
+    queryset = Movie.objects.all()
+    serializer_class = GetOnomatopoeiaCountByMovieIDSerializer
+
+    @staticmethod
+    def create(request):
+        """
+        When GetOnomatopoeiaCountByMovieID api access, run this method.
+        This method gets onomatopoeia count in movie.
+        :param request: Target movie id and onomatopoeia names.
+        :return: Onomatopoeia name and count.
+        """
+
+        serializer = GetOnomatopoeiaCountByMovieIDSerializer(data=request.data)
+
+        if serializer.is_valid() and request.method == 'POST':
+            onomatopoeia_name_list = conversion_str_to_list(request.data['onomatopoeia_name_list'], 'str')
+
+            if len(onomatopoeia_name_list) <= 2000:
+                res = []
+
+                movie = Movie.objects.get(tmdb_id=request.data['tmdb_id'])
+
+                # 100件ごとに区切ってスレッドを立てる
+                s = 0
+                e = 100
+                sliced = onomatopoeia_name_list[s:e]
+
+                thread_list = []
+                while len(sliced) != 0:
+                    thread = GetOnomatopoeiaCountByMovieIDThread(movie, sliced)
+                    thread_list.append(thread)
+                    thread.start()
+
+                    # スライス箇所の更新
+                    s = e
+                    e += 100
+                    sliced = onomatopoeia_name_list[s:e]
+
+                # 全てのスレッドが完了するまで待機(ブロック)
+                for thread in thread_list:
+                    thread.join()
+
+                for thread in thread_list:
+                    if len(thread.getResult()) != 0:
+                        res.extend(thread.getResult())
+
+                return Response(res)
+            else:
+                raise ValidationError('パラメータが長すぎます')
+
         else:
             raise ValidationError('正しいパラメータ値ではありません')
 

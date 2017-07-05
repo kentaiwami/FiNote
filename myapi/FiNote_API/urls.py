@@ -25,3 +25,4 @@ router.register(r'v1/get_movie_by_onomatopoeia', GetMovieByOnomatopoeiaViewSet, 
 router.register(r'v1/get_movie_by_id', GetMovieByIDViewSet, 'get_movie_by_id')
 router.register(r'v1/get_search_movie_title_results', GetSearchMovieTitleResultsViewSet, 'get_search_movie_title_results')
 router.register(r'v1/get_original_title', GetOriginalTitleViewSet, 'get_original_title')
+router.register(r'v1/get_onomatopoeia_count_by_movie_id', GetOnomatopoeiaCountByMovieIDViewSet, 'get_onomatopoeia_count_by_movie_id')

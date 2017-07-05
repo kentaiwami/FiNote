@@ -14,8 +14,9 @@ var Social = {
 	 * @param {Number} first_limit 							- 最初にリクエストする映画の数
 	 * @param {Number} after       							- 最初以降にリクエストする映画の数
 	 * @param {Number} onomatopoeia_draw_limit 	- 気分の比較画面に表示するオノマトペの個数
+	 * @param {Number} request_limit						- 同時にxmlhttp通信を行う上限個数
 	 */
-	control: {first_limit: 20, after_limit: 10, onomatopoeia_draw_limit: 6},
+	control: {first_limit: 20, after_limit: 10, onomatopoeia_draw_limit: 6, request_limit: 2},
 
 	/**
    * 2カラムで映画のポスターを表示する関数
@@ -363,12 +364,12 @@ var Social = {
 				//ex.) [[{"tmdb_id_list": "[x,x,x]"},{"tmdb_id_list": "[x,x,x]"}], [...], [...]]
 				var two_obj_list = [];
 				var s = 0;
-				var e = 2;
+				var e = Social.control.request_limit;
 
 				while(post_remain_data_list.slice(s, e).length !== 0) {
 					two_obj_list.push(post_remain_data_list.slice(s, e));
 					s = e;
-					e += 2;
+					e += Social.control.request_limit;
 				}
 
 				//Promiseの生成と実行
@@ -493,6 +494,34 @@ var Social = {
 	},
 
 
+	//TODO 
+	show_detail_comparison_onomatopoeia: function (index) {
+		var tmdb_id = Object.keys(Social.data.reaction_api_results[index])[0];
+
+		var onomatopoeia_name_list_str = '[';
+		Social.data.reaction_api_results[index][tmdb_id].forEach(function (onomatopoeia_obj) {
+			onomatopoeia_name_list_str += onomatopoeia_obj['name'] + ',';
+		});
+		onomatopoeia_name_list_str = onomatopoeia_name_list_str.substr(0, onomatopoeia_name_list_str.length-1);
+		onomatopoeia_name_list_str += ']';
+
+		var post_data = {"tmdb_id": tmdb_id, "onomatopoeia_name_list": onomatopoeia_name_list_str};
+
+		console.time('1');
+		Utility.FiNote_API('get_onomatopoeia_count_by_movie_id', post_data, 'POST', 'v1').then(function (results) {
+			var json_results = JSON.parse(results);
+			console.log(json_results.length);
+
+			console.timeEnd('1');
+		})
+		.catch(function (err) {
+			Utility.show_error_alert('', err, 'OK');
+			console.log(err);
+		});
+
+	},
+
+
 	/**
    * ローカルの映画に付与されているオノマトペと、サーバ上で登録されているオノマトペを比較するリストを描画する関数
 	 * @param {Object} local_onomatopoeia - ローカルに保存されているオノマトペ全件(id,name)
@@ -549,7 +578,7 @@ var Social = {
       	server_onomatopoeia_html += '…';
 			}
 
-      html += '<ons-list-item modifier="longdivider chevron" tappable>'+
+      html += '<ons-list-item modifier="longdivider chevron" tappable onclick="Social.show_detail_comparison_onomatopoeia('+i+')">'+
               '<div class="left">'+
               '<img class="list_img_large" src="' + movie.poster + '">'+
               '</div>'+
