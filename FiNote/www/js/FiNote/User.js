@@ -263,6 +263,10 @@ var User = {
     var callback = function () {
       var toolbar_center = document.getElementById(ID.get_simple_ID().toolbar_center);
       var content = document.getElementById(ID.get_simple_ID().content);
+
+      document.getElementById(ID.get_simple_ID().toolbar_left).innerHTML =
+        '<ons-toolbar-button><ons-icon class="brown_color" icon="ion-close-round"></ons-icon></ons-toolbar-button>';
+
       var obj_list = [];
       var header = '';
       var content_list_item = '';
