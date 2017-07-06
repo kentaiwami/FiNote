@@ -516,9 +516,14 @@ var Social = {
 
 		Utility.FiNote_API('get_onomatopoeia_count_by_movie_id', post_data, 'POST', 'v1').then(function (results) {
 			var json_results = JSON.parse(results);
+			Utility.ObjArraySort(json_results, 'count', 'desc');
+			//TODO 画面遷移と値渡し
+
+
 		})
-		.catch(function () {
+		.catch(function (err) {
 			Utility.show_error_alert('通信エラー発生', 'もう一度試してください。', 'OK');
+			console.log(err);
 		});
 	},
 
