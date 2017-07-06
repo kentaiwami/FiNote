@@ -18,7 +18,6 @@ import urllib.parse
 from bs4 import BeautifulSoup
 from FiNote_API.thread import *
 
-
 # [0]: GetSearchMovieTitleResultsViewSet
 # [1]: GetOriginalTitleViewSet
 test_flag = [True, True]
@@ -865,39 +864,40 @@ class GetOnomatopoeiaCountByMovieIDViewSet(viewsets.ViewSet):
 
         if serializer.is_valid() and request.method == 'POST':
             onomatopoeia_name_list = conversion_str_to_list(request.data['onomatopoeia_name_list'], 'str')
+            movie = Movie.objects.get(tmdb_id=request.data['tmdb_id'])
 
-            if len(onomatopoeia_name_list) <= 2000:
-                res = []
-
-                movie = Movie.objects.get(tmdb_id=request.data['tmdb_id'])
-
-                # 100件ごとに区切ってスレッドを立てる
+            # 200よりリクエストされたオノマトペが少なければ最後までslice、それ以外なら20で割った分だけslice
+            if len(onomatopoeia_name_list) < 200:
                 s = 0
-                e = 100
+                e = len(onomatopoeia_name_list)
+
+            else:
+                s = 0
+                e = int(len(onomatopoeia_name_list) / 20)  # MySQLの同時接続数が20のため
+
+            sliced = onomatopoeia_name_list[s:e]
+            thread_list = []
+
+            while len(sliced) != 0:
+                thread = GetOnomatopoeiaCountByMovieIDThread(movie, sliced)
+                thread_list.append(thread)
+                thread.start()
+
+                # スライス箇所の更新
+                s = e
+                e += e
                 sliced = onomatopoeia_name_list[s:e]
 
-                thread_list = []
-                while len(sliced) != 0:
-                    thread = GetOnomatopoeiaCountByMovieIDThread(movie, sliced)
-                    thread_list.append(thread)
-                    thread.start()
+            # 全てのスレッドが完了するまで待機(ブロック)
+            for thread in thread_list:
+                thread.join()
 
-                    # スライス箇所の更新
-                    s = e
-                    e += 100
-                    sliced = onomatopoeia_name_list[s:e]
+            res = []
+            for thread in thread_list:
+                if len(thread.getResult()) != 0:
+                    res.extend(thread.getResult())
 
-                # 全てのスレッドが完了するまで待機(ブロック)
-                for thread in thread_list:
-                    thread.join()
-
-                for thread in thread_list:
-                    if len(thread.getResult()) != 0:
-                        res.extend(thread.getResult())
-
-                return Response(res)
-            else:
-                raise ValidationError('パラメータが長すぎます')
+            return Response(res)
 
         else:
             raise ValidationError('正しいパラメータ値ではありません')

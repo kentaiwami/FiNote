@@ -495,25 +495,31 @@ var Social = {
 	show_detail_comparison_onomatopoeia: function (index) {
 		var tmdb_id = Object.keys(Social.data.reaction_api_results[index])[0];
 
-		//オノマトペ名だけのリスト文字列を生成
-		var onomatopoeia_name_list_str = '[';
-		Social.data.reaction_api_results[index][tmdb_id].forEach(function (onomatopoeia_obj) {
-			onomatopoeia_name_list_str += onomatopoeia_obj['name'] + ',';
-		});
-		onomatopoeia_name_list_str = onomatopoeia_name_list_str.substr(0, onomatopoeia_name_list_str.length-1);
-		onomatopoeia_name_list_str += ']';
+		//ポストするためのリストの文字列を返す関数の定義
+		var create_post_data = function (onomatopoeia_list) {
+			var onomatopoeia_name_list_str = '[';
 
-		var post_data = {"tmdb_id": tmdb_id, "onomatopoeia_name_list": onomatopoeia_name_list_str};
+			onomatopoeia_list.forEach(function (onomatopoeia_obj) {
+				onomatopoeia_name_list_str += onomatopoeia_obj['name'] + ',';
+			});
+
+			onomatopoeia_name_list_str = onomatopoeia_name_list_str.substr(0, onomatopoeia_name_list_str.length-1);
+			onomatopoeia_name_list_str += ']';
+
+			return onomatopoeia_name_list_str;
+		};
+
+		var post_data = {
+			"tmdb_id": tmdb_id,
+			"onomatopoeia_name_list": create_post_data(Social.data.reaction_api_results[index][tmdb_id])
+		};
 
 		Utility.FiNote_API('get_onomatopoeia_count_by_movie_id', post_data, 'POST', 'v1').then(function (results) {
 			var json_results = JSON.parse(results);
-			console.log(json_results.length);
 		})
-		.catch(function (err) {
-			Utility.show_error_alert('', err, 'OK');
-			console.log(err);
+		.catch(function () {
+			Utility.show_error_alert('通信エラー発生', 'もう一度試してください。', 'OK');
 		});
-
 	},
 
 
