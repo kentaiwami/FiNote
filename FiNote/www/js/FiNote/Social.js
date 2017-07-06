@@ -493,6 +493,8 @@ var Social = {
 
 	//TODO 
 	show_detail_comparison_onomatopoeia: function (index) {
+		Utility.show_spinner(ID.get_social_ID().page_id);
+
 		var tmdb_id = Object.keys(Social.data.reaction_api_results[index])[0];
 
 		//ポストするためのリストの文字列を返す関数の定義
@@ -515,6 +517,8 @@ var Social = {
 		};
 
 		Utility.FiNote_API('get_onomatopoeia_count_by_movie_id', post_data, 'POST', 'v1').then(function (results) {
+			Utility.stop_spinner();
+
 			var json_results = JSON.parse(results);
 			Utility.ObjArraySort(json_results, 'count', 'desc');
 			//TODO 画面遷移と値渡し
@@ -522,6 +526,7 @@ var Social = {
 
 		})
 		.catch(function (err) {
+			Utility.stop_spinner();
 			Utility.show_error_alert('通信エラー発生', 'もう一度試してください。', 'OK');
 			console.log(err);
 		});
