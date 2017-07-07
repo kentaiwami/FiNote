@@ -18,6 +18,8 @@ var Social = {
 	 */
 	control: {first_limit: 20, after_limit: 10, onomatopoeia_draw_limit: 6, request_limit: 2},
 
+
+
 	/**
    * 2カラムで映画のポスターを表示する関数
 	 * @param {string} result - APIレスポンスのjson文字列
@@ -525,6 +527,8 @@ var Social = {
 			//TODO html要素の書き込み
 
 			var callback = function () {
+				var content = document.getElementById(ID.get_simple_ID().content);
+
 				//ツールバー名を書き込み
 				document.getElementById(ID.get_simple_ID().toolbar_center).innerHTML =
 					'比較の詳細';
@@ -535,13 +539,22 @@ var Social = {
 
       	console.log('callback');
 
-				// var content = document.getElementById(ID.get_simple_ID().content);
+      	content.innerHTML =
+					'<ons-list-header>'+ Social.data.local_movies.rows.item(index).title +'</ons-list-header><br>'+
+
+					'<ons-list modifier="inset">'+
+					'<ons-list-header>あなたが登録した気分</ons-list-header>'+
+					'<ons-list-item modifier="longdivider">hoge</ons-list-item>'+
+					'</ons-list>'+
+
+					'<ons-list modifier="inset">'+
+					'<ons-list-header>他の人が登録した気分</ons-list-header>'+
+					'<ons-list-item modifier="longdivider">hoge</ons-list-item>'+
+					'</ons-list>';
 			};
 
 			Utility.check_page_init(ID.get_simple_ID().page_id, callback);
     	Utility.push_page(ID.get_simple_ID().tmp_id, 'slide', 0, '');
-
-
 		})
 		.catch(function (err) {
 			Utility.stop_spinner();
