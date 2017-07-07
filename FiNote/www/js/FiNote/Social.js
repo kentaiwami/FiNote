@@ -195,7 +195,7 @@ var Social = {
         var by_age = String(count);
         var by_age_results = json_result[i][by_age];
 
-        html += '<ons-list-header>' + by_age + '代</ons-list-header><div class="my_slick_class">';
+        html += '<ons-list-header>' + by_age + '代</ons-list-header><div class="movie_by_age_slick_class">';
 
         //1つの年代
         for(var j = 0; j < by_age_results.length; j++ ){
@@ -215,7 +215,7 @@ var Social = {
 
       //slickの設定
       $(document).ready(function(){
-        $('.my_slick_class').slick({
+        $('.movie_by_age_slick_class').slick({
           infinite: false,
           slidesToShow: 3,
           slidesToScroll: 3,
