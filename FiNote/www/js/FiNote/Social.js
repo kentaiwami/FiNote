@@ -521,7 +521,25 @@ var Social = {
 
 			var json_results = JSON.parse(results);
 			Utility.ObjArraySort(json_results, 'count', 'desc');
-			//TODO 画面遷移と値渡し
+			//TODO 値渡し
+			//TODO html要素の書き込み
+
+			var callback = function () {
+				//ツールバー名を書き込み
+				document.getElementById(ID.get_simple_ID().toolbar_center).innerHTML =
+					'比較の詳細';
+
+				//ツールバー左のバックボタンを書き込み
+      	document.getElementById(ID.get_simple_ID().toolbar_left).innerHTML =
+        '<ons-back-button class="brown_color"></ons-back-button>';
+
+      	console.log('callback');
+
+				// var content = document.getElementById(ID.get_simple_ID().content);
+			};
+
+			Utility.check_page_init(ID.get_simple_ID().page_id, callback);
+    	Utility.push_page(ID.get_simple_ID().tmp_id, 'slide', 0, '');
 
 
 		})
