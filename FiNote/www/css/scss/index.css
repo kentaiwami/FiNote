@@ -1205,6 +1205,38 @@
 }
 
 /************************************************************
+                          Box
+************************************************************/
+.box, .box_center {
+  padding: .5rem 1em;
+  margin: 1.4rem .5rem;
+  color: #5d627b;
+  background: white;
+  border-top: solid 5px #BE956A;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.22);
+}
+
+.box_center {
+  text-align: center;
+}
+
+.box_content p {
+  margin: 0;
+  padding: 0;
+}
+
+.box_content {
+  display: block;
+  border-bottom: solid #EEE .1rem;
+  width: 100%;
+  padding: .35rem 0;
+}
+
+.box_mini_message_bottom_right {
+  text-align: right;
+}
+
+/************************************************************
                           Other
 ************************************************************/
 .profile-wrapper {

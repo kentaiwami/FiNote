@@ -527,6 +527,7 @@ var Social = {
 			//TODO html要素の書き込み
 
 			var callback = function () {
+				var slick_class = ['comparison_onomatopoeia_local_slick_class', 'comparison_onomatopoeia_social_slick_class'];
 				var content = document.getElementById(ID.get_simple_ID().content);
 
 				//ツールバー名を書き込み
@@ -535,22 +536,79 @@ var Social = {
 
 				//ツールバー左のバックボタンを書き込み
       	document.getElementById(ID.get_simple_ID().toolbar_left).innerHTML =
-        '<ons-back-button class="brown_color"></ons-back-button>';
-
-      	console.log('callback');
+        	'<ons-back-button class="brown_color"></ons-back-button>';
 
       	content.innerHTML =
 					'<ons-list-header>'+ Social.data.local_movies.rows.item(index).title +'</ons-list-header><br>'+
 
 					'<ons-list modifier="inset">'+
 					'<ons-list-header>あなたが登録した気分</ons-list-header>'+
-					'<ons-list-item modifier="longdivider">hoge</ons-list-item>'+
+					'<div class="'+slick_class[0]+'">'+
+					'<div class="box_center">'+
+					'<div class="box_content"><p>ハラハラ1</p></div>'+
+					'<div class="box_content"><p>ハラハラ1</p></div>'+
+					'<div class="box_content"><p>ハラハラ1</p></div>'+
+					'</div>'+
+					'<div class="box_center">'+
+					'<div class="box_content"><p>ハラハラ2</p></div>'+
+					'<div class="box_content"><p>ハラハラ2</p></div>'+
+					'<div class="box_content"><p>ハラハラ2</p></div>'+
+					'</div>'+
+					'<div class="box_center">'+
+					'<div class="box_content"><p>ハラハラ3</p></div>'+
+					'<div class="box_content"><p>ハラハラ3</p></div>'+
+					'<div class="box_content"><p>ハラハラ3</p></div>'+
+					'</div>'+
+					'<div class="box_center">'+
+					'<div class="box_content"><p>ハラハラ4</p></div>'+
+					'<div class="box_content"><p>ハラハラ4</p></div>'+
+					'<div class="box_content"><p>ハラハラ4</p></div>'+
+					'</div>'+
+					'</div>'+
 					'</ons-list>'+
 
 					'<ons-list modifier="inset">'+
 					'<ons-list-header>他の人が登録した気分</ons-list-header>'+
-					'<ons-list-item modifier="longdivider">hoge</ons-list-item>'+
+					'<div class="'+slick_class[1]+'">'+
+					'<div class="box">'+
+					'<div class="box_content"><p>ハラハラ1</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
+					'<div class="box_content"><p>ハラハラ1</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
+					'<div class="box_content"><p>ハラハラ1</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
+					'<div class="box_content"><p>ハラハラ1</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
+					'</div>'+
+					'<div class="box">'+
+					'<div class="box_content"><p>ハラハラ2</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
+					'<div class="box_content"><p>ハラハラ2</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
+					'<div class="box_content"><p>ハラハラ2</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
+					'<div class="box_content"><p>ハラハラ2</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
+					'</div>'+
+					'<div class="box">'+
+					'<div class="box_content"><p>ハラハラ3</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
+					'<div class="box_content"><p>ハラハラ3</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
+					'<div class="box_content"><p>ハラハラ3</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
+					'<div class="box_content"><p>ハラハラ3</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
+					'</div>'+
+					'<div class="box">'+
+					'<div class="box_content"><p>ハラハラ4</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
+					'<div class="box_content"><p>ハラハラ4</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
+					'<div class="box_content"><p>ハラハラ4</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
+					'<div class="box_content"><p>ハラハラ4</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
+					'</div>'+
+					'</div>'+
 					'</ons-list>';
+
+      	//slickの設定
+				$(document).ready(function() {
+					slick_class.forEach(function (class_name) {
+						$('.' + class_name).slick({
+							infinite: false,
+							slidesToShow: 2,
+							slidesToScroll: 2,
+							dots: true,
+							arrows: false
+						});
+					});
+				});
 			};
 
 			Utility.check_page_init(ID.get_simple_ID().page_id, callback);
