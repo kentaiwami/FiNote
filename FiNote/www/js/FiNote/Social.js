@@ -16,7 +16,9 @@ var Social = {
 	 * @param {Number} onomatopoeia_draw_limit 	- 気分の比較画面に表示するオノマトペの個数
 	 * @param {Number} request_limit						- 同時にxmlhttp通信を行う上限個数
 	 */
-	control: {first_limit: 20, after_limit: 10, onomatopoeia_draw_limit: 6, request_limit: 2, compare_onomatopoeia_limit: 20},
+	control: {
+		first_limit: 20, after_limit: 10, onomatopoeia_draw_limit: 6, request_limit: 2,
+		social_all_onomatopoeia_limit: 20, social_slice_onomatopoeia_limit: 4, local_slice_onomatopoeia_limit: 3},
 
 
 
@@ -560,7 +562,7 @@ var Social = {
 			 */
 			var social_onomatopoeia_name_list = JSON.parse(results);
 			Utility.ObjArraySort(social_onomatopoeia_name_list, 'count', 'desc');
-			social_onomatopoeia_name_list = social_onomatopoeia_name_list.slice(0, Social.control.compare_onomatopoeia_limit);
+			social_onomatopoeia_name_list = social_onomatopoeia_name_list.slice(0, Social.control.social_all_onomatopoeia_limit);
 			//TODO social_onomatopoeia_name_listを使って表示
 
 			var callback = function () {
