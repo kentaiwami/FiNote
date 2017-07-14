@@ -1227,9 +1227,8 @@
 
 .box_content {
   display: block;
-  border-bottom: solid #EEE .1rem;
-  width: 100%;
   padding: .35rem 0;
+  border-bottom: solid #EEE .1rem;
 }
 
 .box_mini_message_bottom_right {

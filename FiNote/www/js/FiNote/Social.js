@@ -18,7 +18,7 @@ var Social = {
 	 */
 	control: {
 		first_limit: 20, after_limit: 10, onomatopoeia_draw_limit: 6, request_limit: 2,
-		social_all_onomatopoeia_limit: 20, social_slice_onomatopoeia_limit: 4, local_slice_onomatopoeia_limit: 3},
+		social_all_onomatopoeia_limit: 40, social_slice_onomatopoeia_limit: 4, local_slice_onomatopoeia_limit: 3},
 
 
 
@@ -523,6 +523,50 @@ var Social = {
 		Utility.FiNote_API('get_onomatopoeia_count_by_movie_id', post_data, 'POST', 'v1').then(function (results) {
 			Utility.stop_spinner();
 
+			var slick_setting = [
+				{"class_name": "comparison_onomatopoeia_local_slick_class", "show": 2},
+				{"class_name": "comparison_onomatopoeia_social_slick_class", "show": 2}
+			];
+
+			/*
+			 * ローカル、ソーシャルのオノマトペを表示するhtml要素を生成する関数
+			 */
+			var create_html = function (onomatopoeia_list, slice_limit, flag) {
+				var box_count = 0;
+				var html = '';
+				var start_index = 0;
+				var end_index = slice_limit;
+				var sliced = onomatopoeia_list.slice(start_index, end_index);
+
+				while(sliced.length !== 0) {
+					box_count += 1;
+
+					if(flag) {
+						html += '<div class="box_center">';
+
+						sliced.forEach(function (onomatopoeia_name) {
+							html += '<div class="box_content"><p>' + onomatopoeia_name + '</p></div>'
+						});
+					}else {
+						html += '<div class="box">';
+
+						sliced.forEach(function (onomatopoeia_obj) {
+							html += '<div class="box_content"><p>' + onomatopoeia_obj.name +'</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>'+ onomatopoeia_obj.count + '</div></div>';
+						});
+					}
+
+
+					html += '</div>';
+
+					//sliceの更新
+					start_index = end_index;
+					end_index += slice_limit;
+					sliced = onomatopoeia_list.slice(start_index, end_index);
+				}
+
+				return {"html": html, "box_count": box_count};
+			};
+
 			/*
 			 *****************************************************
 			 * ローカルのオノマトペ名を表示するためのデータ生成
@@ -553,7 +597,14 @@ var Social = {
 				local_onomatopoeia_name_list.push(target_onomatopoeia_obj[0].name);
 			});
 
-			//TODO onomatopoeia_name_listを使って表示
+			//ローカルのオノマトペのhtml生成
+			var local_result = create_html(local_onomatopoeia_name_list, Social.control.local_slice_onomatopoeia_limit, true);
+
+			//ローカルオノマトペのboxが1つの場合
+			if(local_result.box_count === 1) {
+				slick_setting[0].show = 1;
+			}
+
 
 			/*
 			 *****************************************************
@@ -563,10 +614,17 @@ var Social = {
 			var social_onomatopoeia_name_list = JSON.parse(results);
 			Utility.ObjArraySort(social_onomatopoeia_name_list, 'count', 'desc');
 			social_onomatopoeia_name_list = social_onomatopoeia_name_list.slice(0, Social.control.social_all_onomatopoeia_limit);
-			//TODO social_onomatopoeia_name_listを使って表示
+
+			//ソーシャルのオノマトペのhtml生成
+			var social_result = create_html(social_onomatopoeia_name_list, Social.control.social_slice_onomatopoeia_limit, false);
+
+			//ソーシャルオノマトペのboxが1つの場合
+			if(social_result.box_count === 1) {
+				slick_setting[1].show = 1;
+			}
+
 
 			var callback = function () {
-				var slick_class = ['comparison_onomatopoeia_local_slick_class', 'comparison_onomatopoeia_social_slick_class'];
 				var content = document.getElementById(ID.get_simple_ID().content);
 
 				//ツールバー名を書き込み
@@ -579,69 +637,26 @@ var Social = {
 
       	content.innerHTML =
 					'<ons-list-header>'+ Social.data.local_movies.rows.item(index).title +'</ons-list-header><br>'+
-
 					'<ons-list modifier="inset">'+
 					'<ons-list-header>あなたが登録した気分</ons-list-header>'+
-					'<div class="'+slick_class[0]+'">'+
-					'<div class="box_center">'+
-					'<div class="box_content"><p>ハラハラ1</p></div>'+
-					'<div class="box_content"><p>ハラハラ1</p></div>'+
-					'<div class="box_content"><p>ハラハラ1</p></div>'+
-					'</div>'+
-					'<div class="box_center">'+
-					'<div class="box_content"><p>ハラハラ2</p></div>'+
-					'<div class="box_content"><p>ハラハラ2</p></div>'+
-					'<div class="box_content"><p>ハラハラ2</p></div>'+
-					'</div>'+
-					'<div class="box_center">'+
-					'<div class="box_content"><p>ハラハラ3</p></div>'+
-					'<div class="box_content"><p>ハラハラ3</p></div>'+
-					'<div class="box_content"><p>ハラハラ3</p></div>'+
-					'</div>'+
-					'<div class="box_center">'+
-					'<div class="box_content"><p>ハラハラ4</p></div>'+
-					'<div class="box_content"><p>ハラハラ4</p></div>'+
-					'<div class="box_content"><p>ハラハラ4</p></div>'+
-					'</div>'+
+					'<div class="'+slick_setting[0].class_name+'">'+
+					local_result.html+
 					'</div>'+
 					'</ons-list>'+
 
 					'<ons-list modifier="inset">'+
 					'<ons-list-header>他の人が登録した気分</ons-list-header>'+
-					'<div class="'+slick_class[1]+'">'+
-					'<div class="box">'+
-					'<div class="box_content"><p>ハラハラ1</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
-					'<div class="box_content"><p>ハラハラ1</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
-					'<div class="box_content"><p>ハラハラ1</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
-					'<div class="box_content"><p>ハラハラ1</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
-					'</div>'+
-					'<div class="box">'+
-					'<div class="box_content"><p>ハラハラ2</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
-					'<div class="box_content"><p>ハラハラ2</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
-					'<div class="box_content"><p>ハラハラ2</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
-					'<div class="box_content"><p>ハラハラ2</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
-					'</div>'+
-					'<div class="box">'+
-					'<div class="box_content"><p>ハラハラ3</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
-					'<div class="box_content"><p>ハラハラ3</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
-					'<div class="box_content"><p>ハラハラ3</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
-					'<div class="box_content"><p>ハラハラ3</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
-					'</div>'+
-					'<div class="box">'+
-					'<div class="box_content"><p>ハラハラ4</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
-					'<div class="box_content"><p>ハラハラ4</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
-					'<div class="box_content"><p>ハラハラ4</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
-					'<div class="box_content"><p>ハラハラ4</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>10</div></div>'+
-					'</div>'+
+					'<div class="'+slick_setting[1].class_name+'">'+
+					social_result.html+
 					'</div>'+
 					'</ons-list>';
 
       	//slickの設定
 				$(document).ready(function() {
-					slick_class.forEach(function (class_name) {
-						$('.' + class_name).slick({
+					slick_setting.forEach(function (slick_obj) {
+						$('.' + slick_obj.class_name).slick({
 							infinite: false,
-							slidesToShow: 2,
+							slidesToShow: slick_obj.show,
 							slidesToScroll: 2,
 							dots: true,
 							arrows: false
