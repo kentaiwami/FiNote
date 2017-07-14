@@ -16,7 +16,7 @@ var Social = {
 	 * @param {Number} onomatopoeia_draw_limit 	- 気分の比較画面に表示するオノマトペの個数
 	 * @param {Number} request_limit						- 同時にxmlhttp通信を行う上限個数
 	 */
-	control: {first_limit: 20, after_limit: 10, onomatopoeia_draw_limit: 6, request_limit: 2},
+	control: {first_limit: 20, after_limit: 10, onomatopoeia_draw_limit: 6, request_limit: 2, compare_onomatopoeia_limit: 20},
 
 
 
@@ -521,10 +521,47 @@ var Social = {
 		Utility.FiNote_API('get_onomatopoeia_count_by_movie_id', post_data, 'POST', 'v1').then(function (results) {
 			Utility.stop_spinner();
 
-			var json_results = JSON.parse(results);
-			Utility.ObjArraySort(json_results, 'count', 'desc');
-			//TODO 値渡し
-			//TODO html要素の書き込み
+			/*
+			 *****************************************************
+			 * ローカルのオノマトペ名を表示するためのデータ生成
+			 *****************************************************
+			 */
+			//ローカルのオノマトペ名、映画のデータをリスト形式に変換
+			var local_onomatopoeia_list = [];
+			var local_movie_list = [];
+			for(var i = 0; i < Social.data.local_onomatopoeia.rows.length; i++) {
+				local_onomatopoeia_list.push(Social.data.local_onomatopoeia.rows.item(i))
+			}
+			for(i = 0; i < Social.data.local_movies.rows.length; i++) {
+				local_movie_list.push(Social.data.local_movies.rows.item(i))
+			}
+
+			//タップした映画オブジェクトを抽出
+			var target_movie = local_movie_list.filter(function(movie_obj){
+				if (movie_obj.tmdb_id === Number(tmdb_id)) return true;
+			});
+
+			//オノマトペIDと紐づけて、名前を取得
+			var local_onomatopoeia_name_list = [];
+			target_movie[0].onomatopoeia_id.split(',').forEach(function (onomatopoeia_id) {
+				var target_onomatopoeia_obj = local_onomatopoeia_list.filter(function (onomatopoeia_obj) {
+					if (onomatopoeia_obj.id === Number(onomatopoeia_id)) return true;
+				});
+
+				local_onomatopoeia_name_list.push(target_onomatopoeia_obj[0].name);
+			});
+
+			//TODO onomatopoeia_name_listを使って表示
+
+			/*
+			 *****************************************************
+			 * ソーシャルのオノマトペ名を表示するためのデータ生成
+			 *****************************************************
+			 */
+			var social_onomatopoeia_name_list = JSON.parse(results);
+			Utility.ObjArraySort(social_onomatopoeia_name_list, 'count', 'desc');
+			social_onomatopoeia_name_list = social_onomatopoeia_name_list.slice(0, Social.control.compare_onomatopoeia_limit);
+			//TODO social_onomatopoeia_name_listを使って表示
 
 			var callback = function () {
 				var slick_class = ['comparison_onomatopoeia_local_slick_class', 'comparison_onomatopoeia_social_slick_class'];
