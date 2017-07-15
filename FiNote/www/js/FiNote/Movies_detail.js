@@ -225,79 +225,83 @@ var Movies_detail = {
    * 気分リストの変更をローカル・サーバ・詳細画面へ反映させる関数
    */
   tap_feeling_back_button: function() {
-    Global_variable.movie_update_flag = true;
+    if(Movieadd.userdata.feeling_name_list.length === 0) {
+      Utility.show_error_alert('', '気分リストが空だったため、操作を中断しました。', 'OK');
+    }else {
+      Global_variable.movie_update_flag = true;
 
-    document.addEventListener('postpop', function(event) {
-      if (event.enterPage.pushedOptions.page === ID.get_movies_detail_ID().tmp_id) {
-        Utility.show_spinner(ID.get_movies_detail_ID().page_id);
+      document.addEventListener('postpop', function(event) {
+        if (event.enterPage.pushedOptions.page === ID.get_movies_detail_ID().tmp_id) {
+          Utility.show_spinner(ID.get_movies_detail_ID().page_id);
 
-        // 編集済みの気分リスト
-        var feeling_name_list = Movieadd.userdata.feeling_name_list;
+          // 編集済みの気分リスト
+          var feeling_name_list = Movieadd.userdata.feeling_name_list;
 
-        var movie = Movies_detail.current_movie.movie_record;
+          var movie = Movies_detail.current_movie.movie_record;
 
-        var promises = [];
-        if (feeling_name_list.length === 0) {
-          promises = [Movieadd.set_onomatopoeia_local(feeling_name_list)];
-        }else {
-          var storage = window.localStorage;
-          var username = storage.getItem(ID.get_localStorage_ID().username);
+          var promises = [];
+          if (feeling_name_list.length === 0) {
+            promises = [Movieadd.set_onomatopoeia_local(feeling_name_list)];
+          }else {
+            var storage = window.localStorage;
+            var username = storage.getItem(ID.get_localStorage_ID().username);
 
-          var request_data = {
-            "username": username,
-            "movie_id": movie.tmdb_id,
-            "onomatopoeia": feeling_name_list
-          };
-          promises = [Movieadd.set_onomatopoeia_local(feeling_name_list), Utility.FiNote_API('update_onomatopoeia', request_data, 'POST', 'v1')];
-        }
-
-        Promise.all(promises).then(function(results) {
-          var insertID_list = results[0];
-          var onomatopoeia_csv = '';
-          //オノマトペIDのcsvを作成
-          for(var i = 0; i < insertID_list.length; i++) {
-            onomatopoeia_csv += insertID_list[i] + ',';
+            var request_data = {
+              "username": username,
+              "movie_id": movie.tmdb_id,
+              "onomatopoeia": feeling_name_list
+            };
+            promises = [Movieadd.set_onomatopoeia_local(feeling_name_list), Utility.FiNote_API('update_onomatopoeia', request_data, 'POST', 'v1')];
           }
-          onomatopoeia_csv = onomatopoeia_csv.substr(0, onomatopoeia_csv.length-1);
 
-          var query = 'UPDATE movie SET onomatopoeia_id = ? WHERE tmdb_id = ?';
-          var query_data = [onomatopoeia_csv, movie.tmdb_id];
-
-          return DB_method.single_statement_execute(query, query_data);
-        })
-        .then(function() {
-          var query_movie = 'SELECT * from movie WHERE tmdb_id = ?';
-          var query_onomatopoeia = 'SELECT * from onomatopoeia';
-
-          promises = [
-            DB_method.single_statement_execute(query_movie, [movie.tmdb_id]),
-            DB_method.single_statement_execute(query_onomatopoeia, [])
-          ];
-
-          return promises;
-        })
-        .then(function(promises) {
           Promise.all(promises).then(function(results) {
-            var movie_record = results[0].rows.item(0);
-            var result_onomatopoeia = results[1];
+            var insertID_list = results[0];
+            var onomatopoeia_csv = '';
+            //オノマトペIDのcsvを作成
+            for(var i = 0; i < insertID_list.length; i++) {
+              onomatopoeia_csv += insertID_list[i] + ',';
+            }
+            onomatopoeia_csv = onomatopoeia_csv.substr(0, onomatopoeia_csv.length-1);
 
-            return new Promise(function(resolve) {
-              var callback = Movies_detail.create_show_contents_callback(movie_record, result_onomatopoeia);
-              callback();
-              resolve('resolve');
-            });
+            var query = 'UPDATE movie SET onomatopoeia_id = ? WHERE tmdb_id = ?';
+            var query_data = [onomatopoeia_csv, movie.tmdb_id];
+
+            return DB_method.single_statement_execute(query, query_data);
           })
           .then(function() {
-            Utility.stop_spinner();
+            var query_movie = 'SELECT * from movie WHERE tmdb_id = ?';
+            var query_onomatopoeia = 'SELECT * from onomatopoeia';
+
+            promises = [
+              DB_method.single_statement_execute(query_movie, [movie.tmdb_id]),
+              DB_method.single_statement_execute(query_onomatopoeia, [])
+            ];
+
+            return promises;
+          })
+          .then(function(promises) {
+            Promise.all(promises).then(function(results) {
+              var movie_record = results[0].rows.item(0);
+              var result_onomatopoeia = results[1];
+
+              return new Promise(function(resolve) {
+                var callback = Movies_detail.create_show_contents_callback(movie_record, result_onomatopoeia);
+                callback();
+                resolve('resolve');
+              });
+            })
+            .then(function() {
+              Utility.stop_spinner();
+            });
+          })
+          .catch(function(err) {
+            console.log(err);
+            Utility.show_error_alert('エラー発生', err, 'OK');
           });
-        })
-        .catch(function(err) {
-          console.log(err);
-          Utility.show_error_alert('エラー発生', err, 'OK');
-        });
-      }
-      document.removeEventListener('postpop', arguments.callee);
-    });
+        }
+        document.removeEventListener('postpop', arguments.callee);
+      });
+    }
   },
 
 

@@ -31,7 +31,6 @@ var Feeling = {
 
     // 詳細画面から表示した場合
     if (Global_variable.feeling_flag === 1) {
-      document.getElementById(ID.get_feeling_ID().caution_message).innerHTML = '※ この画面から戻る際に気分リストが保存されます。';
       document.getElementById(ID.get_feeling_ID().toolbar).setAttribute('onClick', 'Movies_detail.tap_feeling_back_button()');
     }
 
@@ -41,13 +40,24 @@ var Feeling = {
     var nodata_message = document.getElementById(ID.get_feeling_ID().nodata_message);
     var feeling_list = document.getElementById(ID.get_feeling_ID().list);
     var length = Movieadd.userdata.feeling_name_list.length;
+    var caution_message = document.getElementById(ID.get_feeling_ID().caution_message);
 
     feeling_list.innerHTML = '';
 
     if (length === 0) {
+      //気分リストが空かつ詳細画面から遷移した気分リスト画面の場合
+      if(Global_variable.feeling_flag === 1) {
+        caution_message.innerHTML = '';
+      }
+
       nodata_message.style.height = '100%';
       nodata_message.innerHTML = '感情を1件以上登録してください<br>(1件につき6文字以内)';
     }else {
+      //気分リストが1件以上かつ詳細画面から遷移した気分リスト画面の場合
+      if(Global_variable.feeling_flag === 1) {
+        caution_message.innerHTML = '※ この画面から戻る際に気分リストが保存されます。';
+      }
+
       nodata_message.style.height = '0%';
       nodata_message.innerHTML = '';
 
