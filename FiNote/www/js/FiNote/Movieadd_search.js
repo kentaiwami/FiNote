@@ -244,7 +244,7 @@ var Movieadd_search = {
 			if(movie_title_id_results.length === 0) {
 			  Utility.show_error_alert('', '原題でさらに検索しましたが見つかりませんでした', 'OK');
       }else {
-			  //APIで取得した映画名のリストを表示
+			  //APIで取得した映画名のリストhtmlを生成
         var list_html = '';
         for(var i = 0; i < movie_title_id_results.length; i++) {
           list_html += '<ons-list-item onclick="Movieadd_search.tap_more_search_result_list(this)" modifier="chevron" tappable data_id="' + movie_title_id_results[i].id + '">'+
@@ -259,15 +259,22 @@ var Movieadd_search = {
 
         var movieadd_SearchList = document.getElementById(ID.get_movieadd_search_ID().list);
         var list_header_text = '可能性のある映画タイトル('+Movieadd_search.search.now+'/'+Movieadd_search.search.total+'件)';
-        var first_search_link = document.getElementById(ID.get_movieadd_search_ID().first_search_link);
-        var more_link = document.getElementById(ID.get_movieadd_search_ID().more_search_link);
 
-        // 「映画が見つからない場合は」や「さらに表示」などのリンク要素があったら削除
-        if(first_search_link !== null) {
-          movieadd_SearchList.removeChild(first_search_link);
-        }
-        if(more_link !== null) {
-          movieadd_SearchList.removeChild(more_link);
+        //子要素がある(初回検索結果が存在する)場合は子要素の削除を試行、子要素がない(初回検索結果が存在しない)場合は他のメッセージを削除
+        if(movieadd_SearchList.hasChildNodes()) {
+          var first_search_link = document.getElementById(ID.get_movieadd_search_ID().first_search_link);
+          var more_link = document.getElementById(ID.get_movieadd_search_ID().more_search_link);
+
+          // 「映画が見つからない場合は」(first_search_link)や「さらに表示」(more_link)などのリンク要素があったら削除
+          if(first_search_link !== null) {
+            movieadd_SearchList.removeChild(first_search_link);
+          }
+          if(more_link !== null) {
+            movieadd_SearchList.removeChild(more_link);
+          }
+        }else {
+          var no_match_message = document.getElementById(ID.get_movieadd_search_ID().nodata_message);
+          no_match_message.innerHTML = '';
         }
 
         //初回の検索時は、リストヘッダーがないので書き込み。それ以降はinnerHTMLを更新する。
