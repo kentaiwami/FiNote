@@ -613,10 +613,32 @@ var Social = {
 			 */
 			var social_onomatopoeia_name_list = JSON.parse(results);
 			Utility.ObjArraySort(social_onomatopoeia_name_list, 'count', 'desc');
-			social_onomatopoeia_name_list = social_onomatopoeia_name_list.slice(0, Social.control.social_all_onomatopoeia_limit);
+
+			/*
+			 * 自分が付けたオノマトペと同じオノマトペを、
+			 * ・same_onomatopoeiaに格納
+			 * ・該当オブジェクトをsocial_onomatopoeia_name_listから削除
+			*/
+			var same_onomatopoeia = [];
+			social_onomatopoeia_name_list.forEach(function (onomatopoeia_obj, index, object) {
+				var same_onomatopoeia_name = local_onomatopoeia_name_list.filter(function (onomatopoeia_name) {
+					if (onomatopoeia_obj.name === onomatopoeia_name) return true;
+				});
+
+				if(same_onomatopoeia_name.length !== 0) {
+					same_onomatopoeia.push(onomatopoeia_obj);
+					object.splice(index, 1);
+				}
+			});
+
+			//自分もcountに含まれているので、1減らす
+			same_onomatopoeia = same_onomatopoeia.map(function (onomatopoeia_obj) {
+				return {"name": onomatopoeia_obj.name, "count": onomatopoeia_obj.count - 1};
+			});
+
 
 			//ソーシャルのオノマトペのhtml生成
-			var social_result = create_html(social_onomatopoeia_name_list, Social.control.social_slice_onomatopoeia_limit, false);
+			var social_result = create_html(social_onomatopoeia_name_list.slice(0, Social.control.social_all_onomatopoeia_limit), Social.control.social_slice_onomatopoeia_limit, false);
 
 			//ソーシャルオノマトペのboxが1つの場合
 			if(social_result.box_count === 1) {
