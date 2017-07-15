@@ -18,27 +18,33 @@
     <script src="cordova.js"></script>
     <script src="js/spin.min.js"></script>
     <script type="text/javascript" src="js/SocialSharing.js"></script>
-    <script type="text/javascript" src="js/rgbcolor.js"></script>
     <script type="text/javascript" src="js/chartist.min.js"></script>
-    <script src="js/index.js"></script>
+
+	<script src="js/FiNote/ID.js"></script>
+    <script src="js/FiNote/Utility.js"></script>
+	<script src="js/FiNote/DB_method.js"></script>
+	<script src="js/FiNote/Cordova.js"></script>
+	<script src="js/FiNote/Index.js"></script>
+	<script src="js/FiNote/Signup.js"></script>
+	<script src="js/FiNote/Signin.js"></script>
+	<script src="js/FiNote/Movies.js"></script>
+	<script src="js/FiNote/Movies_detail.js"></script>
+	<script src="js/FiNote/Movieadd_search.js"></script>
+	<script src="js/FiNote/Movieadd.js"></script>
+	<script src="js/FiNote/Feeling.js"></script>
+	<script src="js/FiNote/Movieadd_status.js"></script>
+	<script src="js/FiNote/Top.js"></script>
+	<script src="js/FiNote/SignOut.js"></script>
+	<script src="js/FiNote/Change_Sex.js"></script>
+	<script src="js/FiNote/Change_Email.js"></script>
+	<script src="js/FiNote/Change_Password.js"></script>
+	<script src="js/FiNote/Setting.js"></script>
+	<script src="js/FiNote/User.js"></script>
+	<script src="js/FiNote/Social.js"></script>
+	<script src="js/index.js"></script>
 </head>
 
 <body>
-<script>
-    //ブラウザでの確認のため強制的に遷移させるテストコード
-    // Utility.check_page_init('index',function(){Utility.push_page('movieadd_search.html', 'push', 0, '');});
-    // Utility.browser_signup();
-
-    //エラー表示用
-    window.onerror = function(msg, url, line, col, error) {
-        console.log(line);
-      console.log(msg);
-    };
-
-    //サインアップしているかどうかをチェックする
-    Index.check_signup();
-</script>
-
 <!-- ページ管理をするnavigatorを設置 -->
 <ons-navigator id="myNavigator" page="index.html"></ons-navigator>
 
@@ -55,7 +61,7 @@
 <!-- ●●●●●●●●● ここからtab.html ●●●●●●●●● -->
 <ons-template id="tab.html">
 <ons-page id="tab">
-    <ons-tabbar position="bottom">
+    <ons-tabbar position="bottom" id="tabbar">
         <ons-tab page="movies.html" label="映画の一覧" icon="ion-android-film" active="true"></ons-tab>
         <ons-tab page="social.html" label="ソーシャル" icon="ion-earth"></ons-tab>
         <ons-tab page="user.html" label="ユーザ情報" icon="ion-person"></ons-tab>
@@ -201,7 +207,7 @@
     <!-- ツールバー -->
     <ons-toolbar>
         <div class="left" onClick="Utility.pop_page(Movies.update_movies())"><ons-back-button class="brown_color"></ons-back-button></div>
-        <div class="center brown_color">詳細画面</div>
+        <div class="center brown_color">映画の詳細</div>
     </ons-toolbar>
 
     <div class="poster_area" id="detail_poster_area"></div>
@@ -247,7 +253,7 @@
     <div id="movieadd_no_match_message" class="all_center_message"></div>
 
     <!-- 検索結果を表示するリスト -->
-    <ons-list id="movieadd_search_list"></ons-list>
+    <div id="movieadd_search_list"></div>
 
     <!-- 追加済みの映画リストをタップした時のアラート -->
     <ons-dialog id="tap_exist_movie_list">
@@ -449,6 +455,12 @@
 <ons-page id="social">
     <!--ツールバー-->
     <ons-toolbar>
+		<div class="left">
+			<ons-toolbar-button onClick="Social.refresh()">
+				<ons-icon class="brown_color" icon="ion-ios-refresh-outline"></ons-icon>
+            </ons-toolbar-button>
+		</div>
+
         <div class="center brown_color">ソーシャル</div>
 
 		<div class="right">
@@ -457,6 +469,14 @@
             </ons-toolbar-button>
 		</div>
     </ons-toolbar>
+
+	<!-- 気分で検索する際に表示する検索フォーム-->
+	<div id="social_movies_search_area" style="display: none;">
+		<form action="javascript:Social.post_and_draw_get_movie_by_onomatopoeia()">
+			<input id="search_social_movies_input" type="search" value="" placeholder="他の人が追加した気分で検索" class="search-input movies_search_input" onfocus="Social.set_event_social_movies_search_input('focus')" onblur="Social.set_event_social_movies_search_input('blur')">
+		</form>
+		<ons-button id="social_movies_reset_button" onClick="Social.tap_reset_button()" class="movies_reset_button" modifier="quiet"><ons-icon class="brown_color" icon="ion-close-circled"></ons-icon></ons-button>
+	</div>
 
 	<!-- APIの結果を描画する要素-->
 	<div id="social_movie_list"></div>
@@ -688,5 +708,43 @@
 </ons-page>
 </ons-template>
 <!-- ●●●●●●●●● ここまでchange_sex.html ●●●●●●●●● -->
+
+
+
+
+
+<!-- ●●●●●●●●● ここからsimple.html ●●●●●●●●● -->
+<ons-template id="simple.html">
+<ons-page id="simple">
+	<!--ツールバー-->
+    <ons-toolbar>
+        <div class="left brown_color" id="simple_toolbar_left" onClick="Utility.pop_page()"></div>
+        <div class="center brown_color" id="simple_toolbar_center"></div>
+    </ons-toolbar>
+
+	<!-- コンテンツ -->
+	<div id="simple_content"></div>
+</ons-page>
+</ons-template>
+<!-- ●●●●●●●●● ここまでsimple.html ●●●●●●●●● -->
+
+
+<script>
+	//ブラウザでの確認のため強制的に遷移させるテストコード
+    // Utility.check_page_init('index',function(){Utility.push_page('movieadd_search.html', 'push', 0, '');});
+    // Utility.browser_signup();
+
+    //エラー表示用
+	window.onerror = function(msg, url, line, col, error) {
+        console.log(line);
+      console.log(msg);
+    };
+
+	// ローディングのgifを表示させる
+	var callback = function(){
+        document.getElementById(ID.get_index_ID().page_id).innerHTML = '<img  src="img/splash.gif" alt="" width="100%" height="100%">';
+    };
+    Utility.check_page_init(ID.get_index_ID().page_id,callback);
+</script>
 </body>
 </html>

@@ -2,8 +2,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.management import BaseCommand
 from django.db.models import Max, Min
 from rest_framework_jwt.serializers import User
-
-from FiNote_API.functions import MovieAdd, Backup
+from FiNote_API.functions import *
 from FiNote_API.models import Onomatopoeia, Movie
 import random
 import requests
@@ -13,6 +12,7 @@ from myapi.settings import TMDB_APIKEY
 output_value = {'range_page': '',
                 'select_page': '',
                 'api': ''}
+
 
 class Command(BaseCommand):
     help = 'Movie add random choice movies'
@@ -36,7 +36,7 @@ class Command(BaseCommand):
                     continue
 
                 # ジャンルの保存
-                genre_obj_dict, genre_obj_list = MovieAdd.genre(self, movie['genre_ids'])
+                genre_obj_dict, genre_obj_list = get_or_create_genre(movie['genre_ids'])
 
                 # 映画の保存
                 data = {'username': params['user'].username,
@@ -45,7 +45,7 @@ class Command(BaseCommand):
                         'overview': movie['overview'],
                         'poster_path': movie['poster_path']
                         }
-                MovieAdd.movie(self, genre_obj_list, params['onomatopoeia'], data)
+                add_movie(genre_obj_list, params['onomatopoeia'], data)
 
                 # バックアップの保存
                 backup_data = {'username': params['user'].username,
@@ -55,7 +55,7 @@ class Command(BaseCommand):
                                'fav': params['fav']
                                }
 
-                Backup.movieadd_backup(self, backup_data)
+                movieadd_backup(backup_data)
 
                 self.stdout.write(self.style.SUCCESS('***** Movie Add Success *****'))
                 self.output_console(params)
@@ -170,8 +170,8 @@ class Command(BaseCommand):
         :return: Params. 
         """
 
-        user = self.choice_user()
-        onomatopoeia = self.choice_onomatopoeia()
+        user = choice_user()
+        onomatopoeia = choice_onomatopoeia()
         dvd_status = random.randint(0, 1)
         fav_status = random.randint(0, 1)
         movie = self.get_movie()
@@ -181,46 +181,6 @@ class Command(BaseCommand):
                 "dvd": dvd_status,
                 "fav": fav_status,
                 "movie": movie}
-
-    def choice_onomatopoeia(self):
-        """
-        Choice onomatopoeia random counts(one to three).
-        :return: Onomatopoeia Object list.
-        """
-
-        max_pk = Onomatopoeia.objects.all().aggregate(Max('pk'))
-        min_pk = Onomatopoeia.objects.all().aggregate(Min('pk'))
-        choice_onomatopoeia_count = random.randint(1, 3)
-        onomatopoeia_obj_list = []
-
-        while len(onomatopoeia_obj_list) < choice_onomatopoeia_count:
-            pk = random.randint(min_pk['pk__min'], max_pk['pk__max'])
-            try:
-                onomatopoeia_obj = Onomatopoeia.objects.get(pk=pk)
-                onomatopoeia_obj_list.append(onomatopoeia_obj)
-            except ObjectDoesNotExist:
-                pass
-
-        return onomatopoeia_obj_list
-
-    def choice_user(self):
-        """
-        Get random choice a user.
-        :return: User object.
-        """
-
-        max_pk = User.objects.all().aggregate(Max('pk'))
-        min_pk = User.objects.all().aggregate(Min('pk'))
-
-        while True:
-            user_pk = random.randint(min_pk['pk__min'], max_pk['pk__max'])
-            try:
-                user = User.objects.get(pk=user_pk)
-                break
-            except ObjectDoesNotExist:
-                pass
-
-        return user
 
     def output_console(self, param):
         """
@@ -247,3 +207,45 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS('movie: ' + str(param['movie'])))
         except UnicodeEncodeError:
             self.stdout.write(self.style.SUCCESS('Process is success but output UnicodeEncodeError.'))
+
+
+def choice_user():
+    """
+    Get random choice a user.
+    :return: User object.
+    """
+
+    max_pk = User.objects.all().aggregate(Max('pk'))
+    min_pk = User.objects.all().aggregate(Min('pk'))
+
+    while True:
+        user_pk = random.randint(min_pk['pk__min'], max_pk['pk__max'])
+        try:
+            user = User.objects.get(pk=user_pk)
+            break
+        except ObjectDoesNotExist:
+            pass
+
+    return user
+
+
+def choice_onomatopoeia():
+    """
+    Choice onomatopoeia random counts(one to three).
+    :return: Onomatopoeia Object list.
+    """
+
+    max_pk = Onomatopoeia.objects.all().aggregate(Max('pk'))
+    min_pk = Onomatopoeia.objects.all().aggregate(Min('pk'))
+    choice_onomatopoeia_count = random.randint(1, 3)
+    onomatopoeia_obj_list = []
+
+    while len(onomatopoeia_obj_list) < choice_onomatopoeia_count:
+        pk = random.randint(min_pk['pk__min'], max_pk['pk__max'])
+        try:
+            onomatopoeia_obj = Onomatopoeia.objects.get(pk=pk)
+            onomatopoeia_obj_list.append(onomatopoeia_obj)
+        except ObjectDoesNotExist:
+            pass
+
+    return onomatopoeia_obj_list

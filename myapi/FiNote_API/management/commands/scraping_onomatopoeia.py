@@ -22,15 +22,15 @@ class Command(BaseCommand):
             print(str(i) + ' is start')
 
             if not options['test']:
-                names = self.scraping(i)
+                names = scraping(i)
                 for name in names:
                     kana_name = jaconv.hira2kata(name)
-                    obj, created = Onomatopoeia.objects.get_or_create(
+                    Onomatopoeia.objects.get_or_create(
                         name=kana_name,
                         defaults={'name': kana_name}
                     )
             else:
-                names = self.scraping(i)
+                names = scraping(i)
                 kana_names = []
                 for name in names:
                     kana_name = jaconv.hira2kata(name)
@@ -43,23 +43,24 @@ class Command(BaseCommand):
             count = Onomatopoeia.objects.count()
             self.stdout.write(self.style.SUCCESS('Onomatopoeia count = "%s"' % count))
 
-    def scraping(self, number):
-        """
-        Scraping a web page and return onomatopoeia name list.
-        :param number: page number.
-        :return: Onomatopoeia name list.
-        
-        :type number: int
-        """
 
-        names = []
+def scraping(number):
+    """
+    Scraping a web page and return onomatopoeia name list.
+    :param number: page number.
+    :return: Onomatopoeia name list.
 
-        target_url = 'http://sura-sura.com/page/' + str(number)
-        target_html = requests.get(target_url).text
-        dom = lxml.html.fromstring(target_html)
-        links = dom.cssselect('#post_list_type1 h3 a')
+    :type number: int
+    """
 
-        for link in links:
-            names.append(link.text)
+    names = []
 
-        return names
+    target_url = 'http://sura-sura.com/page/' + str(number)
+    target_html = requests.get(target_url).text
+    dom = lxml.html.fromstring(target_html)
+    links = dom.cssselect('#post_list_type1 h3 a')
+
+    for link in links:
+        names.append(link.text)
+
+    return names

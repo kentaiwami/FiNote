@@ -190,108 +190,108 @@
 }
 
 .ct-series-a .ct-point, .ct-series-a .ct-line, .ct-series-a .ct-bar, .ct-series-a .ct-slice-donut {
-  stroke: rgba(215, 2, 6, 0.6);
+  stroke: rgba(215, 2, 6, 0.8);
 }
 .ct-series-a .ct-slice-pie, .ct-series-a .ct-slice-donut-solid, .ct-series-a .ct-area {
-  fill: rgba(215, 2, 6, 0.6);
+  fill: rgba(215, 2, 6, 0.8);
 }
 
 .ct-series-b .ct-point, .ct-series-b .ct-line, .ct-series-b .ct-bar, .ct-series-b .ct-slice-donut {
-  stroke: rgba(240, 91, 79, 0.6);
+  stroke: rgba(240, 91, 79, 0.8);
 }
 .ct-series-b .ct-slice-pie, .ct-series-b .ct-slice-donut-solid, .ct-series-b .ct-area {
-  fill: rgba(240, 91, 79, 0.6);
+  fill: rgba(240, 91, 79, 0.8);
 }
 
 .ct-series-c .ct-point, .ct-series-c .ct-line, .ct-series-c .ct-bar, .ct-series-c .ct-slice-donut {
-  stroke: rgba(244, 198, 61, 0.6);
+  stroke: rgba(244, 198, 61, 0.8);
 }
 .ct-series-c .ct-slice-pie, .ct-series-c .ct-slice-donut-solid, .ct-series-c .ct-area {
-  fill: rgba(244, 198, 61, 0.6);
+  fill: rgba(244, 198, 61, 0.8);
 }
 
 .ct-series-d .ct-point, .ct-series-d .ct-line, .ct-series-d .ct-bar, .ct-series-d .ct-slice-donut {
-  stroke: rgba(209, 121, 5, 0.6);
+  stroke: rgba(209, 121, 5, 0.8);
 }
 .ct-series-d .ct-slice-pie, .ct-series-d .ct-slice-donut-solid, .ct-series-d .ct-area {
-  fill: rgba(209, 121, 5, 0.6);
+  fill: rgba(209, 121, 5, 0.8);
 }
 
 .ct-series-e .ct-point, .ct-series-e .ct-line, .ct-series-e .ct-bar, .ct-series-e .ct-slice-donut {
-  stroke: rgba(69, 61, 63, 0.6);
+  stroke: rgba(69, 61, 63, 0.8);
 }
 .ct-series-e .ct-slice-pie, .ct-series-e .ct-slice-donut-solid, .ct-series-e .ct-area {
-  fill: rgba(69, 61, 63, 0.6);
+  fill: rgba(69, 61, 63, 0.8);
 }
 
 .ct-series-f .ct-point, .ct-series-f .ct-line, .ct-series-f .ct-bar, .ct-series-f .ct-slice-donut {
-  stroke: rgba(89, 146, 43, 0.6);
+  stroke: rgba(89, 146, 43, 0.8);
 }
 .ct-series-f .ct-slice-pie, .ct-series-f .ct-slice-donut-solid, .ct-series-f .ct-area {
-  fill: rgba(89, 146, 43, 0.6);
+  fill: rgba(89, 146, 43, 0.8);
 }
 
 .ct-series-g .ct-point, .ct-series-g .ct-line, .ct-series-g .ct-bar, .ct-series-g .ct-slice-donut {
-  stroke: rgba(5, 68, 211, 0.6);
+  stroke: rgba(5, 68, 211, 0.8);
 }
 .ct-series-g .ct-slice-pie, .ct-series-g .ct-slice-donut-solid, .ct-series-g .ct-area {
-  fill: rgba(5, 68, 211, 0.6);
+  fill: rgba(5, 68, 211, 0.8);
 }
 
 .ct-series-h .ct-point, .ct-series-h .ct-line, .ct-series-h .ct-bar, .ct-series-h .ct-slice-donut {
-  stroke: rgba(107, 3, 146, 0.6);
+  stroke: rgba(107, 3, 146, 0.8);
 }
 .ct-series-h .ct-slice-pie, .ct-series-h .ct-slice-donut-solid, .ct-series-h .ct-area {
-  fill: rgba(107, 3, 146, 0.6);
+  fill: rgba(107, 3, 146, 0.8);
 }
 
 .ct-series-i .ct-point, .ct-series-i .ct-line, .ct-series-i .ct-bar, .ct-series-i .ct-slice-donut {
-  stroke: rgba(240, 91, 79, 0.6);
+  stroke: rgba(240, 91, 79, 0.8);
 }
 .ct-series-i .ct-slice-pie, .ct-series-i .ct-slice-donut-solid, .ct-series-i .ct-area {
-  fill: rgba(240, 91, 79, 0.6);
+  fill: rgba(240, 91, 79, 0.8);
 }
 
 .ct-series-j .ct-point, .ct-series-j .ct-line, .ct-series-j .ct-bar, .ct-series-j .ct-slice-donut {
-  stroke: rgba(221, 164, 88, 0.6);
+  stroke: rgba(221, 164, 88, 0.8);
 }
 .ct-series-j .ct-slice-pie, .ct-series-j .ct-slice-donut-solid, .ct-series-j .ct-area {
-  fill: rgba(221, 164, 88, 0.6);
+  fill: rgba(221, 164, 88, 0.8);
 }
 
 .ct-series-k .ct-point, .ct-series-k .ct-line, .ct-series-k .ct-bar, .ct-series-k .ct-slice-donut {
-  stroke: rgba(234, 207, 125, 0.6);
+  stroke: rgba(234, 207, 125, 0.8);
 }
 .ct-series-k .ct-slice-pie, .ct-series-k .ct-slice-donut-solid, .ct-series-k .ct-area {
-  fill: rgba(234, 207, 125, 0.6);
+  fill: rgba(234, 207, 125, 0.8);
 }
 
 .ct-series-l .ct-point, .ct-series-l .ct-line, .ct-series-l .ct-bar, .ct-series-l .ct-slice-donut {
-  stroke: rgba(134, 121, 125, 0.6);
+  stroke: rgba(134, 121, 125, 0.8);
 }
 .ct-series-l .ct-slice-pie, .ct-series-l .ct-slice-donut-solid, .ct-series-l .ct-area {
-  fill: rgba(134, 121, 125, 0.6);
+  fill: rgba(134, 121, 125, 0.8);
 }
 
 .ct-series-m .ct-point, .ct-series-m .ct-line, .ct-series-m .ct-bar, .ct-series-m .ct-slice-donut {
-  stroke: rgba(178, 195, 38, 0.6);
+  stroke: rgba(178, 195, 38, 0.8);
 }
 .ct-series-m .ct-slice-pie, .ct-series-m .ct-slice-donut-solid, .ct-series-m .ct-area {
-  fill: rgba(178, 195, 38, 0.6);
+  fill: rgba(178, 195, 38, 0.8);
 }
 
 .ct-series-n .ct-point, .ct-series-n .ct-line, .ct-series-n .ct-bar, .ct-series-n .ct-slice-donut {
-  stroke: rgba(97, 136, 226, 0.6);
+  stroke: rgba(97, 136, 226, 0.8);
 }
 .ct-series-n .ct-slice-pie, .ct-series-n .ct-slice-donut-solid, .ct-series-n .ct-area {
-  fill: rgba(97, 136, 226, 0.6);
+  fill: rgba(97, 136, 226, 0.8);
 }
 
 .ct-series-o .ct-point, .ct-series-o .ct-line, .ct-series-o .ct-bar, .ct-series-o .ct-slice-donut {
-  stroke: rgba(167, 72, 202, 0.6);
+  stroke: rgba(167, 72, 202, 0.8);
 }
 .ct-series-o .ct-slice-pie, .ct-series-o .ct-slice-donut-solid, .ct-series-o .ct-area {
-  fill: rgba(167, 72, 202, 0.6);
+  fill: rgba(167, 72, 202, 0.8);
 }
 
 .ct-square {
@@ -775,6 +775,11 @@
   background-color: #462401;
 }
 
+.list-header {
+  color: #FFF;
+  background-color: rgba(70, 36, 1, 0.85);
+}
+
 /************************************************************
                             Form
  ************************************************************/
@@ -864,9 +869,9 @@
 
 .exist_message:after {
   position: relative;
-  bottom: -0.16em;
-  margin-left: 0.1em;
-  margin-right: 0.3em;
+  bottom: -.16em;
+  margin-left: .1em;
+  margin-right: .3em;
   content: '追加済み';
 }
 
@@ -918,6 +923,23 @@
   opacity: .4;
 }
 
+.center_link_block, .center_link {
+  display: inline-block;
+  width: 100%;
+  max-height: 3rem;
+  padding: 1rem 0;
+  background-color: #FFF;
+  color: #00F;
+  text-align: center;
+}
+.center_link_block:active, .center_link:active {
+  background-color: #EEE;
+}
+
+.center_link {
+  background-color: transparent;
+}
+
 /************************************************************
                             Button
 ************************************************************/
@@ -934,6 +956,7 @@
   position: absolute;
   top: 0;
   left: 80%;
+  margin-top: -.2%;
   visibility: hidden;
 }
 
@@ -945,6 +968,7 @@
 .reset_button {
   position: absolute;
   top: 0;
+  margin-top: -1%;
   margin-left: 100%;
   visibility: hidden;
 }
@@ -1017,7 +1041,7 @@
 }
 
 .origin_list_width {
-  width: 15rem;
+  width: 14rem;
 }
 
 .harf_list_height, .harf_list_height_top {
@@ -1157,13 +1181,13 @@
 .info-num {
   font-size: 16px;
   font-weight: 500;
-  opacity: 0.8;
+  opacity: .8;
 }
 
 .info-unit {
   margin-top: 6px;
   font-size: 14px;
-  opacity: 0.4;
+  opacity: .4;
 }
 
 .ct-label {
@@ -1178,6 +1202,46 @@
   margin: .987rem 0;
   height: 40vw;
   padding: .987rem 0;
+}
+
+/************************************************************
+                          Box
+************************************************************/
+.box, .box_center {
+  padding: .5rem 1em;
+  margin: 1.4rem .5rem;
+  color: #5d627b;
+  background: white;
+  border-top: solid 5px #BE956A;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.22);
+}
+
+.box_center {
+  text-align: center;
+}
+
+.box_content_p, .box_content_p_strong {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  color: #462401;
+  font-weight: 500;
+}
+
+.box_content_p_strong {
+  background: linear-gradient(transparent 80%, rgba(190, 149, 106, 0.4) 80%);
+}
+
+.box_content {
+  display: block;
+  padding: .35rem 0;
+  border-bottom: solid #EEE .1rem;
+}
+
+.box_mini_message_bottom_right {
+  text-align: right;
+  color: #462401;
+  font-weight: 500;
 }
 
 /************************************************************
