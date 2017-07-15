@@ -20,6 +20,14 @@ var Social = {
 		first_limit: 20, after_limit: 10, onomatopoeia_draw_limit: 6, request_limit: 2,
 		social_all_onomatopoeia_limit: 40, social_slice_onomatopoeia_limit: 4, local_slice_onomatopoeia_limit: 3},
 
+	/**
+	 * リフレッシュボタンの挙動に使用
+	 * @param {Number} now - 	0: 最新ランキング
+	 * 												1: 気分の比較一覧
+	 * 												2: 気分で追加されている映画を検索
+	 * 												3: 年代別の人気ランキング
+	 */
+	screen: {now: 0},
 
 
 	/**
@@ -125,6 +133,46 @@ var Social = {
 
 
 	/**
+	 * 受け取った画面の識別番号によって、描画実行を行う関数
+	 * @param {Number} num - 	0: 最新ランキング
+	 * 												1: 気分の比較一覧
+	 * 												2: 気分で追加されている映画を検索
+	 * 												3: 年代別の人気ランキング
+	 */
+	run_functions: function (num) {
+		switch (num){
+			//最新ランキング
+			case 0:
+				Social.screen.now = num;
+				document.getElementById(ID.get_social_ID().search_area).style.display = 'none';
+				Social.draw_get_recently_movie_list();
+				break;
+
+			//気分の比較一覧
+			case 1:
+				Social.screen.now = num;
+				document.getElementById(ID.get_social_ID().search_area).style.display = 'none';
+				Social.get_movie_reactions();
+				break;
+
+			//気分で追加されている映画を検索
+			case 2:
+				Social.screen.now = num;
+				Utility.hideKeyboardAccessoryBar(true);
+				document.getElementById(ID.get_social_ID().movie_list).innerHTML = '';
+				document.getElementById(ID.get_social_ID().search_area).style.display = 'inline-block';
+				break;
+
+			//年代別の人気ランキング
+			case 3:
+				Social.screen.now = num;
+				document.getElementById(ID.get_social_ID().search_area).style.display = 'none';
+				Social.draw_get_movie_by_age();
+				break;
+      }
+	},
+
+	/**
    * 表示切り替え用のアクションシートを表示する
 	 */
 	show_action_sheet: function () {
@@ -144,32 +192,7 @@ var Social = {
     }).then(function(index){
       console.log('index: ' + index);
 
-      switch (index){
-        //最新ランキング
-        case 0:
-          document.getElementById(ID.get_social_ID().search_area).style.display = 'none';
-          Social.draw_get_recently_movie_list();
-          break;
-
-        //気分の比較一覧
-        case 1:
-          document.getElementById(ID.get_social_ID().search_area).style.display = 'none';
-          Social.get_movie_reactions();
-          break;
-
-        //気分で追加されている映画を検索
-        case 2:
-          Utility.hideKeyboardAccessoryBar(true);
-          document.getElementById(ID.get_social_ID().movie_list).innerHTML = '';
-          document.getElementById(ID.get_social_ID().search_area).style.display = 'inline-block';
-          break;
-
-        //年代別の人気ランキング
-        case 3:
-          document.getElementById(ID.get_social_ID().search_area).style.display = 'none';
-          Social.draw_get_movie_by_age();
-          break;
-      }
+      Social.run_functions(index);
     })
 	},
 
@@ -791,5 +814,15 @@ var Social = {
 
     var social_movie_list = document.getElementById(ID.get_social_ID().movie_list);
     social_movie_list.innerHTML = '<ons-list>' + html + '</ons-list>';
+	},
+
+
+	/**
+	 * 現在表示している画面を再描画する関数
+	 */
+	refresh: function () {
+		console.log('Refresh:' ,Social.screen.now);
+
+		Social.run_functions(Social.screen.now);
 	}
 };
