@@ -518,7 +518,10 @@ var Social = {
 	},
 
 
-	//TODO 
+	/**
+	 * 気分の比較の詳細を表示する関数
+	 * @param {Number} index - タップされたリストの番号
+	 */
 	show_detail_comparison_onomatopoeia: function (index) {
 		Utility.show_spinner(ID.get_social_ID().page_id);
 
