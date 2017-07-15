@@ -244,8 +244,6 @@ var Movieadd_search = {
 			if(movie_title_id_results.length === 0) {
 			  Utility.show_error_alert('', '原題でさらに検索しましたが見つかりませんでした', 'OK');
       }else {
-
-
 			  //APIで取得した映画名のリストを表示
         var list_html = '';
         for(var i = 0; i < movie_title_id_results.length; i++) {
