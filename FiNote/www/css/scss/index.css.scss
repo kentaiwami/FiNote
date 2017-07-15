@@ -555,9 +555,17 @@ $font-small: .75rem;
   text-align: center ;
 }
 
-.box_content p {
+.box_content_p {
+  display: inline ;
   margin: 0;
   padding: 0;
+  color: $color-brown;
+  font-weight: 500;
+}
+
+.box_content_p_strong {
+  @extend .box_content_p;
+  background: linear-gradient(transparent 80%, rgba(190, 149, 106, .4) 80%);
 }
 
 .box_content {
@@ -567,7 +575,9 @@ $font-small: .75rem;
 }
 
 .box_mini_message_bottom_right {
-    text-align: right;
+  text-align: right;
+  color: $color-brown;
+  font-weight: 500;
 }
 
 

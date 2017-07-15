@@ -530,13 +530,18 @@ var Social = {
 
 			/*
 			 * ローカル、ソーシャルのオノマトペを表示するhtml要素を生成する関数
+			 * @param {Array} onomatopoeia_list - 名前のみ or 名前とカウント回数が保存されたArray
+			 * @param {Number} slice_limit 			- 何個ずつ区切るかの値
+			 * @param {boolean} flag 						- trueならローカル、falseならソーシャルの表示
+			 * @param {Number} _same_count 			- ローカルとソーシャルのオノマトペの一致回数
 			 */
-			var create_html = function (onomatopoeia_list, slice_limit, flag) {
+			var create_html = function (onomatopoeia_list, slice_limit, flag, _same_count) {
 				var box_count = 0;
 				var html = '';
 				var start_index = 0;
 				var end_index = slice_limit;
 				var sliced = onomatopoeia_list.slice(start_index, end_index);
+				var strong_count = 0;
 
 				while(sliced.length !== 0) {
 					box_count += 1;
@@ -545,13 +550,24 @@ var Social = {
 						html += '<div class="box_center">';
 
 						sliced.forEach(function (onomatopoeia_name) {
-							html += '<div class="box_content"><p>' + onomatopoeia_name + '</p></div>'
+							html += '<div class="box_content"><p class="box_content_p">' + onomatopoeia_name + '</p></div>'
 						});
 					}else {
 						html += '<div class="box">';
 
 						sliced.forEach(function (onomatopoeia_obj) {
-							html += '<div class="box_content"><p>' + onomatopoeia_obj.name +'</p><div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>'+ onomatopoeia_obj.count + '</div></div>';
+							var p_class_name = 'box_content_p';
+
+							if(strong_count < _same_count) {
+								p_class_name = 'box_content_p_strong';
+								strong_count += 1;
+							}
+
+							html +=
+								'<div class="box_content">'+
+								'<p class="'+p_class_name+'">' + onomatopoeia_obj.name +'</p>'+
+								'<div class="box_mini_message_bottom_right"><ons-icon icon="ion-person"></ons-icon>'+ onomatopoeia_obj.count + '</div>'+
+								'</div>';
 						});
 					}
 
@@ -631,14 +647,14 @@ var Social = {
 				}
 			});
 
-			//自分もcountに含まれているので、1減らす
-			same_onomatopoeia = same_onomatopoeia.map(function (onomatopoeia_obj) {
-				return {"name": onomatopoeia_obj.name, "count": onomatopoeia_obj.count - 1};
+			//自分もcountに含まれているので、1減らしたものを先頭に挿入していく
+			same_onomatopoeia.forEach(function (onomatopoeia_obj) {
+				social_onomatopoeia_name_list.unshift({"name": onomatopoeia_obj.name, "count": onomatopoeia_obj.count - 1});
 			});
 
 
 			//ソーシャルのオノマトペのhtml生成
-			var social_result = create_html(social_onomatopoeia_name_list.slice(0, Social.control.social_all_onomatopoeia_limit), Social.control.social_slice_onomatopoeia_limit, false);
+			var social_result = create_html(social_onomatopoeia_name_list.slice(0, Social.control.social_all_onomatopoeia_limit), Social.control.social_slice_onomatopoeia_limit, false, same_onomatopoeia.length);
 
 			//ソーシャルオノマトペのboxが1つの場合
 			if(social_result.box_count === 1) {

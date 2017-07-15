@@ -1220,9 +1220,16 @@
   text-align: center;
 }
 
-.box_content p {
+.box_content_p, .box_content_p_strong {
+  display: inline;
   margin: 0;
   padding: 0;
+  color: #462401;
+  font-weight: 500;
+}
+
+.box_content_p_strong {
+  background: linear-gradient(transparent 80%, rgba(190, 149, 106, 0.4) 80%);
 }
 
 .box_content {
@@ -1233,6 +1240,8 @@
 
 .box_mini_message_bottom_right {
   text-align: right;
+  color: #462401;
+  font-weight: 500;
 }
 
 /************************************************************
