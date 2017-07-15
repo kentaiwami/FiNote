@@ -86,7 +86,7 @@ var Movieadd_search = {
     no_match_message.innerHTML = '';
 
     if (text.length > 0) {
-      Utility.show_spinner(ID.get_movieadd_search_ID().nodata_message);
+      Utility.show_spinner(ID.get_movieadd_search_ID().page_id);
 
       //日本語と英語のリクエスト、ローカルDBから記録した映画リストの取得
       var query = 'SELECT tmdb_id FROM movie';
