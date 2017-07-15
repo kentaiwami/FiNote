@@ -20,7 +20,7 @@ from FiNote_API.thread import *
 
 # [0]: GetSearchMovieTitleResultsViewSet
 # [1]: GetOriginalTitleViewSet
-test_flag = [True, True]
+test_flag = [False, False]
 
 
 class SignUpViewSet(viewsets.ViewSet):
