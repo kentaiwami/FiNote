@@ -189,6 +189,9 @@ var Movieadd_search = {
               document.getElementById('overview_' + i).innerHTML += '…';
             }
           }
+
+          //画面のトップまでスクロール
+          $('#'+ID.get_movieadd_search_ID().page_id+', .page__content').animate({scrollTop:0}, 500, 'swing');
         }
       }).catch(function(err) {
         console.log(err);
