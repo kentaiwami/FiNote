@@ -201,7 +201,7 @@ var Movieadd_search = {
 
 
 	/**
-   * 原題でさらに検索というリンクのhtmlを返す
+   * 「検索結果が見つからない場合」というリンクのhtmlを返す
 	 * @param   {boolean} flag  - trueならリストと同様に表示、falseならリンク文字のみ
 	 * @returns {string}        - リンクのhtml
 	 */
