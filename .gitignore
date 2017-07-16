@@ -20,4 +20,9 @@ resources/signing
 *.png
 *.jpeg
 *.jpg
+
+#GIMP
 *.xcf
+
+#Icon
+!/icon.png
