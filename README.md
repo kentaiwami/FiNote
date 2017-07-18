@@ -1,6 +1,6 @@
 <img src="icon.png" align="right" />
 
-フィノート(FiNote)
+FiNote(フィノート)
 ====
 
 ## 概要
