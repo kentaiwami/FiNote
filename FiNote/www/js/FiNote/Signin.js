@@ -102,7 +102,13 @@ var Signin = {
           // 画像のダウンロード
           var base_url = 'https://image.tmdb.org/t/p/w300_and_h450_bestv2';
           var image = new Image();
-          image.src = base_url + movie.movie__poster_path;
+
+          if(movie.movie__poster_path.length === 0) {
+            image.src = 'img/noimage.png';
+          }else {
+            image.src = base_url + movie.movie__poster_path;
+          }
+
           image.onload = function () {
 
             var promises = [];

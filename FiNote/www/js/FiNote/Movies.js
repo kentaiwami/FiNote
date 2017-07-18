@@ -73,49 +73,55 @@ var Movies = {
         Utility.push_page(ID.get_tab_ID().tmp_id,'fade',0, '');
 			}else {
         for(var i = 0; i < local_movies.rows.length; i++ ){
-        var local_movie = local_movies.rows.item(i);
-        var sql_base = 'UPDATE movie SET poster = ?,';
-        var sql_data = {};
+          var local_movie = local_movies.rows.item(i);
+          var sql_base = 'UPDATE movie SET poster = ?,';
+          var sql_data = {};
 
-        //該当するtmdb_idを持つオブジェクトを抽出
-        var movie_info_result = movie_info_results_json.filter(function(item){
-          if (Object.keys(item)[0] === String(local_movie.tmdb_id)) return true;
-        });
+          //該当するtmdb_idを持つオブジェクトを抽出
+          var movie_info_result = movie_info_results_json.filter(function(item){
+            if (Object.keys(item)[0] === String(local_movie.tmdb_id)) return true;
+          });
 
-        //タイトルの判定と追加
-        if(local_movie.title !== movie_info_result[0][local_movie.tmdb_id].title) {
-          sql_base += 'title = ?,';
-          sql_data['title'] = movie_info_result[0][local_movie.tmdb_id].title;
-        }
+          //タイトルの判定と追加
+          if(local_movie.title !== movie_info_result[0][local_movie.tmdb_id].title) {
+            sql_base += 'title = ?,';
+            sql_data['title'] = movie_info_result[0][local_movie.tmdb_id].title;
+          }
 
-        //概要文の判定と追加
-        if(local_movie.overview !== movie_info_result[0][local_movie.tmdb_id].overview) {
-          sql_base += 'overview = ?,';
-          sql_data['overview'] = movie_info_result[0][local_movie.tmdb_id].overview;
-        }
+          //概要文の判定と追加
+          if(local_movie.overview !== movie_info_result[0][local_movie.tmdb_id].overview) {
+            sql_base += 'overview = ?,';
+            sql_data['overview'] = movie_info_result[0][local_movie.tmdb_id].overview;
+          }
 
-        sql_data['tmdb_id'] = local_movie.tmdb_id;
+          sql_data['tmdb_id'] = local_movie.tmdb_id;
 
-        //最後のカンマを削除、条件の追加
-        sql_base = sql_base.substr(0, sql_base.length-1);
-        sql_base += ' WHERE tmdb_id = ?';
+          //最後のカンマを削除、条件の追加
+          sql_base = sql_base.substr(0, sql_base.length-1);
+          sql_base += ' WHERE tmdb_id = ?';
 
-        sql_and_data_list.push({"sql": sql_base, "data": sql_data});
+          sql_and_data_list.push({"sql": sql_base, "data": sql_data});
 
-        // ポスターの取得
-        var base_url = 'https://image.tmdb.org/t/p/w300_and_h450_bestv2';
-        var image = new Image();
-        image.src = base_url + movie_info_result[0][local_movie.tmdb_id].poster_path;
-        image.onload = (function(image, i){
-          return function(){
-            base64_obj_list.push({"promise": Utility.image_to_base64(image, 'image/jpeg'), "i": i});
-            loaded_count += 1;
+          // ポスターの取得
+          var base_url = 'https://image.tmdb.org/t/p/w300_and_h450_bestv2';
+          var image = new Image();
 
-            if(loaded_count === local_movies.rows.length) {
-						  Movies.local_movies_update_and_draw_movies(base64_obj_list, sql_and_data_list);
-            }
-           }
-       })(image, i);
+          if(movie_info_result[0][local_movie.tmdb_id].poster_path.length === 0) {
+            image.src = 'img/noimage.png';
+          }else {
+            image.src = base_url + movie_info_result[0][local_movie.tmdb_id].poster_path;
+          }
+
+          image.onload = (function(image, i){
+            return function(){
+              base64_obj_list.push({"promise": Utility.image_to_base64(image, 'image/jpeg'), "i": i});
+              loaded_count += 1;
+
+              if(loaded_count === local_movies.rows.length) {
+                Movies.local_movies_update_and_draw_movies(base64_obj_list, sql_and_data_list);
+              }
+             }
+         })(image, i);
       }
       }
 
