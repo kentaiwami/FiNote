@@ -357,7 +357,7 @@ var Utility = {
   FiNote_API: function(api_name, data, method, version) {
     return new Promise(function(resolve, reject) {
       var request = new XMLHttpRequest();
-      var request_url = 'http://kentaiwami.jp/FiNote/api/' + version + '/' + api_name + '/';
+      var request_url = 'https://kentaiwami.jp/FiNote/api/' + version + '/' + api_name + '/';
       request.open(method, request_url);
       request.setRequestHeader("Content-type", "application/json");
 
