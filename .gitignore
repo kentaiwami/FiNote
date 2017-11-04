@@ -26,3 +26,6 @@ resources/signing
 
 #Icon
 !/icon.png
+
+#backup
+/backup
