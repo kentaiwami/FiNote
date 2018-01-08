@@ -222,7 +222,12 @@ def choice_user():
         user_pk = random.randint(min_pk['pk__min'], max_pk['pk__max'])
         try:
             user = User.objects.get(pk=user_pk)
-            break
+
+            # 自動で登録されたユーザのみ選択
+            if user.email == user.username + '@' + user.username + '.jp':
+                break
+            else:
+                pass
         except ObjectDoesNotExist:
             pass
 

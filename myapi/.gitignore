@@ -2,8 +2,7 @@ oche__/
 *.py[cod]
 db.sqlite3
 settings.py
-.idea/dictionaries/
-.idea/markdown-navigator/
+.idea/
 FiNote_API/__pycache__/
 FiNote_API/management/__pycache__/
 FiNote_API/management/commands/__pycache__/
