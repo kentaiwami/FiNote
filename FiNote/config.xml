@@ -22,6 +22,14 @@
     <author email="dev@cordova.apache.org" href="http://cordova.io">
       Apache Cordova Team
   </author>
+    
+    <config-file platform="ios" target="*-Info.plist" parent="Privacy - Camera Usage Description">
+        <string>ユーザプロフィールのイメージを変更するために使用します</string>
+    </config-file>
+    <config-file platform="ios" target="*-Info.plist" parent="Privacy - Photo Library Usage Description">
+        <string>ユーザプロフィールのイメージを変更するために使用します</string>
+    </config-file>
+    
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />

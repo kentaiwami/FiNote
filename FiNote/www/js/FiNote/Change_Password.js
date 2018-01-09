@@ -66,7 +66,7 @@ var Change_Password = {
         "new_password": new_pass
       };
 
-      Utility.FiNote_API('change_password', data, 'POST', 'v1').then(function(token_obj) {
+      Utility.FiNote_API('update_password', data, 'POST', 'v1').then(function(token_obj) {
         var json_data = JSON.parse(token_obj);
         storage.setItem(ID.get_localStorage_ID().password, new_pass);
         storage.setItem(ID.get_localStorage_ID().token, json_data.token);
