@@ -35,6 +35,7 @@ class Command(BaseCommand):
                               'password': user_param['password'],
                               'birthday': user_param['birth_year'],
                               'sex': user_param['sex'],
+                              'is_dummy': user_param['is_dummy']
                               },
                 )
 
@@ -254,4 +255,5 @@ def generate_user_params():
             "sex": sex,
             "password": password,
             "birth_year": birth_year,
-            "img_url": user['profile_image_url']}
+            "img_url": user['profile_image_url'],
+            "is_dummy": True}
