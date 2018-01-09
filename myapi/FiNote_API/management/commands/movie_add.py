@@ -224,7 +224,7 @@ def choice_user():
             user = User.objects.get(pk=user_pk)
 
             # 自動で登録されたユーザのみ選択
-            if user.email == user.username + '@' + user.username + '.jp':
+            if user.is_dummy:
                 break
             else:
                 pass
