@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.kenta.finote" version="1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.Kenta.FiNote" version="1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>FiNote</name>
     <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport" />
     <feature name="StatusBar">
