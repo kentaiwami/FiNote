@@ -38,7 +38,7 @@ class AuthUser(AbstractBaseUser, PermissionsMixin):
     def get_full_name(self):
         return self.username
 
-    def get_img_name(self, filename):
+    def get_img_path(self, filename):
         path, ext = os.path.splitext(filename)
         joined_filename = ''.join([self.username, ext])
         return '/'.join(['profile', joined_filename])
@@ -46,7 +46,7 @@ class AuthUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(unique=True, max_length=100, blank=False, default='username')
     email = models.EmailField(unique=True, max_length=100, blank=False, default='email')
     birthday = models.IntegerField(blank=False, default=1900)
-    img = models.FileField(blank=True, null=False, upload_to=get_img_name)
+    img = models.FileField(blank=True, null=False, upload_to=get_img_path)
     is_dummy = models.BooleanField(default=False, null=False)
 
     date_joined = models.DateTimeField(auto_now_add=True)
