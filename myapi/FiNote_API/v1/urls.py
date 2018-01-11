@@ -12,7 +12,7 @@ router.register(r'user/update/img', UpdateProfileImgViewSet, base_name='update-p
 router.register(r'user/movies', GetMoviesViewSet, base_name='get-movies')
 
 
-
+a
 # router.register(r'v1/add_movie', AddMovieViewSet, 'add_movie')
 # router.register(r'v1/update_onomatopoeia', UpdateOnomatopoeiaViewSet, 'update_onomatopoeia')
 # router.register(r'v1/update_status', UpdateStatusViewSet, 'update_status')
