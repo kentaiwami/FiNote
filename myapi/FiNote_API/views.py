@@ -127,26 +127,16 @@ class SignInNoTokenViewSet(viewsets.ViewSet):
                         'movie__genre__name', 'movie__genre__genre_id',
                         'onomatopoeia__name',
                         'dvd', 'fav',
-                        'add_year', 'add_month', 'add_day',
-                        'username__username', 'username__email', 'username__birthday', 'username__sex'
+                        'add_date',
+                        'username__username', 'username__email', 'username__birthday'
                     )
-
-                    # ファイルを開いてbase64文字列を取得
-                    if str(get_user.img) == '':
-                        encoded_string = ''
-                    else:
-                        file_path = settings.MEDIA_ROOT + '/' + str(get_user.img)
-                        with open(file_path, "rb") as image_file:
-                            encoded_string = b'data:image/jpeg;base64,' + base64.b64encode(image_file.read())
-                            encoded_string = encoded_string.decode('utf-8')
 
                     response_list = list(backup_obj)
                     response_list.append({'token': str(token)})
                     response_list.append({'username': str(get_user.username)})
                     response_list.append({'email': str(get_user.email)})
                     response_list.append({'birthday': int(get_user.birthday)})
-                    response_list.append({'sex': str(get_user.sex)})
-                    response_list.append({'profile_img': encoded_string})
+                    response_list.append({'profile_img': str(get_user.img)})
 
                     return JsonResponse({'results': response_list})
 
@@ -887,33 +877,3 @@ class GetOnomatopoeiaCountByMovieIDViewSet(viewsets.ViewSet):
 
         else:
             raise ValidationError('正しいパラメータ値ではありません')
-
-
-class GetUsersViewSet(viewsets.ModelViewSet):
-    queryset = AuthUser.objects.all()
-    serializer_class = GetUsersSerializer
-    http_method_names = ['get']
-
-
-class GetGenresViewSet(viewsets.ModelViewSet):
-    queryset = Genre.objects.all()
-    serializer_class = GetGenresSerializer
-    http_method_names = ['get']
-
-
-class GetOnomatopoeiaViewSet(viewsets.ModelViewSet):
-    queryset = Onomatopoeia.objects.all()
-    serializer_class = GetOnomatopoeiaSerializer
-    http_method_names = ['get']
-
-
-class GetMoviesViewSet(viewsets.ModelViewSet):
-    queryset = Movie.objects.all()
-    serializer_class = GetMoviesSerializer
-    http_method_names = ['get']
-
-
-class GetOnomatopoeiaCountViewSet(viewsets.ModelViewSet):
-    queryset = OnomatopoeiaCount.objects.all()
-    serializer_class = GetOnomatopoeiaCountSerializer
-    http_method_names = ['get']

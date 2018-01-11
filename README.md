@@ -44,19 +44,6 @@ response：
 }
 ```
 
-```
-method：POST
-endpoint：api/v1/user/signin/token
-request：
-{
-    "username": "hogehoge",
-    "token": "abcdefghijklmnopqrstuvwxyz"
-}
-response：
-{
-    "username": "hogehoge"
-}
-```
 
 ## 使用しているプラグイン
 * [cordova-plugin-console 1.0.6](https://www.npmjs.com/package/cordova-plugin-console)

@@ -15,11 +15,13 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-
+from django.views.static import serve
+from django.conf import settings
 from FiNote_API.urls import router as FiNote_API_router
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(FiNote_API_router.urls)),
+    url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT, })
 ]

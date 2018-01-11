@@ -1,3 +1,4 @@
+import os
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
@@ -6,6 +7,7 @@ from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 from myapi import settings
 from datetime import date
+from model_utils import FieldTracker
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
@@ -36,10 +38,15 @@ class AuthUser(AbstractBaseUser, PermissionsMixin):
     def get_full_name(self):
         return self.username
 
+    def get_img_name(self, filename):
+        path, ext = os.path.splitext(filename)
+        joined_filename = ''.join([self.username, ext])
+        return '/'.join(['profile', joined_filename])
+
     username = models.CharField(unique=True, max_length=100, blank=False, default='username')
     email = models.EmailField(unique=True, max_length=100, blank=False, default='email')
     birthday = models.IntegerField(blank=False, default=1900)
-    img = models.FileField(blank=True, null=False)
+    img = models.FileField(blank=True, null=False, upload_to=get_img_name)
     is_dummy = models.BooleanField(default=False, null=False)
 
     date_joined = models.DateTimeField(auto_now_add=True)
@@ -49,6 +56,16 @@ class AuthUser(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email', 'birthday']
     objects = AuthUserManager()
+
+    tracker = FieldTracker()
+
+
+@receiver(post_save, sender=AuthUser)
+def product_clear_image_field_delete_file(sender, instance, **kwargs):
+    path = settings.MEDIA_ROOT + '/' + str(instance.tracker.previous('img'))
+
+    if os.path.isfile(path) and instance.img == '':
+        os.remove(path)
 
 
 class Genre(models.Model):
