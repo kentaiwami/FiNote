@@ -2,8 +2,7 @@ from rest_framework import routers
 from FiNote_API.v1.views import *
 
 router = routers.DefaultRouter()
-router.register(r'user', CreateUserViewSet, 'create user')
-# urlpatterns = router.urls
+router.register(r'user', CreateUserViewSet, 'create-user')
 
 # router.register(r'v1/user/signin/token', SignInWithTokenViewSet, 'sign_in_with_token')
 # router.register(r'v1/user/signin/notoken', SignInNoTokenViewSet, 'sign_in_no_token')
