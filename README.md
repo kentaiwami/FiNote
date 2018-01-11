@@ -91,6 +91,22 @@ response：
 }
 ```
 
+### Update Profile Image
+```
+method：POST
+endpoint：api/v1/user/update/img/
+request：
+{
+    "username": "hogehoge",
+    "password": "hogehoge",
+    "img": Image File
+}
+response：
+{
+    "user": "hogehoge"
+}
+```
+
 
 
 
