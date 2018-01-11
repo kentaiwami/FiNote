@@ -6,7 +6,7 @@ router = routers.DefaultRouter()
 router.register(r'user', CreateUserViewSet, 'create-user')
 router.register(r'user/login', LoginViewSet, 'login')
 router.register(r'user/update/password', UpdatePasswordViewSet, 'update-password')
-# router.register(r'v1/update_email', UpdateEmailViewSet, 'update_email')
+router.register(r'user/update/email', UpdateEmailViewSet, 'update-email')
 # router.register(r'v1/update_sex', UpdateSexViewSet, 'update_sex')
 # router.register(r'v1/update_profile_img', UpdateProfileImgViewSet, 'update_profile_img')
 

@@ -75,6 +75,22 @@ response：
 }
 ```
 
+### Update Email
+```
+method：POST
+endpoint：api/v1/user/update/email/
+request：
+{
+    "username": "hogehoge",
+    "password": "hogehoge",
+    "new_email": "hoge@hoge.com"
+}
+response：
+{
+    "user": "hogehoge"
+}
+```
+
 
 
 

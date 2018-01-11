@@ -39,7 +39,7 @@ class CreateUserViewSet(viewsets.ViewSet):
 
             return Response({'user': str(user)})
         else:
-            return Response(serializer.errors)
+            return Response(serializer.errors, 400)
 
 
 class LoginViewSet(viewsets.ViewSet):
@@ -65,15 +65,15 @@ class LoginViewSet(viewsets.ViewSet):
                 user = AuthUser.objects.get(username=data['username'])
 
             except ObjectDoesNotExist:
-                raise ValidationError('ログインに失敗しました', 404)
+                raise serializers.ValidationError('ログインに失敗しました')
 
             if user.check_password(data['password'].encode('utf-8')):
-                return Response({"username": data['username']})
+                return Response({'username': data['username']})
             else:
-                raise ValidationError('ログインに失敗しました', 404)
+                raise serializers.ValidationError('ログインに失敗しました')
 
         else:
-            return Response(serializer.errors)
+            return Response(serializer.errors, 400)
 
 
 class UpdatePasswordViewSet(viewsets.ViewSet):
@@ -97,7 +97,7 @@ class UpdatePasswordViewSet(viewsets.ViewSet):
                 user = AuthUser.objects.get(username=data['username'])
 
             except ObjectDoesNotExist:
-                raise ValidationError('ユーザが見つかりませんでした')
+                raise serializers.ValidationError('ユーザが見つかりませんでした')
 
             if user.check_password(data['now_password'].encode('utf-8')):
                 user.set_password(data['new_password'])
@@ -105,11 +105,44 @@ class UpdatePasswordViewSet(viewsets.ViewSet):
 
                 return Response({'username': str(user)})
             else:
-                raise ValidationError('現在のパスワードが異なるため変更に失敗しました')
+                raise serializers.ValidationError('現在のパスワードが異なるため変更に失敗しました')
 
         else:
             return Response(serializer.errors)
-#
+
+
+class UpdateEmailViewSet(viewsets.ViewSet):
+    queryset = AuthUser.objects.all()
+    serializer_class = UpdateEmailSerializer
+
+    @staticmethod
+    def create(request):
+        """
+        When Update email api access, run this method.
+        This method changes email and return username.
+        :param request: Include username, password and new_email
+        :return: User name
+        """
+
+        data = request.data
+        serializer = UpdateEmailSerializer(data=data)
+
+        if serializer.is_valid() and request.method == 'POST':
+            try:
+                user = AuthUser.objects.get(username=data["username"])
+            except ObjectDoesNotExist:
+                raise serializers.ValidationError('ユーザが見つかりませんでした')
+
+            if user.check_password(data['password'].encode('utf-8')):
+                user.email = data['new_email']
+                user.save()
+
+                return Response({'username': str(user)})
+            else:
+                raise serializers.ValidationError('パスワードが違います')
+        else:
+            return Response(serializer.errors)
+
 # class SignInNoTokenViewSet(viewsets.ViewSet):
 #     queryset = AuthUser.objects.all()
 #     serializer_class = SignInNoTokenSerializer
@@ -162,40 +195,7 @@ class UpdatePasswordViewSet(viewsets.ViewSet):
 
 #
 #
-# class UpdateEmailViewSet(viewsets.ViewSet):
-#     queryset = AuthUser.objects.all()
-#     serializer_class = UpdateEmailSerializer
-#
-#     @staticmethod
-#     def create(request):
-#         """
-#         When ChangeEmail api access, run this method.
-#         This method changes email and return new_email.
-#         :param request: Include token and new_email
-#         :return: User's new email.
-#         """
-#
-#         if request.method == 'POST':
-#             data = request.data
-#
-#             if not data['token']:
-#                 raise ValidationError('認証情報が含まれていません')
-#             if not data['new_email']:
-#                 raise ValidationError('新しいメールアドレスが含まれていません')
-#
-#             serializer = UpdateEmailSerializer(data=data)
-#             if serializer.is_valid():
-#                 try:
-#                     user_id = Token.objects.get(key=data['token']).user_id
-#                     get_user = AuthUser.objects.get(pk=user_id)
-#                     get_user.email = data['new_email']
-#                     get_user.save()
-#
-#                     return JsonResponse({'new_email': data['new_email']})
-#                 except:
-#                     raise ValidationError('ユーザが見つかりませんでした')
-#             else:
-#                 return Response(serializer.errors)
+
 #
 #
 # class UpdateSexViewSet(viewsets.ViewSet):
