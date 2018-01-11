@@ -14,7 +14,6 @@ router.register(r'movie/update/dvdfav', UpdateDVDFAVViewSet, base_name='update-d
 
 # router.register(r'v1/add_movie', AddMovieViewSet, 'add_movie')
 # router.register(r'v1/update_onomatopoeia', UpdateOnomatopoeiaViewSet, 'update_onomatopoeia')
-# router.register(r'v1/update_status', UpdateStatusViewSet, 'update_status')
 # router.register(r'v1/delete_backup', DeleteBackupViewSet, 'delete_backup')
 # router.register(r'v1/get_users', GetUsersViewSet, 'get_users')
 # router.register(r'v1/get_genres', GetGenresViewSet, 'get_genres')
