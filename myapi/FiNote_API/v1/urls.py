@@ -5,7 +5,7 @@ from FiNote_API.v1.movie_views import *
 router = routers.DefaultRouter()
 router.register(r'user', CreateUserViewSet, 'create-user')
 router.register(r'user/login', LoginViewSet, 'login')
-# router.register(r'v1/update_password', UpdatePasswordViewSet, 'update_password')
+router.register(r'user/update/password', UpdatePasswordViewSet, 'update-password')
 # router.register(r'v1/update_email', UpdateEmailViewSet, 'update_email')
 # router.register(r'v1/update_sex', UpdateSexViewSet, 'update_sex')
 # router.register(r'v1/update_profile_img', UpdateProfileImgViewSet, 'update_profile_img')

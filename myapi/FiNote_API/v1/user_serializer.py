@@ -12,6 +12,12 @@ class CreateUserSerializer(serializers.Serializer):
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
     password = serializers.CharField(allow_blank=False, allow_null=False, required=True)
+
+
+class UpdatePasswordSerializer(serializers.Serializer):
+    username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
+    now_password = serializers.CharField(allow_blank=False, allow_null=False, required=True)
+    new_password = serializers.CharField(allow_blank=False, allow_null=False, required=True)
 #
 #
 # class SignInNoTokenSerializer(serializers.Serializer):
@@ -19,10 +25,7 @@ class LoginSerializer(serializers.Serializer):
 #     password = serializers.CharField(allow_blank=False, required=True)
 #
 #
-# class UpdatePasswordSerializer(serializers.Serializer):
-#     token = serializers.CharField(allow_blank=False, allow_null=False, required=True)
-#     now_password = serializers.CharField(allow_blank=False, allow_null=False, required=True)
-#     new_password = serializers.CharField(allow_blank=False, allow_null=False, required=True)
+
 #
 #
 # class UpdateEmailSerializer(serializers.Serializer):

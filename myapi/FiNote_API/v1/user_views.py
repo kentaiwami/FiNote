@@ -62,18 +62,53 @@ class LoginViewSet(viewsets.ViewSet):
 
         if serializer.is_valid() and request.method == 'POST':
             try:
-                get_user = AuthUser.objects.get(username=data['username'])
-
-                if get_user.check_password(data['password'].encode('utf-8')):
-                    return Response({"username": data['username']})
-                else:
-                    raise ValidationError('ログインに失敗しました', 404)
+                user = AuthUser.objects.get(username=data['username'])
 
             except ObjectDoesNotExist:
                 raise ValidationError('ログインに失敗しました', 404)
+
+            if user.check_password(data['password'].encode('utf-8')):
+                return Response({"username": data['username']})
+            else:
+                raise ValidationError('ログインに失敗しました', 404)
+
         else:
             return Response(serializer.errors)
-#
+
+
+class UpdatePasswordViewSet(viewsets.ViewSet):
+    queryset = AuthUser.objects.all()
+    serializer_class = UpdatePasswordSerializer
+
+    @staticmethod
+    def create(request):
+        """
+        When UpdatePassword api access, run this method.
+        This method changes password and return username.
+        :param request: Include username, now_password and new_password
+        :return: User name.
+        """
+
+        data = request.data
+        serializer = UpdatePasswordSerializer(data=data)
+
+        if serializer.is_valid() and request.method == 'POST':
+            try:
+                user = AuthUser.objects.get(username=data['username'])
+
+            except ObjectDoesNotExist:
+                raise ValidationError('ユーザが見つかりませんでした')
+
+            if user.check_password(data['now_password'].encode('utf-8')):
+                user.set_password(data['new_password'])
+                user.save()
+
+                return Response({'username': str(user)})
+            else:
+                raise ValidationError('現在のパスワードが異なるため変更に失敗しました')
+
+        else:
+            return Response(serializer.errors)
 #
 # class SignInNoTokenViewSet(viewsets.ViewSet):
 #     queryset = AuthUser.objects.all()
@@ -124,44 +159,7 @@ class LoginViewSet(viewsets.ViewSet):
 #             return Response(serializer.errors)
 #
 #
-# class UpdatePasswordViewSet(viewsets.ViewSet):
-#     queryset = AuthUser.objects.all()
-#     serializer_class = UpdatePasswordSerializer
-#
-#     @staticmethod
-#     def create(request):
-#         """
-#         When ChangePassword api access, run this method.
-#         This method changes password and return token.
-#         :param request: Include token, now_password and new_password
-#         :return: User's token.
-#         """
-#
-#         if request.method == 'POST':
-#             data = request.data
-#
-#             if not data['token']:
-#                 raise ValidationError('認証情報が含まれていません')
-#             if not data['now_password']:
-#                 raise ValidationError('現在のパスワードが含まれていません')
-#             if not data['new_password']:
-#                 raise ValidationError('新しいパスワードが含まれていません')
-#
-#             try:
-#                 user_id = Token.objects.get(key=data['token']).user_id
-#                 get_user = AuthUser.objects.get(pk=user_id)
-#
-#                 if get_user.check_password(data['now_password'].encode('utf-8')):
-#                     get_user.set_password(data['new_password'])
-#                     get_user.save()
-#                     token = Token.objects.get(user_id=get_user.pk)
-#
-#                     return JsonResponse({'token': str(token)})
-#                 else:
-#                     raise ValidationError('現在のパスワードが異なるため変更に失敗しました')
-#
-#             except ObjectDoesNotExist:
-#                 raise ValidationError('ユーザが見つかりませんでした')
+
 #
 #
 # class UpdateEmailViewSet(viewsets.ViewSet):
