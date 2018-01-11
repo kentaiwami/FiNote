@@ -120,6 +120,25 @@ response：
     ]
 ```
 
+### Update DVD and FAV
+```
+method：POST
+endpoint：api/v1/movie/update/dvdfav/
+request：
+{
+    "username": "hogehoge",
+    "password": "hogehoge",
+    "tmdb_id": 1234,
+    "dvd": 0,
+    "fav": 1
+}
+response：
+{
+    "dvd": 0,
+    "fav": 1
+}
+```
+
 
 
 
