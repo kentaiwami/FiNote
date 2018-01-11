@@ -2,7 +2,7 @@ from rest_framework import routers
 from .views import *
 
 router = routers.DefaultRouter()
-router.register(r'v1/signup', SignUpViewSet, 'signup')
+router.register(r'v1/user', CreateUserViewSet, 'create user')
 router.register(r'v1/sign_in_with_token', SignInWithTokenViewSet, 'sign_in_with_token')
 router.register(r'v1/sign_in_no_token', SignInNoTokenViewSet, 'sign_in_no_token')
 router.register(r'v1/update_password', UpdatePasswordViewSet, 'update_password')

@@ -23,37 +23,25 @@ from FiNote_API.thread import *
 test_flag = [False, False]
 
 
-class SignUpViewSet(viewsets.ViewSet):
+class CreateUserViewSet(viewsets.ViewSet):
     queryset = AuthUser.objects.all()
-    serializer_class = SignUpSerializer
+    serializer_class = CreateUserSerializer
 
     @staticmethod
     def create(request):
         """
-        When SignUp api access, run this method.
+        When CreateUser api access, run this method.
         This method checks sign in form data, create new user and response token.
-        :param request: User request data.(username, email, password, birthday year and sex)
+        :param request: User request data.(username, email, password, birthday year)
         :return content: Username and token.
         
         :type request: object
         """
 
-        if request.method == 'POST':
-            data = request.data
+        data = request.data
+        serializer = CreateUserSerializer(data=data)
 
-            if not data['username']:
-                raise ValidationError('ユーザ名が入力されていません')
-            if not data['email']:
-                raise ValidationError('メールアドレスが入力されていないか、不正なアドレスです')
-            if not data['password']:
-                raise ValidationError('パスワードが入力されていません')
-            if not data['birthday']:
-                raise ValidationError('生年が入力されていません')
-            if not data['sex']:
-                raise ValidationError('性別が入力されていません')
-            if not (data['sex'] == 'M' or data['sex'] == 'F'):
-                raise ValidationError('性別の入力形式が正しくありません')
-
+        if serializer.is_valid() and request.method == 'POST':
             if User.objects.filter(username=data['username']).exists():
                 raise serializers.ValidationError('このユーザ名は既に使われています')
 
@@ -65,7 +53,6 @@ class SignUpViewSet(viewsets.ViewSet):
                 email=data['email'],
                 password=data['password'],
                 birthday=data['birthday'],
-                sex=data['sex']
             )
 
             get_user = User.objects.get(username=str(user))
@@ -76,6 +63,8 @@ class SignUpViewSet(viewsets.ViewSet):
             }
 
             return Response(content)
+        else:
+            return Response(serializer.errors)
 
 
 class SignInWithTokenViewSet(viewsets.ViewSet):

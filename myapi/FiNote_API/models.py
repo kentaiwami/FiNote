@@ -15,15 +15,15 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
 
 
 class AuthUserManager(BaseUserManager):
-    def create_user(self, username, email, password, birthday, sex):
-        user = self.model(username=username, email=email, password=password, birthday=birthday, sex=sex)
+    def create_user(self, username, email, password, birthday):
+        user = self.model(username=username, email=email, password=password, birthday=birthday)
         user.is_active = True
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, username, email, password, birthday, sex):
-        user = self.create_user(username=username, email=email, password=password, birthday=birthday, sex=sex)
+    def create_superuser(self, username, email, password, birthday):
+        user = self.create_user(username=username, email=email, password=password, birthday=birthday)
         user.is_staff = True
         user.is_superuser = True
         user.save(using=self._db)
@@ -39,7 +39,6 @@ class AuthUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(unique=True, max_length=100, blank=False, default='username')
     email = models.EmailField(unique=True, max_length=100, blank=False, default='email')
     birthday = models.IntegerField(blank=False, default=1900)
-    sex = models.CharField(max_length=1, blank=False, default='M')
     img = models.FileField(blank=True, null=False)
     is_dummy = models.BooleanField(default=False, null=False)
 
@@ -48,7 +47,7 @@ class AuthUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False, null=False)
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email', 'birthday', 'sex']
+    REQUIRED_FIELDS = ['email', 'birthday']
     objects = AuthUserManager()
 
 

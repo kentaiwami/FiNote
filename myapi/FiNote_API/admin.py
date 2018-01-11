@@ -3,7 +3,7 @@ from .models import *
 
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'email', 'birthday', 'sex', 'img', 'password')
+    list_display = ('username', 'email', 'birthday', 'img', 'password')
     search_fields = ('username',)
 
 

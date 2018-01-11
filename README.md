@@ -26,6 +26,24 @@ FiNote(フィノート)
 5. 映画の追加ボタンを押して映画を追加します。
 
 
+## API
+```
+method：POST
+endpoint：api/v1/user
+request：
+{
+    "username": "hogehoge",
+    "password": "hogehoge",
+    "email": "hoge@hoge.com",
+    "birthday": 1900,
+}
+response：
+{
+    "token": "abcdefghijklmnopqrstuvwxyz",
+    "user": "hogehoge"
+}
+```
+
 ## 使用しているプラグイン
 * [cordova-plugin-console 1.0.6](https://www.npmjs.com/package/cordova-plugin-console)
 * [cordova-plugin-device 1.1.5](https://www.npmjs.com/package/cordova-plugin-device)

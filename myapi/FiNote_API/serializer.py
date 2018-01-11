@@ -2,12 +2,11 @@ from rest_framework import serializers
 from .models import *
 
 
-class SignUpSerializer(serializers.Serializer):
+class CreateUserSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=256, allow_blank=False, required=True)
     password = serializers.CharField(max_length=256, allow_blank=False, required=True)
     email = serializers.EmailField(max_length=100, allow_blank=False, required=True)
     birthday = serializers.IntegerField(allow_null=False, required=True)
-    sex = serializers.CharField(max_length=1, allow_blank=False, allow_null=False, required=True)
 
 
 class SignInWithTokenSerializer(serializers.Serializer):
