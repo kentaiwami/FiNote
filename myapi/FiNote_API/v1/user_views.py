@@ -45,40 +45,6 @@ class CreateUserViewSet(viewsets.ViewSet):
             return Response(serializer.errors, 400)
 
 
-class LoginViewSet(viewsets.ViewSet):
-    queryset = AuthUser.objects.all()
-    serializer_class = LoginSerializer
-
-    @staticmethod
-    def create(request):
-        """
-        When Login api access, run this method.
-        This method checks username and password. If success signup, response username.
-        :param request: Request user's data.(username and password)
-        :return: Username
-
-        :type request object
-        """
-
-        data = request.data
-        serializer = LoginSerializer(data=data)
-
-        if serializer.is_valid() and request.method == 'POST':
-            try:
-                user = AuthUser.objects.get(username=data['username'])
-
-            except ObjectDoesNotExist:
-                raise serializers.ValidationError('ログインに失敗しました')
-
-            if not user.check_password(data['password'].encode('utf-8')):
-                raise serializers.ValidationError('ログインに失敗しました')
-
-            return Response({'username': data['username']})
-
-        else:
-            return Response(serializer.errors, 400)
-
-
 class UpdatePasswordViewSet(viewsets.ViewSet):
     queryset = AuthUser.objects.all()
     serializer_class = UpdatePasswordSerializer

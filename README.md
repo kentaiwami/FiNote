@@ -44,21 +44,6 @@ response：
 }
 ```
 
-### Login
-```
-method：POST
-endpoint：api/v1/user/login/
-request：
-{
-    "username": "hogehoge",
-    "password": "hogehoge"
-}
-response：
-{
-    "user": "hogehoge"
-}
-```
-
 ### Update Password
 ```
 method：POST

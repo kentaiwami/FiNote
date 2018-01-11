@@ -8,11 +8,6 @@ class CreateUserSerializer(serializers.Serializer):
     birthday = serializers.IntegerField(allow_null=False, required=True)
 
 
-class LoginSerializer(serializers.Serializer):
-    username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
-    password = serializers.CharField(allow_blank=False, allow_null=False, required=True)
-
-
 class UpdatePasswordSerializer(serializers.Serializer):
     username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
     now_password = serializers.CharField(allow_blank=False, allow_null=False, required=True)
