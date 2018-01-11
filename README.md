@@ -107,6 +107,34 @@ response：
 }
 ```
 
+### Get Movies
+```
+method：GET
+endpoint：api/v1/user/movies/?user_id=2
+response：
+"results": [
+        {
+            "add": "2018-01-12T00:02:37.612840",
+            "id": "12345",
+            "fav": 1,
+            "title": "hoge2",
+            "dvd": 1,
+            "poster": "http"
+        },
+        {
+            "add": "2018-01-12T00:01:54.697333",
+            "id": "1234",
+            "fav": 0,
+            "title": "hoge",
+            "dvd": 1,
+            "poster": "http://"
+        }
+        .
+        .
+        .
+    ]
+```
+
 
 
 
