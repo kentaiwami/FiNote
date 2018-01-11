@@ -1,6 +1,7 @@
-from django.core.exceptions import ValidationError, ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import viewsets
 from rest_framework_jwt.serializers import User
+from FiNote_API.models import AuthUser
 from FiNote_API.v1.user_serializer import *
 from rest_framework.response import Response
 
@@ -141,11 +142,11 @@ class UpdateEmailViewSet(viewsets.ViewSet):
             else:
                 raise serializers.ValidationError('パスワードが違います')
         else:
-            return Response(serializer.errors)
+            raise serializers.ValidationError(serializer.errors)
 
 
-#
-#
+
+
 # class UpdateProfileImgViewSet(viewsets.ViewSet):
 #     queryset = AuthUser.objects.all()
 #     serializer_class = UpdateProfileImgSerializer
@@ -153,13 +154,16 @@ class UpdateEmailViewSet(viewsets.ViewSet):
 #     @staticmethod
 #     def create(request):
 #         """
-#         When SetProfileImg api access, run this method.
-#         This method sets img and return token.
-#         :param request: Include token and img base64 string.
-#         :return: User's token.
+#         When Update profile image api access, run this method.
+#         This method sets img and return username.
+#         :param request: Include username, password and image.
+#         :return: User name.
 #         """
 #
-#         if request.method == 'POST':
+#         data = request.data
+#         serializer = UpdateEmailSerializer(data=data)
+#
+#         if serializer.is_valid() and request.method == 'POST':
 #             data = request.data
 #
 #             if not data['token']:
@@ -187,9 +191,10 @@ class UpdateEmailViewSet(viewsets.ViewSet):
 #                 get_user.img = img_data
 #                 get_user.save()
 #
-#                 return JsonResponse({'token': str(data['token'])})
+#                 return Response({'token': str(data['token'])})
 #
 #             except ObjectDoesNotExist:
 #                 raise ValidationError('ユーザが見つかりませんでした')
 #
-#
+#         else:
+#             return Response(serializer.errors)

@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from FiNote_API.models import *
 
 
 class CreateUserSerializer(serializers.Serializer):
@@ -25,8 +24,8 @@ class UpdateEmailSerializer(serializers.Serializer):
     password = serializers.CharField(allow_blank=False, allow_null=False, required=True)
     new_email = serializers.EmailField(allow_blank=False, allow_null=False, required=True)
 
-#
-#
-# class UpdateProfileImgSerializer(serializers.Serializer):
-#     token = serializers.CharField(allow_blank=False, allow_null=False, required=True)
-#     img = serializers.CharField(allow_blank=True, allow_null=False, required=True)
+
+class UpdateProfileImgSerializer(serializers.Serializer):
+    username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
+    password = serializers.CharField(allow_blank=False, allow_null=False, required=True)
+    img = serializers.FileField(allow_null=False, required=True)
