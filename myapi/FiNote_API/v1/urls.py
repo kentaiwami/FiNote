@@ -1,15 +1,18 @@
 from rest_framework import routers
-from FiNote_API.v1.views import *
+from FiNote_API.v1.user_views import *
+from FiNote_API.v1.movie_views import *
 
 router = routers.DefaultRouter()
 router.register(r'user', CreateUserViewSet, 'create-user')
-
-# router.register(r'v1/user/signin/token', SignInWithTokenViewSet, 'sign_in_with_token')
-# router.register(r'v1/user/signin/notoken', SignInNoTokenViewSet, 'sign_in_no_token')
+router.register(r'user/login', LoginViewSet, 'login')
 # router.register(r'v1/update_password', UpdatePasswordViewSet, 'update_password')
 # router.register(r'v1/update_email', UpdateEmailViewSet, 'update_email')
 # router.register(r'v1/update_sex', UpdateSexViewSet, 'update_sex')
 # router.register(r'v1/update_profile_img', UpdateProfileImgViewSet, 'update_profile_img')
+
+
+# router.register(r'v1/user/signin/token', SignInWithTokenViewSet, 'sign_in_with_token')
+# router.register(r'v1/user/signin/notoken', SignInNoTokenViewSet, 'sign_in_no_token')
 # router.register(r'v1/add_movie', AddMovieViewSet, 'add_movie')
 # router.register(r'v1/update_onomatopoeia', UpdateOnomatopoeiaViewSet, 'update_onomatopoeia')
 # router.register(r'v1/update_status', UpdateStatusViewSet, 'update_status')

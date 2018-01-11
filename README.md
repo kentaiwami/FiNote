@@ -30,7 +30,7 @@ FiNote(フィノート)
 ### Create User
 ```
 method：POST
-endpoint：api/v1/user
+endpoint：api/v1/user/
 request：
 {
     "username": "hogehoge",
@@ -40,10 +40,26 @@ request：
 }
 response：
 {
-    "token": "abcdefghijklmnopqrstuvwxyz",
     "user": "hogehoge"
 }
 ```
+
+### Login
+```
+method：POST
+endpoint：api/v1/user/login/
+request：
+{
+    "username": "hogehoge",
+    "password": "hogehoge"
+}
+response：
+{
+    "user": "hogehoge"
+}
+```
+
+
 
 
 ## 使用しているプラグイン
