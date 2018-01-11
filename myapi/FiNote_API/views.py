@@ -67,813 +67,813 @@ class CreateUserViewSet(viewsets.ViewSet):
             return Response(serializer.errors)
 
 
-class SignInWithTokenViewSet(viewsets.ViewSet):
-    queryset = AuthUser.objects.all()
-    serializer_class = SignInWithTokenSerializer
-
-    @staticmethod
-    def create(request):
-        """
-        When SignInWithToken api access, run this method.
-        This method checks username and token. If success signup, response username.
-        :param request: Request user's data.(username and token)
-        :return: Username
-        
-        :type request object
-        """
-
-        data = request.data
-        serializer = SignInWithTokenSerializer(data=data)
-
-        if serializer.is_valid() and request.method == 'POST':
-            try:
-                get_user = AuthUser.objects.get(username=data['username'])
-                token = Token.objects.get(user_id=get_user.pk)
-
-                if str(token) == data['token']:
-                    return Response({"username": data['username']})
-                else:
-                    raise ValidationError('ログインに失敗しました', 404)
-            except ObjectDoesNotExist:
-                raise ValidationError('ログインに失敗しました', 404)
-        else:
-            return Response(serializer.errors)
-
-
-class SignInNoTokenViewSet(viewsets.ViewSet):
-    queryset = AuthUser.objects.all()
-    serializer_class = SignInNoTokenSerializer
-
-    @staticmethod
-    def create(request):
-        """
-        When SignInNoToken api access, run this method.
-        This method checks username and password. If success signup, response user's data.
-        :param request: Username and password
-        :return: User's movies and profile data.
-        """
-
-        data = request.data
-        serializer = SignInNoTokenSerializer(data=data)
-
-        if serializer.is_valid() and request.method == 'POST':
-            try:
-                get_user = AuthUser.objects.get(username=data['username'])
-                token = Token.objects.get(user_id=get_user.pk)
-
-                if get_user.check_password(data['password'].encode('utf-8')):
-                    backup_obj = BackUp.objects.filter(username=get_user).values(
-                        'movie__title', 'movie__tmdb_id', 'movie__overview', 'movie__poster_path',
-                        'movie__genre__name', 'movie__genre__genre_id',
-                        'onomatopoeia__name',
-                        'dvd', 'fav',
-                        'add_date',
-                        'username__username', 'username__email', 'username__birthday'
-                    )
-
-                    response_list = list(backup_obj)
-                    response_list.append({'token': str(token)})
-                    response_list.append({'username': str(get_user.username)})
-                    response_list.append({'email': str(get_user.email)})
-                    response_list.append({'birthday': int(get_user.birthday)})
-                    response_list.append({'profile_img': str(get_user.img)})
-
-                    return JsonResponse({'results': response_list})
-
-                else:
-                    raise ValidationError('ユーザ名かパスワードが違います')
-
-            except ObjectDoesNotExist:
-                raise ValidationError('ユーザ名かパスワードが違います')
-        else:
-            return Response(serializer.errors)
-
-
-class UpdatePasswordViewSet(viewsets.ViewSet):
-    queryset = AuthUser.objects.all()
-    serializer_class = UpdatePasswordSerializer
-
-    @staticmethod
-    def create(request):
-        """
-        When ChangePassword api access, run this method.
-        This method changes password and return token.
-        :param request: Include token, now_password and new_password
-        :return: User's token.
-        """
-
-        if request.method == 'POST':
-            data = request.data
-
-            if not data['token']:
-                raise ValidationError('認証情報が含まれていません')
-            if not data['now_password']:
-                raise ValidationError('現在のパスワードが含まれていません')
-            if not data['new_password']:
-                raise ValidationError('新しいパスワードが含まれていません')
-
-            try:
-                user_id = Token.objects.get(key=data['token']).user_id
-                get_user = AuthUser.objects.get(pk=user_id)
-
-                if get_user.check_password(data['now_password'].encode('utf-8')):
-                    get_user.set_password(data['new_password'])
-                    get_user.save()
-                    token = Token.objects.get(user_id=get_user.pk)
-
-                    return JsonResponse({'token': str(token)})
-                else:
-                    raise ValidationError('現在のパスワードが異なるため変更に失敗しました')
-
-            except ObjectDoesNotExist:
-                raise ValidationError('ユーザが見つかりませんでした')
-
-
-class UpdateEmailViewSet(viewsets.ViewSet):
-    queryset = AuthUser.objects.all()
-    serializer_class = UpdateEmailSerializer
-
-    @staticmethod
-    def create(request):
-        """
-        When ChangeEmail api access, run this method.
-        This method changes email and return new_email.
-        :param request: Include token and new_email
-        :return: User's new email.
-        """
-
-        if request.method == 'POST':
-            data = request.data
-
-            if not data['token']:
-                raise ValidationError('認証情報が含まれていません')
-            if not data['new_email']:
-                raise ValidationError('新しいメールアドレスが含まれていません')
-
-            serializer = UpdateEmailSerializer(data=data)
-            if serializer.is_valid():
-                try:
-                    user_id = Token.objects.get(key=data['token']).user_id
-                    get_user = AuthUser.objects.get(pk=user_id)
-                    get_user.email = data['new_email']
-                    get_user.save()
-
-                    return JsonResponse({'new_email': data['new_email']})
-                except:
-                    raise ValidationError('ユーザが見つかりませんでした')
-            else:
-                return Response(serializer.errors)
-
-
-class UpdateSexViewSet(viewsets.ViewSet):
-    queryset = AuthUser.objects.all()
-    serializer_class = UpdateSexSerializer
-
-    @staticmethod
-    def create(request):
-        """
-        When ChangeSex api access, run this method.
-        This method changes sex and return new_sex.
-        :param request: Include token and new_sex
-        :return: User's new sex.
-        """
-
-        if request.method == 'POST':
-            data = request.data
-
-            if not data['token']:
-                raise ValidationError('認証情報が含まれていません')
-            if not data['new_sex']:
-                raise ValidationError('新しい性別が含まれていません')
-            if not (data['new_sex'] == 'M' or data['new_sex'] == 'F'):
-                raise ValidationError('性別の入力形式が正しくありません')
-
-            serializer = UpdateSexSerializer(data=data)
-            if serializer.is_valid():
-                try:
-                    user_id = Token.objects.get(key=data['token']).user_id
-                    get_user = AuthUser.objects.get(pk=user_id)
-                    get_user.sex = data['new_sex']
-                    get_user.save()
-
-                    return JsonResponse({'new_sex': data['new_sex']})
-                except:
-                    raise ValidationError('ユーザが見つかりませんでした')
-            else:
-                return Response(serializer.errors)
-
-
-class UpdateProfileImgViewSet(viewsets.ViewSet):
-    queryset = AuthUser.objects.all()
-    serializer_class = UpdateProfileImgSerializer
-
-    @staticmethod
-    def create(request):
-        """
-        When SetProfileImg api access, run this method.
-        This method sets img and return token.
-        :param request: Include token and img base64 string.
-        :return: User's token.
-        """
-
-        if request.method == 'POST':
-            data = request.data
-
-            if not data['token']:
-                raise ValidationError('認証情報が含まれていません')
-            if not data['img']:
-                raise ValidationError('画像情報が含まれていません')
-
-            try:
-                # tokenからユーザの割り出し
-                user_id = Token.objects.get(key=data['token']).user_id
-                get_user = AuthUser.objects.get(pk=user_id)
-
-                # 古いプロフ画像の削除
-                old_img_path = settings.MEDIA_ROOT + '/' + str(get_user.img)
-
-                if os.path.isfile(old_img_path):
-                    os.remove(old_img_path)
-
-                # base64文字列からファイルインスタンスの生成
-                format, img_str = data['img'].split(';base64,')
-                ext = format.split('/')[-1]
-                img_data = ContentFile(base64.b64decode(img_str), name=get_user.username + '.' + ext)
-
-                # 画像の保存
-                get_user.img = img_data
-                get_user.save()
-
-                return JsonResponse({'token': str(data['token'])})
-
-            except ObjectDoesNotExist:
-                raise ValidationError('ユーザが見つかりませんでした')
-
-
-class AddMovieViewSet(viewsets.ViewSet):
-    queryset = Movie.objects.all()
-    serializer_class = AddMovieSerializer
-
-    @staticmethod
-    def create(request):
-        """
-        When MovieAdd api access, run this method.
-        This method adds movie, onomatopoeia and genre. If success all process, response genre id and name.
-        :param request: Request user's data.(username, movie_title, overview,
-                                             movie_id(tmdb_id), genre_id_list,
-                                             onomatopoeia, dvd and fav)
-        :return: Genre id and name json data.
-        
-        :type request object
-        """
-
-        if request.method == 'POST':
-            r_genre_id_list = request.data['genre_id_list']
-            r_onomatopoeia_list = request.data['onomatopoeia']
-
-            # ジャンルの登録とpkの取得
-            if not r_genre_id_list:
-                r_genre_id_list = []
-
-            if type(r_genre_id_list) is str:
-                r_genre_id_list = conversion_str_to_list(r_genre_id_list, 'int')
-            elif type(r_genre_id_list) is not list:
-                raise ValidationError('不正な形式です')
-
-            genre_obj_dict, genre_obj_list = get_or_create_genre(r_genre_id_list)
-
-            # オノマトペの登録とpkの取得
-            if type(r_onomatopoeia_list) is str:
-                r_onomatopoeia_list = conversion_str_to_list(r_onomatopoeia_list, 'str')
-            elif type(r_onomatopoeia_list) is not list:
-                raise ValidationError('不正な形式です')
-
-            onomatopoeia_obj_list = get_or_create_onomatopoeia(r_onomatopoeia_list)
-
-            # 映画の保存
-            data = {'username': request.data['username'],
-                    'movie_title': request.data['movie_title'],
-                    'movie_id': request.data['movie_id'],
-                    'overview': request.data['overview'],
-                    'poster_path': request.data['poster_path']
-                    }
-
-            add_movie(genre_obj_list, onomatopoeia_obj_list, data)
-
-            # バックアップの保存
-            backup_data = {'username': request.data['username'],
-                           'movie_id': request.data['movie_id'],
-                           'onomatopoeia_obj_list': onomatopoeia_obj_list,
-                           'dvd': request.data['dvd'],
-                           'fav': request.data['fav']
-                           }
-
-            movieadd_backup(backup_data)
-
-            return JsonResponse(genre_obj_dict)
-
-
-class UpdateOnomatopoeiaViewSet(viewsets.ViewSet):
-    queryset = Onomatopoeia.objects.all()
-    serializer_class = UpdateOnomatopoeiaSerializer
-
-    @staticmethod
-    def create(request):
-        """
-        When OnomatopoeiaUpdate api access, run this method.
-        This method updates movie and back up table onomatopoeia column or add onomatopoeia.
-        If success all process, response user name.
-        :param request: Request user's data.(username, movie_id(tmdb_id) and onomatopoeia list)
-        :return: User name.
-        
-        :type request object
-        """
-
-        serializer = UpdateOnomatopoeiaSerializer(data=request.data)
-
-        if serializer.is_valid() and request.method == 'POST':
-            r_onomatopoeia_list = request.data['onomatopoeia']
-
-            if type(r_onomatopoeia_list) is str:
-                r_onomatopoeia_list = conversion_str_to_list(r_onomatopoeia_list, 'str')
-            elif type(request.data['onomatopoeia']) is not list:
-                raise ValidationError('不正な形式です')
-
-            # Movieテーブルのオノマトペカラムに新規追加(削除はしない)
-            onomatopoeia_obj_list = movie_update_onomatopoeia(request.data, r_onomatopoeia_list)
-
-            # BackUpテーブルのオノマトペカラムに上書き(削除と追加)
-            onomatopoeia_update_backup(request.data, onomatopoeia_obj_list)
-
-            return Response(request.data['username'])
-
-        else:
-            return Response(serializer.error_messages)
-
-
-class DeleteBackupViewSet(viewsets.ViewSet):
-    queryset = BackUp.objects.all()
-    serializer_class = DeleteBackupSerializer
-
-    @staticmethod
-    def create(request):
-        """
-        When DeleteBackup api access, run this method.
-        This method deletes backup data, remove movie table's user column.
-        :param request: Request user's data.(username and movie_id(tmdb_id))
-        :return: User name.
-        
-        :type request object
-        """
-
-        serializer = DeleteBackupSerializer(data=request.data)
-
-        if serializer.is_valid() and request.method == 'POST':
-            # バックアップの削除
-            try:
-                usr_obj = AuthUser.objects.get(username=request.data['username'])
-                movie_obj = Movie.objects.get(tmdb_id=request.data['movie_id'])
-                backup_obj = BackUp.objects.filter(username=usr_obj, movie=movie_obj)
-                backup_obj.delete()
-
-                # Movieテーブルの該当レコードのuserカラムからユーザとの関連を削除
-                if movie_obj.user.all().filter(username=usr_obj).exists():
-                    movie_obj.user.remove(usr_obj)
-
-                return Response(request.data['username'])
-            except ObjectDoesNotExist:
-                raise ValidationError('該当するデータが見つかりませんでした')
-        else:
-            return Response(serializer.error_messages)
-
-
-class UpdateStatusViewSet(viewsets.ViewSet):
-    queryset = AuthUser.objects.all()
-    serializer_class = UpdateStatusSerializer
-
-    @staticmethod
-    def create(request):
-        """
-        When StatusUpdate api access, run this method.
-        This method updates dvd and favorite status.
-        :param request: Request user's data.(username, movie_id(tmdb_id), dvd and fav)
-        :return: User name.
-        
-        :type request object
-        """
-
-        serializer = UpdateStatusSerializer(data=request.data)
-
-        if serializer.is_valid() and request.method == 'POST':
-            try:
-                usr_obj = AuthUser.objects.get(username=request.data['username'])
-                movie_obj = Movie.objects.get(tmdb_id=request.data['movie_id'])
-                BackUp.objects.filter(username=usr_obj, movie=movie_obj) \
-                    .update(dvd=request.data['dvd'], fav=request.data['fav'])
-            except ObjectDoesNotExist:
-                raise ValidationError('該当するデータが見つかりませんでした')
-
-            return Response(request.data['username'])
-        else:
-            return Response(serializer.error_messages)
-
-
-class GetRecentlyMovieViewSet(viewsets.ModelViewSet):
-    queryset = Movie.objects.all()
-    serializer_class = GetRecentlyMovieSerializer
-    http_method_names = ['get']
-
-    def list(self, request, *args, **kwargs):
-        """
-        When RecentlyMovie api access, run this method.
-        This method gets recently updated and many users movies.
-        :param request: This param is not used.
-        :param args: This param is not used.
-        :param kwargs: This param is not used.
-        :return: Recently updated and many users movies.
-        """
-
-        today = datetime.date.today() + datetime.timedelta(days=1)
-        one_week_ago = today - datetime.timedelta(days=7)
-
-        queryset = Movie.objects.annotate(user_count=Count('user')) \
-                       .filter(updated_at__range=(one_week_ago, today), user_count__gt=1) \
-                       .order_by('-user_count', '-updated_at')[:200].values()
-
-        serializer = GetRecentlyMovieSerializer(queryset, many=True)
-
-        return Response(serializer.data)
-
-
-class MovieUserCount(object):
-    def __init__(self, movie):
-        """
-        Management class that movie and user counts by age.
-        :param movie: Target a movie.
-        """
-
-        self.movie = movie
-        self.count_10 = 0
-        self.count_20 = 0
-        self.count_30 = 0
-        self.count_40 = 0
-        self.count_50 = 0
-
-
-class GetMovieByAgeViewSet(viewsets.ModelViewSet):
-    queryset = Movie.objects.all()
-    serializer_class = GetMovieByAgeSerializer
-    http_method_names = ['get']
-
-    def list(self, request, *args, **kwargs):
-        """
-        When MovieByAge api access, run this method.
-        This method gets user counts and age movies.
-        :param request: This param is not used.
-        :param args: This param is not used.
-        :param kwargs: This param is not used.
-        :return: User counts desc movies by age.
-        """
-
-        movies = Movie.objects.annotate(user_count=Count('user')).filter(user_count__gt=1).order_by('-user_count')[:15]
-
-        # 該当映画と年代別の登録数のクラスをリストに格納
-        count_class_list = []
-        for movie in movies:
-            tmp_count_class = MovieUserCount(movie)
-
-            for user in movie.user.all():
-                self.update_movie_count_class(tmp_count_class, user.birthday)
-
-            count_class_list.append(tmp_count_class)
-
-        # ユーザの登録数が多い順にソート
-        sorted_count_class_list_10 = sorted(count_class_list, key=attrgetter('count_10'), reverse=True)
-        sorted_count_class_list_20 = sorted(count_class_list, key=attrgetter('count_20'), reverse=True)
-        sorted_count_class_list_30 = sorted(count_class_list, key=attrgetter('count_30'), reverse=True)
-        sorted_count_class_list_40 = sorted(count_class_list, key=attrgetter('count_40'), reverse=True)
-        sorted_count_class_list_50 = sorted(count_class_list, key=attrgetter('count_50'), reverse=True)
-        sorted_list_collection = [sorted_count_class_list_10,
-                                  sorted_count_class_list_20,
-                                  sorted_count_class_list_30,
-                                  sorted_count_class_list_40,
-                                  sorted_count_class_list_50]
-
-        # dictionaryを作成
-        res = []
-        for i, sorted_count_class_list in enumerate(sorted_list_collection):
-            dict_list_tmp = []
-            for sorted_count_class in sorted_count_class_list:
-                dict_tmp = {"title": sorted_count_class.movie.title,
-                            "overview": sorted_count_class.movie.overview,
-                            "poster_path": sorted_count_class.movie.poster_path,
-                            "10": sorted_count_class.count_10,
-                            "20": sorted_count_class.count_20,
-                            "30": sorted_count_class.count_30,
-                            "40": sorted_count_class.count_40,
-                            "50": sorted_count_class.count_50}
-
-                dict_list_tmp.append(dict_tmp)
-
-            res.append({str((i + 1) * 10): dict_list_tmp})
-
-        return Response(res)
-
-    @staticmethod
-    def update_movie_count_class(count_class, birth_year):
-        """
-        This method updates age count in count_class.
-        :param count_class: Custom management class.
-        :param birth_year: User's birth year.
-        :return: Nothing.
-
-        :type count_class class object
-        :type birth_year int
-        """
-
-        this_year = datetime.date.today().year
-
-        if birth_year > this_year - 10 or birth_year in range(this_year - 19, this_year - 9):
-            count_class.count_10 += 1
-
-        elif birth_year in range(this_year - 29, this_year - 19):
-            count_class.count_20 += 1
-
-        elif birth_year in range(this_year - 39, this_year - 29):
-            count_class.count_30 += 1
-
-        elif birth_year in range(this_year - 49, this_year - 39):
-            count_class.count_40 += 1
-
-        else:
-            count_class.count_50 += 1
-
-
-class GetMovieReactionViewSet(viewsets.ViewSet):
-    queryset = Movie.objects.all()
-    serializer_class = GetMovieReactionSerializer
-
-    @staticmethod
-    def create(request):
-
-        """
-        When MovieReaction api access, run this method.
-        This method gets onomatopoeia and count.
-        :param request: Target tmdb_id list.
-        :return: Onomatopoeia name group by tmdb_id.
-        """
-
-        serializer = GetMovieReactionSerializer(data=request.data)
-
-        if serializer.is_valid() and request.method == 'POST':
-            tmdb_id_list = conversion_str_to_list(request.data['tmdb_id_list'], 'int')
-            res = []
-
-            thread_list = []
-            for tmdb_id in tmdb_id_list:
-                thread = GetMovieReactionThread(tmdb_id)
-                thread_list.append(thread)
-                thread.start()
-
-            # 全てのスレッドが完了するまで待機(ブロック)
-            for thread in thread_list:
-                thread.join()
-
-            for thread in thread_list:
-                res.append(thread.getResult())
-
-            return Response(res)
-
-        else:
-            raise ValidationError('正しいパラメータ値ではありません')
-
-
-class GetMovieByOnomatopoeiaViewSet(viewsets.ViewSet):
-    queryset = Movie.objects.all()
-    serializer_class = GetMovieByOnomatopoeiaSerializer
-
-    @staticmethod
-    def create(request):
-        """
-        When GetMovieByOnomatopoeia api access, run this method.
-        This method gets movies that include target onomatopoeia.
-        :param request: Target onomatopoeia.
-        :return: Hit movies information(title, overview and poster_path).
-        """
-
-        serializer = GetMovieByOnomatopoeiaSerializer(data=request.data)
-
-        if serializer.is_valid() and request.method == 'POST':
-            # リクエスト文字を含むオノマトペを取得
-            onomatopoeia_name = request.data['onomatopoeia_name']
-            onomatopoeia_list = Onomatopoeia.objects.filter(name__contains=onomatopoeia_name)
-
-            # 上記で取得したオノマトペを含む映画を取得
-            movie_list = []
-            for onomatopoeia in onomatopoeia_list:
-                movies = Movie.objects.filter(onomatopoeia=onomatopoeia)
-                movie_list += list(movies)
-
-            # 映画の情報をdictとして生成
-            res = []
-            for movie in movie_list:
-                res.append({"title": movie.title,
-                            "overview": movie.overview,
-                            "poster_path": movie.poster_path})
-
-            return Response(res)
-        else:
-            raise ValidationError('必要なパラメータが含まれていません')
-
-
-class GetMovieByIDViewSet(viewsets.ViewSet):
-    queryset = Movie.objects.all()
-    serializer_class = GetMovieByIDSerializer
-
-    @staticmethod
-    def create(request):
-
-        """
-        When GetMovieByID api access, run this method.
-        This method gets movie's title, overview and poster_path.
-        :param request: Target tmdb_id list.
-        :return: Movie's title, overview and poster_path.
-        """
-
-        serializer = GetMovieByIDSerializer(data=request.data)
-
-        if serializer.is_valid() and request.method == 'POST':
-            tmdb_id_list = conversion_str_to_list(request.data['tmdb_id_list'], 'int')
-            res = []
-
-            for tmdb_id in tmdb_id_list:
-                try:
-                    movie = Movie.objects.get(tmdb_id=tmdb_id)
-
-                    res.append({movie.tmdb_id: {"title": movie.title,
-                                                "overview": movie.overview,
-                                                "poster_path": movie.poster_path}})
-
-                except ObjectDoesNotExist:
-                    pass
-
-            return Response(res)
-
-        else:
-            raise ValidationError('正しいパラメータ値ではありません')
-
-
-class GetSearchMovieTitleResultsViewSet(viewsets.ViewSet):
-    queryset = Movie.objects.all()
-    serializer_class = GetSearchMovieTitleResultsSerializer
-
-    @staticmethod
-    def create(request):
-        """
-        When GetSearchMovieTitleResults api access, run this method.
-        This method gets search results in yahoo movie website.
-        :param request: Search movie title and page number.
-        :return: Movie's title, movie's id and total results count.
-        """
-
-        serializer = GetSearchMovieTitleResultsSerializer(data=request.data)
-
-        if serializer.is_valid() and request.method == 'POST':
-            res = []
-
-            context = ssl._create_unverified_context()
-            url, param = get_url_param(test_flag[0], 'search', request.data)
-            html = urllib.request.urlopen(url + '?' + urllib.parse.urlencode(param), context=context)
-            soup = BeautifulSoup(html, "html.parser")
-
-            # 検索結果の合計件数を抽出
-            srchform_div = soup.find(id='srchform')
-            srchform_div_label = srchform_div.find(class_='label')
-
-            # 検索結果が0の場合はこの時点で結果を返す
-            if srchform_div_label is None:
-                return Response({'total': 0, 'results': []})
-
-            small_list = srchform_div_label.find_all('small')
-            del small_list[0]
-
-            match = re.findall(r'[0-9]+', small_list[0].string)
-            total_resutls_count = int(match[0])
-
-            # 映画のタイトルとIDを抽出
-            lst = soup.find(id='lst')
-            li_tag_list = lst.find_all('li', class_='col')
-
-            title_id_list = []
-            for li_tag in li_tag_list:
-                title = li_tag.find('h3', class_='text-xsmall text-overflow').attrs['title']
-                id = li_tag.attrs['data-cinema-id']
-                title_id_list.append({'title': title, 'id': id})
-
-            res.append({'total': total_resutls_count})
-            res.append({'results': title_id_list})
-
-            return Response({'total': total_resutls_count, 'results': title_id_list})
-
-        else:
-            raise ValidationError('正しいパラメータ値ではありません')
-
-
-class GetOriginalTitleViewSet(viewsets.ViewSet):
-    queryset = Movie.objects.all()
-    serializer_class = GetOriginalTitleSerializer
-
-    @staticmethod
-    def create(request):
-        """
-        When GetOriginalTitle api access, run this method.
-        This method gets original movie title in yahoo movie website.
-        :param request: Search movie title and id number.
-        :return: Movie's original title.
-        """
-
-        serializer = GetOriginalTitleSerializer(data=request.data)
-
-        if serializer.is_valid() and request.method == 'POST':
-            original_title = ''
-
-            context = ssl._create_unverified_context()
-            url, param = get_url_param(test_flag[1], 'origin', request.data)
-            html = urllib.request.urlopen(url + '?' + urllib.parse.urlencode(param), context=context)
-            soup = BeautifulSoup(html, "html.parser")
-
-            mvinf = soup.find(id='mvinf')
-            tr_tag_list = mvinf.find_all('tr')
-
-            # 製作国が日本以外なら保存した原題を返す
-            for tr_tag in tr_tag_list:
-                th_tag = tr_tag.find('th')
-
-                if th_tag.string == '原題':
-                    original_title = tr_tag.find('td').string
-                    continue
-
-                if th_tag.string == '製作国':
-                    if tr_tag.find('li').string != '日本':
-                        return Response(original_title)
-                    break
-
-            return Response('')
-        else:
-            raise ValidationError('正しいパラメータ値ではありません')
-
-
-class GetOnomatopoeiaCountByMovieIDViewSet(viewsets.ViewSet):
-    queryset = Movie.objects.all()
-    serializer_class = GetOnomatopoeiaCountByMovieIDSerializer
-
-    @staticmethod
-    def create(request):
-        """
-        When GetOnomatopoeiaCountByMovieID api access, run this method.
-        This method gets onomatopoeia count in movie.
-        :param request: Target movie id and onomatopoeia names.
-        :return: Onomatopoeia name and count.
-        """
-
-        serializer = GetOnomatopoeiaCountByMovieIDSerializer(data=request.data)
-
-        if serializer.is_valid() and request.method == 'POST':
-            onomatopoeia_name_list = conversion_str_to_list(request.data['onomatopoeia_name_list'], 'str')
-            movie = Movie.objects.get(tmdb_id=request.data['tmdb_id'])
-
-            # 200よりリクエストされたオノマトペが少なければ最後までslice、それ以外なら20で割った分だけslice
-            if len(onomatopoeia_name_list) < 200:
-                s = 0
-                e = len(onomatopoeia_name_list)
-
-            else:
-                s = 0
-                e = int(len(onomatopoeia_name_list) / 20)  # MySQLの同時接続数が20のため
-
-            sliced = onomatopoeia_name_list[s:e]
-            thread_list = []
-
-            while len(sliced) != 0:
-                thread = GetOnomatopoeiaCountByMovieIDThread(movie, sliced)
-                thread_list.append(thread)
-                thread.start()
-
-                # スライス箇所の更新
-                s = e
-                e += e
-                sliced = onomatopoeia_name_list[s:e]
-
-            # 全てのスレッドが完了するまで待機(ブロック)
-            for thread in thread_list:
-                thread.join()
-
-            res = []
-            for thread in thread_list:
-                if len(thread.getResult()) != 0:
-                    res.extend(thread.getResult())
-
-            return Response(res)
-
-        else:
-            raise ValidationError('正しいパラメータ値ではありません')
+# class SignInWithTokenViewSet(viewsets.ViewSet):
+#     queryset = AuthUser.objects.all()
+#     serializer_class = SignInWithTokenSerializer
+#
+#     @staticmethod
+#     def create(request):
+#         """
+#         When SignInWithToken api access, run this method.
+#         This method checks username and token. If success signup, response username.
+#         :param request: Request user's data.(username and token)
+#         :return: Username
+#
+#         :type request object
+#         """
+#
+#         data = request.data
+#         serializer = SignInWithTokenSerializer(data=data)
+#
+#         if serializer.is_valid() and request.method == 'POST':
+#             try:
+#                 get_user = AuthUser.objects.get(username=data['username'])
+#                 token = Token.objects.get(user_id=get_user.pk)
+#
+#                 if str(token) == data['token']:
+#                     return Response({"username": data['username']})
+#                 else:
+#                     raise ValidationError('ログインに失敗しました', 404)
+#             except ObjectDoesNotExist:
+#                 raise ValidationError('ログインに失敗しました', 404)
+#         else:
+#             return Response(serializer.errors)
+#
+#
+# class SignInNoTokenViewSet(viewsets.ViewSet):
+#     queryset = AuthUser.objects.all()
+#     serializer_class = SignInNoTokenSerializer
+#
+#     @staticmethod
+#     def create(request):
+#         """
+#         When SignInNoToken api access, run this method.
+#         This method checks username and password. If success signup, response user's data.
+#         :param request: Username and password
+#         :return: User's movies and profile data.
+#         """
+#
+#         data = request.data
+#         serializer = SignInNoTokenSerializer(data=data)
+#
+#         if serializer.is_valid() and request.method == 'POST':
+#             try:
+#                 get_user = AuthUser.objects.get(username=data['username'])
+#                 token = Token.objects.get(user_id=get_user.pk)
+#
+#                 if get_user.check_password(data['password'].encode('utf-8')):
+#                     backup_obj = BackUp.objects.filter(username=get_user).values(
+#                         'movie__title', 'movie__tmdb_id', 'movie__overview', 'movie__poster_path',
+#                         'movie__genre__name', 'movie__genre__genre_id',
+#                         'onomatopoeia__name',
+#                         'dvd', 'fav',
+#                         'add_date',
+#                         'username__username', 'username__email', 'username__birthday'
+#                     )
+#
+#                     response_list = list(backup_obj)
+#                     response_list.append({'token': str(token)})
+#                     response_list.append({'username': str(get_user.username)})
+#                     response_list.append({'email': str(get_user.email)})
+#                     response_list.append({'birthday': int(get_user.birthday)})
+#                     response_list.append({'profile_img': str(get_user.img)})
+#
+#                     return JsonResponse({'results': response_list})
+#
+#                 else:
+#                     raise ValidationError('ユーザ名かパスワードが違います')
+#
+#             except ObjectDoesNotExist:
+#                 raise ValidationError('ユーザ名かパスワードが違います')
+#         else:
+#             return Response(serializer.errors)
+#
+#
+# class UpdatePasswordViewSet(viewsets.ViewSet):
+#     queryset = AuthUser.objects.all()
+#     serializer_class = UpdatePasswordSerializer
+#
+#     @staticmethod
+#     def create(request):
+#         """
+#         When ChangePassword api access, run this method.
+#         This method changes password and return token.
+#         :param request: Include token, now_password and new_password
+#         :return: User's token.
+#         """
+#
+#         if request.method == 'POST':
+#             data = request.data
+#
+#             if not data['token']:
+#                 raise ValidationError('認証情報が含まれていません')
+#             if not data['now_password']:
+#                 raise ValidationError('現在のパスワードが含まれていません')
+#             if not data['new_password']:
+#                 raise ValidationError('新しいパスワードが含まれていません')
+#
+#             try:
+#                 user_id = Token.objects.get(key=data['token']).user_id
+#                 get_user = AuthUser.objects.get(pk=user_id)
+#
+#                 if get_user.check_password(data['now_password'].encode('utf-8')):
+#                     get_user.set_password(data['new_password'])
+#                     get_user.save()
+#                     token = Token.objects.get(user_id=get_user.pk)
+#
+#                     return JsonResponse({'token': str(token)})
+#                 else:
+#                     raise ValidationError('現在のパスワードが異なるため変更に失敗しました')
+#
+#             except ObjectDoesNotExist:
+#                 raise ValidationError('ユーザが見つかりませんでした')
+#
+#
+# class UpdateEmailViewSet(viewsets.ViewSet):
+#     queryset = AuthUser.objects.all()
+#     serializer_class = UpdateEmailSerializer
+#
+#     @staticmethod
+#     def create(request):
+#         """
+#         When ChangeEmail api access, run this method.
+#         This method changes email and return new_email.
+#         :param request: Include token and new_email
+#         :return: User's new email.
+#         """
+#
+#         if request.method == 'POST':
+#             data = request.data
+#
+#             if not data['token']:
+#                 raise ValidationError('認証情報が含まれていません')
+#             if not data['new_email']:
+#                 raise ValidationError('新しいメールアドレスが含まれていません')
+#
+#             serializer = UpdateEmailSerializer(data=data)
+#             if serializer.is_valid():
+#                 try:
+#                     user_id = Token.objects.get(key=data['token']).user_id
+#                     get_user = AuthUser.objects.get(pk=user_id)
+#                     get_user.email = data['new_email']
+#                     get_user.save()
+#
+#                     return JsonResponse({'new_email': data['new_email']})
+#                 except:
+#                     raise ValidationError('ユーザが見つかりませんでした')
+#             else:
+#                 return Response(serializer.errors)
+#
+#
+# class UpdateSexViewSet(viewsets.ViewSet):
+#     queryset = AuthUser.objects.all()
+#     serializer_class = UpdateSexSerializer
+#
+#     @staticmethod
+#     def create(request):
+#         """
+#         When ChangeSex api access, run this method.
+#         This method changes sex and return new_sex.
+#         :param request: Include token and new_sex
+#         :return: User's new sex.
+#         """
+#
+#         if request.method == 'POST':
+#             data = request.data
+#
+#             if not data['token']:
+#                 raise ValidationError('認証情報が含まれていません')
+#             if not data['new_sex']:
+#                 raise ValidationError('新しい性別が含まれていません')
+#             if not (data['new_sex'] == 'M' or data['new_sex'] == 'F'):
+#                 raise ValidationError('性別の入力形式が正しくありません')
+#
+#             serializer = UpdateSexSerializer(data=data)
+#             if serializer.is_valid():
+#                 try:
+#                     user_id = Token.objects.get(key=data['token']).user_id
+#                     get_user = AuthUser.objects.get(pk=user_id)
+#                     get_user.sex = data['new_sex']
+#                     get_user.save()
+#
+#                     return JsonResponse({'new_sex': data['new_sex']})
+#                 except:
+#                     raise ValidationError('ユーザが見つかりませんでした')
+#             else:
+#                 return Response(serializer.errors)
+#
+#
+# class UpdateProfileImgViewSet(viewsets.ViewSet):
+#     queryset = AuthUser.objects.all()
+#     serializer_class = UpdateProfileImgSerializer
+#
+#     @staticmethod
+#     def create(request):
+#         """
+#         When SetProfileImg api access, run this method.
+#         This method sets img and return token.
+#         :param request: Include token and img base64 string.
+#         :return: User's token.
+#         """
+#
+#         if request.method == 'POST':
+#             data = request.data
+#
+#             if not data['token']:
+#                 raise ValidationError('認証情報が含まれていません')
+#             if not data['img']:
+#                 raise ValidationError('画像情報が含まれていません')
+#
+#             try:
+#                 # tokenからユーザの割り出し
+#                 user_id = Token.objects.get(key=data['token']).user_id
+#                 get_user = AuthUser.objects.get(pk=user_id)
+#
+#                 # 古いプロフ画像の削除
+#                 old_img_path = settings.MEDIA_ROOT + '/' + str(get_user.img)
+#
+#                 if os.path.isfile(old_img_path):
+#                     os.remove(old_img_path)
+#
+#                 # base64文字列からファイルインスタンスの生成
+#                 format, img_str = data['img'].split(';base64,')
+#                 ext = format.split('/')[-1]
+#                 img_data = ContentFile(base64.b64decode(img_str), name=get_user.username + '.' + ext)
+#
+#                 # 画像の保存
+#                 get_user.img = img_data
+#                 get_user.save()
+#
+#                 return JsonResponse({'token': str(data['token'])})
+#
+#             except ObjectDoesNotExist:
+#                 raise ValidationError('ユーザが見つかりませんでした')
+#
+#
+# class AddMovieViewSet(viewsets.ViewSet):
+#     queryset = Movie.objects.all()
+#     serializer_class = AddMovieSerializer
+#
+#     @staticmethod
+#     def create(request):
+#         """
+#         When MovieAdd api access, run this method.
+#         This method adds movie, onomatopoeia and genre. If success all process, response genre id and name.
+#         :param request: Request user's data.(username, movie_title, overview,
+#                                              movie_id(tmdb_id), genre_id_list,
+#                                              onomatopoeia, dvd and fav)
+#         :return: Genre id and name json data.
+#
+#         :type request object
+#         """
+#
+#         if request.method == 'POST':
+#             r_genre_id_list = request.data['genre_id_list']
+#             r_onomatopoeia_list = request.data['onomatopoeia']
+#
+#             # ジャンルの登録とpkの取得
+#             if not r_genre_id_list:
+#                 r_genre_id_list = []
+#
+#             if type(r_genre_id_list) is str:
+#                 r_genre_id_list = conversion_str_to_list(r_genre_id_list, 'int')
+#             elif type(r_genre_id_list) is not list:
+#                 raise ValidationError('不正な形式です')
+#
+#             genre_obj_dict, genre_obj_list = get_or_create_genre(r_genre_id_list)
+#
+#             # オノマトペの登録とpkの取得
+#             if type(r_onomatopoeia_list) is str:
+#                 r_onomatopoeia_list = conversion_str_to_list(r_onomatopoeia_list, 'str')
+#             elif type(r_onomatopoeia_list) is not list:
+#                 raise ValidationError('不正な形式です')
+#
+#             onomatopoeia_obj_list = get_or_create_onomatopoeia(r_onomatopoeia_list)
+#
+#             # 映画の保存
+#             data = {'username': request.data['username'],
+#                     'movie_title': request.data['movie_title'],
+#                     'movie_id': request.data['movie_id'],
+#                     'overview': request.data['overview'],
+#                     'poster_path': request.data['poster_path']
+#                     }
+#
+#             add_movie(genre_obj_list, onomatopoeia_obj_list, data)
+#
+#             # バックアップの保存
+#             backup_data = {'username': request.data['username'],
+#                            'movie_id': request.data['movie_id'],
+#                            'onomatopoeia_obj_list': onomatopoeia_obj_list,
+#                            'dvd': request.data['dvd'],
+#                            'fav': request.data['fav']
+#                            }
+#
+#             movieadd_backup(backup_data)
+#
+#             return JsonResponse(genre_obj_dict)
+#
+#
+# class UpdateOnomatopoeiaViewSet(viewsets.ViewSet):
+#     queryset = Onomatopoeia.objects.all()
+#     serializer_class = UpdateOnomatopoeiaSerializer
+#
+#     @staticmethod
+#     def create(request):
+#         """
+#         When OnomatopoeiaUpdate api access, run this method.
+#         This method updates movie and back up table onomatopoeia column or add onomatopoeia.
+#         If success all process, response user name.
+#         :param request: Request user's data.(username, movie_id(tmdb_id) and onomatopoeia list)
+#         :return: User name.
+#
+#         :type request object
+#         """
+#
+#         serializer = UpdateOnomatopoeiaSerializer(data=request.data)
+#
+#         if serializer.is_valid() and request.method == 'POST':
+#             r_onomatopoeia_list = request.data['onomatopoeia']
+#
+#             if type(r_onomatopoeia_list) is str:
+#                 r_onomatopoeia_list = conversion_str_to_list(r_onomatopoeia_list, 'str')
+#             elif type(request.data['onomatopoeia']) is not list:
+#                 raise ValidationError('不正な形式です')
+#
+#             # Movieテーブルのオノマトペカラムに新規追加(削除はしない)
+#             onomatopoeia_obj_list = movie_update_onomatopoeia(request.data, r_onomatopoeia_list)
+#
+#             # BackUpテーブルのオノマトペカラムに上書き(削除と追加)
+#             onomatopoeia_update_backup(request.data, onomatopoeia_obj_list)
+#
+#             return Response(request.data['username'])
+#
+#         else:
+#             return Response(serializer.error_messages)
+#
+#
+# class DeleteBackupViewSet(viewsets.ViewSet):
+#     queryset = BackUp.objects.all()
+#     serializer_class = DeleteBackupSerializer
+#
+#     @staticmethod
+#     def create(request):
+#         """
+#         When DeleteBackup api access, run this method.
+#         This method deletes backup data, remove movie table's user column.
+#         :param request: Request user's data.(username and movie_id(tmdb_id))
+#         :return: User name.
+#
+#         :type request object
+#         """
+#
+#         serializer = DeleteBackupSerializer(data=request.data)
+#
+#         if serializer.is_valid() and request.method == 'POST':
+#             # バックアップの削除
+#             try:
+#                 usr_obj = AuthUser.objects.get(username=request.data['username'])
+#                 movie_obj = Movie.objects.get(tmdb_id=request.data['movie_id'])
+#                 backup_obj = BackUp.objects.filter(username=usr_obj, movie=movie_obj)
+#                 backup_obj.delete()
+#
+#                 # Movieテーブルの該当レコードのuserカラムからユーザとの関連を削除
+#                 if movie_obj.user.all().filter(username=usr_obj).exists():
+#                     movie_obj.user.remove(usr_obj)
+#
+#                 return Response(request.data['username'])
+#             except ObjectDoesNotExist:
+#                 raise ValidationError('該当するデータが見つかりませんでした')
+#         else:
+#             return Response(serializer.error_messages)
+#
+#
+# class UpdateStatusViewSet(viewsets.ViewSet):
+#     queryset = AuthUser.objects.all()
+#     serializer_class = UpdateStatusSerializer
+#
+#     @staticmethod
+#     def create(request):
+#         """
+#         When StatusUpdate api access, run this method.
+#         This method updates dvd and favorite status.
+#         :param request: Request user's data.(username, movie_id(tmdb_id), dvd and fav)
+#         :return: User name.
+#
+#         :type request object
+#         """
+#
+#         serializer = UpdateStatusSerializer(data=request.data)
+#
+#         if serializer.is_valid() and request.method == 'POST':
+#             try:
+#                 usr_obj = AuthUser.objects.get(username=request.data['username'])
+#                 movie_obj = Movie.objects.get(tmdb_id=request.data['movie_id'])
+#                 BackUp.objects.filter(username=usr_obj, movie=movie_obj) \
+#                     .update(dvd=request.data['dvd'], fav=request.data['fav'])
+#             except ObjectDoesNotExist:
+#                 raise ValidationError('該当するデータが見つかりませんでした')
+#
+#             return Response(request.data['username'])
+#         else:
+#             return Response(serializer.error_messages)
+#
+#
+# class GetRecentlyMovieViewSet(viewsets.ModelViewSet):
+#     queryset = Movie.objects.all()
+#     serializer_class = GetRecentlyMovieSerializer
+#     http_method_names = ['get']
+#
+#     def list(self, request, *args, **kwargs):
+#         """
+#         When RecentlyMovie api access, run this method.
+#         This method gets recently updated and many users movies.
+#         :param request: This param is not used.
+#         :param args: This param is not used.
+#         :param kwargs: This param is not used.
+#         :return: Recently updated and many users movies.
+#         """
+#
+#         today = datetime.date.today() + datetime.timedelta(days=1)
+#         one_week_ago = today - datetime.timedelta(days=7)
+#
+#         queryset = Movie.objects.annotate(user_count=Count('user')) \
+#                        .filter(updated_at__range=(one_week_ago, today), user_count__gt=1) \
+#                        .order_by('-user_count', '-updated_at')[:200].values()
+#
+#         serializer = GetRecentlyMovieSerializer(queryset, many=True)
+#
+#         return Response(serializer.data)
+#
+#
+# class MovieUserCount(object):
+#     def __init__(self, movie):
+#         """
+#         Management class that movie and user counts by age.
+#         :param movie: Target a movie.
+#         """
+#
+#         self.movie = movie
+#         self.count_10 = 0
+#         self.count_20 = 0
+#         self.count_30 = 0
+#         self.count_40 = 0
+#         self.count_50 = 0
+#
+#
+# class GetMovieByAgeViewSet(viewsets.ModelViewSet):
+#     queryset = Movie.objects.all()
+#     serializer_class = GetMovieByAgeSerializer
+#     http_method_names = ['get']
+#
+#     def list(self, request, *args, **kwargs):
+#         """
+#         When MovieByAge api access, run this method.
+#         This method gets user counts and age movies.
+#         :param request: This param is not used.
+#         :param args: This param is not used.
+#         :param kwargs: This param is not used.
+#         :return: User counts desc movies by age.
+#         """
+#
+#         movies = Movie.objects.annotate(user_count=Count('user')).filter(user_count__gt=1).order_by('-user_count')[:15]
+#
+#         # 該当映画と年代別の登録数のクラスをリストに格納
+#         count_class_list = []
+#         for movie in movies:
+#             tmp_count_class = MovieUserCount(movie)
+#
+#             for user in movie.user.all():
+#                 self.update_movie_count_class(tmp_count_class, user.birthday)
+#
+#             count_class_list.append(tmp_count_class)
+#
+#         # ユーザの登録数が多い順にソート
+#         sorted_count_class_list_10 = sorted(count_class_list, key=attrgetter('count_10'), reverse=True)
+#         sorted_count_class_list_20 = sorted(count_class_list, key=attrgetter('count_20'), reverse=True)
+#         sorted_count_class_list_30 = sorted(count_class_list, key=attrgetter('count_30'), reverse=True)
+#         sorted_count_class_list_40 = sorted(count_class_list, key=attrgetter('count_40'), reverse=True)
+#         sorted_count_class_list_50 = sorted(count_class_list, key=attrgetter('count_50'), reverse=True)
+#         sorted_list_collection = [sorted_count_class_list_10,
+#                                   sorted_count_class_list_20,
+#                                   sorted_count_class_list_30,
+#                                   sorted_count_class_list_40,
+#                                   sorted_count_class_list_50]
+#
+#         # dictionaryを作成
+#         res = []
+#         for i, sorted_count_class_list in enumerate(sorted_list_collection):
+#             dict_list_tmp = []
+#             for sorted_count_class in sorted_count_class_list:
+#                 dict_tmp = {"title": sorted_count_class.movie.title,
+#                             "overview": sorted_count_class.movie.overview,
+#                             "poster_path": sorted_count_class.movie.poster_path,
+#                             "10": sorted_count_class.count_10,
+#                             "20": sorted_count_class.count_20,
+#                             "30": sorted_count_class.count_30,
+#                             "40": sorted_count_class.count_40,
+#                             "50": sorted_count_class.count_50}
+#
+#                 dict_list_tmp.append(dict_tmp)
+#
+#             res.append({str((i + 1) * 10): dict_list_tmp})
+#
+#         return Response(res)
+#
+#     @staticmethod
+#     def update_movie_count_class(count_class, birth_year):
+#         """
+#         This method updates age count in count_class.
+#         :param count_class: Custom management class.
+#         :param birth_year: User's birth year.
+#         :return: Nothing.
+#
+#         :type count_class class object
+#         :type birth_year int
+#         """
+#
+#         this_year = datetime.date.today().year
+#
+#         if birth_year > this_year - 10 or birth_year in range(this_year - 19, this_year - 9):
+#             count_class.count_10 += 1
+#
+#         elif birth_year in range(this_year - 29, this_year - 19):
+#             count_class.count_20 += 1
+#
+#         elif birth_year in range(this_year - 39, this_year - 29):
+#             count_class.count_30 += 1
+#
+#         elif birth_year in range(this_year - 49, this_year - 39):
+#             count_class.count_40 += 1
+#
+#         else:
+#             count_class.count_50 += 1
+#
+#
+# class GetMovieReactionViewSet(viewsets.ViewSet):
+#     queryset = Movie.objects.all()
+#     serializer_class = GetMovieReactionSerializer
+#
+#     @staticmethod
+#     def create(request):
+#
+#         """
+#         When MovieReaction api access, run this method.
+#         This method gets onomatopoeia and count.
+#         :param request: Target tmdb_id list.
+#         :return: Onomatopoeia name group by tmdb_id.
+#         """
+#
+#         serializer = GetMovieReactionSerializer(data=request.data)
+#
+#         if serializer.is_valid() and request.method == 'POST':
+#             tmdb_id_list = conversion_str_to_list(request.data['tmdb_id_list'], 'int')
+#             res = []
+#
+#             thread_list = []
+#             for tmdb_id in tmdb_id_list:
+#                 thread = GetMovieReactionThread(tmdb_id)
+#                 thread_list.append(thread)
+#                 thread.start()
+#
+#             # 全てのスレッドが完了するまで待機(ブロック)
+#             for thread in thread_list:
+#                 thread.join()
+#
+#             for thread in thread_list:
+#                 res.append(thread.getResult())
+#
+#             return Response(res)
+#
+#         else:
+#             raise ValidationError('正しいパラメータ値ではありません')
+#
+#
+# class GetMovieByOnomatopoeiaViewSet(viewsets.ViewSet):
+#     queryset = Movie.objects.all()
+#     serializer_class = GetMovieByOnomatopoeiaSerializer
+#
+#     @staticmethod
+#     def create(request):
+#         """
+#         When GetMovieByOnomatopoeia api access, run this method.
+#         This method gets movies that include target onomatopoeia.
+#         :param request: Target onomatopoeia.
+#         :return: Hit movies information(title, overview and poster_path).
+#         """
+#
+#         serializer = GetMovieByOnomatopoeiaSerializer(data=request.data)
+#
+#         if serializer.is_valid() and request.method == 'POST':
+#             # リクエスト文字を含むオノマトペを取得
+#             onomatopoeia_name = request.data['onomatopoeia_name']
+#             onomatopoeia_list = Onomatopoeia.objects.filter(name__contains=onomatopoeia_name)
+#
+#             # 上記で取得したオノマトペを含む映画を取得
+#             movie_list = []
+#             for onomatopoeia in onomatopoeia_list:
+#                 movies = Movie.objects.filter(onomatopoeia=onomatopoeia)
+#                 movie_list += list(movies)
+#
+#             # 映画の情報をdictとして生成
+#             res = []
+#             for movie in movie_list:
+#                 res.append({"title": movie.title,
+#                             "overview": movie.overview,
+#                             "poster_path": movie.poster_path})
+#
+#             return Response(res)
+#         else:
+#             raise ValidationError('必要なパラメータが含まれていません')
+#
+#
+# class GetMovieByIDViewSet(viewsets.ViewSet):
+#     queryset = Movie.objects.all()
+#     serializer_class = GetMovieByIDSerializer
+#
+#     @staticmethod
+#     def create(request):
+#
+#         """
+#         When GetMovieByID api access, run this method.
+#         This method gets movie's title, overview and poster_path.
+#         :param request: Target tmdb_id list.
+#         :return: Movie's title, overview and poster_path.
+#         """
+#
+#         serializer = GetMovieByIDSerializer(data=request.data)
+#
+#         if serializer.is_valid() and request.method == 'POST':
+#             tmdb_id_list = conversion_str_to_list(request.data['tmdb_id_list'], 'int')
+#             res = []
+#
+#             for tmdb_id in tmdb_id_list:
+#                 try:
+#                     movie = Movie.objects.get(tmdb_id=tmdb_id)
+#
+#                     res.append({movie.tmdb_id: {"title": movie.title,
+#                                                 "overview": movie.overview,
+#                                                 "poster_path": movie.poster_path}})
+#
+#                 except ObjectDoesNotExist:
+#                     pass
+#
+#             return Response(res)
+#
+#         else:
+#             raise ValidationError('正しいパラメータ値ではありません')
+#
+#
+# class GetSearchMovieTitleResultsViewSet(viewsets.ViewSet):
+#     queryset = Movie.objects.all()
+#     serializer_class = GetSearchMovieTitleResultsSerializer
+#
+#     @staticmethod
+#     def create(request):
+#         """
+#         When GetSearchMovieTitleResults api access, run this method.
+#         This method gets search results in yahoo movie website.
+#         :param request: Search movie title and page number.
+#         :return: Movie's title, movie's id and total results count.
+#         """
+#
+#         serializer = GetSearchMovieTitleResultsSerializer(data=request.data)
+#
+#         if serializer.is_valid() and request.method == 'POST':
+#             res = []
+#
+#             context = ssl._create_unverified_context()
+#             url, param = get_url_param(test_flag[0], 'search', request.data)
+#             html = urllib.request.urlopen(url + '?' + urllib.parse.urlencode(param), context=context)
+#             soup = BeautifulSoup(html, "html.parser")
+#
+#             # 検索結果の合計件数を抽出
+#             srchform_div = soup.find(id='srchform')
+#             srchform_div_label = srchform_div.find(class_='label')
+#
+#             # 検索結果が0の場合はこの時点で結果を返す
+#             if srchform_div_label is None:
+#                 return Response({'total': 0, 'results': []})
+#
+#             small_list = srchform_div_label.find_all('small')
+#             del small_list[0]
+#
+#             match = re.findall(r'[0-9]+', small_list[0].string)
+#             total_resutls_count = int(match[0])
+#
+#             # 映画のタイトルとIDを抽出
+#             lst = soup.find(id='lst')
+#             li_tag_list = lst.find_all('li', class_='col')
+#
+#             title_id_list = []
+#             for li_tag in li_tag_list:
+#                 title = li_tag.find('h3', class_='text-xsmall text-overflow').attrs['title']
+#                 id = li_tag.attrs['data-cinema-id']
+#                 title_id_list.append({'title': title, 'id': id})
+#
+#             res.append({'total': total_resutls_count})
+#             res.append({'results': title_id_list})
+#
+#             return Response({'total': total_resutls_count, 'results': title_id_list})
+#
+#         else:
+#             raise ValidationError('正しいパラメータ値ではありません')
+#
+#
+# class GetOriginalTitleViewSet(viewsets.ViewSet):
+#     queryset = Movie.objects.all()
+#     serializer_class = GetOriginalTitleSerializer
+#
+#     @staticmethod
+#     def create(request):
+#         """
+#         When GetOriginalTitle api access, run this method.
+#         This method gets original movie title in yahoo movie website.
+#         :param request: Search movie title and id number.
+#         :return: Movie's original title.
+#         """
+#
+#         serializer = GetOriginalTitleSerializer(data=request.data)
+#
+#         if serializer.is_valid() and request.method == 'POST':
+#             original_title = ''
+#
+#             context = ssl._create_unverified_context()
+#             url, param = get_url_param(test_flag[1], 'origin', request.data)
+#             html = urllib.request.urlopen(url + '?' + urllib.parse.urlencode(param), context=context)
+#             soup = BeautifulSoup(html, "html.parser")
+#
+#             mvinf = soup.find(id='mvinf')
+#             tr_tag_list = mvinf.find_all('tr')
+#
+#             # 製作国が日本以外なら保存した原題を返す
+#             for tr_tag in tr_tag_list:
+#                 th_tag = tr_tag.find('th')
+#
+#                 if th_tag.string == '原題':
+#                     original_title = tr_tag.find('td').string
+#                     continue
+#
+#                 if th_tag.string == '製作国':
+#                     if tr_tag.find('li').string != '日本':
+#                         return Response(original_title)
+#                     break
+#
+#             return Response('')
+#         else:
+#             raise ValidationError('正しいパラメータ値ではありません')
+#
+#
+# class GetOnomatopoeiaCountByMovieIDViewSet(viewsets.ViewSet):
+#     queryset = Movie.objects.all()
+#     serializer_class = GetOnomatopoeiaCountByMovieIDSerializer
+#
+#     @staticmethod
+#     def create(request):
+#         """
+#         When GetOnomatopoeiaCountByMovieID api access, run this method.
+#         This method gets onomatopoeia count in movie.
+#         :param request: Target movie id and onomatopoeia names.
+#         :return: Onomatopoeia name and count.
+#         """
+#
+#         serializer = GetOnomatopoeiaCountByMovieIDSerializer(data=request.data)
+#
+#         if serializer.is_valid() and request.method == 'POST':
+#             onomatopoeia_name_list = conversion_str_to_list(request.data['onomatopoeia_name_list'], 'str')
+#             movie = Movie.objects.get(tmdb_id=request.data['tmdb_id'])
+#
+#             # 200よりリクエストされたオノマトペが少なければ最後までslice、それ以外なら20で割った分だけslice
+#             if len(onomatopoeia_name_list) < 200:
+#                 s = 0
+#                 e = len(onomatopoeia_name_list)
+#
+#             else:
+#                 s = 0
+#                 e = int(len(onomatopoeia_name_list) / 20)  # MySQLの同時接続数が20のため
+#
+#             sliced = onomatopoeia_name_list[s:e]
+#             thread_list = []
+#
+#             while len(sliced) != 0:
+#                 thread = GetOnomatopoeiaCountByMovieIDThread(movie, sliced)
+#                 thread_list.append(thread)
+#                 thread.start()
+#
+#                 # スライス箇所の更新
+#                 s = e
+#                 e += e
+#                 sliced = onomatopoeia_name_list[s:e]
+#
+#             # 全てのスレッドが完了するまで待機(ブロック)
+#             for thread in thread_list:
+#                 thread.join()
+#
+#             res = []
+#             for thread in thread_list:
+#                 if len(thread.getResult()) != 0:
+#                     res.extend(thread.getResult())
+#
+#             return Response(res)
+#
+#         else:
+#             raise ValidationError('正しいパラメータ値ではありません')
