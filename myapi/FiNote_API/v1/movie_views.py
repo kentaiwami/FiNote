@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from rest_framework import viewsets
 from rest_framework_jwt.serializers import User
 from FiNote_API.v1.movie_serializer import *
@@ -5,7 +6,56 @@ from rest_framework.response import Response
 
 # [0]: GetSearchMovieTitleResultsViewSet
 # [1]: GetOriginalTitleViewSet
-test_flag = [False, False]
+# test_flag = [False, False]
+
+
+class GetMoviesViewSet(viewsets.ModelViewSet):
+    serializer_class = GetMoviesSerializer
+
+    # @staticmethod
+    def get(self, request):
+        """
+        When GetMovies api access, run this method.
+        This method gets movie's title, overview and poster_path.
+        :param request: Target tmdb_id list.
+        :return: Movie's title, overview and poster_path.
+        """
+
+    def get_queryset(self):
+        if not 'user_id' in self.request.GET:
+            raise serializers.ValidationError('user_idが含まれていません')
+
+        return Movie_User.objects.all().filter(user_id=self.request.GET.get('user_id'))
+
+    def handle_exception(self, exc):
+        try:
+            return super(GetMoviesViewSet, self).handle_exception(exc)
+        except:
+            content = {'detail': '{}'.format(exc.args)}
+            return Response(content, status=400)
+
+        # if not 'user_id' in request.GET:
+        #     hoge = AuthUser.objects.all()
+        #
+        #     hhh = list(hoge)
+        #     return JsonResponse({'h':hhh})
+        # else:
+        #     raise serializers.ValidationError('user_idが含まれていません')
+
+        # if serializer.is_valid() and request.method == 'GET':
+            # tmdb_id_list = conversion_str_to_list(request.data['tmdb_id_list'], 'int')
+            # res = []
+            #
+            # for tmdb_id in tmdb_id_list:
+            #     try:
+            #         movie = Movie.objects.get(tmdb_id=tmdb_id)
+            #
+            #         res.append({movie.tmdb_id: {"title": movie.title,
+            #                                     "overview": movie.overview,
+            #                                     "poster_path": movie.poster_path}})
+            #
+            #     except ObjectDoesNotExist:
+            #         pass
 
 
 #
@@ -385,41 +435,6 @@ test_flag = [False, False]
 #             raise ValidationError('必要なパラメータが含まれていません')
 #
 #
-# class GetMovieByIDViewSet(viewsets.ViewSet):
-#     queryset = Movie.objects.all()
-#     serializer_class = GetMovieByIDSerializer
-#
-#     @staticmethod
-#     def create(request):
-#
-#         """
-#         When GetMovieByID api access, run this method.
-#         This method gets movie's title, overview and poster_path.
-#         :param request: Target tmdb_id list.
-#         :return: Movie's title, overview and poster_path.
-#         """
-#
-#         serializer = GetMovieByIDSerializer(data=request.data)
-#
-#         if serializer.is_valid() and request.method == 'POST':
-#             tmdb_id_list = conversion_str_to_list(request.data['tmdb_id_list'], 'int')
-#             res = []
-#
-#             for tmdb_id in tmdb_id_list:
-#                 try:
-#                     movie = Movie.objects.get(tmdb_id=tmdb_id)
-#
-#                     res.append({movie.tmdb_id: {"title": movie.title,
-#                                                 "overview": movie.overview,
-#                                                 "poster_path": movie.poster_path}})
-#
-#                 except ObjectDoesNotExist:
-#                     pass
-#
-#             return Response(res)
-#
-#         else:
-#             raise ValidationError('正しいパラメータ値ではありません')
 #
 #
 # class GetSearchMovieTitleResultsViewSet(viewsets.ViewSet):

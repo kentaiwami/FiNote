@@ -2,9 +2,12 @@ from rest_framework import serializers
 from FiNote_API.models import *
 
 
+class GetMoviesSerializer(serializers.ModelSerializer):
 
-#
-#
+    class Meta:
+        model = Movie
+        fields = ('title', 'tmdb_id', 'overview', 'poster')#ユーザがつけたオノマトペ
+
 # class AddMovieSerializer(serializers.Serializer):
 #     username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
 #     movie_title = serializers.CharField(allow_blank=False, allow_null=False, required=True)
@@ -12,10 +15,10 @@ from FiNote_API.models import *
 #     movie_id = serializers.IntegerField(allow_null=False, required=True)
 #     genre_id_list = serializers.CharField(allow_blank=True, allow_null=True)
 #     onomatopoeia = serializers.CharField(allow_blank=False, allow_null=False)
-#     dvd = serializers.IntegerField(default=0)
-#     fav = serializers.IntegerField(default=0)
-#
-#
+#     dvd = serializers.IntegerField(allow_null=False, required=True)
+#     fav = serializers.IntegerField(allow_null=False, required=True)
+
+
 # class UpdateOnomatopoeiaSerializer(serializers.Serializer):
 #     username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
 #     movie_id = serializers.IntegerField(allow_null=False, required=True)
@@ -91,8 +94,7 @@ from FiNote_API.models import *
 #     onomatopoeia_name = serializers.CharField(max_length=100, allow_null=False, required=True, allow_blank=False)
 #
 #
-# class GetMovieByIDSerializer(serializers.Serializer):
-#     tmdb_id_list = serializers.CharField(allow_null=False, required=True)
+
 #
 #
 # class GetSearchMovieTitleResultsSerializer(serializers.Serializer):

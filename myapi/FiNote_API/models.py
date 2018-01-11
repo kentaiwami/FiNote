@@ -96,11 +96,21 @@ class Movie(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     genre = models.ManyToManyField(Genre)
-    user = models.ManyToManyField(AuthUser, blank=True)
-    onomatopoeia = models.ManyToManyField(Onomatopoeia)
+    user = models.ManyToManyField(AuthUser, blank=True, through='Movie_User')
+    onomatopoeia = models.ManyToManyField(Onomatopoeia, through='Movie_Onomatopoeia')
 
     def __str__(self):
         return self.title
+
+
+class Movie_User(models.Model):
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
+
+
+class Movie_Onomatopoeia(models.Model):
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    onomatopoeia = models.ForeignKey(Onomatopoeia, on_delete=models.CASCADE)
 
 
 class OnomatopoeiaCount(models.Model):

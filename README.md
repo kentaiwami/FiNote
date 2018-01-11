@@ -40,7 +40,7 @@ request：
 }
 response：
 {
-    "user": "hogehoge"
+    "id": 1
 }
 ```
 

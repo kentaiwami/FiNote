@@ -3,15 +3,16 @@ from FiNote_API.v1.user_views import *
 from FiNote_API.v1.movie_views import *
 
 router = routers.DefaultRouter()
-router.register(r'user', CreateUserViewSet, 'create-user')
-router.register(r'user/login', LoginViewSet, 'login')
-router.register(r'user/update/password', UpdatePasswordViewSet, 'update-password')
-router.register(r'user/update/email', UpdateEmailViewSet, 'update-email')
-router.register(r'user/update/img', UpdateProfileImgViewSet, 'update-profile-img')
+router.register(r'user', CreateUserViewSet, base_name='create-user')
+router.register(r'user/login', LoginViewSet, base_name='login')
+router.register(r'user/update/password', UpdatePasswordViewSet, base_name='update-password')
+router.register(r'user/update/email', UpdateEmailViewSet, base_name='update-email')
+router.register(r'user/update/img', UpdateProfileImgViewSet, base_name='update-profile-img')
+
+router.register(r'user/movies', GetMoviesViewSet, base_name='get-movies')
 
 
-# router.register(r'v1/user/signin/token', SignInWithTokenViewSet, 'sign_in_with_token')
-# router.register(r'v1/user/signin/notoken', SignInNoTokenViewSet, 'sign_in_no_token')
+
 # router.register(r'v1/add_movie', AddMovieViewSet, 'add_movie')
 # router.register(r'v1/update_onomatopoeia', UpdateOnomatopoeiaViewSet, 'update_onomatopoeia')
 # router.register(r'v1/update_status', UpdateStatusViewSet, 'update_status')
@@ -25,7 +26,6 @@ router.register(r'user/update/img', UpdateProfileImgViewSet, 'update-profile-img
 # router.register(r'v1/get_movie_by_age', GetMovieByAgeViewSet, 'get_movie_by_age')
 # router.register(r'v1/get_movie_reaction', GetMovieReactionViewSet, 'get_movie_reaction')
 # router.register(r'v1/get_movie_by_onomatopoeia', GetMovieByOnomatopoeiaViewSet, 'get_movie_by_onomatopoeia')
-# router.register(r'v1/get_movie_by_id', GetMovieByIDViewSet, 'get_movie_by_id')
 # router.register(r'v1/get_search_movie_title_results', GetSearchMovieTitleResultsViewSet, 'get_search_movie_title_results')
 # router.register(r'v1/get_original_title', GetOriginalTitleViewSet, 'get_original_title')
 # router.register(r'v1/get_onomatopoeia_count_by_movie_id', GetOnomatopoeiaCountByMovieIDViewSet, 'get_onomatopoeia_count_by_movie_id')

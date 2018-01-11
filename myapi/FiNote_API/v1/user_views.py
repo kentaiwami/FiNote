@@ -40,7 +40,7 @@ class CreateUserViewSet(viewsets.ViewSet):
                 birthday=data['birthday'],
             )
 
-            return Response({'user': str(user)})
+            return Response({'id': user.pk})
         else:
             return Response(serializer.errors, 400)
 
