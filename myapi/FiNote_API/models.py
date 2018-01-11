@@ -101,6 +101,7 @@ class Movie(models.Model):
 class Movie_User(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Movie_Onomatopoeia(models.Model):
@@ -117,14 +118,12 @@ class OnomatopoeiaCount(models.Model):
         return self.onomatopoeia.name + '_' + str(self.count)
 
 
-class BackUp(models.Model):
-
-    username = models.ForeignKey(AuthUser)
+class DVDFAV(models.Model):
+    user = models.ForeignKey(AuthUser)
     movie = models.ForeignKey(Movie)
-    onomatopoeia = models.ManyToManyField(Onomatopoeia)
-    add_date = models.DateField(default=date.today())
     dvd = models.IntegerField(default=0)
     fav = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return str(self.username)
+        return str(self.user)

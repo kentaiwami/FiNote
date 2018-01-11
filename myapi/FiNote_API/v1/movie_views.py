@@ -9,53 +9,33 @@ from rest_framework.response import Response
 # test_flag = [False, False]
 
 
-class GetMoviesViewSet(viewsets.ModelViewSet):
+class GetMoviesViewSet(viewsets.ViewSet):
     serializer_class = GetMoviesSerializer
 
-    # @staticmethod
-    def get(self, request):
-        """
-        When GetMovies api access, run this method.
-        This method gets movie's title, overview and poster_path.
-        :param request: Target tmdb_id list.
-        :return: Movie's title, overview and poster_path.
-        """
-
-    def get_queryset(self):
-        if not 'user_id' in self.request.GET:
+    def list(self, request):
+        if not 'user_id' in request.GET:
             raise serializers.ValidationError('user_idが含まれていません')
 
-        return Movie_User.objects.all().filter(user_id=self.request.GET.get('user_id'))
 
-    def handle_exception(self, exc):
-        try:
-            return super(GetMoviesViewSet, self).handle_exception(exc)
-        except:
-            content = {'detail': '{}'.format(exc.args)}
-            return Response(content, status=400)
+        user_id = request.GET.get('user_id')
+        movies = Movie_User.objects.filter(user_id=user_id).order_by('-created_at')
+        movies_dvd_fav = DVDFAV.objects.filter(user=user_id).order_by('-created_at')
 
-        # if not 'user_id' in request.GET:
-        #     hoge = AuthUser.objects.all()
-        #
-        #     hhh = list(hoge)
-        #     return JsonResponse({'h':hhh})
-        # else:
-        #     raise serializers.ValidationError('user_idが含まれていません')
+        results = []
 
-        # if serializer.is_valid() and request.method == 'GET':
-            # tmdb_id_list = conversion_str_to_list(request.data['tmdb_id_list'], 'int')
-            # res = []
-            #
-            # for tmdb_id in tmdb_id_list:
-            #     try:
-            #         movie = Movie.objects.get(tmdb_id=tmdb_id)
-            #
-            #         res.append({movie.tmdb_id: {"title": movie.title,
-            #                                     "overview": movie.overview,
-            #                                     "poster_path": movie.poster_path}})
-            #
-            #     except ObjectDoesNotExist:
-            #         pass
+        for movie, dvdfav in zip(movies, movies_dvd_fav):
+            results.append({
+                'title': movie.movie.title,
+                'id': movie.movie.tmdb_id,
+                'add': movie.created_at,
+                'poster':  movie.movie.poster,
+                'dvd': dvdfav.dvd,
+                'fav': dvdfav.fav
+            })
+
+        return Response({'results': results})
+
+
 
 
 #

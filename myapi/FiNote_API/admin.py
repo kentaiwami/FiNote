@@ -44,12 +44,8 @@ class OnomatopoeiaCountAdmin(admin.ModelAdmin):
     list_display = ('pk', 'count', 'onomatopoeia', 'movie')
 
 
-class BackUpAdmin(admin.ModelAdmin):
-    list_display = ('username', 'movie', 'onomatopoeias', 'add_date', 'dvd', 'fav')
-
-    @staticmethod
-    def onomatopoeias(obj):
-        return "\n".join([o.name for o in obj.onomatopoeia.all()])
+class DVDFAVAdmin(admin.ModelAdmin):
+    list_display = ('user', 'movie', 'dvd', 'fav')
 
 
 admin.site.register(Movie, MovieAdmin)
@@ -57,4 +53,4 @@ admin.site.register(AuthUser, UserAdmin)
 admin.site.register(Genre, GenreAdmin)
 admin.site.register(Onomatopoeia, OnomatopoeiaAdmin)
 admin.site.register(OnomatopoeiaCount, OnomatopoeiaCountAdmin)
-admin.site.register(BackUp, BackUpAdmin)
+admin.site.register(DVDFAV, DVDFAVAdmin)
