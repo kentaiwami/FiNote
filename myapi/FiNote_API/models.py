@@ -5,7 +5,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 from myapi import settings
-import datetime
+from datetime import date
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
@@ -91,14 +91,11 @@ class OnomatopoeiaCount(models.Model):
 
 
 class BackUp(models.Model):
-    today = datetime.date.today()
 
     username = models.ForeignKey(AuthUser)
     movie = models.ForeignKey(Movie)
     onomatopoeia = models.ManyToManyField(Onomatopoeia)
-    add_year = models.IntegerField(default=int(today.year))
-    add_month = models.IntegerField(default=int(today.month))
-    add_day = models.IntegerField(default=int(today.day))
+    add_date = models.DateField(default=date.today())
     dvd = models.IntegerField(default=0)
     fav = models.IntegerField(default=0)
 

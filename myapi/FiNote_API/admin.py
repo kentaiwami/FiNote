@@ -35,7 +35,7 @@ class OnomatopoeiaCountAdmin(admin.ModelAdmin):
 
 
 class BackUpAdmin(admin.ModelAdmin):
-    list_display = ('username', 'movie', 'onomatopoeias', 'add_year', 'add_month', 'add_day', 'dvd', 'fav')
+    list_display = ('username', 'movie', 'onomatopoeias', 'add_date', 'dvd', 'fav')
 
     def onomatopoeias(self, obj):
         return "\n".join([o.name for o in obj.onomatopoeia.all()])
