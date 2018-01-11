@@ -35,12 +35,26 @@ request：
     "username": "hogehoge",
     "password": "hogehoge",
     "email": "hoge@hoge.com",
-    "birthday": 1900,
+    "birthday": 1900
 }
 response：
 {
     "token": "abcdefghijklmnopqrstuvwxyz",
     "user": "hogehoge"
+}
+```
+
+```
+method：POST
+endpoint：api/v1/user/signin/token
+request：
+{
+    "username": "hogehoge",
+    "token": "abcdefghijklmnopqrstuvwxyz"
+}
+response：
+{
+    "username": "hogehoge"
 }
 ```
 

@@ -82,23 +82,22 @@ class SignInWithTokenViewSet(viewsets.ViewSet):
         :type request object
         """
 
-        if request.method == 'POST':
-            data = request.data
-            if not data['username']:
-                raise ValidationError('リクエストにユーザ名が含まれていません')
-            if not data['token']:
-                raise ValidationError('リクエストに認証情報が含まれていません')
+        data = request.data
+        serializer = SignInWithTokenSerializer(data=data)
 
+        if serializer.is_valid() and request.method == 'POST':
             try:
                 get_user = AuthUser.objects.get(username=data['username'])
                 token = Token.objects.get(user_id=get_user.pk)
 
                 if str(token) == data['token']:
-                    return Response(data['username'])
+                    return Response({"username": data['username']})
                 else:
                     raise ValidationError('ログインに失敗しました', 404)
             except ObjectDoesNotExist:
                 raise ValidationError('ログインに失敗しました', 404)
+        else:
+            return Response(serializer.errors)
 
 
 class SignInNoTokenViewSet(viewsets.ViewSet):
@@ -114,14 +113,10 @@ class SignInNoTokenViewSet(viewsets.ViewSet):
         :return: User's movies and profile data.
         """
 
-        if request.method == 'POST':
-            data = request.data
+        data = request.data
+        serializer = SignInNoTokenSerializer(data=data)
 
-            if not data['username']:
-                raise ValidationError('ユーザ名が含まれていません')
-            if not data['password']:
-                raise ValidationError('パスワードが含まれていません')
-
+        if serializer.is_valid() and request.method == 'POST':
             try:
                 get_user = AuthUser.objects.get(username=data['username'])
                 token = Token.objects.get(user_id=get_user.pk)
@@ -160,6 +155,8 @@ class SignInNoTokenViewSet(viewsets.ViewSet):
 
             except ObjectDoesNotExist:
                 raise ValidationError('ユーザ名かパスワードが違います')
+        else:
+            return Response(serializer.errors)
 
 
 class UpdatePasswordViewSet(viewsets.ViewSet):

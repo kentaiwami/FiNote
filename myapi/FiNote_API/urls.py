@@ -3,8 +3,8 @@ from .views import *
 
 router = routers.DefaultRouter()
 router.register(r'v1/user', CreateUserViewSet, 'create user')
-router.register(r'v1/sign_in_with_token', SignInWithTokenViewSet, 'sign_in_with_token')
-router.register(r'v1/sign_in_no_token', SignInNoTokenViewSet, 'sign_in_no_token')
+router.register(r'v1/user/signin/token', SignInWithTokenViewSet, 'sign_in_with_token')
+router.register(r'v1/user/signin/notoken', SignInNoTokenViewSet, 'sign_in_no_token')
 router.register(r'v1/update_password', UpdatePasswordViewSet, 'update_password')
 router.register(r'v1/update_email', UpdateEmailViewSet, 'update_email')
 router.register(r'v1/update_sex', UpdateSexViewSet, 'update_sex')
