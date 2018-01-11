@@ -8,7 +8,7 @@ router.register(r'user/update/password', UpdatePasswordViewSet, base_name='updat
 router.register(r'user/update/email', UpdateEmailViewSet, base_name='update-email')
 router.register(r'user/update/img', UpdateProfileImgViewSet, base_name='update-profile-img')
 
-router.register(r'user/movies', GetMoviesViewSet, base_name='get-movies')
+router.register(r'movies', GetMoviesViewSet, base_name='get-movies')
 
 
 

@@ -95,7 +95,7 @@ response：
 ### Get Movies
 ```
 method：GET
-endpoint：api/v1/user/movies/?user_id=2
+endpoint：api/v1/movies/?user_id=2
 response：
 "results": [
         {
