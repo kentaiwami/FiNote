@@ -6,7 +6,7 @@ class GetMoviesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Movie
-        fields = ('title', 'tmdb_id', 'overview', 'poster')#ユーザがつけたオノマトペ
+        fields = ('title', 'tmdb_id', 'overview', 'poster')
 
 # class AddMovieSerializer(serializers.Serializer):
 #     username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
