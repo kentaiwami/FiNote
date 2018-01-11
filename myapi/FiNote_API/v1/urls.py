@@ -9,7 +9,7 @@ router.register(r'user/update/email', UpdateEmailViewSet, base_name='update-emai
 router.register(r'user/update/img', UpdateProfileImgViewSet, base_name='update-profile-img')
 
 router.register(r'movies', GetMoviesViewSet, base_name='get-movies')
-
+router.register(r'movie/dvdfav', UpdateDVDFAVViewSet, base_name='update-dvdfav')
 
 
 # router.register(r'v1/add_movie', AddMovieViewSet, 'add_movie')

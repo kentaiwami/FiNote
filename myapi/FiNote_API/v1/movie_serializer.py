@@ -2,11 +2,13 @@ from rest_framework import serializers
 from FiNote_API.models import *
 
 
-class GetMoviesSerializer(serializers.ModelSerializer):
+class UpdateDVDFAVSerializer(serializers.Serializer):
+    username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
+    password = serializers.CharField(max_length=256, allow_blank=False, required=True)
+    tmdb_id = serializers.IntegerField(allow_null=False, required=True)
+    dvd = serializers.BooleanField(required=True)
+    fav = serializers.BooleanField(required=True)
 
-    class Meta:
-        model = Movie
-        fields = ('title', 'tmdb_id', 'overview', 'poster')
 
 # class AddMovieSerializer(serializers.Serializer):
 #     username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
@@ -30,11 +32,7 @@ class GetMoviesSerializer(serializers.ModelSerializer):
 #     movie_id = serializers.IntegerField(allow_null=False, required=True)
 #
 #
-# class UpdateStatusSerializer(serializers.Serializer):
-#     username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
-#     movie_id = serializers.IntegerField(allow_null=False, required=True)
-#     dvd = serializers.IntegerField(default=0)
-#     fav = serializers.IntegerField(default=0)
+
 #
 #
 # class GetUsersSerializer(serializers.ModelSerializer):

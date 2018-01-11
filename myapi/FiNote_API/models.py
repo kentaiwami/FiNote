@@ -121,8 +121,8 @@ class OnomatopoeiaCount(models.Model):
 class DVDFAV(models.Model):
     user = models.ForeignKey(AuthUser)
     movie = models.ForeignKey(Movie)
-    dvd = models.IntegerField(default=0)
-    fav = models.IntegerField(default=0)
+    dvd = models.BooleanField(default=False)
+    fav = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

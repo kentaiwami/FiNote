@@ -10,8 +10,6 @@ from rest_framework.response import Response
 
 
 class GetMoviesViewSet(viewsets.ViewSet):
-    serializer_class = GetMoviesSerializer
-
     def list(self, request):
         if not 'user_id' in request.GET:
             raise serializers.ValidationError('user_idが含まれていません')
@@ -36,6 +34,34 @@ class GetMoviesViewSet(viewsets.ViewSet):
         return Response({'results': results})
 
 
+class UpdateDVDFAVViewSet(viewsets.ViewSet):
+    serializer_class = UpdateDVDFAVSerializer
+
+    @staticmethod
+    def create(request):
+
+        data = request.data
+        serializer = UpdateDVDFAVSerializer(data=data)
+
+        if serializer.is_valid() and request.method == 'POST':
+            try:
+                user = AuthUser.objects.get(username=data['username'])
+                movie = Movie.objects.get(tmdb_id=data['tmdb_id'])
+                dvdfav = DVDFAV.objects.get(user=user, movie=movie)
+
+            except:
+                raise serializers.ValidationError('該当するデータが見つかりませんでした')
+
+            if not user.check_password(data['password'].encode('utf-8')):
+                raise serializers.ValidationError('該当するデータが見つかりませんでした')
+
+            dvdfav.dvd = data['dvd']
+            dvdfav.fav = data['fav']
+            dvdfav.save()
+
+            return Response({'dvd': data['dvd'], 'fav': data['fav']})
+        else:
+            raise serializers.ValidationError(serializer.errors)
 
 
 #
@@ -176,35 +202,7 @@ class GetMoviesViewSet(viewsets.ViewSet):
 #             return Response(serializer.error_messages)
 #
 #
-# class UpdateStatusViewSet(viewsets.ViewSet):
-#     queryset = AuthUser.objects.all()
-#     serializer_class = UpdateStatusSerializer
-#
-#     @staticmethod
-#     def create(request):
-#         """
-#         When StatusUpdate api access, run this method.
-#         This method updates dvd and favorite status.
-#         :param request: Request user's data.(username, movie_id(tmdb_id), dvd and fav)
-#         :return: User name.
-#
-#         :type request object
-#         """
-#
-#         serializer = UpdateStatusSerializer(data=request.data)
-#
-#         if serializer.is_valid() and request.method == 'POST':
-#             try:
-#                 usr_obj = AuthUser.objects.get(username=request.data['username'])
-#                 movie_obj = Movie.objects.get(tmdb_id=request.data['movie_id'])
-#                 BackUp.objects.filter(username=usr_obj, movie=movie_obj) \
-#                     .update(dvd=request.data['dvd'], fav=request.data['fav'])
-#             except ObjectDoesNotExist:
-#                 raise ValidationError('該当するデータが見つかりませんでした')
-#
-#             return Response(request.data['username'])
-#         else:
-#             return Response(serializer.error_messages)
+
 #
 #
 # class GetRecentlyMovieViewSet(viewsets.ModelViewSet):
