@@ -17,11 +17,11 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.views.static import serve
 from django.conf import settings
-from FiNote_API.urls import router as FiNote_API_router
+from FiNote_API.v1.urls import router as v1_url
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^api/', include(FiNote_API_router.urls)),
+    url(r'^api/v1/', include(v1_url.urls)),
     url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT, })
 ]

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import *
+from FiNote_API.models import *
 
 
 class CreateUserSerializer(serializers.Serializer):

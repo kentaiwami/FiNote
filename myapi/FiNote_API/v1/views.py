@@ -1,22 +1,7 @@
-import os
-import re
-import ssl
-from django.db.models import Count
-from django.http import JsonResponse
 from rest_framework import viewsets
-from rest_framework.exceptions import ValidationError
 from rest_framework_jwt.serializers import User
-from FiNote_API.functions import *
-from .serializer import *
-import base64
-from django.core.files.base import ContentFile
-import datetime
-from operator import attrgetter
+from FiNote_API.v1.serializer import *
 from rest_framework.response import Response
-import urllib.request
-import urllib.parse
-from bs4 import BeautifulSoup
-from FiNote_API.thread import *
 
 # [0]: GetSearchMovieTitleResultsViewSet
 # [1]: GetOriginalTitleViewSet
