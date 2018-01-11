@@ -139,6 +139,28 @@ response：
 }
 ```
 
+### Add Movie
+```
+method：POST
+endpoint：api/v1/movie/
+request：
+{
+	"tmdb_id": 12,
+	"username": "hogehoge",
+	"password": "hogehoge",
+	"dvd": 1,
+	"fav": 0,
+	"onomatopoeia": ["hoge","fuga", "piyo"],
+	"title": "movie title",
+	"genre": [28,12,16],
+	"overview": "movie overview",
+	"poster": "http://hogehoge.com/hoge.jpg"
+}
+response：
+{
+    "msg": "success"
+}
+
 
 
 
