@@ -8,12 +8,13 @@ router.register(r'user/update/password', UpdatePasswordViewSet, base_name='updat
 router.register(r'user/update/email', UpdateEmailViewSet, base_name='update-email')
 router.register(r'user/update/img', UpdateProfileImgViewSet, base_name='update-profile-img')
 
+
+router.register(r'movie', AddMovieViewSet, base_name='add-movie')
 router.register(r'movies', GetMoviesViewSet, base_name='get-movies')
 router.register(r'movie/update/dvdfav', UpdateDVDFAVViewSet, base_name='update-dvdfav')
-router.register(r'movie', AddMovieViewSet, base_name='add-movie')
+router.register(r'movie/update/onomatopoeia', UpdateOnomatopoeiaViewSet, base_name='update-onomatopoeia')
 
-# router.register(r'v1/add_movie', AddMovieViewSet, 'add_movie')
-# router.register(r'v1/update_onomatopoeia', UpdateOnomatopoeiaViewSet, 'update_onomatopoeia')
+
 # router.register(r'v1/delete_backup', DeleteBackupViewSet, 'delete_backup')
 # router.register(r'v1/get_users', GetUsersViewSet, 'get_users')
 # router.register(r'v1/get_genres', GetGenresViewSet, 'get_genres')

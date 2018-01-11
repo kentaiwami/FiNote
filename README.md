@@ -160,6 +160,24 @@ response：
 {
     "msg": "success"
 }
+```
+
+### Update Onomatopoeia
+```
+method：POST
+endpoint：api/v1/movie/
+request：
+{
+	"tmdb_id": 12,
+	"username": "hogehoge",
+	"password": "hogehoge",
+	"onomatopoeia": ["HOGE","FUGA"]
+}
+response：
+{
+    "msg": "success"
+}
+```
 
 
 

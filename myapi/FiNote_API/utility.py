@@ -91,35 +91,6 @@ def add_movie(genre_list, onomatopoeia_list, data):
 
 #
 #
-# def movie_update_onomatopoeia(request_data, onomatopoeia_list):
-#     """
-#     This method is update Movie table onomatopoeia column.
-#     :param request_data: Request user's data.(username, movie_id(tmdb_id) and onomatopoeia list)
-#     :param onomatopoeia_list: Request onomatopoeia list.
-#     :return: Onomatopoeia object list.
-#
-#     :type request_data object
-#     :type onomatopoeia_list list
-#     """
-#
-#     movie_obj = Movie.objects.get(tmdb_id=request_data['movie_id'])
-#
-#     onomatopoeia_obj_list = []
-#     for onomatopoeia_name in onomatopoeia_list:
-#         onomatopoeia_obj, created = Onomatopoeia.objects.get_or_create(
-#             name=onomatopoeia_name,
-#             defaults={'name': onomatopoeia_name}
-#         )
-#         onomatopoeia_obj_list.append(onomatopoeia_obj)
-#
-#         if movie_obj.onomatopoeia.all().filter(name=onomatopoeia_obj.name).exists():
-#             pass
-#         else:
-#             movie_obj.onomatopoeia.add(onomatopoeia_obj)
-#
-#     return onomatopoeia_obj_list
-#
-#
 # def onomatopoeia_update_backup(request_data, onomatopoeia_obj_list):
 #     """
 #     When onomatopoeia update, run this method.

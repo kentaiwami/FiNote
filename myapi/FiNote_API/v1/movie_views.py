@@ -1,6 +1,5 @@
 from FiNote_API.utility import *
 from rest_framework import viewsets
-from rest_framework_jwt.serializers import User
 from FiNote_API.v1.movie_serializer import *
 from rest_framework.response import Response
 
@@ -120,44 +119,48 @@ class AddMovieViewSet(viewsets.ViewSet):
         else:
             raise serializers.ValidationError(serializer.errors)
 
-#
-#
-# class UpdateOnomatopoeiaViewSet(viewsets.ViewSet):
-#     queryset = Onomatopoeia.objects.all()
-#     serializer_class = UpdateOnomatopoeiaSerializer
-#
-#     @staticmethod
-#     def create(request):
-#         """
-#         When OnomatopoeiaUpdate api access, run this method.
-#         This method updates movie and back up table onomatopoeia column or add onomatopoeia.
-#         If success all process, response user name.
-#         :param request: Request user's data.(username, movie_id(tmdb_id) and onomatopoeia list)
-#         :return: User name.
-#
-#         :type request object
-#         """
-#
-#         serializer = UpdateOnomatopoeiaSerializer(data=request.data)
-#
-#         if serializer.is_valid() and request.method == 'POST':
-#             r_onomatopoeia_list = request.data['onomatopoeia']
-#
-#             if type(r_onomatopoeia_list) is str:
-#                 r_onomatopoeia_list = conversion_str_to_list(r_onomatopoeia_list, 'str')
-#             elif type(request.data['onomatopoeia']) is not list:
-#                 raise ValidationError('不正な形式です')
-#
-#             # Movieテーブルのオノマトペカラムに新規追加(削除はしない)
-#             onomatopoeia_obj_list = movie_update_onomatopoeia(request.data, r_onomatopoeia_list)
-#
-#             # BackUpテーブルのオノマトペカラムに上書き(削除と追加)
-#             onomatopoeia_update_backup(request.data, onomatopoeia_obj_list)
-#
-#             return Response(request.data['username'])
-#
-#         else:
-#             return Response(serializer.error_messages)
+
+class UpdateOnomatopoeiaViewSet(viewsets.ViewSet):
+    serializer_class = UpdateOnomatopoeiaSerializer
+
+    @staticmethod
+    def create(request):
+
+        data = request.data
+        serializer = UpdateOnomatopoeiaSerializer(data=data)
+
+        if serializer.is_valid() and request.method == 'POST':
+            movie_obj = Movie.objects.get(tmdb_id=data['tmdb_id'])
+
+            # オノマトペがなければ新規作成
+            for onomatopoeia_name in data['onomatopoeia']:
+                onomatopoeia_obj, created = Onomatopoeia.objects.get_or_create(
+                    name=onomatopoeia_name,
+                    defaults={'name': onomatopoeia_name}
+                )
+
+                if not movie_obj.onomatopoeia.all().filter(name=onomatopoeia_obj.name).exists():
+                    tmp_movie_onomatopoeia = Movie_Onomatopoeia()
+                    tmp_movie_onomatopoeia.movie = movie_obj
+                    tmp_movie_onomatopoeia.onomatopoeia = onomatopoeia_obj
+                    tmp_movie_onomatopoeia.save()
+
+                # オノマトペカウントオブジェクトの新規追加 or 取得
+                onomatopoeia_count_obj, created_oc = OnomatopoeiaCount.objects.get_or_create(
+                    onomatopoeia=onomatopoeia_obj,
+                    movie=movie_obj,
+                    defaults={'count': 1, 'onomatopoeia': onomatopoeia_obj, 'movie': movie_obj}
+                )
+
+                # オノマトペカウントオブジェクトの更新
+                if not created_oc:
+                    onomatopoeia_count_obj.count += 1
+                    onomatopoeia_count_obj.save()
+
+            return Response({'msg': 'success'})
+
+        else:
+            raise serializers.ValidationError(serializer.errors)
 #
 #
 # class DeleteBackupViewSet(viewsets.ViewSet):
