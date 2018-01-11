@@ -59,6 +59,22 @@ response：
 }
 ```
 
+### Update Password
+```
+method：POST
+endpoint：api/v1/user/update/password/
+request：
+{
+    "username": "hogehoge",
+    "now_password": "hogehoge",
+    "new_password": "fugafuga"
+}
+response：
+{
+    "user": "hogehoge"
+}
+```
+
 
 
 
