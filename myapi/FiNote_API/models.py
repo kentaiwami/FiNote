@@ -40,11 +40,6 @@ class AuthUser(AbstractBaseUser, PermissionsMixin):
 
     def get_img_path(self, filename):
         path, ext = os.path.splitext(filename)
-        print("**************************:")
-        print(filename)
-        print(path)
-        print(ext)
-        print("**************************:")
         joined_filename = ''.join([self.username, ext])
         return '/'.join(['profile', joined_filename])
 
