@@ -10,7 +10,7 @@ router.register(r'user/update/img', UpdateProfileImgViewSet, base_name='update-p
 
 router.register(r'movies', GetMoviesViewSet, base_name='get-movies')
 router.register(r'movie/update/dvdfav', UpdateDVDFAVViewSet, base_name='update-dvdfav')
-
+router.register(r'movie', AddMovieViewSet, base_name='add-movie')
 
 # router.register(r'v1/add_movie', AddMovieViewSet, 'add_movie')
 # router.register(r'v1/update_onomatopoeia', UpdateOnomatopoeiaViewSet, 'update_onomatopoeia')
