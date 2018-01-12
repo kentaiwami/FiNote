@@ -159,10 +159,7 @@ class UpdateOnomatopoeiaViewSet(viewsets.ViewSet):
                 )
 
                 if not movie_obj.onomatopoeia.all().filter(name=onomatopoeia_obj.name).exists():
-                    tmp_movie_onomatopoeia = Movie_Onomatopoeia()
-                    tmp_movie_onomatopoeia.movie = movie_obj
-                    tmp_movie_onomatopoeia.onomatopoeia = onomatopoeia_obj
-                    tmp_movie_onomatopoeia.save()
+                    Movie_Onomatopoeia(movie=movie_obj, onomatopoeia=onomatopoeia_obj).save()
 
                 # オノマトペカウントオブジェクトの新規追加 or 取得
                 onomatopoeia_count_obj, created_oc = OnomatopoeiaCount.objects.get_or_create(
@@ -177,11 +174,7 @@ class UpdateOnomatopoeiaViewSet(viewsets.ViewSet):
                     onomatopoeia_count_obj.save()
 
                 # movie user onomatopoeiaの保存
-                tmp_movie_user_onomatopoeia = MovieUserOnomatopoeia()
-                tmp_movie_user_onomatopoeia.user = user
-                tmp_movie_user_onomatopoeia.movie = movie_obj
-                tmp_movie_user_onomatopoeia.onomatopoeia = onomatopoeia_obj
-                tmp_movie_user_onomatopoeia.save()
+                MovieUserOnomatopoeia(user=user, movie=movie_obj, onomatopoeia=onomatopoeia_obj).save()
 
             return Response({'msg': 'success'})
 

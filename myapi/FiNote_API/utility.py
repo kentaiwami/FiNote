@@ -59,18 +59,12 @@ def add_movie(genre_list, onomatopoeia_list, data):
     # 追加した映画にオノマトペがなければ新規追加
     for onomatopoeia_obj in onomatopoeia_list:
         if not movie_obj.onomatopoeia.all().filter(name=onomatopoeia_obj.name).exists():
-            tmp_movie_onomatopoeia = Movie_Onomatopoeia()
-            tmp_movie_onomatopoeia.movie = movie_obj
-            tmp_movie_onomatopoeia.onomatopoeia = onomatopoeia_obj
-            tmp_movie_onomatopoeia.save()
+            Movie_Onomatopoeia(movie=movie_obj, onomatopoeia=onomatopoeia_obj).save()
 
     # 追加した映画にユーザを新規追加
     if not movie_obj.user.all().filter(username=data['username']).exists():
         user_obj = AuthUser.objects.get(username=data['username'])
-        tmp_movie_user = Movie_User()
-        tmp_movie_user.movie = movie_obj
-        tmp_movie_user.user = user_obj
-        tmp_movie_user.save()
+        Movie_User(movie=movie_obj, user=user_obj).save()
 
     movie_obj.save()
 
