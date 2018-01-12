@@ -114,6 +114,14 @@ class AddMovieViewSet(viewsets.ViewSet):
                 defaults={'user': user, 'movie': movie_obj, 'dvd': data['dvd'], 'fav': data['fav']}
             )
 
+            # movie user onomatopoeiaの保存
+            for onomatopoeia in onomatopoeia_obj:
+                tmp_movie_onomatopoeia_user = MovieUserOnomatopoeia()
+                tmp_movie_onomatopoeia_user.user = user
+                tmp_movie_onomatopoeia_user.movie = movie_obj
+                tmp_movie_onomatopoeia_user.onomatopoeia = onomatopoeia
+
+
             return Response({'msg': 'success'})
 
         else:
