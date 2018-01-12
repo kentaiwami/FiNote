@@ -103,6 +103,12 @@ class Movie_User(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 
+class MovieUserOnomatopoeia(models.Model):
+    user = models.ForeignKey(AuthUser)
+    movie = models.ForeignKey(Movie)
+    onomatopoeia = models.ForeignKey(Onomatopoeia)
+
+
 class Movie_Onomatopoeia(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     onomatopoeia = models.ForeignKey(Onomatopoeia, on_delete=models.CASCADE)
