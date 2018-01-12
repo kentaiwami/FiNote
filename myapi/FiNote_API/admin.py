@@ -59,7 +59,15 @@ class OnomatopoeiaCountAdmin(admin.ModelAdmin):
 
 
 class DVDFAVAdmin(admin.ModelAdmin):
-    list_display = ('user', 'movie', 'dvd', 'fav')
+    list_display = ('pk', 'user', 'movie', 'dvd', 'fav')
+
+    @staticmethod
+    def movie(obj):
+        return obj.movie_user.movie
+
+    @staticmethod
+    def user(obj):
+        return obj.movie_user.user
 
 
 admin.site.register(Movie, MovieAdmin)
