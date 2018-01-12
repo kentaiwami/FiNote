@@ -99,12 +99,13 @@ class AddMovieViewSet(viewsets.ViewSet):
                 onomatopoeia_obj.append(obj)
 
             # 映画の保存
-            movie_data = {'username': data['username'],
-                    'title': data['title'],
-                    'tmdb_id': data['tmdb_id'],
-                    'overview': data['overview'],
-                    'poster': data['poster']
-                    }
+            movie_data = {
+                'username': data['username'],
+                'title': data['title'],
+                'tmdb_id': data['tmdb_id'],
+                'overview': data['overview'],
+                'poster': data['poster']
+                }
 
             movie_obj = add_movie(genre_obj, onomatopoeia_obj, movie_data)
 
@@ -116,11 +117,10 @@ class AddMovieViewSet(viewsets.ViewSet):
 
             # movie user onomatopoeiaの保存
             for onomatopoeia in onomatopoeia_obj:
-                tmp_movie_onomatopoeia_user = MovieUserOnomatopoeia()
-                tmp_movie_onomatopoeia_user.user = user
-                tmp_movie_onomatopoeia_user.movie = movie_obj
-                tmp_movie_onomatopoeia_user.onomatopoeia = onomatopoeia
-
+                obj, created = MovieUserOnomatopoeia.objects.get_or_create(
+                    user=user, movie=movie_obj, onomatopoeia=onomatopoeia,
+                    defaults={'user': user, 'movie': movie_obj, 'onomatopoeia': onomatopoeia}
+                )
 
             return Response({'msg': 'success'})
 
@@ -138,7 +138,18 @@ class UpdateOnomatopoeiaViewSet(viewsets.ViewSet):
         serializer = UpdateOnomatopoeiaSerializer(data=data)
 
         if serializer.is_valid() and request.method == 'POST':
+            try:
+                user = AuthUser.objects.get(username=data['username'])
+            except:
+                raise serializers.ValidationError('該当するデータが見つかりませんでした')
+
+            if not user.check_password(data['password'].encode('utf-8')):
+                raise serializers.ValidationError('該当するデータが見つかりませんでした')
+
             movie_obj = Movie.objects.get(tmdb_id=data['tmdb_id'])
+
+            # movie onomatopoeia userの該当するレコードを削除
+            MovieUserOnomatopoeia.objects.get(user=user, movie=movie_obj).delete()
 
             # オノマトペがなければ新規作成
             for onomatopoeia_name in data['onomatopoeia']:
@@ -164,6 +175,13 @@ class UpdateOnomatopoeiaViewSet(viewsets.ViewSet):
                 if not created_oc:
                     onomatopoeia_count_obj.count += 1
                     onomatopoeia_count_obj.save()
+
+                # movie user onomatopoeiaの保存
+                tmp_movie_user_onomatopoeia = MovieUserOnomatopoeia()
+                tmp_movie_user_onomatopoeia.user = user
+                tmp_movie_user_onomatopoeia.movie = movie_obj
+                tmp_movie_user_onomatopoeia.onomatopoeia = onomatopoeia_obj
+                tmp_movie_user_onomatopoeia.save()
 
             return Response({'msg': 'success'})
 
