@@ -30,11 +30,12 @@ class UpdateOnomatopoeiaSerializer(serializers.Serializer):
     onomatopoeia = serializers.ListField(allow_null=False, required=True)
 
 
-# class DeleteBackupSerializer(serializers.Serializer):
-#     username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
-#     movie_id = serializers.IntegerField(allow_null=False, required=True)
-#
-#
+class DeleteMovieSerializer(serializers.Serializer):
+    username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
+    password = serializers.CharField(max_length=256, allow_blank=False, required=True)
+    tmdb_id = serializers.IntegerField(allow_null=False, required=True)
+
+
 
 #
 #

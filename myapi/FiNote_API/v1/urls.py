@@ -12,11 +12,12 @@ router.register(r'user/update/img', UpdateProfileImgViewSet, base_name='update-p
 router.register(r'movie', AddMovieViewSet, base_name='add-movie')
 router.register(r'movie/update/dvdfav', UpdateDVDFAVViewSet, base_name='update-dvdfav')
 router.register(r'movie/update/onomatopoeia', UpdateOnomatopoeiaViewSet, base_name='update-onomatopoeia')
+router.register(r'movie/delete', DeleteMovieViewSet, 'delete-movie')
 
 router.register(r'movies', GetMoviesViewSet, base_name='get-movies')
 
 
-# router.register(r'v1/delete_backup', DeleteBackupViewSet, 'delete_backup')
+
 # router.register(r'v1/get_recently_movie', GetRecentlyMovieViewSet, 'get_recently_movie')
 # router.register(r'v1/get_movie_by_age', GetMovieByAgeViewSet, 'get_movie_by_age')
 # router.register(r'v1/get_movie_reaction', GetMovieReactionViewSet, 'get_movie_reaction')

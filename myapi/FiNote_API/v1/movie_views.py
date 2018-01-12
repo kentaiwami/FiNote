@@ -116,10 +116,11 @@ class AddMovieViewSet(viewsets.ViewSet):
             )
 
             # movie user onomatopoeiaの保存
+            movie_user = Movie_User.objects.get(user=user, movie=movie_obj)
             for onomatopoeia in onomatopoeia_obj:
                 obj, created = MovieUserOnomatopoeia.objects.get_or_create(
-                    user=user, movie=movie_obj, onomatopoeia=onomatopoeia,
-                    defaults={'user': user, 'movie': movie_obj, 'onomatopoeia': onomatopoeia}
+                    movie_user=movie_user, onomatopoeia=onomatopoeia,
+                    defaults={'movie_user': movie_user, 'onomatopoeia': onomatopoeia}
                 )
 
             return Response({'msg': 'success'})
@@ -149,7 +150,8 @@ class UpdateOnomatopoeiaViewSet(viewsets.ViewSet):
             movie_obj = Movie.objects.get(tmdb_id=data['tmdb_id'])
 
             # movie onomatopoeia userの該当するレコードを削除
-            MovieUserOnomatopoeia.objects.get(user=user, movie=movie_obj).delete()
+            movie_user = Movie_User.objects.get(user=user, movie=movie_obj)
+            MovieUserOnomatopoeia.objects.filter(movie_user=movie_user).delete()
 
             # オノマトペがなければ新規作成
             for onomatopoeia_name in data['onomatopoeia']:
@@ -174,50 +176,46 @@ class UpdateOnomatopoeiaViewSet(viewsets.ViewSet):
                     onomatopoeia_count_obj.save()
 
                 # movie user onomatopoeiaの保存
-                MovieUserOnomatopoeia(user=user, movie=movie_obj, onomatopoeia=onomatopoeia_obj).save()
+                MovieUserOnomatopoeia(movie_user=movie_user, onomatopoeia=onomatopoeia_obj).save()
 
             return Response({'msg': 'success'})
 
         else:
             raise serializers.ValidationError(serializer.errors)
-#
-#
-# class DeleteBackupViewSet(viewsets.ViewSet):
-#     queryset = BackUp.objects.all()
-#     serializer_class = DeleteBackupSerializer
-#
-#     @staticmethod
-#     def create(request):
-#         """
-#         When DeleteBackup api access, run this method.
-#         This method deletes backup data, remove movie table's user column.
-#         :param request: Request user's data.(username and movie_id(tmdb_id))
-#         :return: User name.
-#
-#         :type request object
-#         """
-#
-#         serializer = DeleteBackupSerializer(data=request.data)
-#
-#         if serializer.is_valid() and request.method == 'POST':
-#             # バックアップの削除
-#             try:
-#                 usr_obj = AuthUser.objects.get(username=request.data['username'])
-#                 movie_obj = Movie.objects.get(tmdb_id=request.data['movie_id'])
-#                 backup_obj = BackUp.objects.filter(username=usr_obj, movie=movie_obj)
-#                 backup_obj.delete()
+
+
+class DeleteMovieViewSet(viewsets.ViewSet):
+    serializer_class = DeleteMovieSerializer
+
+    @staticmethod
+    def create(request):
+
+        data = request.data
+        serializer = DeleteMovieSerializer(data=data)
+
+        if serializer.is_valid() and request.method == 'POST':
+            # バックアップの削除
+            try:
+                user = AuthUser.objects.get(username=data['username'])
 #
 #                 # Movieテーブルの該当レコードのuserカラムからユーザとの関連を削除
 #                 if movie_obj.user.all().filter(username=usr_obj).exists():
 #                     movie_obj.user.remove(usr_obj)
 #
-#                 return Response(request.data['username'])
-#             except ObjectDoesNotExist:
-#                 raise ValidationError('該当するデータが見つかりませんでした')
-#         else:
-#             return Response(serializer.error_messages)
-#
-#
+                # return Response(data['username'])
+            except:
+                raise serializers.ValidationError('該当するデータが見つかりませんでした')
+
+            if not user.check_password(data['password'].encode('utf-8')):
+                raise serializers.ValidationError('該当するデータが見つかりませんでした')
+
+            movie_obj = Movie.objects.get(tmdb_id=data['tmdb_id'])
+            # movieからユーザ削除
+            #
+
+        else:
+            return serializers.ValidationError(serializer.errors)
+
 
 #
 #

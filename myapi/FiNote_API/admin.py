@@ -30,8 +30,16 @@ class MovieAdmin(admin.ModelAdmin):
 
 class MovieUserOnomatopoeiaAdmin(admin.ModelAdmin):
     list_display = (
-    'pk', 'user', 'movie', 'onomatopoeia')
+    'pk', 'movie', 'user', 'onomatopoeia')
     search_fields = ('user',)
+
+    @staticmethod
+    def movie(obj):
+        return obj.movie_user.movie
+
+    @staticmethod
+    def user(obj):
+        return obj.movie_user.user
 
 
 class OnomatopoeiaAdmin(admin.ModelAdmin):

@@ -104,8 +104,7 @@ class Movie_User(models.Model):
 
 
 class MovieUserOnomatopoeia(models.Model):
-    user = models.ForeignKey(AuthUser)
-    movie = models.ForeignKey(Movie)
+    movie_user = models.ForeignKey(Movie_User, default=None)
     onomatopoeia = models.ForeignKey(Onomatopoeia)
 
 
