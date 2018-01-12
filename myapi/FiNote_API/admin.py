@@ -28,20 +28,6 @@ class MovieAdmin(admin.ModelAdmin):
         return "\n".join([g.name for g in obj.genre.all()])
 
 
-class MovieUserOnomatopoeiaAdmin(admin.ModelAdmin):
-    list_display = (
-    'pk', 'movie', 'user', 'onomatopoeia')
-    search_fields = ('user',)
-
-    @staticmethod
-    def movie(obj):
-        return obj.movie_user.movie
-
-    @staticmethod
-    def user(obj):
-        return obj.movie_user.user
-
-
 class OnomatopoeiaAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
@@ -54,26 +40,7 @@ class UserAdmin(admin.ModelAdmin):
     inlines = (MovieUserInline,)
 
 
-class OnomatopoeiaCountAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'count', 'onomatopoeia', 'movie')
-
-
-class DVDFAVAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'user', 'movie', 'dvd', 'fav')
-
-    @staticmethod
-    def movie(obj):
-        return obj.movie_user.movie
-
-    @staticmethod
-    def user(obj):
-        return obj.movie_user.user
-
-
 admin.site.register(Movie, MovieAdmin)
 admin.site.register(AuthUser, UserAdmin)
 admin.site.register(Genre, GenreAdmin)
 admin.site.register(Onomatopoeia, OnomatopoeiaAdmin)
-admin.site.register(OnomatopoeiaCount, OnomatopoeiaCountAdmin)
-admin.site.register(DVDFAV, DVDFAVAdmin)
-admin.site.register(MovieUserOnomatopoeia, MovieUserOnomatopoeiaAdmin)
