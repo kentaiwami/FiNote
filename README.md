@@ -179,6 +179,22 @@ response：
 }
 ```
 
+### Delete Movie
+```
+method：POST
+endpoint：api/v1/movie/delete/
+request：
+{
+	"tmdb_id": 12,
+	"username": "hogehoge",
+	"password": "hogehoge",
+}
+response：
+{
+    "msg": "success"
+}
+```
+
 
 
 
