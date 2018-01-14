@@ -209,28 +209,21 @@ class DeleteMovieViewSet(viewsets.ViewSet):
         data = request.data
         serializer = DeleteMovieSerializer(data=data)
 
-        if serializer.is_valid() and request.method == 'POST':
-            # バックアップの削除
-            try:
-                user = AuthUser.objects.get(username=data['username'])
-            #
-            #                 # Movieテーブルの該当レコードのuserカラムからユーザとの関連を削除
-            #                 if movie_obj.user.all().filter(username=usr_obj).exists():
-            #                     movie_obj.user.remove(usr_obj)
-            #
-            # return Response(data['username'])
-            except:
-                raise serializers.ValidationError('該当するデータが見つかりませんでした')
-
-            if not user.check_password(data['password'].encode('utf-8')):
-                raise serializers.ValidationError('該当するデータが見つかりませんでした')
-
-            movie_obj = Movie.objects.get(tmdb_id=data['tmdb_id'])
-            # movieからユーザ削除
-            #
-
-        else:
+        if not (serializer.is_valid() and request.method == 'POST'):
             return serializers.ValidationError(serializer.errors)
+
+        try:
+            user = AuthUser.objects.get(username=data['username'])
+        except:
+            raise serializers.ValidationError('該当するデータが見つかりませんでした')
+
+        if not user.check_password(data['password'].encode('utf-8')):
+            raise serializers.ValidationError('該当するデータが見つかりませんでした')
+
+        movie_obj = Movie.objects.get(tmdb_id=data['tmdb_id'])
+        Movie_User.objects.get(movie=movie_obj, user=user).delete()
+
+        return Response({'msg': 'success'})
 
 #
 #
