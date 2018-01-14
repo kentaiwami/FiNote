@@ -2,8 +2,9 @@ from FiNote_API.utility import *
 from rest_framework import viewsets
 from FiNote_API.v1.movie_serializer import *
 from rest_framework.response import Response
-from django.db.models import F
-
+from django.db.models import F, Count
+from collections import Counter
+import datetime
 
 # [0]: GetSearchMovieTitleResultsViewSet
 # [1]: GetOriginalTitleViewSet
@@ -225,35 +226,35 @@ class DeleteMovieViewSet(viewsets.ViewSet):
 
         return Response({'msg': 'success'})
 
-#
-#
-# class GetRecentlyMovieViewSet(viewsets.ModelViewSet):
-#     queryset = Movie.objects.all()
-#     serializer_class = GetRecentlyMovieSerializer
-#     http_method_names = ['get']
-#
-#     def list(self, request, *args, **kwargs):
-#         """
-#         When RecentlyMovie api access, run this method.
-#         This method gets recently updated and many users movies.
-#         :param request: This param is not used.
-#         :param args: This param is not used.
-#         :param kwargs: This param is not used.
-#         :return: Recently updated and many users movies.
-#         """
-#
-#         today = datetime.date.today() + datetime.timedelta(days=1)
-#         one_week_ago = today - datetime.timedelta(days=7)
-#
-#         queryset = Movie.objects.annotate(user_count=Count('user')) \
-#                        .filter(updated_at__range=(one_week_ago, today), user_count__gt=1) \
-#                        .order_by('-user_count', '-updated_at')[:200].values()
-#
-#         serializer = GetRecentlyMovieSerializer(queryset, many=True)
-#
-#         return Response(serializer.data)
-#
-#
+
+class GetRecentlyMovieViewSet(viewsets.ModelViewSet):
+    def list(self, request, *args, **kwargs):
+        today = datetime.date.today() + datetime.timedelta(days=1)
+        one_week_ago = today - datetime.timedelta(days=7)
+
+        queryset = Movie_User_Onomatopoeia.objects.filter(created_at__range=(one_week_ago, today))
+
+        # movie_userごとに集計
+        movie_user_onomatopoeia_cnt = Counter()
+        for movie_user_onomatopoeia in queryset:
+            movie_user_onomatopoeia_cnt[movie_user_onomatopoeia.movie_user] += 1
+
+        # 映画ごとに集計
+        movie_cnt = Counter()
+        for movie_user in movie_user_onomatopoeia_cnt:
+            movie_cnt[movie_user.movie] += 1
+
+        results = []
+        for movie in movie_cnt:
+            results.append({
+                'title': movie.title,
+                'overview': movie.overview,
+                'poster': movie.poster
+            })
+
+        return Response({'results': results})
+
+
 # class MovieUserCount(object):
 #     def __init__(self, movie):
 #         """

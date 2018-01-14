@@ -76,10 +76,7 @@ class DeleteMovieSerializer(serializers.Serializer):
 #         fields = ('count', 'onomatopoeia', 'movie')
 #
 #
-# class GetRecentlyMovieSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Movie
-#         fields = ('title', 'overview', 'poster_path')
+
 #
 #
 # class GetMovieByAgeSerializer(serializers.ModelSerializer):
