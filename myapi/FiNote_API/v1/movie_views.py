@@ -165,12 +165,12 @@ class UpdateOnomatopoeiaViewSet(viewsets.ViewSet):
 
             movie_obj = Movie.objects.get(tmdb_id=data['tmdb_id'])
 
-            # movie onomatopoeia userの該当するレコードを削除
+            # movie user onomatopoeiaの該当するレコードを削除
             movie_user = Movie_User.objects.get(user=user, movie=movie_obj)
-            MovieUserOnomatopoeia.objects.filter(movie_user=movie_user).delete()
+            Movie_User_Onomatopoeia.objects.filter(movie_user=movie_user).delete()
 
-            # オノマトペがなければ新規作成
             for onomatopoeia_name in data['onomatopoeia']:
+                # オノマトペがなければ新規作成
                 onomatopoeia_obj, created = Onomatopoeia.objects.get_or_create(
                     name=onomatopoeia_name,
                     defaults={'name': onomatopoeia_name}
@@ -180,7 +180,7 @@ class UpdateOnomatopoeiaViewSet(viewsets.ViewSet):
                     Movie_Onomatopoeia(movie=movie_obj, onomatopoeia=onomatopoeia_obj).save()
 
                 # オノマトペカウントオブジェクトの新規追加 or 取得
-                onomatopoeia_count_obj, created_oc = OnomatopoeiaCount.objects.get_or_create(
+                onomatopoeia_count_obj, created_oc = Movie_Onomatopoeia.objects.get_or_create(
                     onomatopoeia=onomatopoeia_obj,
                     movie=movie_obj,
                     defaults={'count': 1, 'onomatopoeia': onomatopoeia_obj, 'movie': movie_obj}
@@ -192,7 +192,7 @@ class UpdateOnomatopoeiaViewSet(viewsets.ViewSet):
                     onomatopoeia_count_obj.save()
 
                 # movie user onomatopoeiaの保存
-                MovieUserOnomatopoeia(movie_user=movie_user, onomatopoeia=onomatopoeia_obj).save()
+                Movie_User_Onomatopoeia(movie_user=movie_user, onomatopoeia=onomatopoeia_obj).save()
 
             return Response({'msg': 'success'})
 
