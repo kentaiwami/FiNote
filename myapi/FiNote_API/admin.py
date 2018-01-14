@@ -40,7 +40,25 @@ class UserAdmin(admin.ModelAdmin):
     inlines = (MovieUserInline,)
 
 
+class MovieUserAdmin(admin.ModelAdmin):
+    list_display = ('pk', 'movie', 'user', 'dvd', 'fav', 'created_at', 'updated_at')
+
+
+class MovieUserOnomatopoeiaAdmin(admin.ModelAdmin):
+    list_display = ('pk', 'user', 'movie', 'onomatopoeia')
+
+    @staticmethod
+    def user(obj):
+        return obj.movie_user.user
+
+    @staticmethod
+    def movie(obj):
+        return obj.movie_user.movie
+
+
 admin.site.register(Movie, MovieAdmin)
 admin.site.register(AuthUser, UserAdmin)
 admin.site.register(Genre, GenreAdmin)
 admin.site.register(Onomatopoeia, OnomatopoeiaAdmin)
+admin.site.register(Movie_User, MovieUserAdmin)
+admin.site.register(Movie_User_Onomatopoeia, MovieUserOnomatopoeiaAdmin)
