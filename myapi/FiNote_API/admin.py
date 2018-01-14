@@ -56,9 +56,14 @@ class MovieUserOnomatopoeiaAdmin(admin.ModelAdmin):
         return obj.movie_user.movie
 
 
+class MovieOnomatopoeiaAdmin(admin.ModelAdmin):
+    list_display = ('pk', 'movie', 'onomatopoeia', 'count')
+
+
 admin.site.register(Movie, MovieAdmin)
 admin.site.register(AuthUser, UserAdmin)
 admin.site.register(Genre, GenreAdmin)
 admin.site.register(Onomatopoeia, OnomatopoeiaAdmin)
 admin.site.register(Movie_User, MovieUserAdmin)
 admin.site.register(Movie_User_Onomatopoeia, MovieUserOnomatopoeiaAdmin)
+admin.site.register(Movie_Onomatopoeia, MovieOnomatopoeiaAdmin)
