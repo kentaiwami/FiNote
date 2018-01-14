@@ -41,48 +41,6 @@ def get_or_create_genre(genre_id):
     return genre_obj_list
 
 
-def add_movie(genre_list, onomatopoeia_list, data):
-    # 映画オブジェクトの新規追加 or 取得
-    movie_obj, created_movie = Movie.objects.get_or_create(
-        tmdb_id=data['tmdb_id'],
-        defaults={'title': data['title'],
-                  'tmdb_id': data['tmdb_id'],
-                  'overview': data['overview'],
-                  'poster': data['poster']}
-    )
-
-    # 追加した映画にジャンルがなければ新規追加
-    for genre_obj in genre_list:
-        if not movie_obj.genre.all().filter(name=genre_obj.name).exists():
-            movie_obj.genre.add(genre_obj)
-
-    # 追加した映画にオノマトペがなければ新規追加
-    for onomatopoeia_obj in onomatopoeia_list:
-        if not movie_obj.onomatopoeia.all().filter(name=onomatopoeia_obj.name).exists():
-            Movie_Onomatopoeia(movie=movie_obj, onomatopoeia=onomatopoeia_obj).save()
-
-    # 追加した映画にユーザを新規追加
-    if not movie_obj.user.all().filter(username=data['username']).exists():
-        user_obj = AuthUser.objects.get(username=data['username'])
-        Movie_User(movie=movie_obj, user=user_obj).save()
-
-    movie_obj.save()
-
-    # オノマトペカウントオブジェクトの新規追加 or 取得
-    for onomatopoeia in onomatopoeia_list:
-        onomatopoeia_count_obj, created_oc = OnomatopoeiaCount.objects.get_or_create(
-            onomatopoeia=onomatopoeia,
-            movie=movie_obj,
-            defaults={'count': 1, 'onomatopoeia': onomatopoeia, 'movie': movie_obj}
-        )
-
-        # オノマトペカウントオブジェクトの更新
-        if not created_oc:
-            onomatopoeia_count_obj.count += 1
-            onomatopoeia_count_obj.save()
-
-    return movie_obj
-
 #
 #
 # def onomatopoeia_update_backup(request_data, onomatopoeia_obj_list):

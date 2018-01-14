@@ -100,14 +100,18 @@ class Movie(models.Model):
 class Movie_User(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
-    onomatopoeia = models.ForeignKey(Onomatopoeia, default=None)
     dvd = models.BooleanField(default=False)
     fav = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
+class Movie_User_Onomatopoeia(models.Model):
+    movie_user = models.ForeignKey(Movie_User)
+    onomatopoeia = models.ForeignKey(Onomatopoeia)
+
+
 class Movie_Onomatopoeia(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     onomatopoeia = models.ForeignKey(Onomatopoeia, on_delete=models.CASCADE)
-    count = models.IntegerField(default=0)
+    count = models.IntegerField(default=1)

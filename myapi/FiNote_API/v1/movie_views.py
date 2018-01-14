@@ -2,6 +2,7 @@ from FiNote_API.utility import *
 from rest_framework import viewsets
 from FiNote_API.v1.movie_serializer import *
 from rest_framework.response import Response
+from django.db.models import F
 
 # [0]: GetSearchMovieTitleResultsViewSet
 # [1]: GetOriginalTitleViewSet
@@ -89,61 +90,68 @@ class AddMovieViewSet(viewsets.ViewSet):
         data = request.data
         serializer = AddMovieSerializer(data=data)
 
-        if serializer.is_valid() and request.method == 'POST':
-            try:
-                user = AuthUser.objects.get(username=data['username'])
-            except:
-                raise serializers.ValidationError('該当するデータが見つかりませんでした')
+        if not (serializer.is_valid() and request.method == 'POST'):
+            raise serializers.ValidationError(serializer.errors)
 
-            if not user.check_password(data['password'].encode('utf-8')):
-                raise serializers.ValidationError('該当するデータが見つかりませんでした')
+        try:
+            user = AuthUser.objects.get(username=data['username'])
+        except:
+            raise serializers.ValidationError('該当するデータが見つかりませんでした')
 
-            print(data['onomatopoeia'], type(data['onomatopoeia']))
+        if not user.check_password(data['password'].encode('utf-8')):
+            raise serializers.ValidationError('該当するデータが見つかりませんでした')
 
-            # ジャンルの登録とpkの取得
-            genre_obj = get_or_create_genre(data['genre'])
+        # ジャンルの登録とオブジェクトの取得
+        genre_obj_list = get_or_create_genre(data['genre'])
 
-            # オノマトペの登録とpkの取得
-            onomatopoeia_obj = []
-
-            for onomatopoeia in data['onomatopoeia']:
-                obj, created = Onomatopoeia.objects.get_or_create(
-                    name=onomatopoeia,
-                    defaults={'name': onomatopoeia}
-                )
-
-                onomatopoeia_obj.append(obj)
-
-            # 映画の保存
-            movie_data = {
-                'username': data['username'],
-                'title': data['title'],
-                'tmdb_id': data['tmdb_id'],
-                'overview': data['overview'],
-                'poster': data['poster']
-                }
-
-            movie_obj = add_movie(genre_obj, onomatopoeia_obj, movie_data)
-            movie_user = Movie_User.objects.get(user=user, movie=movie_obj)
-
-            # DVDFAVの保存
-            obj, created = DVDFAV.objects.get_or_create(
-                movie_user=movie_user,
-                defaults={'movie_user': movie_user, 'dvd': data['dvd'], 'fav': data['fav']}
+        # オノマトペの登録とオブジェクトの取得
+        onomatopoeia_obj_list = []
+        for onomatopoeia in data['onomatopoeia']:
+            obj, created = Onomatopoeia.objects.get_or_create(
+                name=onomatopoeia,
+                defaults={'name': onomatopoeia}
             )
 
-            # movie user onomatopoeiaの保存
+            onomatopoeia_obj_list.append(obj)
 
-            for onomatopoeia in onomatopoeia_obj:
-                obj, created = MovieUserOnomatopoeia.objects.get_or_create(
-                    movie_user=movie_user, onomatopoeia=onomatopoeia,
-                    defaults={'movie_user': movie_user, 'onomatopoeia': onomatopoeia}
-                )
+        # 映画オブジェクトの新規追加 or 取得
+        movie_obj, created_movie = Movie.objects.get_or_create(
+            tmdb_id=data['tmdb_id'],
+            defaults={'title': data['title'],
+                      'tmdb_id': data['tmdb_id'],
+                      'overview': data['overview'],
+                      'poster': data['poster']}
+        )
 
-            return Response({'msg': 'success'})
+        # 追加した映画にジャンルがなければ新規追加
+        for genre_obj in genre_obj_list:
+            if not movie_obj.genre.all().filter(name=genre_obj.name).exists():
+                movie_obj.genre.add(genre_obj)
 
-        else:
-            raise serializers.ValidationError(serializer.errors)
+        # 追加した映画にオノマトペがあればカウント更新
+        # なければ新規追加
+        for onomatopoeia_obj in onomatopoeia_obj_list:
+            if movie_obj.onomatopoeia.all().filter(name=onomatopoeia_obj.name).exists():
+                Movie_Onomatopoeia.objects.filter(
+                    movie=movie_obj, onomatopoeia=onomatopoeia_obj
+                ).update(count=F('count') + 1)
+            else:
+                Movie_Onomatopoeia(movie=movie_obj, onomatopoeia=onomatopoeia_obj).save()
+
+        movie_obj.save()
+
+        # 追加した映画にユーザを新規追加
+        movie_user, created_movie_user = Movie_User.objects.get_or_create(
+            movie=movie_obj, user=user,
+            defaults={'movie': movie_obj, 'user': user, 'dvd': data['dvd'], 'fav': data['fav']}
+        )
+
+        # movie user onomatopoeiaの保存
+        if created_movie_user:
+            for onomatopoeia_obj in onomatopoeia_obj_list:
+                Movie_User_Onomatopoeia(movie_user=movie_user, onomatopoeia=onomatopoeia_obj).save()
+
+        return Response({'msg': 'success'})
 
 
 class UpdateOnomatopoeiaViewSet(viewsets.ViewSet):
