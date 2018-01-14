@@ -4,16 +4,17 @@ from FiNote_API.v1.movie_serializer import *
 from rest_framework.response import Response
 from django.db.models import F
 
+
 # [0]: GetSearchMovieTitleResultsViewSet
 # [1]: GetOriginalTitleViewSet
 # test_flag = [False, False]
 
 
 class GetMoviesViewSet(viewsets.ViewSet):
-    def list(self, request):
+    @staticmethod
+    def list(request):
         if not 'user_id' in request.GET:
             raise serializers.ValidationError('user_idが含まれていません')
-
 
         user_id = request.GET.get('user_id')
 
@@ -34,7 +35,7 @@ class GetMoviesViewSet(viewsets.ViewSet):
                 'title': movie_user_obj.movie.title,
                 'id': movie_user_obj.movie.tmdb_id,
                 'add': movie_user_obj.created_at,
-                'poster':  movie_user_obj.movie.poster,
+                'poster': movie_user_obj.movie.poster,
                 'dvd': movie_user_obj.dvd,
                 'fav': movie_user_obj.fav,
                 'onomatopoeia': onomatopoeia_name_list
@@ -52,24 +53,24 @@ class UpdateDVDFAVViewSet(viewsets.ViewSet):
         data = request.data
         serializer = UpdateDVDFAVSerializer(data=data)
 
-        if serializer.is_valid() and request.method == 'POST':
-            try:
-                user = AuthUser.objects.get(username=data['username'])
-                movie = Movie.objects.get(tmdb_id=data['tmdb_id'])
-                movie_user = Movie_User.objects.get(movie=movie, user=user)
-            except:
-                raise serializers.ValidationError('該当するデータが見つかりませんでした')
-
-            if not user.check_password(data['password'].encode('utf-8')):
-                raise serializers.ValidationError('該当するデータが見つかりませんでした')
-
-            movie_user.dvd = data['dvd']
-            movie_user.fav = data['fav']
-            movie_user.save()
-
-            return Response({'dvd': data['dvd'], 'fav': data['fav']})
-        else:
+        if not (serializer.is_valid() and request.method == 'POST'):
             raise serializers.ValidationError(serializer.errors)
+
+        try:
+            user = AuthUser.objects.get(username=data['username'])
+            movie = Movie.objects.get(tmdb_id=data['tmdb_id'])
+            movie_user = Movie_User.objects.get(movie=movie, user=user)
+        except:
+            raise serializers.ValidationError('該当するデータが見つかりませんでした')
+
+        if not user.check_password(data['password'].encode('utf-8')):
+            raise serializers.ValidationError('該当するデータが見つかりませんでした')
+
+        movie_user.dvd = data['dvd']
+        movie_user.fav = data['fav']
+        movie_user.save()
+
+        return Response({'dvd': data['dvd'], 'fav': data['fav']})
 
 
 class AddMovieViewSet(viewsets.ViewSet):
@@ -154,50 +155,49 @@ class UpdateOnomatopoeiaViewSet(viewsets.ViewSet):
         data = request.data
         serializer = UpdateOnomatopoeiaSerializer(data=data)
 
-        if serializer.is_valid() and request.method == 'POST':
-            try:
-                user = AuthUser.objects.get(username=data['username'])
-            except:
-                raise serializers.ValidationError('該当するデータが見つかりませんでした')
-
-            if not user.check_password(data['password'].encode('utf-8')):
-                raise serializers.ValidationError('該当するデータが見つかりませんでした')
-
-            movie_obj = Movie.objects.get(tmdb_id=data['tmdb_id'])
-
-            # movie user onomatopoeiaの該当するレコードを削除
-            movie_user = Movie_User.objects.get(user=user, movie=movie_obj)
-            Movie_User_Onomatopoeia.objects.filter(movie_user=movie_user).delete()
-
-            for onomatopoeia_name in data['onomatopoeia']:
-                # オノマトペがなければ新規作成
-                onomatopoeia_obj, created = Onomatopoeia.objects.get_or_create(
-                    name=onomatopoeia_name,
-                    defaults={'name': onomatopoeia_name}
-                )
-
-                if not movie_obj.onomatopoeia.all().filter(name=onomatopoeia_obj.name).exists():
-                    Movie_Onomatopoeia(movie=movie_obj, onomatopoeia=onomatopoeia_obj).save()
-
-                # オノマトペカウントオブジェクトの新規追加 or 取得
-                onomatopoeia_count_obj, created_oc = Movie_Onomatopoeia.objects.get_or_create(
-                    onomatopoeia=onomatopoeia_obj,
-                    movie=movie_obj,
-                    defaults={'count': 1, 'onomatopoeia': onomatopoeia_obj, 'movie': movie_obj}
-                )
-
-                # オノマトペカウントオブジェクトの更新
-                if not created_oc:
-                    onomatopoeia_count_obj.count += 1
-                    onomatopoeia_count_obj.save()
-
-                # movie user onomatopoeiaの保存
-                Movie_User_Onomatopoeia(movie_user=movie_user, onomatopoeia=onomatopoeia_obj).save()
-
-            return Response({'msg': 'success'})
-
-        else:
+        if not (serializer.is_valid() and request.method == 'POST'):
             raise serializers.ValidationError(serializer.errors)
+
+        try:
+            user = AuthUser.objects.get(username=data['username'])
+        except:
+            raise serializers.ValidationError('該当するデータが見つかりませんでした')
+
+        if not user.check_password(data['password'].encode('utf-8')):
+            raise serializers.ValidationError('該当するデータが見つかりませんでした')
+
+        movie_obj = Movie.objects.get(tmdb_id=data['tmdb_id'])
+
+        # movie user onomatopoeiaの該当するレコードを削除
+        movie_user = Movie_User.objects.get(user=user, movie=movie_obj)
+        Movie_User_Onomatopoeia.objects.filter(movie_user=movie_user).delete()
+
+        for onomatopoeia_name in data['onomatopoeia']:
+            # オノマトペがなければ新規作成
+            onomatopoeia_obj, created = Onomatopoeia.objects.get_or_create(
+                name=onomatopoeia_name,
+                defaults={'name': onomatopoeia_name}
+            )
+
+            if not movie_obj.onomatopoeia.all().filter(name=onomatopoeia_obj.name).exists():
+                Movie_Onomatopoeia(movie=movie_obj, onomatopoeia=onomatopoeia_obj).save()
+
+            # オノマトペカウントオブジェクトの新規追加 or 取得
+            onomatopoeia_count_obj, created_oc = Movie_Onomatopoeia.objects.get_or_create(
+                onomatopoeia=onomatopoeia_obj,
+                movie=movie_obj,
+                defaults={'count': 1, 'onomatopoeia': onomatopoeia_obj, 'movie': movie_obj}
+            )
+
+            # オノマトペカウントオブジェクトの更新
+            if not created_oc:
+                onomatopoeia_count_obj.count += 1
+                onomatopoeia_count_obj.save()
+
+            # movie user onomatopoeiaの保存
+            Movie_User_Onomatopoeia(movie_user=movie_user, onomatopoeia=onomatopoeia_obj).save()
+
+        return Response({'msg': 'success'})
 
 
 class DeleteMovieViewSet(viewsets.ViewSet):
@@ -213,12 +213,12 @@ class DeleteMovieViewSet(viewsets.ViewSet):
             # バックアップの削除
             try:
                 user = AuthUser.objects.get(username=data['username'])
-#
-#                 # Movieテーブルの該当レコードのuserカラムからユーザとの関連を削除
-#                 if movie_obj.user.all().filter(username=usr_obj).exists():
-#                     movie_obj.user.remove(usr_obj)
-#
-                # return Response(data['username'])
+            #
+            #                 # Movieテーブルの該当レコードのuserカラムからユーザとの関連を削除
+            #                 if movie_obj.user.all().filter(username=usr_obj).exists():
+            #                     movie_obj.user.remove(usr_obj)
+            #
+            # return Response(data['username'])
             except:
                 raise serializers.ValidationError('該当するデータが見つかりませんでした')
 
@@ -231,7 +231,6 @@ class DeleteMovieViewSet(viewsets.ViewSet):
 
         else:
             return serializers.ValidationError(serializer.errors)
-
 
 #
 #
