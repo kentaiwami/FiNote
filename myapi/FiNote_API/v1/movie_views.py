@@ -63,17 +63,15 @@ class UpdateDVDFAVViewSet(viewsets.ViewSet):
                 user = AuthUser.objects.get(username=data['username'])
                 movie = Movie.objects.get(tmdb_id=data['tmdb_id'])
                 movie_user = Movie_User.objects.get(movie=movie, user=user)
-                dvdfav = DVDFAV.objects.get(movie_user=movie_user)
-
             except:
                 raise serializers.ValidationError('該当するデータが見つかりませんでした')
 
             if not user.check_password(data['password'].encode('utf-8')):
                 raise serializers.ValidationError('該当するデータが見つかりませんでした')
 
-            dvdfav.dvd = data['dvd']
-            dvdfav.fav = data['fav']
-            dvdfav.save()
+            movie_user.dvd = data['dvd']
+            movie_user.fav = data['fav']
+            movie_user.save()
 
             return Response({'dvd': data['dvd'], 'fav': data['fav']})
         else:
