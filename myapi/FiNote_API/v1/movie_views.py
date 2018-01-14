@@ -72,7 +72,6 @@ class UpdateDVDFAVViewSet(viewsets.ViewSet):
             raise serializers.ValidationError(serializer.errors)
 
 
-#
 class AddMovieViewSet(viewsets.ViewSet):
     serializer_class = AddMovieSerializer
 
