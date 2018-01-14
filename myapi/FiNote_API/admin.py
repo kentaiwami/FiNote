@@ -45,7 +45,7 @@ class MovieUserAdmin(admin.ModelAdmin):
 
 
 class MovieUserOnomatopoeiaAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'user', 'movie', 'onomatopoeia')
+    list_display = ('pk', 'user', 'movie', 'onomatopoeia', 'created_at')
 
     @staticmethod
     def user(obj):
