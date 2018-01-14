@@ -22,27 +22,21 @@ class GetMoviesViewSet(viewsets.ViewSet):
         except:
             raise serializers.ValidationError('該当データが見つかりませんでした')
 
-        movie_user = Movie_User.objects.filter(user=user).order_by('-created_at')
-
-        # 映画ごとにDVD,FAV、オノマトペを取得
-        dvdfav = []
-        onomatopoeia = []
-        for movie_user_obj in movie_user:
-            dvdfav.append(DVDFAV.objects.get(movie_user=movie_user_obj))
-            onomatopoeia.append(MovieUserOnomatopoeia.objects.filter(movie_user=movie_user_obj))
+        movie_user_list = Movie_User.objects.filter(user=user).order_by('-created_at')
 
         results = []
 
-        for movie_user_obj, dvdfav_obj, onomatopoeia_list in zip(movie_user, dvdfav, onomatopoeia):
-            onomatopoeia_name_list = [movie_user_onomatopoeia.onomatopoeia.name for movie_user_onomatopoeia in onomatopoeia_list]
+        for movie_user_obj in movie_user_list:
+            hoge = Movie_User_Onomatopoeia.objects.filter(movie_user=movie_user_obj)
+            onomatopoeia_name_list = [movie_user_onomatopoeia.onomatopoeia.name for movie_user_onomatopoeia in hoge]
 
             results.append({
                 'title': movie_user_obj.movie.title,
                 'id': movie_user_obj.movie.tmdb_id,
                 'add': movie_user_obj.created_at,
                 'poster':  movie_user_obj.movie.poster,
-                'dvd': dvdfav_obj.dvd,
-                'fav': dvdfav_obj.fav,
+                'dvd': movie_user_obj.dvd,
+                'fav': movie_user_obj.fav,
                 'onomatopoeia': onomatopoeia_name_list
             })
 
