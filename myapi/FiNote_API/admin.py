@@ -24,7 +24,6 @@ class MovieAdmin(admin.ModelAdmin):
 
     @staticmethod
     def genres(obj):
-        print(obj.genre.all())
         return "\n".join([g.name for g in obj.genre.all()])
 
 
