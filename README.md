@@ -365,6 +365,29 @@ response：
 }
 ```
 
+### Get Onomatopoeia Count
+```
+method：POST
+endpoint：api/v1/onomatopoeia/count/
+request：
+{
+	"tmdb_id": 12,
+	"onomatopoeia_names": ["hoge", "fuga"]
+}
+response：
+{
+    "results": [
+        {
+            "count": 31,
+            "name": "hoge"
+        },
+        {
+            "count": 20,
+            "name": "fuga"
+        }
+    ]
+}
+```
 
 
 ## 使用しているプラグイン
