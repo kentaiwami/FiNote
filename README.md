@@ -26,6 +26,374 @@ FiNote(フィノート)
 5. 映画の追加ボタンを押して映画を追加します。
 
 
+## V1 API
+### Create User
+```
+method：POST
+endpoint：api/v1/user/
+request：
+{
+    "username": "hogehoge",
+    "password": "hogehoge",
+    "email": "hoge@hoge.com",
+    "birthday": 1900
+}
+response：
+{
+    "id": 1
+}
+```
+
+### Update Password
+```
+method：POST
+endpoint：api/v1/user/update/password/
+request：
+{
+    "username": "hogehoge",
+    "now_password": "hogehoge",
+    "new_password": "fugafuga"
+}
+response：
+{
+    "user": "hogehoge"
+}
+```
+
+### Update Email
+```
+method：POST
+endpoint：api/v1/user/update/email/
+request：
+{
+    "username": "hogehoge",
+    "password": "hogehoge",
+    "new_email": "hoge@hoge.com"
+}
+response：
+{
+    "user": "hogehoge"
+}
+```
+
+### Update Profile Image
+```
+method：POST
+endpoint：api/v1/user/update/img/
+request：
+{
+    "username": "hogehoge",
+    "password": "hogehoge",
+    "img": Image File
+}
+response：
+{
+    "user": "hogehoge"
+}
+```
+
+### Get Movies
+```
+method：GET
+endpoint：api/v1/movies/?user_id=2
+response：
+"results": [
+        {
+            "add": "2018-01-12T00:02:37.612840",
+            "id": "12345",
+            "fav": 1,
+            "title": "hoge2",
+            "dvd": 1,
+            "poster": "http"
+        },
+        {
+            "add": "2018-01-12T00:01:54.697333",
+            "id": "1234",
+            "fav": 0,
+            "title": "hoge",
+            "dvd": 1,
+            "poster": "http://"
+        }
+        .
+        .
+        .
+    ]
+```
+
+### Update DVD and FAV
+```
+method：POST
+endpoint：api/v1/movie/update/dvdfav/
+request：
+{
+    "username": "hogehoge",
+    "password": "hogehoge",
+    "tmdb_id": 1234,
+    "dvd": 0,
+    "fav": 1
+}
+response：
+{
+    "dvd": 0,
+    "fav": 1
+}
+```
+
+### Add Movie
+```
+method：POST
+endpoint：api/v1/movie/
+request：
+{
+	"tmdb_id": 12,
+	"username": "hogehoge",
+	"password": "hogehoge",
+	"dvd": 1,
+	"fav": 0,
+	"onomatopoeia": ["hoge","fuga", "piyo"],
+	"title": "movie title",
+	"genre": [28,12,16],
+	"overview": "movie overview",
+	"poster": "http://hogehoge.com/hoge.jpg"
+}
+response：
+{
+    "msg": "success"
+}
+```
+
+### Update Onomatopoeia
+```
+method：POST
+endpoint：api/v1/movie/update/onomatopoeia/
+request：
+{
+	"tmdb_id": 12,
+	"username": "hogehoge",
+	"password": "hogehoge",
+	"onomatopoeia": ["HOGE","FUGA"]
+}
+response：
+{
+    "msg": "success"
+}
+```
+
+### Delete Movie
+```
+method：POST
+endpoint：api/v1/movie/delete/
+request：
+{
+	"tmdb_id": 12,
+	"username": "hogehoge",
+	"password": "hogehoge",
+}
+response：
+{
+    "msg": "success"
+}
+```
+
+### Get Recently Movie
+```
+method：GET
+endpoint：api/v1/movie/recently/
+response：
+{
+    "results": [
+        {
+            "title": "title_hoge",
+            "poster": "http://hogehoge.com/hoge.jpg",
+            "overview": "overview_hoge"
+        },
+        {
+            "title": "title_fuga",
+            "poster": "http://fugafuga.com/fuga.jpg",
+            "overview": "overview_fuga"
+        }
+    ]
+}
+```
+
+### Get Movie by Age
+```
+method：GET
+endpoint：api/v1/movie/byage/
+response：
+{
+    "results": {
+        "10": [
+            {
+                "count": 64,
+                "overview": "overview",
+                "poster": "https://hoge.com/top.png",
+                "title": "title"
+            },
+            .
+            .
+            .
+        ],
+        "20": [
+            {
+                "count": 75,
+                "overview": "overview",
+                "poster": "https://hoge.com/top.png",
+                "title": "title"
+            },
+            .
+            .
+            .
+        ],
+        "30": [
+            {
+                "count": 40,
+                "overview": "overview",
+                "poster": "https://hoge.com/top.png",
+                "title": "title"
+            },
+            .
+            .
+            .
+        ],
+        "40": [
+            {
+                "count": 8,
+                "overview": "overview",
+                "poster": "https://hoge.com/top.png",
+                "title": "title"
+            },
+            .
+            .
+            .
+        ],
+        "50": [
+            {
+                "count": 31,
+                "overview": "overview",
+                "poster": "https://hoge.com/top.png",
+                "title": "title"
+            },
+            .
+            .
+            .
+        ]
+    }
+}
+```
+
+### Get Movie Onomatopoeia
+```
+method：POST
+endpoint：api/v1/movie/onomatopoeia/
+request：
+{
+	"tmdb_ids": [12, 14]
+}
+response：
+{
+    "results": [
+        {
+            "1234": [
+                {
+                    "name": "hoge"
+                },
+                {
+                    "name": "fuga"
+                },
+                {
+                    "name": "piyo"
+                },
+                .
+                .
+                .
+            ]
+        },
+        .
+        .
+        .
+}
+```
+
+### Get Contain Onomatopoeia Movie
+```
+method：GET
+endpoint：api/v1/movie/onomatopoeia/contain?onomatopoeia=hoge
+response：
+{
+    "results": [
+        {
+            "title": "title_hoge",
+            "poster": "http://hogehoge.com/hoge.jpg",
+            "overview": "overview_hoge"
+        },
+        {
+            "title": "title_fuga",
+            "poster": "http://fugafuga.com/fuga.jpg",
+            "overview": "overview_fuga"
+        },
+        .
+        .
+        .
+    ]
+}
+```
+
+
+### Get Movie Title
+```
+method：GET
+endpoint：api/v1/movie/search/titles?title=hoge&page=1
+response：
+{
+    "total": 25,
+    "results": [
+        {
+            "id": "1",
+            "title": "hogehoge"
+        },
+        .
+        .
+        .
+    ]
+}
+```
+
+### Get Movie Origin Title
+```
+method：GET
+endpoint：api/v1/movie/search/origin?id=1
+response：
+{
+    "title": "hogehoge"
+}
+```
+
+### Get Onomatopoeia Count
+```
+method：POST
+endpoint：api/v1/onomatopoeia/count/
+request：
+{
+	"tmdb_id": 12,
+	"onomatopoeia_names": ["hoge", "fuga"]
+}
+response：
+{
+    "results": [
+        {
+            "count": 31,
+            "name": "hoge"
+        },
+        {
+            "count": 20,
+            "name": "fuga"
+        }
+    ]
+}
+```
+
+
 ## 使用しているプラグイン
 * [cordova-plugin-console 1.0.6](https://www.npmjs.com/package/cordova-plugin-console)
 * [cordova-plugin-device 1.1.5](https://www.npmjs.com/package/cordova-plugin-device)

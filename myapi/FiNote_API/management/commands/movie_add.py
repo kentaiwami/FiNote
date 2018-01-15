@@ -2,11 +2,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.management import BaseCommand
 from django.db.models import Max, Min
 from rest_framework_jwt.serializers import User
-from FiNote_API.functions import *
-from FiNote_API.models import Onomatopoeia, Movie
 import random
-import requests
-from myapi.settings import TMDB_APIKEY
+from FiNote_API.utility import *
 
 
 output_value = {'range_page': '',
@@ -35,27 +32,16 @@ class Command(BaseCommand):
                 if movie == {}:
                     continue
 
-                # ジャンルの保存
-                genre_obj_dict, genre_obj_list = get_or_create_genre(movie['genre_ids'])
-
                 # 映画の保存
-                data = {'username': params['user'].username,
-                        'movie_title': movie['title'],
-                        'movie_id': movie['tmdb_id'],
+                data = {'user': params['user'],
+                        'title': movie['title'],
+                        'tmdb_id': movie['tmdb_id'],
                         'overview': movie['overview'],
-                        'poster_path': movie['poster_path']
+                        'poster': movie['poster'],
+                        'dvd': params['dvd'],
+                        'fav': params['fav']
                         }
-                add_movie(genre_obj_list, params['onomatopoeia'], data)
-
-                # バックアップの保存
-                backup_data = {'username': params['user'].username,
-                               'movie_id': movie['tmdb_id'],
-                               'onomatopoeia_obj_list': params['onomatopoeia'],
-                               'dvd': params['dvd'],
-                               'fav': params['fav']
-                               }
-
-                movieadd_backup(backup_data)
+                add_movie(movie['genre_ids'], params['onomatopoeia'], data)
 
                 self.stdout.write(self.style.SUCCESS('***** Movie Add Success *****'))
                 self.output_console(params)
@@ -154,7 +140,7 @@ class Command(BaseCommand):
         json_movie = {"title": title,
                       "overview": movie['overview'],
                       "tmdb_id": movie['id'],
-                      "poster_path": movie['poster_path'],
+                      "poster": movie['poster_path'],
                       "genre_ids": movie['genre_ids']}
 
         # 出力用に変数へ保存
@@ -167,7 +153,7 @@ class Command(BaseCommand):
     def get_params(self):
         """
         Get params(user, onomatopoeia, dvd_status, fav_status and a movie information).
-        :return: Params. 
+        :return: Params.
         """
 
         user = choice_user()
@@ -224,7 +210,7 @@ def choice_user():
             user = User.objects.get(pk=user_pk)
 
             # 自動で登録されたユーザのみ選択
-            if user.is_dummy:
+            if user.is_dummy or not user.is_superuser:
                 break
             else:
                 pass
@@ -243,14 +229,14 @@ def choice_onomatopoeia():
     max_pk = Onomatopoeia.objects.all().aggregate(Max('pk'))
     min_pk = Onomatopoeia.objects.all().aggregate(Min('pk'))
     choice_onomatopoeia_count = random.randint(1, 3)
-    onomatopoeia_obj_list = []
+    onomatopoeia_names = []
 
-    while len(onomatopoeia_obj_list) < choice_onomatopoeia_count:
+    while len(onomatopoeia_names) < choice_onomatopoeia_count:
         pk = random.randint(min_pk['pk__min'], max_pk['pk__max'])
         try:
             onomatopoeia_obj = Onomatopoeia.objects.get(pk=pk)
-            onomatopoeia_obj_list.append(onomatopoeia_obj)
+            onomatopoeia_names.append(onomatopoeia_obj.name)
         except ObjectDoesNotExist:
             pass
 
-    return onomatopoeia_obj_list
+    return onomatopoeia_names

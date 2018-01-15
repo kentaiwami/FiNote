@@ -1,3 +1,4 @@
+import os
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
@@ -5,7 +6,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 from myapi import settings
-import datetime
+from model_utils import FieldTracker
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
@@ -15,15 +16,15 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
 
 
 class AuthUserManager(BaseUserManager):
-    def create_user(self, username, email, password, birthday, sex):
-        user = self.model(username=username, email=email, password=password, birthday=birthday, sex=sex)
+    def create_user(self, username, email, password, birthday):
+        user = self.model(username=username, email=email, password=password, birthday=birthday)
         user.is_active = True
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, username, email, password, birthday, sex):
-        user = self.create_user(username=username, email=email, password=password, birthday=birthday, sex=sex)
+    def create_superuser(self, username, email, password, birthday):
+        user = self.create_user(username=username, email=email, password=password, birthday=birthday)
         user.is_staff = True
         user.is_superuser = True
         user.save(using=self._db)
@@ -36,11 +37,15 @@ class AuthUser(AbstractBaseUser, PermissionsMixin):
     def get_full_name(self):
         return self.username
 
+    def get_img_path(self, filename):
+        path, ext = os.path.splitext(filename)
+        joined_filename = ''.join([self.username, ext])
+        return '/'.join(['profile', joined_filename])
+
     username = models.CharField(unique=True, max_length=100, blank=False, default='username')
     email = models.EmailField(unique=True, max_length=100, blank=False, default='email')
     birthday = models.IntegerField(blank=False, default=1900)
-    sex = models.CharField(max_length=1, blank=False, default='M')
-    img = models.FileField(blank=True, null=False)
+    img = models.FileField(blank=True, null=False, upload_to=get_img_path)
     is_dummy = models.BooleanField(default=False, null=False)
 
     date_joined = models.DateTimeField(auto_now_add=True)
@@ -48,8 +53,18 @@ class AuthUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False, null=False)
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email', 'birthday', 'sex']
+    REQUIRED_FIELDS = ['email', 'birthday']
     objects = AuthUserManager()
+
+    tracker = FieldTracker()
+
+
+@receiver(post_save, sender=AuthUser)
+def product_clear_image_field_delete_file(sender, instance, **kwargs):
+    path = settings.MEDIA_ROOT + '/' + str(instance.tracker.previous('img'))
+
+    if os.path.isfile(path) and instance.img == '':
+        os.remove(path)
 
 
 class Genre(models.Model):
@@ -71,37 +86,33 @@ class Movie(models.Model):
     title = models.CharField(max_length=200)
     tmdb_id = models.CharField(max_length=100, unique=True)
     overview = models.TextField(max_length=1000, default='')
-    poster_path = models.CharField(max_length=1000, default='')
+    poster = models.CharField(max_length=1000, default='')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     genre = models.ManyToManyField(Genre)
-    user = models.ManyToManyField(AuthUser, blank=True)
-    onomatopoeia = models.ManyToManyField(Onomatopoeia)
+    user = models.ManyToManyField(AuthUser, blank=True, through='Movie_User')
+    onomatopoeia = models.ManyToManyField(Onomatopoeia, through='Movie_Onomatopoeia')
 
     def __str__(self):
         return self.title
 
 
-class OnomatopoeiaCount(models.Model):
-    count = models.IntegerField(default=0)
+class Movie_User(models.Model):
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
+    dvd = models.BooleanField(default=False)
+    fav = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+class Movie_User_Onomatopoeia(models.Model):
+    movie_user = models.ForeignKey(Movie_User)
     onomatopoeia = models.ForeignKey(Onomatopoeia)
-    movie = models.ForeignKey(Movie)
-
-    def __str__(self):
-        return self.onomatopoeia.name + '_' + str(self.count)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
-class BackUp(models.Model):
-    today = datetime.date.today()
-
-    username = models.ForeignKey(AuthUser)
-    movie = models.ForeignKey(Movie)
-    onomatopoeia = models.ManyToManyField(Onomatopoeia)
-    add_year = models.IntegerField(default=int(today.year))
-    add_month = models.IntegerField(default=int(today.month))
-    add_day = models.IntegerField(default=int(today.day))
-    dvd = models.IntegerField(default=0)
-    fav = models.IntegerField(default=0)
-
-    def __str__(self):
-        return str(self.username)
+class Movie_Onomatopoeia(models.Model):
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    onomatopoeia = models.ForeignKey(Onomatopoeia, on_delete=models.CASCADE)
+    count = models.IntegerField(default=1)
