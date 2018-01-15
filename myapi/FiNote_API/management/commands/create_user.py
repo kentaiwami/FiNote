@@ -34,7 +34,6 @@ class Command(BaseCommand):
                               'email': user_param['email'],
                               'password': user_param['password'],
                               'birthday': user_param['birth_year'],
-                              'sex': user_param['sex'],
                               'is_dummy': user_param['is_dummy']
                               },
                 )
@@ -71,7 +70,6 @@ class Command(BaseCommand):
 
         self.stdout.write(self.style.SUCCESS('username: ' + user_param['username']))
         self.stdout.write(self.style.SUCCESS('email: ' + user_param['email']))
-        self.stdout.write(self.style.SUCCESS('sex: ' + user_param['sex']))
         self.stdout.write(self.style.SUCCESS('password: ' + user_param['password']))
         self.stdout.write(self.style.SUCCESS('birth_year: ' + str(user_param['birth_year'])))
         self.stdout.write(self.style.SUCCESS('img_url: ' + user_param['img_url']))
@@ -243,16 +241,13 @@ def generate_user_params():
     choice_name = choice_name_list[random_choice_index]
 
     # ユーザ作成に必要なパラメータを生成・整理
-    choice_sex_list = ['M', 'F']
     username = user[choice_name]
     email = username + '@' + username + '.jp'
-    sex = choice_sex_list[random_choice_index]
     password = generate_password()
     birth_year = get_birth_year()
 
     return {"username": username,
             "email": email,
-            "sex": sex,
             "password": password,
             "birth_year": birth_year,
             "img_url": user['profile_image_url'],
