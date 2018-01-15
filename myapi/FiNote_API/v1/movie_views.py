@@ -16,6 +16,11 @@ import urllib.parse
 class GetMoviesViewSet(viewsets.ViewSet):
     @staticmethod
     def list(request):
+        """
+        ユーザが追加した映画に関する情報を返す
+
+        :param request: URLクエリにuser_idを含む
+        """
         if not 'user_id' in request.GET:
             raise serializers.ValidationError('user_idが含まれていません')
 
@@ -31,8 +36,8 @@ class GetMoviesViewSet(viewsets.ViewSet):
         results = []
 
         for movie_user_obj in movie_user_list:
-            hoge = Movie_User_Onomatopoeia.objects.filter(movie_user=movie_user_obj)
-            onomatopoeia_name_list = [movie_user_onomatopoeia.onomatopoeia.name for movie_user_onomatopoeia in hoge]
+            movie_user_onomatopoeia_list = Movie_User_Onomatopoeia.objects.filter(movie_user=movie_user_obj)
+            onomatopoeia_name_list = [movie_user_onomatopoeia.onomatopoeia.name for movie_user_onomatopoeia in movie_user_onomatopoeia_list]
 
             results.append({
                 'title': movie_user_obj.movie.title,
