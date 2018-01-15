@@ -15,12 +15,9 @@ class CreateUserViewSet(viewsets.ViewSet):
     @staticmethod
     def create(request):
         """
-        When CreateUser api access, run this method.
-        This method checks sign in form data, create new user and response token.
-        :param request: User request data.(username, email, password, birthday year)
-        :return content: Username.
-        
-        :type request: object
+        ユーザを作成する
+        :param request: username, password, email, birthday
+        :return         user's pk
         """
 
         data = request.data
@@ -52,10 +49,10 @@ class UpdatePasswordViewSet(viewsets.ViewSet):
     @staticmethod
     def create(request):
         """
-        When UpdatePassword api access, run this method.
-        This method changes password and return username.
-        :param request: Include username, now_password and new_password
-        :return: User name.
+        パスワードを変更する
+
+        :param request: username, now_password, new_password
+        :return:        username
         """
 
         data = request.data
@@ -87,10 +84,10 @@ class UpdateEmailViewSet(viewsets.ViewSet):
     @staticmethod
     def create(request):
         """
-        When Update email api access, run this method.
-        This method changes email and return username.
-        :param request: Include username, password and new_email
-        :return: User name
+        メールアドレスを変更する
+
+        :param request: username, password, new_email
+        :return:        username
         """
 
         data = request.data
@@ -121,10 +118,10 @@ class UpdateProfileImgViewSet(viewsets.ViewSet):
     @staticmethod
     def create(request):
         """
-        When Update profile image api access, run this method.
-        This method sets img and return username.
-        :param request: Include username, password and image.
-        :return: User name.
+        プロフィール画像を変更する
+
+        :param request: username, password, img
+        :return:        username
         """
 
         data = request.data

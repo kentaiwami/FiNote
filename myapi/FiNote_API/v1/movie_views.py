@@ -20,7 +20,10 @@ class GetMoviesViewSet(viewsets.ViewSet):
         ユーザが追加した映画に関する情報を返す
 
         :param request: URLクエリにuser_idを含む
+        :returns        title, tmdb_id, add datetime, poster,
+                        dvd, fav, onomatopoeia names
         """
+
         if not 'user_id' in request.GET:
             raise serializers.ValidationError('user_idが含まれていません')
 
@@ -57,6 +60,12 @@ class UpdateDVDFAVViewSet(viewsets.ViewSet):
 
     @staticmethod
     def create(request):
+        """
+        ユーザのdvdとfavの状態を更新する
+
+        :param request: username, password, tmdb_id, dvd, fav
+        :return:        更新後のdvd, fav
+        """
 
         data = request.data
         serializer = UpdateDVDFAVSerializer(data=data)
@@ -86,6 +95,13 @@ class AddMovieViewSet(viewsets.ViewSet):
 
     @staticmethod
     def create(request):
+        """
+        映画を追加する
+
+        :param request: username, password, title, overview, tmdb_id,
+                        poster, genre, onomatopoeia, dvd, fav
+        :return:        メッセージ
+        """
 
         data = request.data
         serializer = AddMovieSerializer(data=data)
@@ -159,6 +175,12 @@ class UpdateOnomatopoeiaViewSet(viewsets.ViewSet):
 
     @staticmethod
     def create(request):
+        """
+        映画に付与しているオノマトペを更新する
+
+        :param request: username, password, tmdb_id, onomatopoeia
+        :return:        メッセージ
+        """
 
         data = request.data
         serializer = UpdateOnomatopoeiaSerializer(data=data)
@@ -213,6 +235,12 @@ class DeleteMovieViewSet(viewsets.ViewSet):
 
     @staticmethod
     def create(request):
+        """
+        追加した映画を削除する
+
+        :param request: username, password, tmdb_id
+        :return:        メッセージ
+        """
 
         data = request.data
         serializer = DeleteMovieSerializer(data=data)
@@ -236,6 +264,15 @@ class DeleteMovieViewSet(viewsets.ViewSet):
 
 class GetRecentlyMovieViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
+        """
+        1週間以内で多く追加された映画上位50を返す
+
+        :param request: None
+        :param args:    None
+        :param kwargs:  None
+        :return:        title, overview, poster
+        """
+
         today = datetime.date.today() + datetime.timedelta(days=1)
         one_week_ago = today - datetime.timedelta(days=7)
 
@@ -264,6 +301,15 @@ class GetRecentlyMovieViewSet(viewsets.ModelViewSet):
 
 class GetMovieByAgeViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
+        """
+        10〜50代別で1週間以内に追加数が多い映画上位15を返す
+
+        :param request: None
+        :param args:    None
+        :param kwargs:  None
+        :return:        count, overview, poster, title
+        """
+
         today = datetime.date.today() + datetime.timedelta(days=1)
         one_week_ago = today - datetime.timedelta(days=7)
 
@@ -311,6 +357,13 @@ class GetMovieOnomatopoeiaViewSet(viewsets.ViewSet):
 
     @staticmethod
     def create(request):
+        """
+
+
+        :param request: tmdb_ids
+        :return:        key: tmdb_id, value: 映画に付与されたオノマトペ
+        """
+
         data = request.data
         serializer = GetMovieOnomatopoeiaSerializer(data=data)
 
@@ -321,7 +374,7 @@ class GetMovieOnomatopoeiaViewSet(viewsets.ViewSet):
 
         thread_list = []
         for tmdb_id in data['tmdb_ids']:
-            thread = GetMovieReactionThread(tmdb_id)
+            thread = GetMovieOnomatopoeiaThread(tmdb_id)
             thread_list.append(thread)
             thread.start()
 
@@ -340,6 +393,13 @@ class GetMovieOnomatopoeiaViewSet(viewsets.ViewSet):
 class GetMovieOnomatopoeiaContainViewSet(viewsets.ViewSet):
     @staticmethod
     def list(request):
+        """
+        指定したオノマトペを含む映画を返す
+
+        :param request: URLクエリにonomatopoeia含む
+        :return:        title, overview, poster
+        """
+
         if not 'onomatopoeia' in request.GET:
             raise serializers.ValidationError('onomatopoeiaが含まれていません')
 
@@ -368,6 +428,14 @@ class GetMovieOnomatopoeiaContainViewSet(viewsets.ViewSet):
 class GetSearchMovieTitleViewSet(viewsets.ViewSet):
     @staticmethod
     def list(request):
+        """
+        指定したタイトルで外部APIを検索した結果を返す
+
+        :param request: URLクエリに、title, pageを含む
+        :return:        total:      検索結果の件数
+                        results:    title, id
+        """
+
         if not 'title' in request.GET:
             raise serializers.ValidationError('titleが含まれていません')
 
@@ -414,6 +482,12 @@ class GetSearchMovieTitleViewSet(viewsets.ViewSet):
 class GetOriginalTitleViewSet(viewsets.ViewSet):
     @staticmethod
     def list(request):
+        """
+        指定したidの原題を返す
+
+        :param request: URLクエリにid含む
+        :return:        origin title
+        """
 
         if not 'id' in request.GET:
             raise serializers.ValidationError('idが含まれていません')
@@ -449,6 +523,13 @@ class GetOnomatopoeiaCountViewSet(viewsets.ViewSet):
 
     @staticmethod
     def create(request):
+        """
+        指定したtmdb_idに指定したオノマトペが何回登録されたかを返す
+
+        :param request: tmdb_id, onomatopoeia_names
+        :return:        count, onomatopoeia name
+        """
+
         data = request.data
         serializer = GetOnomatopoeiaCountSerializer(data=data)
 
