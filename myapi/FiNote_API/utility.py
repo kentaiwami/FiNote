@@ -52,7 +52,7 @@ class MovieUserCount(object):
             self.cnt[movie] = init_dict
 
     def sort(self, key):
-        return OrderedDict(sorted(self.cnt.items(), key=lambda x: x[1][key], reverse=True))
+        return OrderedDict(sorted(self.cnt.items(), key=lambda x: x[1][key], reverse=True)[:15])
 
 
 def get_or_create_genre(genre_id):
