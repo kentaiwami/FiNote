@@ -1,6 +1,58 @@
+from collections import OrderedDict
 from FiNote_API.models import *
 from myapi.settings import TMDB_APIKEY
 import requests
+import datetime
+
+
+class MovieUserCount(object):
+    def __init__(self):
+        self.cnt = {}
+
+    @staticmethod
+    def merge_dict4(d1, d2):
+        return {
+            '10': d1['10'] + d2['10'],
+            '20': d1['20'] + d2['20'],
+            '30': d1['30'] + d2['30'],
+            '40': d1['40'] + d2['40'],
+            '50': d1['50'] + d2['50'],
+        }
+
+    def count(self, user, movie):
+        init_dict = {
+            '10': 0,
+            '20': 0,
+            '30': 0,
+            '40': 0,
+            '50': 0,
+        }
+
+        this_year = datetime.date.today().year
+
+        if user.birthday > this_year - 10 or user.birthday in range(this_year - 19, this_year - 9):
+            init_dict['10'] = 1
+
+        elif user.birthday in range(this_year - 29, this_year - 19):
+            init_dict['20'] = 1
+
+        elif user.birthday in range(this_year - 39, this_year - 29):
+            init_dict['30'] = 1
+
+        elif user.birthday in range(this_year - 49, this_year - 39):
+            init_dict['40'] = 1
+
+        else:
+            init_dict['50'] = 1
+
+        if movie in self.cnt:
+            value = self.cnt[movie]
+            self.cnt[movie] = self.merge_dict4(init_dict, value)
+        else:
+            self.cnt[movie] = init_dict
+
+    def sort(self, key):
+        return OrderedDict(sorted(self.cnt.items(), key=lambda x: x[1][key], reverse=True))
 
 
 def get_or_create_genre(genre_id):

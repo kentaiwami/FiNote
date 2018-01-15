@@ -2,7 +2,7 @@ from FiNote_API.utility import *
 from rest_framework import viewsets
 from FiNote_API.v1.movie_serializer import *
 from rest_framework.response import Response
-from django.db.models import F, Count
+from django.db.models import F
 from collections import Counter
 import datetime
 
@@ -245,118 +245,60 @@ class GetRecentlyMovieViewSet(viewsets.ModelViewSet):
             movie_cnt[movie_user.movie] += 1
 
         results = []
-        for movie in movie_cnt:
+        for movie in movie_cnt.most_common(50):
             results.append({
-                'title': movie.title,
-                'overview': movie.overview,
-                'poster': movie.poster
+                'title': movie[0].title,
+                'overview': movie[0].overview,
+                'poster': movie[0].poster
             })
 
         return Response({'results': results})
 
 
-# class MovieUserCount(object):
-#     def __init__(self, movie):
-#         """
-#         Management class that movie and user counts by age.
-#         :param movie: Target a movie.
-#         """
-#
-#         self.movie = movie
-#         self.count_10 = 0
-#         self.count_20 = 0
-#         self.count_30 = 0
-#         self.count_40 = 0
-#         self.count_50 = 0
-#
-#
-# class GetMovieByAgeViewSet(viewsets.ModelViewSet):
-#     queryset = Movie.objects.all()
-#     serializer_class = GetMovieByAgeSerializer
-#     http_method_names = ['get']
-#
-#     def list(self, request, *args, **kwargs):
-#         """
-#         When MovieByAge api access, run this method.
-#         This method gets user counts and age movies.
-#         :param request: This param is not used.
-#         :param args: This param is not used.
-#         :param kwargs: This param is not used.
-#         :return: User counts desc movies by age.
-#         """
-#
-#         movies = Movie.objects.annotate(user_count=Count('user')).filter(user_count__gt=1).order_by('-user_count')[:15]
-#
-#         # 該当映画と年代別の登録数のクラスをリストに格納
-#         count_class_list = []
-#         for movie in movies:
-#             tmp_count_class = MovieUserCount(movie)
-#
-#             for user in movie.user.all():
-#                 self.update_movie_count_class(tmp_count_class, user.birthday)
-#
-#             count_class_list.append(tmp_count_class)
-#
-#         # ユーザの登録数が多い順にソート
-#         sorted_count_class_list_10 = sorted(count_class_list, key=attrgetter('count_10'), reverse=True)
-#         sorted_count_class_list_20 = sorted(count_class_list, key=attrgetter('count_20'), reverse=True)
-#         sorted_count_class_list_30 = sorted(count_class_list, key=attrgetter('count_30'), reverse=True)
-#         sorted_count_class_list_40 = sorted(count_class_list, key=attrgetter('count_40'), reverse=True)
-#         sorted_count_class_list_50 = sorted(count_class_list, key=attrgetter('count_50'), reverse=True)
-#         sorted_list_collection = [sorted_count_class_list_10,
-#                                   sorted_count_class_list_20,
-#                                   sorted_count_class_list_30,
-#                                   sorted_count_class_list_40,
-#                                   sorted_count_class_list_50]
-#
-#         # dictionaryを作成
-#         res = []
-#         for i, sorted_count_class_list in enumerate(sorted_list_collection):
-#             dict_list_tmp = []
-#             for sorted_count_class in sorted_count_class_list:
-#                 dict_tmp = {"title": sorted_count_class.movie.title,
-#                             "overview": sorted_count_class.movie.overview,
-#                             "poster_path": sorted_count_class.movie.poster_path,
-#                             "10": sorted_count_class.count_10,
-#                             "20": sorted_count_class.count_20,
-#                             "30": sorted_count_class.count_30,
-#                             "40": sorted_count_class.count_40,
-#                             "50": sorted_count_class.count_50}
-#
-#                 dict_list_tmp.append(dict_tmp)
-#
-#             res.append({str((i + 1) * 10): dict_list_tmp})
-#
-#         return Response(res)
-#
-#     @staticmethod
-#     def update_movie_count_class(count_class, birth_year):
-#         """
-#         This method updates age count in count_class.
-#         :param count_class: Custom management class.
-#         :param birth_year: User's birth year.
-#         :return: Nothing.
-#
-#         :type count_class class object
-#         :type birth_year int
-#         """
-#
-#         this_year = datetime.date.today().year
-#
-#         if birth_year > this_year - 10 or birth_year in range(this_year - 19, this_year - 9):
-#             count_class.count_10 += 1
-#
-#         elif birth_year in range(this_year - 29, this_year - 19):
-#             count_class.count_20 += 1
-#
-#         elif birth_year in range(this_year - 39, this_year - 29):
-#             count_class.count_30 += 1
-#
-#         elif birth_year in range(this_year - 49, this_year - 39):
-#             count_class.count_40 += 1
-#
-#         else:
-#             count_class.count_50 += 1
+class GetMovieByAgeViewSet(viewsets.ModelViewSet):
+    def list(self, request, *args, **kwargs):
+        today = datetime.date.today() + datetime.timedelta(days=1)
+        one_week_ago = today - datetime.timedelta(days=7)
+
+        queryset = Movie_User_Onomatopoeia.objects.filter(created_at__range=(one_week_ago, today))
+
+        # movie_userごとに集計
+        movie_user_onomatopoeia_cnt = Counter()
+        for movie_user_onomatopoeia in queryset:
+            movie_user_onomatopoeia_cnt[movie_user_onomatopoeia.movie_user] += 1
+
+        # 映画ごとに、追加したユーザの年代別でカウント
+        movie_user_count = MovieUserCount()
+        for movie_user_obj in movie_user_onomatopoeia_cnt:
+            movie_user_count.count(movie_user_obj.user, movie_user_obj.movie)
+
+        res_dict = {
+            '10': [],
+            '20': [],
+            '30': [],
+            '40': [],
+            '50': [],
+        }
+
+        # 10〜50代の登録数でソート
+        for res_key in res_dict:
+            sorted_dict = movie_user_count.sort(res_key)
+
+            for movie, count_dict in zip(sorted_dict.keys(), sorted_dict.values()):
+                # 対象の年代(res_key)で登録している数が0件の場合はスキップ
+                if count_dict[res_key] == 0:
+                    continue
+
+                res_dict[res_key].append({
+                    "count": count_dict[res_key],
+                    "overview": movie.overview,
+                    "poster": movie.poster,
+                    "title": movie.title
+                })
+
+        return Response({'results': res_dict})
+
+
 #
 #
 # class GetMovieReactionViewSet(viewsets.ViewSet):

@@ -216,6 +216,72 @@ response：
 }
 ```
 
+### Get Movie by Age
+```
+method：GET
+endpoint：api/v1/movie/byage/
+response：
+{
+    "results": {
+        "10": [
+            {
+                "count": 64,
+                "overview": "overview",
+                "poster": "https://hoge.com/top.png",
+                "title": "title"
+            },
+            .
+            .
+            .
+        ],
+        "20": [
+            {
+                "count": 75,
+                "overview": "overview",
+                "poster": "https://hoge.com/top.png",
+                "title": "title"
+            },
+            .
+            .
+            .
+        ],
+        "30": [
+            {
+                "count": 40,
+                "overview": "overview",
+                "poster": "https://hoge.com/top.png",
+                "title": "title"
+            },
+            .
+            .
+            .
+        ],
+        "40": [
+            {
+                "count": 8,
+                "overview": "overview",
+                "poster": "https://hoge.com/top.png",
+                "title": "title"
+            },
+            .
+            .
+            .
+        ],
+        "50": [
+            {
+                "count": 31,
+                "overview": "overview",
+                "poster": "https://hoge.com/top.png",
+                "title": "title"
+            },
+            .
+            .
+            .
+        ]
+    }
+}
+```
+
 
 
 
