@@ -310,7 +310,7 @@ class GetMovieOnomatopoeiaViewSet(viewsets.ViewSet):
     @staticmethod
     def create(request):
         """
-
+        指定した映画に付与されたオノマトペを取得する
 
         :param request: tmdb_ids
         :return:        key: tmdb_id, value: 映画に付与されたオノマトペ

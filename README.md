@@ -165,7 +165,7 @@ response：
 ### Update Onomatopoeia
 ```
 method：POST
-endpoint：api/v1/movie/
+endpoint：api/v1/movie/update/onomatopoeia/
 request：
 {
 	"tmdb_id": 12,
@@ -284,8 +284,12 @@ response：
 
 ### Get Movie Onomatopoeia
 ```
-method：GET
+method：POST
 endpoint：api/v1/movie/onomatopoeia/
+request：
+{
+	"tmdb_ids": [12, 14]
+}
 response：
 {
     "results": [
