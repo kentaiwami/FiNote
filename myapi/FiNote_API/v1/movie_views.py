@@ -285,8 +285,8 @@ class GetMovieByAgeViewSet(viewsets.ModelViewSet):
             sorted_dict = movie_user_count.sort(res_key)
 
             for movie, count_dict in zip(sorted_dict.keys(), sorted_dict.values()):
-                # 対象の年代(res_key)で登録している数が0件の場合はスキップ
-                if count_dict[res_key] == 0:
+                # 対象の年代(res_key)で登録している数が0件の場合、15映画に到達している場合はスキップ
+                if count_dict[res_key] == 0 or len(res_dict[res_key]) >= 15:
                     continue
 
                 res_dict[res_key].append({
