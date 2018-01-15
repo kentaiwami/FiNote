@@ -336,6 +336,26 @@ response：
 ```
 
 
+### Get Movie Title
+```
+method：GET
+endpoint：api/v1/movie/search/titles?title=hoge&page=1
+response：
+{
+    "total": 25,
+    "results": [
+        {
+            "id": "1",
+            "title": "hogehoge"
+        },
+        .
+        .
+        .
+    ]
+}
+```
+
+
 
 ## 使用しているプラグイン
 * [cordova-plugin-console 1.0.6](https://www.npmjs.com/package/cordova-plugin-console)

@@ -6,10 +6,11 @@ from django.db.models import F
 from collections import Counter
 import datetime
 from FiNote_API.thread import *
-
-# [0]: GetSearchMovieTitleResultsViewSet
-# [1]: GetOriginalTitleViewSet
-# test_flag = [False, False]
+import ssl
+import re
+from bs4 import BeautifulSoup
+import urllib.request
+import urllib.parse
 
 
 class GetMoviesViewSet(viewsets.ViewSet):
@@ -357,64 +358,53 @@ class GetMovieOnomatopoeiaContainViewSet(viewsets.ViewSet):
             })
 
         return Response({'results': res})
-#
-#
-#
-#
-# class GetSearchMovieTitleResultsViewSet(viewsets.ViewSet):
-#     queryset = Movie.objects.all()
-#     serializer_class = GetSearchMovieTitleResultsSerializer
-#
-#     @staticmethod
-#     def create(request):
-#         """
-#         When GetSearchMovieTitleResults api access, run this method.
-#         This method gets search results in yahoo movie website.
-#         :param request: Search movie title and page number.
-#         :return: Movie's title, movie's id and total results count.
-#         """
-#
-#         serializer = GetSearchMovieTitleResultsSerializer(data=request.data)
-#
-#         if serializer.is_valid() and request.method == 'POST':
-#             res = []
-#
-#             context = ssl._create_unverified_context()
-#             url, param = get_url_param(test_flag[0], 'search', request.data)
-#             html = urllib.request.urlopen(url + '?' + urllib.parse.urlencode(param), context=context)
-#             soup = BeautifulSoup(html, "html.parser")
-#
-#             # 検索結果の合計件数を抽出
-#             srchform_div = soup.find(id='srchform')
-#             srchform_div_label = srchform_div.find(class_='label')
-#
-#             # 検索結果が0の場合はこの時点で結果を返す
-#             if srchform_div_label is None:
-#                 return Response({'total': 0, 'results': []})
-#
-#             small_list = srchform_div_label.find_all('small')
-#             del small_list[0]
-#
-#             match = re.findall(r'[0-9]+', small_list[0].string)
-#             total_resutls_count = int(match[0])
-#
-#             # 映画のタイトルとIDを抽出
-#             lst = soup.find(id='lst')
-#             li_tag_list = lst.find_all('li', class_='col')
-#
-#             title_id_list = []
-#             for li_tag in li_tag_list:
-#                 title = li_tag.find('h3', class_='text-xsmall text-overflow').attrs['title']
-#                 id = li_tag.attrs['data-cinema-id']
-#                 title_id_list.append({'title': title, 'id': id})
-#
-#             res.append({'total': total_resutls_count})
-#             res.append({'results': title_id_list})
-#
-#             return Response({'total': total_resutls_count, 'results': title_id_list})
-#
-#         else:
-#             raise ValidationError('正しいパラメータ値ではありません')
+
+
+class GetSearchMovieTitleViewSet(viewsets.ViewSet):
+    @staticmethod
+    def list(request):
+        if not 'title' in request.GET:
+            raise serializers.ValidationError('titleが含まれていません')
+
+        if not 'page' in request.GET:
+            raise serializers.ValidationError('pageが含まれていません')
+
+        res = []
+
+        context = ssl._create_unverified_context()
+        url, param = get_url_param(test=settings.IsTestSearchTitle, api='search', title=request.GET.get('title'), page=request.GET.get('page'))
+        html = urllib.request.urlopen(url + '?' + urllib.parse.urlencode(param), context=context)
+        soup = BeautifulSoup(html, "html.parser")
+
+        # 検索結果の合計件数を抽出
+        srchform_div = soup.find(id='srchform')
+        srchform_div_label = srchform_div.find(class_='label')
+
+        # 検索結果が0の場合はこの時点で結果を返す
+        if srchform_div_label is None:
+            return Response({'total': 0, 'results': []})
+
+        small_list = srchform_div_label.find_all('small')
+        del small_list[0]
+
+        match = re.findall(r'[0-9]+', small_list[0].string)
+        total_resutls_count = int(match[0])
+
+        # 映画のタイトルとIDを抽出
+        lst = soup.find(id='lst')
+        li_tag_list = lst.find_all('li', class_='col')
+
+        title_id_list = []
+        for li_tag in li_tag_list:
+            title = li_tag.find('h3', class_='text-xsmall text-overflow').attrs['title']
+            id = li_tag.attrs['data-cinema-id']
+            title_id_list.append({'title': title, 'id': id})
+
+        res.append({'total': total_resutls_count})
+        res.append({'results': title_id_list})
+
+        return Response({'total': total_resutls_count, 'results': title_id_list})
+
 #
 #
 # class GetOriginalTitleViewSet(viewsets.ViewSet):

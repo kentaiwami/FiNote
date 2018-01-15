@@ -50,11 +50,6 @@ class GetMovieOnomatopoeiaSerializer(serializers.Serializer):
 #         fields = ('count', 'onomatopoeia', 'movie')
 #
 #
-# class GetSearchMovieTitleResultsSerializer(serializers.Serializer):
-#     movie_title = serializers.CharField(allow_null=False, required=True)
-#     page_number = serializers.IntegerField(allow_null=False, required=True)
-#
-#
 # class GetOriginalTitleSerializer(serializers.Serializer):
 #     id = serializers.IntegerField(allow_null=False, required=True)
 #
