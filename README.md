@@ -282,6 +282,34 @@ response：
 }
 ```
 
+### Get Movie Onomatopoeia
+```
+method：GET
+endpoint：api/v1/movie/onomatopoeia/
+response：
+{
+    "results": [
+        {
+            "1234": [
+                {
+                    "name": "hoge"
+                },
+                {
+                    "name": "fuga"
+                },
+                {
+                    "name": "piyo"
+                },
+                .
+                .
+                .
+            ]
+        },
+        .
+        .
+        .
+}
+```
 
 
 

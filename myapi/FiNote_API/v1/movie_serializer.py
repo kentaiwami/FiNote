@@ -36,6 +36,8 @@ class DeleteMovieSerializer(serializers.Serializer):
     tmdb_id = serializers.IntegerField(allow_null=False, required=True)
 
 
+class GetMovieOnomatopoeiaSerializer(serializers.Serializer):
+    tmdb_ids = serializers.ListField(allow_null=False, required=True)
 
 #
 #
@@ -85,8 +87,7 @@ class DeleteMovieSerializer(serializers.Serializer):
 #         fields = ('title', 'overview', 'poster_path')
 #
 #
-# class GetMovieReactionSerializer(serializers.Serializer):
-#     tmdb_id_list = serializers.CharField(allow_null=False, required=True)
+
 #
 #
 # class GetMovieByOnomatopoeiaSerializer(serializers.Serializer):

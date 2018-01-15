@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from django.db.models import F
 from collections import Counter
 import datetime
+from FiNote_API.thread import *
 
 # [0]: GetSearchMovieTitleResultsViewSet
 # [1]: GetOriginalTitleViewSet
@@ -299,47 +300,37 @@ class GetMovieByAgeViewSet(viewsets.ModelViewSet):
         return Response({'results': res_dict})
 
 
-#
-#
-# class GetMovieReactionViewSet(viewsets.ViewSet):
-#     queryset = Movie.objects.all()
-#     serializer_class = GetMovieReactionSerializer
-#
-#     @staticmethod
-#     def create(request):
-#
-#         """
-#         When MovieReaction api access, run this method.
-#         This method gets onomatopoeia and count.
-#         :param request: Target tmdb_id list.
-#         :return: Onomatopoeia name group by tmdb_id.
-#         """
-#
-#         serializer = GetMovieReactionSerializer(data=request.data)
-#
-#         if serializer.is_valid() and request.method == 'POST':
-#             tmdb_id_list = conversion_str_to_list(request.data['tmdb_id_list'], 'int')
-#             res = []
-#
-#             thread_list = []
-#             for tmdb_id in tmdb_id_list:
-#                 thread = GetMovieReactionThread(tmdb_id)
-#                 thread_list.append(thread)
-#                 thread.start()
-#
-#             # 全てのスレッドが完了するまで待機(ブロック)
-#             for thread in thread_list:
-#                 thread.join()
-#
-#             for thread in thread_list:
-#                 res.append(thread.getResult())
-#
-#             return Response(res)
-#
-#         else:
-#             raise ValidationError('正しいパラメータ値ではありません')
-#
-#
+class GetMovieOnomatopoeiaViewSet(viewsets.ViewSet):
+    serializer_class = GetMovieOnomatopoeiaSerializer
+
+    @staticmethod
+    def create(request):
+        data = request.data
+        serializer = GetMovieOnomatopoeiaSerializer(data=data)
+
+        if not(serializer.is_valid() and request.method == 'POST'):
+            raise serializers.ValidationError(serializer.errors)
+
+        res = []
+
+        thread_list = []
+        for tmdb_id in data['tmdb_ids']:
+            thread = GetMovieReactionThread(tmdb_id)
+            thread_list.append(thread)
+            thread.start()
+
+        # 全てのスレッドが完了するまで待機(ブロック)
+        for thread in thread_list:
+            thread.join()
+
+        for thread in thread_list:
+            thread_result = thread.getResult()
+            if thread_result:
+                res.append(thread_result)
+
+        return Response({'results': res})
+
+
 # class GetMovieByOnomatopoeiaViewSet(viewsets.ViewSet):
 #     queryset = Movie.objects.all()
 #     serializer_class = GetMovieByOnomatopoeiaSerializer
