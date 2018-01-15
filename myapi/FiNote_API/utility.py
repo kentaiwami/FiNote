@@ -93,16 +93,13 @@ def get_or_create_genre(genre_id):
     return genre_obj_list
 
 
-def get_url_param(test, api, title, page):
+def get_url_param(test, api, title='', page='', id=''):
     if api == 'origin':
-        url = ''
+        if test:
+            url = settings.SearchOriginTitleURLTest
+        else:
+            url = settings.SearchOriginTitleURLTest + id
         param = {}
-        # if test:
-        #     url = 'http://kentaiwami.jp/GetOriginalTitle_en.html/'
-        #     param = {}
-        # else:
-        #     url = 'https://movies.yahoo.co.jp/movie/' + request_data['id']
-        #     param = {}
     else:
         if test:
             url = settings.SearchTitleURLTest

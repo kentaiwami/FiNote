@@ -18,6 +18,7 @@ router.register(r'movie/byage', GetMovieByAgeViewSet, 'get-movie-by-age')
 router.register(r'movie/onomatopoeia', GetMovieOnomatopoeiaViewSet, 'get-movie-onomatopoeia')
 router.register(r'movie/onomatopoeia/contain', GetMovieOnomatopoeiaContainViewSet, 'get-movie-onomatopoeia-contain')
 router.register(r'movie/search/titles', GetSearchMovieTitleViewSet, 'get-movie-title')
+router.register(r'movie/search/origin', GetOriginalTitleViewSet, 'get-movie-origin-title')
 
 
 router.register(r'movies', GetMoviesViewSet, base_name='get-movies')
@@ -25,5 +26,4 @@ router.register(r'movies', GetMoviesViewSet, base_name='get-movies')
 
 
 
-# router.register(r'v1/get_original_title', GetOriginalTitleViewSet, 'get_original_title')
 # router.register(r'v1/get_onomatopoeia_count_by_movie_id', GetOnomatopoeiaCountByMovieIDViewSet, 'get_onomatopoeia_count_by_movie_id')

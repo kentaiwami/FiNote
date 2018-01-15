@@ -405,50 +405,39 @@ class GetSearchMovieTitleViewSet(viewsets.ViewSet):
 
         return Response({'total': total_resutls_count, 'results': title_id_list})
 
-#
-#
-# class GetOriginalTitleViewSet(viewsets.ViewSet):
-#     queryset = Movie.objects.all()
-#     serializer_class = GetOriginalTitleSerializer
-#
-#     @staticmethod
-#     def create(request):
-#         """
-#         When GetOriginalTitle api access, run this method.
-#         This method gets original movie title in yahoo movie website.
-#         :param request: Search movie title and id number.
-#         :return: Movie's original title.
-#         """
-#
-#         serializer = GetOriginalTitleSerializer(data=request.data)
-#
-#         if serializer.is_valid() and request.method == 'POST':
-#             original_title = ''
-#
-#             context = ssl._create_unverified_context()
-#             url, param = get_url_param(test_flag[1], 'origin', request.data)
-#             html = urllib.request.urlopen(url + '?' + urllib.parse.urlencode(param), context=context)
-#             soup = BeautifulSoup(html, "html.parser")
-#
-#             mvinf = soup.find(id='mvinf')
-#             tr_tag_list = mvinf.find_all('tr')
-#
-#             # 製作国が日本以外なら保存した原題を返す
-#             for tr_tag in tr_tag_list:
-#                 th_tag = tr_tag.find('th')
-#
-#                 if th_tag.string == '原題':
-#                     original_title = tr_tag.find('td').string
-#                     continue
-#
-#                 if th_tag.string == '製作国':
-#                     if tr_tag.find('li').string != '日本':
-#                         return Response(original_title)
-#                     break
-#
-#             return Response('')
-#         else:
-#             raise ValidationError('正しいパラメータ値ではありません')
+
+class GetOriginalTitleViewSet(viewsets.ViewSet):
+    @staticmethod
+    def list(request):
+
+        if not 'id' in request.GET:
+            raise serializers.ValidationError('idが含まれていません')
+
+        original_title = ''
+
+        context = ssl._create_unverified_context()
+        url, param = get_url_param(settings.IsTestSearchOriginTitle, 'origin', request.data)
+        html = urllib.request.urlopen(url + '?' + urllib.parse.urlencode(param), context=context)
+        soup = BeautifulSoup(html, "html.parser")
+
+        mvinf = soup.find(id='mvinf')
+        tr_tag_list = mvinf.find_all('tr')
+
+        # 製作国が日本以外なら保存した原題を返す
+        for tr_tag in tr_tag_list:
+            th_tag = tr_tag.find('th')
+
+            if th_tag.string == '原題':
+                original_title = tr_tag.find('td').string
+                continue
+
+            if th_tag.string == '製作国':
+                if tr_tag.find('li').string != '日本':
+                    return Response({'title': original_title})
+                break
+
+        return Response({'title': ''})
+
 #
 #
 # class GetOnomatopoeiaCountByMovieIDViewSet(viewsets.ViewSet):

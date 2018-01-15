@@ -50,10 +50,6 @@ class GetMovieOnomatopoeiaSerializer(serializers.Serializer):
 #         fields = ('count', 'onomatopoeia', 'movie')
 #
 #
-# class GetOriginalTitleSerializer(serializers.Serializer):
-#     id = serializers.IntegerField(allow_null=False, required=True)
-#
-#
 # class GetOnomatopoeiaCountByMovieIDSerializer(serializers.Serializer):
 #     tmdb_id = serializers.CharField(allow_null=False, required=True)
 #     onomatopoeia_name_list = serializers.CharField(allow_null=False, required=True)

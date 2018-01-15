@@ -355,6 +355,16 @@ response：
 }
 ```
 
+### Get Movie Origin Title
+```
+method：GET
+endpoint：api/v1/movie/search/origin?id=1
+response：
+{
+    "title": "hogehoge"
+}
+```
+
 
 
 ## 使用しているプラグイン
