@@ -331,42 +331,32 @@ class GetMovieOnomatopoeiaViewSet(viewsets.ViewSet):
         return Response({'results': res})
 
 
-# class GetMovieByOnomatopoeiaViewSet(viewsets.ViewSet):
-#     queryset = Movie.objects.all()
-#     serializer_class = GetMovieByOnomatopoeiaSerializer
-#
-#     @staticmethod
-#     def create(request):
-#         """
-#         When GetMovieByOnomatopoeia api access, run this method.
-#         This method gets movies that include target onomatopoeia.
-#         :param request: Target onomatopoeia.
-#         :return: Hit movies information(title, overview and poster_path).
-#         """
-#
-#         serializer = GetMovieByOnomatopoeiaSerializer(data=request.data)
-#
-#         if serializer.is_valid() and request.method == 'POST':
-#             # リクエスト文字を含むオノマトペを取得
-#             onomatopoeia_name = request.data['onomatopoeia_name']
-#             onomatopoeia_list = Onomatopoeia.objects.filter(name__contains=onomatopoeia_name)
-#
-#             # 上記で取得したオノマトペを含む映画を取得
-#             movie_list = []
-#             for onomatopoeia in onomatopoeia_list:
-#                 movies = Movie.objects.filter(onomatopoeia=onomatopoeia)
-#                 movie_list += list(movies)
-#
-#             # 映画の情報をdictとして生成
-#             res = []
-#             for movie in movie_list:
-#                 res.append({"title": movie.title,
-#                             "overview": movie.overview,
-#                             "poster_path": movie.poster_path})
-#
-#             return Response(res)
-#         else:
-#             raise ValidationError('必要なパラメータが含まれていません')
+class GetMovieOnomatopoeiaContainViewSet(viewsets.ViewSet):
+    @staticmethod
+    def list(request):
+        if not 'onomatopoeia' in request.GET:
+            raise serializers.ValidationError('onomatopoeiaが含まれていません')
+
+        # リクエスト文字を含むオノマトペを取得
+        onomatopoeia = request.GET.get('onomatopoeia')
+        onomatopoeia_list = Onomatopoeia.objects.filter(name__contains=onomatopoeia)
+
+        # 上記で取得したオノマトペを含む映画を取得
+        movie_list = []
+        for onomatopoeia in onomatopoeia_list:
+            movies = Movie.objects.filter(onomatopoeia=onomatopoeia)
+            movie_list += list(movies)
+
+        # 映画の情報をdictとして生成
+        res = []
+        for movie in movie_list:
+            res.append({
+                "title": movie.title,
+                "overview": movie.overview,
+                "poster": movie.poster
+            })
+
+        return Response({'results': res})
 #
 #
 #

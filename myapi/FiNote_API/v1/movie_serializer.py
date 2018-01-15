@@ -41,34 +41,6 @@ class GetMovieOnomatopoeiaSerializer(serializers.Serializer):
 
 #
 #
-# class GetUsersSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = AuthUser
-#         fields = ('username',)
-#
-#
-# class GetGenresSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Genre
-#         fields = ('name',)
-#
-#
-# class GetOnomatopoeiaSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Onomatopoeia
-#         fields = ('name',)
-#
-#
-# class GetMoviesSerializer(serializers.ModelSerializer):
-#     genre = GetGenresSerializer(many=True)
-#     user = GetUsersSerializer(many=True)
-#     onomatopoeia = GetOnomatopoeiaSerializer(many=True)
-#
-#     class Meta:
-#         model = Movie
-#         fields = ('title', 'tmdb_id', 'genre', 'user', 'onomatopoeia')
-#
-#
 # class GetOnomatopoeiaCountSerializer(serializers.ModelSerializer):
 #     onomatopoeia = GetOnomatopoeiaSerializer(many=False)
 #     movie = GetMoviesSerializer(many=False)
@@ -76,25 +48,6 @@ class GetMovieOnomatopoeiaSerializer(serializers.Serializer):
 #     class Meta:
 #         model = OnomatopoeiaCount
 #         fields = ('count', 'onomatopoeia', 'movie')
-#
-#
-
-#
-#
-# class GetMovieByAgeSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Movie
-#         fields = ('title', 'overview', 'poster_path')
-#
-#
-
-#
-#
-# class GetMovieByOnomatopoeiaSerializer(serializers.Serializer):
-#     onomatopoeia_name = serializers.CharField(max_length=100, allow_null=False, required=True, allow_blank=False)
-#
-#
-
 #
 #
 # class GetSearchMovieTitleResultsSerializer(serializers.Serializer):

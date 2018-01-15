@@ -16,13 +16,13 @@ router.register(r'movie/delete', DeleteMovieViewSet, 'delete-movie')
 router.register(r'movie/recently', GetRecentlyMovieViewSet, 'get-recently-movie')
 router.register(r'movie/byage', GetMovieByAgeViewSet, 'get-movie-by-age')
 router.register(r'movie/onomatopoeia', GetMovieOnomatopoeiaViewSet, 'get-movie-onomatopoeia')
+router.register(r'movie/onomatopoeia/contain', GetMovieOnomatopoeiaContainViewSet, 'get-movie-onomatopoeia-contain')
 
 router.register(r'movies', GetMoviesViewSet, base_name='get-movies')
 
 
 
 
-# router.register(r'v1/get_movie_by_onomatopoeia', GetMovieByOnomatopoeiaViewSet, 'get_movie_by_onomatopoeia')
 # router.register(r'v1/get_search_movie_title_results', GetSearchMovieTitleResultsViewSet, 'get_search_movie_title_results')
 # router.register(r'v1/get_original_title', GetOriginalTitleViewSet, 'get_original_title')
 # router.register(r'v1/get_onomatopoeia_count_by_movie_id', GetOnomatopoeiaCountByMovieIDViewSet, 'get_onomatopoeia_count_by_movie_id')

@@ -311,6 +311,30 @@ response：
 }
 ```
 
+### Get Contain Onomatopoeia Movie
+```
+method：GET
+endpoint：api/v1/movie/onomatopoeia/contain?onomatopoeia=hoge
+response：
+{
+    "results": [
+        {
+            "title": "title_hoge",
+            "poster": "http://hogehoge.com/hoge.jpg",
+            "overview": "overview_hoge"
+        },
+        {
+            "title": "title_fuga",
+            "poster": "http://fugafuga.com/fuga.jpg",
+            "overview": "overview_fuga"
+        },
+        .
+        .
+        .
+    ]
+}
+```
+
 
 
 ## 使用しているプラグイン
