@@ -411,7 +411,7 @@ response：
 * ios 4.4.0
 
 ## 使用している外部サービス
-<a href="https://www.themoviedb.org"><img src="tmdb_logo.png" align="left" /></a>
+![THE MOVIE DB](tmdb_logo.png)
 
 ## 参考サイト
 * [Onsen UI](https://onsen.io)
