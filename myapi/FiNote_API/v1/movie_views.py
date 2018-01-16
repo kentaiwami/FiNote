@@ -1,10 +1,10 @@
+from django.core.exceptions import ObjectDoesNotExist
 from FiNote_API.utility import *
 from rest_framework import viewsets
 from FiNote_API.v1.movie_serializer import *
 from rest_framework.response import Response
 from collections import Counter
 import datetime
-from FiNote_API.thread import *
 import ssl
 import re
 from bs4 import BeautifulSoup
@@ -324,20 +324,19 @@ class GetMovieOnomatopoeiaViewSet(viewsets.ViewSet):
 
         res = []
 
-        thread_list = []
         for tmdb_id in data['tmdb_ids']:
-            thread = GetMovieOnomatopoeiaThread(tmdb_id)
-            thread_list.append(thread)
-            thread.start()
+            onomatopoeia_names = []
+            try:
+                movie = Movie.objects.get(tmdb_id=tmdb_id)
+            except ObjectDoesNotExist:
+                continue
 
-        # 全てのスレッドが完了するまで待機(ブロック)
-        for thread in thread_list:
-            thread.join()
+            onomatopoeia_list = movie.onomatopoeia.all()
 
-        for thread in thread_list:
-            thread_result = thread.getResult()
-            if thread_result:
-                res.append(thread_result)
+            for onomatopoeia in onomatopoeia_list:
+                onomatopoeia_names.append({"name": onomatopoeia.name})
+
+            res.append({str(tmdb_id): onomatopoeia_names})
 
         return Response({'results': res})
 
