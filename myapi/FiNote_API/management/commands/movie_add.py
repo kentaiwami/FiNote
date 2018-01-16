@@ -210,7 +210,7 @@ def choice_user():
             user = User.objects.get(pk=user_pk)
 
             # 自動で登録されたユーザのみ選択
-            if user.is_dummy or not user.is_superuser:
+            if user.is_dummy and not user.is_superuser:
                 break
             else:
                 pass
