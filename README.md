@@ -411,10 +411,7 @@ response：
 * ios 4.4.0
 
 ## 使用している外部サービス
-* さくらのレンタルサーバ
-* Twitter
-* [The Movie Database](https://www.themoviedb.org)
-* [オノマトペ辞典](http://sura-sura.com)
+<a href="https://www.themoviedb.org"><img src="tmdb_logo.png" align="right" /></a>
 
 ## 参考サイト
 * [Onsen UI](https://onsen.io)

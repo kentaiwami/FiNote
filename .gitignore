@@ -26,6 +26,7 @@ resources/signing
 
 #Icon
 !/icon.png
+!tmdb_logo.png
 
 #backup
 /backup
