@@ -10,6 +10,7 @@ import re
 from bs4 import BeautifulSoup
 import urllib.request
 import urllib.parse
+from django.db.models.aggregates import Count
 
 
 class GetMoviesViewSet(viewsets.ViewSet):
@@ -228,24 +229,18 @@ class GetRecentlyMovieViewSet(viewsets.ModelViewSet):
         today = datetime.date.today() + datetime.timedelta(days=1)
         one_week_ago = today - datetime.timedelta(days=7)
 
-        queryset = Movie_User_Onomatopoeia.objects.filter(created_at__range=(one_week_ago, today))
-
-        # movie_userごとに集計
-        movie_user_onomatopoeia_cnt = Counter()
-        for movie_user_onomatopoeia in queryset:
-            movie_user_onomatopoeia_cnt[movie_user_onomatopoeia.movie_user] += 1
-
-        # 映画ごとに集計
-        movie_cnt = Counter()
-        for movie_user in movie_user_onomatopoeia_cnt:
-            movie_cnt[movie_user.movie] += 1
+        queryset = Movie_User.objects\
+            .filter(created_at__range=(one_week_ago, today))\
+            .values('movie')\
+            .annotate(cnt=Count('id')).order_by('-cnt')
 
         results = []
-        for movie in movie_cnt.most_common(50):
+        for query_dict in queryset:
+            movie_tmp = Movie.objects.get(pk=query_dict['movie'])
             results.append({
-                'title': movie[0].title,
-                'overview': movie[0].overview,
-                'poster': movie[0].poster
+                'title': movie_tmp.title,
+                'overview': movie_tmp.overview,
+                'poster': movie_tmp.poster
             })
 
         return Response({'results': results})

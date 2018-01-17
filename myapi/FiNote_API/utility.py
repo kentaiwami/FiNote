@@ -4,6 +4,7 @@ from FiNote_API.models import *
 from myapi.settings import TMDB_APIKEY
 import requests
 import datetime
+import time
 
 
 class MovieUserCount(object):
@@ -162,3 +163,13 @@ def add_movie(genre_ids, onomatopoeia_list, data):
     if created_movie_user:
         for onomatopoeia_obj in onomatopoeia_obj_list:
             Movie_User_Onomatopoeia(movie_user=movie_user, onomatopoeia=onomatopoeia_obj).save()
+
+
+class ExecutionSpeedAnalyze(object):
+    def __init__(self):
+        self.start = time.time()
+        self.end = time.time()
+
+    def stop(self):
+        self.end = time.time() - self.start
+        return "elapsed_time:{0}".format(self.end) + "[sec]"
