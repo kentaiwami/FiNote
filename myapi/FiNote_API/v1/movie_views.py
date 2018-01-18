@@ -232,7 +232,7 @@ class GetRecentlyMovieViewSet(viewsets.ModelViewSet):
         queryset = Movie_User.objects\
             .filter(created_at__range=(one_week_ago, today))\
             .values('movie')\
-            .annotate(cnt=Count('id')).order_by('-cnt')
+            .annotate(cnt=Count('id')).order_by('-cnt')[:50]
 
         results = []
         for query_dict in queryset:
