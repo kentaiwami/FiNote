@@ -47,10 +47,10 @@ class Command(BaseCommand):
                             self.output_console('overview updated')
                             Movie.objects.filter(pk=movie.pk).update(overview=request_result['overview'])
 
-                        # ポスターパスの更新
-                        if request_result['poster_path'] is not None and request_result['poster_path'] != movie.poster_path:
-                            self.output_console('poster_path updated')
-                            Movie.objects.filter(pk=movie.pk).update(poster_path=request_result['poster_path'])
+                        # ポスターの更新
+                        if request_result['poster_path'] is not None and request_result['poster_path'] != movie.poster:
+                            self.output_console('poster updated')
+                            Movie.objects.filter(pk=movie.pk).update(poster=request_result['poster_path'])
 
                         # タイトルの更新
                         if request_result['original_language'] == 'ja':
