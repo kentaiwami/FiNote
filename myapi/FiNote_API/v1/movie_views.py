@@ -1,9 +1,9 @@
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Case, When, Value, CharField
 from FiNote_API.utility import *
 from rest_framework import viewsets
 from FiNote_API.v1.movie_serializer import *
 from rest_framework.response import Response
-from collections import Counter
 import datetime
 import ssl
 import re
@@ -260,43 +260,37 @@ class GetMovieByAgeViewSet(viewsets.ModelViewSet):
         today = datetime.date.today() + datetime.timedelta(days=1)
         one_week_ago = today - datetime.timedelta(days=7)
 
-        queryset = Movie_User_Onomatopoeia.objects.filter(created_at__range=(one_week_ago, today))
+        ave_year = get_ave_year()
 
-        # movie_userごとに集計
-        movie_user_onomatopoeia_cnt = Counter()
-        for movie_user_onomatopoeia in queryset:
-            movie_user_onomatopoeia_cnt[movie_user_onomatopoeia.movie_user] += 1
+        queryset = Movie_User.objects.filter(created_at__range=(one_week_ago, today)).annotate(
+            age=Case(
+                When(user__birthday__range=(ave_year['10s'], ave_year['10e']), then=Value('10')),
+                When(user__birthday__range=(ave_year['20s'], ave_year['20e']), then=Value('20')),
+                When(user__birthday__range=(ave_year['30s'], ave_year['30e']), then=Value('30')),
+                When(user__birthday__range=(ave_year['40s'], ave_year['40e']), then=Value('40')),
+                When(user__birthday__range=(ave_year['50s'], ave_year['50e']), then=Value('50')),
+                default=Value('Other'),
+                output_field=CharField()
+            )
+        ).values('movie', 'age').annotate(cnt=Count('age'))
 
-        # 映画ごとに、追加したユーザの年代別でカウント
-        movie_user_count = MovieUserCount()
-        for movie_user_obj in movie_user_onomatopoeia_cnt:
-            movie_user_count.count(movie_user_obj.user, movie_user_obj.movie)
+        results = {}
+        for i in range(10, 60, 10):
+            movies = []
+            age = queryset.filter(age=str(i)).order_by('-cnt')[:15]
 
-        res_dict = {
-            '10': [],
-            '20': [],
-            '30': [],
-            '40': [],
-            '50': [],
-        }
-
-        # 10〜50代の登録数でソート
-        for res_key in res_dict:
-            sorted_dict = movie_user_count.sort(res_key)
-
-            for movie, count_dict in zip(sorted_dict.keys(), sorted_dict.values()):
-                # 対象の年代(res_key)で登録している数が0件の場合はスキップ
-                if count_dict[res_key] == 0:
-                    continue
-
-                res_dict[res_key].append({
-                    "count": count_dict[res_key],
-                    "overview": movie.overview,
-                    "poster": movie.poster,
-                    "title": movie.title
+            for count_obj in age:
+                tmp_movie = Movie.objects.get(pk=count_obj['movie'])
+                movies.append({
+                    'count': count_obj['cnt'],
+                    'overview': tmp_movie.overview,
+                    'poster': tmp_movie.poster,
+                    'title': tmp_movie.title
                 })
 
-        return Response({'results': res_dict})
+            results[str(i)] = movies
+
+        return Response({'results': results})
 
 
 class GetMovieOnomatopoeiaViewSet(viewsets.ViewSet):
