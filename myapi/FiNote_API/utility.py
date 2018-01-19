@@ -165,6 +165,21 @@ def add_movie(genre_ids, onomatopoeia_list, data):
             Movie_User_Onomatopoeia(movie_user=movie_user, onomatopoeia=onomatopoeia_obj).save()
 
 
+def get_ave_year():
+    year = datetime.date.today().year
+    end = year - 10
+    start = end - 10 + 1
+    results = {'10s': start, '10e': end}
+
+    for i in range(20, 60, 10):
+        end = start - 1
+        start = end - 10 + 1
+        results[str(i)+'s'] = start
+        results[str(i)+'e'] = end
+
+    return results
+
+
 class ExecutionSpeedAnalyze(object):
     def __init__(self):
         self.start = time.time()
