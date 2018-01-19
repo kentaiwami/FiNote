@@ -3,27 +3,8 @@
 /*.asta
 /*.asta.lock
 /素材
-secret.js
-.sass-cache/
-#Node
-npm-debug.log
-node_modules/
-
-#Cordova
-platforms/
-plugins/
-
-#res
-resources/signing
-
-#image
-*.png
-*.jpeg
-*.jpg
-
 #GIMP
 *.xcf
-
 #Icon
 !/icon.png
 !tmdb_logo.png
@@ -32,3 +13,4 @@ resources/signing
 /backup
 
 release/
+prototype/
