@@ -23,5 +23,5 @@ from FiNote_API.v1.urls import router as v1_url
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/v1/', include(v1_url.urls)),
-    url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT, })
+    # url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT, })
 ]

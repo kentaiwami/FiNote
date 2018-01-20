@@ -33,7 +33,7 @@ class OnomatopoeiaAdmin(admin.ModelAdmin):
 
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'username', 'email', 'birthday', 'img', 'password')
+    list_display = ('pk', 'username', 'email', 'birthday', 'password')
     search_fields = ('username',)
     inlines = (MovieUserInline,)
 
