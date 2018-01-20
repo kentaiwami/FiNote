@@ -6,6 +6,8 @@
         <list>
           <option value="E501" />
           <option value="E701" />
+          <option value="E713" />
+          <option value="E722" />
         </list>
       </option>
     </inspection_tool>
@@ -18,6 +20,21 @@
         </list>
       </option>
     </inspection_tool>
+    <inspection_tool class="PyShadowingBuiltinsInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredNames">
+        <list>
+          <option value="id" />
+        </list>
+      </option>
+    </inspection_tool>
     <inspection_tool class="PyUnboundLocalVariableInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="myapi.FiNote_API.utility.FiNote_API" />
+          <option value="myapi.settings" />
+        </list>
+      </option>
+    </inspection_tool>
   </profile>
 </component>

@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from FiNote_API.models import *
 
 
 class UpdateDVDFAVSerializer(serializers.Serializer):
