@@ -30,7 +30,7 @@ class Command(BaseCommand):
                     defaults={'username': user_param['username'],
                               'email': user_param['email'],
                               'password': user_param['password'],
-                              'birthday': user_param['birth_year'],
+                              'birthyear': user_param['birth_year'],
                               'is_dummy': user_param['is_dummy']
                               },
                 )
@@ -68,7 +68,6 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS('email: ' + user_param['email']))
         self.stdout.write(self.style.SUCCESS('password: ' + user_param['password']))
         self.stdout.write(self.style.SUCCESS('birth_year: ' + str(user_param['birth_year'])))
-        self.stdout.write(self.style.SUCCESS('img_url: ' + user_param['img_url']))
 
 
 def get_oath_keys():
@@ -229,5 +228,4 @@ def generate_user_params():
             "email": email,
             "password": password,
             "birth_year": birth_year,
-            "img_url": user['profile_image_url'],
             "is_dummy": True}

@@ -264,11 +264,11 @@ class GetMovieByAgeViewSet(viewsets.ModelViewSet):
 
         queryset = Movie_User.objects.filter(created_at__range=(one_week_ago, today)).annotate(
             age=Case(
-                When(user__birthday__range=(ave_year['10s'], ave_year['10e']), then=Value('10')),
-                When(user__birthday__range=(ave_year['20s'], ave_year['20e']), then=Value('20')),
-                When(user__birthday__range=(ave_year['30s'], ave_year['30e']), then=Value('30')),
-                When(user__birthday__range=(ave_year['40s'], ave_year['40e']), then=Value('40')),
-                When(user__birthday__range=(ave_year['50s'], ave_year['50e']), then=Value('50')),
+                When(user__birthyear__range=(ave_year['10s'], ave_year['10e']), then=Value('10')),
+                When(user__birthyear__range=(ave_year['20s'], ave_year['20e']), then=Value('20')),
+                When(user__birthyear__range=(ave_year['30s'], ave_year['30e']), then=Value('30')),
+                When(user__birthyear__range=(ave_year['40s'], ave_year['40e']), then=Value('40')),
+                When(user__birthyear__range=(ave_year['50s'], ave_year['50e']), then=Value('50')),
                 default=Value('Other'),
                 output_field=CharField()
             )

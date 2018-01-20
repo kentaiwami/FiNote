@@ -44,7 +44,7 @@ class AuthUser(AbstractBaseUser, PermissionsMixin):
 
     username = models.CharField(unique=True, max_length=100, blank=False, default='username')
     email = models.EmailField(unique=True, max_length=100, blank=False, default='email')
-    birthday = models.IntegerField(blank=False, default=1900)
+    birthyear = models.IntegerField(blank=False, default=1900)
     is_dummy = models.BooleanField(default=False, null=False)
 
     date_joined = models.DateTimeField(auto_now_add=True)

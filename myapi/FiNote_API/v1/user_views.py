@@ -16,7 +16,7 @@ class CreateUserViewSet(viewsets.ViewSet):
     def create(request):
         """
         ユーザを作成する
-        :param request: username, password, email, birthday
+        :param request: username, password, email, birthyear
         :return         user's pk
         """
 
@@ -34,7 +34,7 @@ class CreateUserViewSet(viewsets.ViewSet):
                 username=data['username'],
                 email=data['email'],
                 password=data['password'],
-                birthday=data['birthday'],
+                birthyear=data['birthyear'],
             )
 
             return Response({'id': user.pk})
