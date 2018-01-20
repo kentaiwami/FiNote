@@ -76,22 +76,6 @@ response：
 }
 ```
 
-### Update Profile Image
-```
-method：POST
-endpoint：api/v1/user/update/img/
-request：
-{
-    "username": "hogehoge",
-    "password": "hogehoge",
-    "img": Image File
-}
-response：
-{
-    "user": "hogehoge"
-}
-```
-
 ### Get Movies
 ```
 method：GET
@@ -104,7 +88,8 @@ response：
             "fav": 1,
             "title": "hoge2",
             "dvd": 1,
-            "poster": "http"
+            "poster": "http://",
+            "onomatopoeia": ["hoge","fuga","piyo"]
         },
         {
             "add": "2018-01-12T00:01:54.697333",
@@ -112,7 +97,8 @@ response：
             "fav": 0,
             "title": "hoge",
             "dvd": 1,
-            "poster": "http://"
+            "poster": "http://",
+            "onomatopoeia": ["hoge","fuga","piyo"]
         }
         .
         .
