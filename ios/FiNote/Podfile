@@ -12,5 +12,6 @@ target 'FiNote' do
 	pod 'KeychainAccess'
 	pod 'TinyConstraints', :git => 'https://github.com/roberthein/TinyConstraints.git', :branch => 'Release_2.1.2'
 	pod 'Floaty', '~> 3.0.0'
+	pod 'PopupDialog', '0.5.4'
 
 end
