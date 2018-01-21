@@ -7,6 +7,7 @@
 //
 
 import Eureka
+import PopupDialog
 
 class SignUpViewController: FormViewController {
 
@@ -138,7 +139,15 @@ class SignUpViewController: FormViewController {
                 $0.tag = "signup"
             }
             .onCellSelection {  cell, row in
-                print("TAP")
+                let popup = PopupDialog(title: "Sign Up Error", message: "必須項目を入力してください")
+                let button = DefaultButton(title: "OK", dismissOnTap: true) {}
+                popup.addButtons([button])
+
+                if IsCheckFormValue(form: self.form) {
+                    
+                }else {
+                    self.present(popup, animated: true, completion: nil)
+                }
             }
     }
 
