@@ -14,15 +14,12 @@ FiNote(フィノート)
 ## デモ
 ![demo](https://github.com/kentaiwami/FiNote/blob/master/demo.gif)
 
-## サポート情報
-* iOS 10.3.1
-* iPhone 6,6s
 
 ## 使い方
-1. ユーザ名、パスワード、性別、生年月日を登録します。
+1. ユーザ名、パスワード、生年月日を登録します。
 2. 観た映画を検索します。
 3. 映画を観てどのような気分になったかをオノマトペ(モヤモヤ,ハラハラ等)と一緒に登録します。
-4. 必要に応じてDVD(またはBlu-ray)を所持しているか、お気に入りとしてマークするかを登録します。
+4. 必要に応じてDVDなどを所持しているか、お気に入りとしてマークするかを登録します。
 5. 映画の追加ボタンを押して映画を追加します。
 
 
@@ -97,16 +94,16 @@ method：POST
 endpoint：api/v1/movie/
 request：
 {
-	"tmdb_id": 12,
-	"username": "hogehoge",
-	"password": "hogehoge",
-	"dvd": 1,
-	"fav": 0,
-	"onomatopoeia": ["hoge","fuga", "piyo"],
-	"title": "movie title",
-	"genre": [28,12,16],
-	"overview": "movie overview",
-	"poster": "http://hogehoge.com/hoge.jpg"
+    "tmdb_id": 12,
+    "username": "hogehoge",
+    "password": "hogehoge",
+    "dvd": 1,
+    "fav": 0,
+    "onomatopoeia": ["hoge","fuga", "piyo"],
+    "title": "movie title",
+    "genre": [28,12,16],
+    "overview": "movie overview",
+    "poster": "http://hogehoge.com/hoge.jpg"
 }
 response：
 {
@@ -138,9 +135,6 @@ response：
             "poster": "http://",
             "onomatopoeia": ["hoge","fuga","piyo"]
         }
-        .
-        .
-        .
     ]
 ```
 
@@ -169,10 +163,10 @@ method：POST
 endpoint：api/v1/movie/update/onomatopoeia/
 request：
 {
-	"tmdb_id": 12,
-	"username": "hogehoge",
-	"password": "hogehoge",
-	"onomatopoeia": ["HOGE","FUGA"]
+    "tmdb_id": 12,
+    "username": "hogehoge",
+    "password": "hogehoge",
+    "onomatopoeia": ["HOGE","FUGA"]
 }
 response：
 {
@@ -186,15 +180,16 @@ method：POST
 endpoint：api/v1/movie/delete/
 request：
 {
-	"tmdb_id": 12,
-	"username": "hogehoge",
-	"password": "hogehoge",
+    "tmdb_id": 12,
+    "username": "hogehoge",
+    "password": "hogehoge",
 }
 response：
 {
     "msg": "success"
 }
 ```
+
 
 ### Get Recently Movie
 ```
@@ -230,10 +225,7 @@ response：
                 "overview": "overview",
                 "poster": "https://hoge.com/top.png",
                 "title": "title"
-            },
-            .
-            .
-            .
+            }
         ],
         "20": [
             {
@@ -241,10 +233,7 @@ response：
                 "overview": "overview",
                 "poster": "https://hoge.com/top.png",
                 "title": "title"
-            },
-            .
-            .
-            .
+            }
         ],
         "30": [
             {
@@ -252,10 +241,7 @@ response：
                 "overview": "overview",
                 "poster": "https://hoge.com/top.png",
                 "title": "title"
-            },
-            .
-            .
-            .
+            }
         ],
         "40": [
             {
@@ -263,10 +249,7 @@ response：
                 "overview": "overview",
                 "poster": "https://hoge.com/top.png",
                 "title": "title"
-            },
-            .
-            .
-            .
+            }
         ],
         "50": [
             {
@@ -274,46 +257,43 @@ response：
                 "overview": "overview",
                 "poster": "https://hoge.com/top.png",
                 "title": "title"
-            },
-            .
-            .
-            .
+            }
         ]
     }
 }
 ```
 
-### Get Movie Onomatopoeia
+### Get Onomatopoeia Comparison
 ```
-method：POST
-endpoint：api/v1/movie/onomatopoeia/
-request：
-{
-	"tmdb_ids": [12, 14]
-}
+method：GET
+endpoint：api/v1/movie/compare/?user_id=2&page=1
 response：
-{
-    "results": [
+"results": [
         {
-            "1234": [
+            "title": "hoge2",
+            "poster": "http://",
+            "user": [
                 {
+                    "count": 15,
                     "name": "hoge"
                 },
                 {
+                    "count": 10,
                     "name": "fuga"
-                },
+                }
+            ],
+            "social": [
                 {
+                    "count": 30,
                     "name": "piyo"
                 },
-                .
-                .
-                .
+                {
+                    "count": 56,
+                    "name": "hogehoge"
+                }
             ]
-        },
-        .
-        .
-        .
-}
+        }
+    ]
 ```
 
 ### Get Contain Onomatopoeia Movie
@@ -332,10 +312,7 @@ response：
             "title": "title_fuga",
             "poster": "http://fugafuga.com/fuga.jpg",
             "overview": "overview_fuga"
-        },
-        .
-        .
-        .
+        }
     ]
 }
 ```
@@ -352,10 +329,7 @@ response：
         {
             "id": "1",
             "title": "hogehoge"
-        },
-        .
-        .
-        .
+        }
     ]
 }
 ```
@@ -370,51 +344,6 @@ response：
 }
 ```
 
-### Get Onomatopoeia Count
-```
-method：POST
-endpoint：api/v1/onomatopoeia/count/
-request：
-{
-	"tmdb_id": 12,
-	"onomatopoeia_names": ["hoge", "fuga"]
-}
-response：
-{
-    "results": [
-        {
-            "count": 31,
-            "name": "hoge"
-        },
-        {
-            "count": 20,
-            "name": "fuga"
-        }
-    ]
-}
-```
-
-
-## 使用しているプラグイン
-* [cordova-plugin-console 1.0.6](https://www.npmjs.com/package/cordova-plugin-console)
-* [cordova-plugin-device 1.1.5](https://www.npmjs.com/package/cordova-plugin-device)
-* [cordova-plugin-listpicker 2.2.2](https://www.npmjs.com/package/cordova-plugin-listpicker)
-* [cordova-plugin-splashscreen 4.0.2](https://www.npmjs.com/package/cordova-plugin-splashscreen)
-* [cordova-plugin-statusbar 2.2.2](https://www.npmjs.com/package/cordova-plugin-statusbar)
-* [cordova-plugin-whitelist 1.3.2](https://www.npmjs.com/package/cordova-plugin-whitelist)
-* [cordova-plugin-x-socialsharing 5.1.7](https://www.npmjs.com/package/cordova-plugin-x-socialsharing)
-* [cordova-sqlite-legacy-build-support 1.3.5-pre1](https://github.com/litehelpers/Cordova-sqlite-legacy-build-support)
-* [cordova-plugin-camera 2.4.1](https://github.com/apache/cordova-plugin-camera)
-* [cordova-plugin-compat 1.1.0](https://www.npmjs.com/package/cordova-plugin-compat)
-
-## 使用しているプラットフォーム
-* android 6.2.2
-* ios 4.4.0
 
 ## 使用している外部サービス
 ![THE MOVIE DB](tmdb_logo.png)
-
-## 参考サイト
-* [Onsen UI](https://onsen.io)
-* [CHARTIST.JS](http://gionkunz.github.io/chartist-js/index.html)
-* [slick](http://kenwheeler.github.io/slick/)
