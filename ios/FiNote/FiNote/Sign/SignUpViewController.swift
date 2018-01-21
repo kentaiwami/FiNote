@@ -13,6 +13,7 @@ class SignUpViewController: FormViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.CreateForm()
+        self.tableView.isScrollEnabled = false
     }
     
     override func viewWillAppear(_ animated: Bool) {
