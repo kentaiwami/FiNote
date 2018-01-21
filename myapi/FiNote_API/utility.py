@@ -32,16 +32,16 @@ class MovieUserCount(object):
 
         this_year = datetime.date.today().year
 
-        if user.birthday > this_year - 10 or user.birthday in range(this_year - 19, this_year - 9):
+        if user.birthyear > this_year - 10 or user.birthyear in range(this_year - 19, this_year - 9):
             init_dict['10'] = 1
 
-        elif user.birthday in range(this_year - 29, this_year - 19):
+        elif user.birthyear in range(this_year - 29, this_year - 19):
             init_dict['20'] = 1
 
-        elif user.birthday in range(this_year - 39, this_year - 29):
+        elif user.birthyear in range(this_year - 39, this_year - 29):
             init_dict['30'] = 1
 
-        elif user.birthday in range(this_year - 49, this_year - 39):
+        elif user.birthyear in range(this_year - 49, this_year - 39):
             init_dict['40'] = 1
 
         else:

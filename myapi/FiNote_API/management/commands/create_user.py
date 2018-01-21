@@ -1,6 +1,3 @@
-import urllib.request
-import os.path
-from django.core.files.base import ContentFile
 from rest_framework_jwt.serializers import User
 from django.core.management.base import BaseCommand
 from myapi.settings import CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET
@@ -33,14 +30,13 @@ class Command(BaseCommand):
                     defaults={'username': user_param['username'],
                               'email': user_param['email'],
                               'password': user_param['password'],
-                              'birthday': user_param['birth_year'],
+                              'birthyear': user_param['birth_year'],
                               'is_dummy': user_param['is_dummy']
                               },
                 )
 
                 if created:
                     user_obj.set_password(user_param['password'])
-                    user_obj.img = get_image_file(user_param['img_url'], user_param['username'])
 
                     try:
                         user_obj.save()
@@ -72,7 +68,6 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS('email: ' + user_param['email']))
         self.stdout.write(self.style.SUCCESS('password: ' + user_param['password']))
         self.stdout.write(self.style.SUCCESS('birth_year: ' + str(user_param['birth_year'])))
-        self.stdout.write(self.style.SUCCESS('img_url: ' + user_param['img_url']))
 
 
 def get_oath_keys():
@@ -119,23 +114,6 @@ def twitter_request(params, url):
         return None
     tweets = json.loads(responce.text)
     return tweets
-
-
-def get_image_file(url, username):
-    """
-    Get twitter user's image file.
-    :param url: Twitter user's profile image url.
-    :param username: Twitter user name.
-    :return: Image file.
-
-    :type url: str
-    :type username: str
-    """
-    img = urllib.request.urlopen(url)
-    root, ext = os.path.splitext(url)
-    html_response = img.read()
-    img_data = ContentFile(html_response, name=username + ext)
-    return img_data
 
 
 def get_birth_year():
@@ -250,5 +228,4 @@ def generate_user_params():
             "email": email,
             "password": password,
             "birth_year": birth_year,
-            "img_url": user['profile_image_url'],
             "is_dummy": True}

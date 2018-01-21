@@ -17,8 +17,7 @@ class MovieOnomatopoeiaInline(admin.TabularInline):
 
 
 class MovieAdmin(admin.ModelAdmin):
-    list_display = (
-    'pk', 'title', 'created_at', 'updated_at', 'tmdb_id', 'genres', 'overview')
+    list_display = ('pk', 'title', 'created_at', 'updated_at', 'tmdb_id', 'genres', 'overview')
     search_fields = ('title',)
     inlines = (MovieUserInline, MovieOnomatopoeiaInline)
 
@@ -34,7 +33,7 @@ class OnomatopoeiaAdmin(admin.ModelAdmin):
 
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'username', 'email', 'birthday', 'img', 'password')
+    list_display = ('pk', 'username', 'email', 'birthyear', 'password')
     search_fields = ('username',)
     inlines = (MovieUserInline,)
 

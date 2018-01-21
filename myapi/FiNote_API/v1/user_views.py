@@ -4,42 +4,69 @@ from rest_framework_jwt.serializers import User
 from FiNote_API.models import AuthUser
 from FiNote_API.v1.user_serializer import *
 from rest_framework.response import Response
-import os
-from myapi import settings
 
 
-class CreateUserViewSet(viewsets.ViewSet):
+class SignUpUserViewSet(viewsets.ViewSet):
     queryset = AuthUser.objects.all()
-    serializer_class = CreateUserSerializer
+    serializer_class = SignUpUserSerializer
 
     @staticmethod
     def create(request):
         """
         ユーザを作成する
-        :param request: username, password, email, birthday
+        :param request: username, password, email, birthyear
         :return         user's pk
         """
 
         data = request.data
-        serializer = CreateUserSerializer(data=data)
+        serializer = SignUpUserSerializer(data=data)
 
-        if serializer.is_valid() and request.method == 'POST':
-            if User.objects.filter(username=data['username']).exists():
-                raise serializers.ValidationError('このユーザ名は既に使われています')
+        if not (serializer.is_valid() and request.method == 'POST'):
+            raise serializers.ValidationError(serializer.errors)
 
-            if User.objects.filter(email=data['email']).exists():
-                raise serializers.ValidationError('このメールアドレスは既に使われています')
+        if User.objects.filter(username=data['username']).exists():
+            raise serializers.ValidationError('このユーザ名は既に使われています')
 
-            user = User.objects.create_user(
-                username=data['username'],
-                email=data['email'],
-                password=data['password'],
-                birthday=data['birthday'],
-            )
+        if User.objects.filter(email=data['email']).exists():
+            raise serializers.ValidationError('このメールアドレスは既に使われています')
 
-            return Response({'id': user.pk})
-        else:
-            return Response(serializer.errors, 400)
+        user = User.objects.create_user(
+            username=data['username'],
+            email=data['email'],
+            password=data['password'],
+            birthyear=data['birthyear'],
+        )
+
+        return Response({'id': user.pk})
+
+
+class SignInUserViewSet(viewsets.ViewSet):
+    queryset = AuthUser.objects.all()
+    serializer_class = SignInUserSerializer
+
+    @staticmethod
+    def create(request):
+        """
+        ユーザログインを実施
+        :param request: username, password
+        :return         user's pk
+        """
+
+        data = request.data
+        serializer = SignInUserSerializer(data=data)
+
+        if not (serializer.is_valid() and request.method == 'POST'):
+            raise serializers.ValidationError(serializer.errors)
+
+        try:
+            user = AuthUser.objects.get(username=data['username'])
+        except:
+            raise serializers.ValidationError('ユーザが見つかりませんでした')
+
+        if not user.check_password(data['password'].encode('utf-8')):
+            raise serializers.ValidationError('パスワードが間違っています')
+
+        return Response({'id': user.pk})
 
 
 class UpdatePasswordViewSet(viewsets.ViewSet):
@@ -58,23 +85,22 @@ class UpdatePasswordViewSet(viewsets.ViewSet):
         data = request.data
         serializer = UpdatePasswordSerializer(data=data)
 
-        if serializer.is_valid() and request.method == 'POST':
-            try:
-                user = AuthUser.objects.get(username=data['username'])
+        if not (serializer.is_valid() and request.method == 'POST'):
+            raise serializers.ValidationError(serializer.errors)
 
-            except ObjectDoesNotExist:
-                raise serializers.ValidationError('ユーザが見つかりませんでした')
+        try:
+            user = AuthUser.objects.get(username=data['username'])
 
-            if not user.check_password(data['now_password'].encode('utf-8')):
-                raise serializers.ValidationError('現在のパスワードが異なるため変更に失敗しました')
+        except ObjectDoesNotExist:
+            raise serializers.ValidationError('ユーザが見つかりませんでした')
 
-            user.set_password(data['new_password'])
-            user.save()
+        if not user.check_password(data['now_password'].encode('utf-8')):
+            raise serializers.ValidationError('現在のパスワードが異なるため変更に失敗しました')
 
-            return Response({'username': str(user)})
+        user.set_password(data['new_password'])
+        user.save()
 
-        else:
-            return Response(serializer.errors)
+        return Response({'username': str(user)})
 
 
 class UpdateEmailViewSet(viewsets.ViewSet):
@@ -93,61 +119,18 @@ class UpdateEmailViewSet(viewsets.ViewSet):
         data = request.data
         serializer = UpdateEmailSerializer(data=data)
 
-        if serializer.is_valid() and request.method == 'POST':
-            try:
-                user = AuthUser.objects.get(username=data["username"])
-            except ObjectDoesNotExist:
-                raise serializers.ValidationError('ユーザが見つかりませんでした')
-
-            if not user.check_password(data['password'].encode('utf-8')):
-                raise serializers.ValidationError('パスワードが違います')
-
-            user.email = data['new_email']
-            user.save()
-
-            return Response({'username': str(user)})
-
-        else:
+        if not (serializer.is_valid() and request.method == 'POST'):
             raise serializers.ValidationError(serializer.errors)
 
+        try:
+            user = AuthUser.objects.get(username=data["username"])
+        except ObjectDoesNotExist:
+            raise serializers.ValidationError('ユーザが見つかりませんでした')
 
-class UpdateProfileImgViewSet(viewsets.ViewSet):
-    queryset = AuthUser.objects.all()
-    serializer_class = UpdateProfileImgSerializer
+        if not user.check_password(data['password'].encode('utf-8')):
+            raise serializers.ValidationError('パスワードが違います')
 
-    @staticmethod
-    def create(request):
-        """
-        プロフィール画像を変更する
+        user.email = data['new_email']
+        user.save()
 
-        :param request: username, password, img
-        :return:        username
-        """
-
-        data = request.data
-        serializer = UpdateProfileImgSerializer(data=data)
-
-        if serializer.is_valid() and request.method == 'POST':
-            try:
-                user = AuthUser.objects.get(username=data['username'])
-
-            except ObjectDoesNotExist:
-                raise serializers.ValidationError('ユーザが見つかりませんでした')
-
-            if not user.check_password(data['password'].encode('utf-8')):
-                raise serializers.ValidationError('パスワードが間違っています')
-
-            # 古いプロフ画像の削除
-            old_img_path = settings.MEDIA_ROOT + '/' + str(user.img)
-
-            if os.path.isfile(old_img_path):
-                os.remove(old_img_path)
-
-            # 画像の保存
-            user.img.save(str(data['img']), data['img'], True)
-            user.save()
-
-            return Response({'username': str(user)})
-
-        else:
-            raise serializers.ValidationError(serializer.errors)
+        return Response({'username': str(user)})

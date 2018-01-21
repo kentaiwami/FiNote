@@ -1,4 +1,3 @@
-import os
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
@@ -37,15 +36,9 @@ class AuthUser(AbstractBaseUser, PermissionsMixin):
     def get_full_name(self):
         return self.username
 
-    def get_img_path(self, filename):
-        path, ext = os.path.splitext(filename)
-        joined_filename = ''.join([self.username, ext])
-        return '/'.join(['profile', joined_filename])
-
     username = models.CharField(unique=True, max_length=100, blank=False, default='username')
     email = models.EmailField(unique=True, max_length=100, blank=False, default='email')
-    birthday = models.IntegerField(blank=False, default=1900)
-    img = models.FileField(blank=True, null=False, upload_to=get_img_path)
+    birthyear = models.IntegerField(blank=False, default=1900)
     is_dummy = models.BooleanField(default=False, null=False)
 
     date_joined = models.DateTimeField(auto_now_add=True)
@@ -57,14 +50,6 @@ class AuthUser(AbstractBaseUser, PermissionsMixin):
     objects = AuthUserManager()
 
     tracker = FieldTracker()
-
-
-@receiver(post_save, sender=AuthUser)
-def product_clear_image_field_delete_file(sender, instance, **kwargs):
-    path = settings.MEDIA_ROOT + '/' + str(instance.tracker.previous('img'))
-
-    if os.path.isfile(path) and instance.img == '':
-        os.remove(path)
 
 
 class Genre(models.Model):
@@ -107,8 +92,8 @@ class Movie_User(models.Model):
 
 
 class Movie_User_Onomatopoeia(models.Model):
-    movie_user = models.ForeignKey(Movie_User)
-    onomatopoeia = models.ForeignKey(Onomatopoeia)
+    movie_user = models.ForeignKey(Movie_User, on_delete=models.CASCADE)
+    onomatopoeia = models.ForeignKey(Onomatopoeia, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
