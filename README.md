@@ -27,16 +27,31 @@ FiNote(フィノート)
 
 
 ## V1 API
-### Create User
+### Sign Up
 ```
 method：POST
-endpoint：api/v1/user/
+endpoint：api/v1/user/signup/
 request：
 {
     "username": "hogehoge",
     "password": "hogehoge",
     "email": "hoge@hoge.com",
     "birthday": 1900
+}
+response：
+{
+    "id": 1
+}
+```
+
+### Sign In
+```
+method：POST
+endpoint：api/v1/user/signin/
+request：
+{
+    "username": "hogehoge",
+    "password": "hogehoge",
 }
 response：
 {

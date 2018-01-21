@@ -6,9 +6,9 @@ from FiNote_API.v1.user_serializer import *
 from rest_framework.response import Response
 
 
-class CreateUserViewSet(viewsets.ViewSet):
+class SignUpUserViewSet(viewsets.ViewSet):
     queryset = AuthUser.objects.all()
-    serializer_class = CreateUserSerializer
+    serializer_class = SignUpUserSerializer
 
     @staticmethod
     def create(request):
@@ -19,7 +19,7 @@ class CreateUserViewSet(viewsets.ViewSet):
         """
 
         data = request.data
-        serializer = CreateUserSerializer(data=data)
+        serializer = SignUpUserSerializer(data=data)
 
         if serializer.is_valid() and request.method == 'POST':
             if User.objects.filter(username=data['username']).exists():
@@ -38,6 +38,35 @@ class CreateUserViewSet(viewsets.ViewSet):
             return Response({'id': user.pk})
         else:
             return Response(serializer.errors, 400)
+
+
+class SignInUserViewSet(viewsets.ViewSet):
+    queryset = AuthUser.objects.all()
+    serializer_class = SignInUserSerializer
+
+    @staticmethod
+    def create(request):
+        """
+        ユーザログインを実施
+        :param request: username, password
+        :return         user's pk
+        """
+
+        data = request.data
+        serializer = SignInUserSerializer(data=data)
+
+        if not (serializer.is_valid() and request.method == 'POST'):
+            raise serializers.ValidationError(serializer.errors)
+
+        try:
+            user = AuthUser.objects.get(username=data['username'])
+        except:
+            raise serializers.ValidationError('ユーザが見つかりませんでした')
+
+        if not user.check_password(data['password'].encode('utf-8')):
+            raise serializers.ValidationError('パスワードが間違っています')
+
+        return Response({'id': user.pk})
 
 
 class UpdatePasswordViewSet(viewsets.ViewSet):
