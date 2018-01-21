@@ -9,6 +9,9 @@
 import Eureka
 import PopupDialog
 import NVActivityIndicatorView
+import Alamofire
+import SwiftyJSON
+import KeychainAccess
 
 class SignInViewController: FormViewController {
 
@@ -92,7 +95,7 @@ class SignInViewController: FormViewController {
                 popup.addButtons([button])
                 
                 if IsCheckFormValue(form: self.form) {
-                    
+                    CallSignAPI(msg: "Sign In Now", label: "sign-in", endpoint: API.signin.rawValue, values: self.form.values(), vc: self)
                 }else {
                     self.present(popup, animated: true, completion: nil)
                 }

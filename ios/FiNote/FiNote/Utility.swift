@@ -33,3 +33,15 @@ func IsCheckFormValue(form: Form) -> Bool {
     
     return false
 }
+
+func IsHTTPStatus(statusCode: Int?) -> Bool {
+    // 200系以外ならエラー
+    let code = String(statusCode!)
+    var results:[String] = []
+    
+    if code.pregMatche(pattern: "2..", matches: &results) {
+        return true
+    }else {
+        return false
+    }
+}
