@@ -349,4 +349,4 @@ response：
 ![THE MOVIE DB](tmdb_logo.png)
 
 
-![THE MOVIE DB](yahoo_movie_logo.png)
+![Yahoo Japan Movie](yahoo_movie_logo.png)
