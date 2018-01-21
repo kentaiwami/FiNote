@@ -16,9 +16,8 @@ router.register(r'movie/delete', DeleteMovieViewSet, 'delete-movie')
 
 router.register(r'movie/recently', GetRecentlyMovieViewSet, 'get-recently-movie')
 router.register(r'movie/byage', GetMovieByAgeViewSet, 'get-movie-by-age')
-router.register(r'movie/onomatopoeia', GetMovieOnomatopoeiaViewSet, 'get-movie-onomatopoeia')
+router.register(r'movie/compare', GetOnomatopoeiaComparisonViewSet, 'get-movie-compare')
 router.register(r'movie/onomatopoeia/contain', GetMovieOnomatopoeiaContainViewSet, 'get-movie-onomatopoeia-contain')
-router.register(r'movie/onomatopoeia/count', GetOnomatopoeiaCountViewSet, 'get-onomatopoeia-count')
 
 router.register(r'movie/search/titles', GetSearchMovieTitleViewSet, 'get-movie-title')
 router.register(r'movie/search/origin', GetOriginalTitleViewSet, 'get-movie-origin-title')

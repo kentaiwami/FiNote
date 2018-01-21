@@ -1,4 +1,3 @@
-from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Case, When, Value, CharField
 from FiNote_API.utility import *
 from rest_framework import viewsets
@@ -268,39 +267,72 @@ class GetMovieByAgeViewSet(viewsets.ModelViewSet):
         return Response({'results': results})
 
 
-class GetMovieOnomatopoeiaViewSet(viewsets.ViewSet):
-    serializer_class = GetMovieOnomatopoeiaSerializer
-
+class GetOnomatopoeiaComparisonViewSet(viewsets.ViewSet):
     @staticmethod
-    def create(request):
+    def list(request):
         """
-        指定した映画に付与されたオノマトペを取得する
+        ユーザが追加した映画に対するオノマトペの比較結果を返す
 
-        :param request: tmdb_ids
-        :return:        key: tmdb_id, value: 映画に付与されたオノマトペ
+        :param request: URLクエリにuser_idを含む
+        :returns        title, poster,
+                        user onomatopoeia names,
+                        other user's onomatopoeia names and counts
         """
 
-        data = request.data
-        serializer = GetMovieOnomatopoeiaSerializer(data=data)
+        if not 'user_id' in request.GET:
+            raise serializers.ValidationError('user_idが含まれていません')
 
-        if not(serializer.is_valid() and request.method == 'POST'):
-            raise serializers.ValidationError(serializer.errors)
+        if not 'page' in request.GET:
+            raise serializers.ValidationError('pageが含まれていません')
+
+        user_id = request.GET.get('user_id')
+
+        try:
+            user = AuthUser.objects.get(pk=user_id)
+        except:
+            raise serializers.ValidationError('該当データが見つかりませんでした')
+
+        page = int(request.GET.get('page'))
+        end = page * 5
+        start = end - 5
+
+        # ユーザが追加した映画を取得
+        movie_users = Movie_User.objects.filter(user=user).order_by('-created_at')[start:end]
 
         res = []
+        for movie_user in movie_users:
+            # ユーザのMovie User Onomatopoeiaを取得
+            movie_user_onomatopoeia_list = Movie_User_Onomatopoeia.objects.filter(movie_user=movie_user)
 
-        for tmdb_id in data['tmdb_ids']:
-            onomatopoeia_names = []
-            try:
-                movie = Movie.objects.get(tmdb_id=tmdb_id)
-            except ObjectDoesNotExist:
-                continue
+            # ユーザ追加した映画のMovie Onomatopoeiaをcount降順で取得
+            movie_onomatopoeia_list = Movie_Onomatopoeia.objects.filter(movie=movie_user.movie).order_by('-count')
 
-            onomatopoeia_list = movie.onomatopoeia.all()
+            # ユーザが追加したOnomatopoeiaを取得
+            user_onomatopoeia_obj_list = [movie_user_onomatopoeia.onomatopoeia for movie_user_onomatopoeia in
+                                          movie_user_onomatopoeia_list]
 
-            for onomatopoeia in onomatopoeia_list:
-                onomatopoeia_names.append({"name": onomatopoeia.name})
+            # ユーザが追加したオノマトペを抽出
+            user_social = []
+            for movie_onomatopoeia in movie_onomatopoeia_list.filter(onomatopoeia__in=user_onomatopoeia_obj_list):
+                user_social.append({
+                    'name': movie_onomatopoeia.onomatopoeia.name,
+                    'count': movie_onomatopoeia.count - 1
+                })
 
-            res.append({str(tmdb_id): onomatopoeia_names})
+            # 他ユーザが追加したオノマトペを抽出
+            social = []
+            for movie_onomatopoeia in movie_onomatopoeia_list.exclude(onomatopoeia__in=user_onomatopoeia_obj_list)[:8]:
+                social.append({
+                    'name': movie_onomatopoeia.onomatopoeia.name,
+                    'count': movie_onomatopoeia.count
+                })
+
+            res.append({
+                'title': movie_user.movie.title,
+                'poster': movie_user.movie.poster,
+                'user': user_social,
+                'social': social
+            })
 
         return Response({'results': res})
 
@@ -431,37 +463,3 @@ class GetOriginalTitleViewSet(viewsets.ViewSet):
                 break
 
         return Response({'title': ''})
-
-
-class GetOnomatopoeiaCountViewSet(viewsets.ViewSet):
-    serializer_class = GetOnomatopoeiaCountSerializer
-
-    @staticmethod
-    def create(request):
-        """
-        指定したtmdb_idに指定したオノマトペが何回登録されたかを返す
-
-        :param request: tmdb_id, onomatopoeia_names
-        :return:        count, onomatopoeia name
-        """
-
-        data = request.data
-        serializer = GetOnomatopoeiaCountSerializer(data=data)
-
-        if not(serializer.is_valid() and request.method == 'POST'):
-            raise serializers.ValidationError(serializer.errors)
-
-        movie = Movie.objects.get(tmdb_id=request.data['tmdb_id'])
-        onomatopoeia_names = data['onomatopoeia_names']
-
-        results = []
-        for onomatopoeia_name in onomatopoeia_names:
-            try:
-                onomatopoeia = Onomatopoeia.objects.get(name=onomatopoeia_name)
-                count = Movie_Onomatopoeia.objects.get(movie=movie, onomatopoeia=onomatopoeia).count
-
-                results.append({"name": onomatopoeia_name, "count": count})
-            except ObjectDoesNotExist:
-                pass
-
-        return Response({'results': results})

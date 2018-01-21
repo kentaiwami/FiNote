@@ -27,12 +27,3 @@ class DeleteMovieSerializer(serializers.Serializer):
     username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
     password = serializers.CharField(max_length=256, allow_blank=False, required=True)
     tmdb_id = serializers.IntegerField(allow_null=False, required=True)
-
-
-class GetMovieOnomatopoeiaSerializer(serializers.Serializer):
-    tmdb_ids = serializers.ListField(allow_null=False, required=True)
-
-
-class GetOnomatopoeiaCountSerializer(serializers.Serializer):
-    tmdb_id = serializers.CharField(allow_null=False, required=True)
-    onomatopoeia_names = serializers.ListField(allow_null=False, required=True)
