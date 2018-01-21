@@ -9,6 +9,7 @@ PODS:
   - PopupDialog (0.5.4)
   - SwiftyJSON (4.0.0)
   - TinyConstraints (2.1.2)
+  - XLPagerTabStrip (8.0.0)
 
 DEPENDENCIES:
   - Alamofire (~> 4.5)
@@ -19,6 +20,7 @@ DEPENDENCIES:
   - PopupDialog (= 0.5.4)
   - SwiftyJSON
   - TinyConstraints (from `https://github.com/roberthein/TinyConstraints.git`, branch `Release_2.1.2`)
+  - XLPagerTabStrip (~> 8.0)
 
 EXTERNAL SOURCES:
   Eureka:
@@ -45,7 +47,8 @@ SPEC CHECKSUMS:
   PopupDialog: 75cf955693590b0cb2fdde00223fb65d99c57247
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
   TinyConstraints: 3a841eba583f2492c405f88552c5c274056f47e2
+  XLPagerTabStrip: d1ab378af0923320ec0b5eab11d7b2f803d31261
 
-PODFILE CHECKSUM: 68d088e46ae6313cfcaf93828d36a1b105cfa7aa
+PODFILE CHECKSUM: 30fdabe767633bbf54e8a24e24c51aa798e38912
 
 COCOAPODS: 1.3.1
