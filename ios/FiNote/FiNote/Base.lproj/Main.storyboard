@@ -94,7 +94,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="xqK-hc-lqo"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Sign In" id="ARM-RO-cFy"/>
+                    <tabBarItem key="tabBarItem" title="Sign In" image="tab_sign_in" id="ARM-RO-cFy"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="m3t-TM-gBH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -110,7 +110,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="g38-KQ-xYd"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Sign Up" id="1Pt-RB-nLa"/>
+                    <tabBarItem key="tabBarItem" title="Sign Up" image="tab_sign_up" id="1Pt-RB-nLa"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yK1-7F-ngZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -124,6 +124,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="selectedImageTintColor" red="0.2156862745" green="0.1058823529" blue="0.035294117649999998" alpha="1" colorSpace="calibratedRGB"/>
                     </tabBar>
                     <connections>
                         <segue destination="fVa-WO-tCJ" kind="relationship" relationship="viewControllers" id="FvT-2P-GiQ"/>
@@ -156,5 +157,8 @@
     <resources>
         <image name="first" width="30" height="30"/>
         <image name="second" width="30" height="30"/>
+        <image name="tab_sign_in" width="30" height="30"/>
+        <image name="tab_sign_up" width="30" height="30"/>
     </resources>
+    <color key="tintColor" red="0.2156862745" green="0.1058823529" blue="0.035294117649999998" alpha="1" colorSpace="calibratedRGB"/>
 </document>
