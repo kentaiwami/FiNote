@@ -71,4 +71,4 @@ fastlane/test_output
 
 project.xcworkspace/
 
-FiNote/FiNote/Setting/
+FiNote/FiNote/Setting/Setting.swift
