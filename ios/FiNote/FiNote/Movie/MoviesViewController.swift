@@ -60,7 +60,7 @@ class MyCell: UITableViewCell {
         myLabel.textAlignment = .left
         contentView.addSubview(myLabel)
         
-        myImage = UIImage(named: "maguro.jpg")
+        myImage = UIImage(named: "1.jpg")
         myImageView = UIImageView(image: myImage)
         contentView.addSubview(myImageView)
     }
