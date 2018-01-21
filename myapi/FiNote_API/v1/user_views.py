@@ -21,23 +21,23 @@ class SignUpUserViewSet(viewsets.ViewSet):
         data = request.data
         serializer = SignUpUserSerializer(data=data)
 
-        if serializer.is_valid() and request.method == 'POST':
-            if User.objects.filter(username=data['username']).exists():
-                raise serializers.ValidationError('このユーザ名は既に使われています')
+        if not (serializer.is_valid() and request.method == 'POST'):
+            raise serializers.ValidationError(serializer.errors)
 
-            if User.objects.filter(email=data['email']).exists():
-                raise serializers.ValidationError('このメールアドレスは既に使われています')
+        if User.objects.filter(username=data['username']).exists():
+            raise serializers.ValidationError('このユーザ名は既に使われています')
 
-            user = User.objects.create_user(
-                username=data['username'],
-                email=data['email'],
-                password=data['password'],
-                birthyear=data['birthyear'],
-            )
+        if User.objects.filter(email=data['email']).exists():
+            raise serializers.ValidationError('このメールアドレスは既に使われています')
 
-            return Response({'id': user.pk})
-        else:
-            return Response(serializer.errors, 400)
+        user = User.objects.create_user(
+            username=data['username'],
+            email=data['email'],
+            password=data['password'],
+            birthyear=data['birthyear'],
+        )
+
+        return Response({'id': user.pk})
 
 
 class SignInUserViewSet(viewsets.ViewSet):
