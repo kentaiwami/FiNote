@@ -119,19 +119,18 @@ class UpdateEmailViewSet(viewsets.ViewSet):
         data = request.data
         serializer = UpdateEmailSerializer(data=data)
 
-        if serializer.is_valid() and request.method == 'POST':
-            try:
-                user = AuthUser.objects.get(username=data["username"])
-            except ObjectDoesNotExist:
-                raise serializers.ValidationError('ユーザが見つかりませんでした')
-
-            if not user.check_password(data['password'].encode('utf-8')):
-                raise serializers.ValidationError('パスワードが違います')
-
-            user.email = data['new_email']
-            user.save()
-
-            return Response({'username': str(user)})
-
-        else:
+        if not (serializer.is_valid() and request.method == 'POST'):
             raise serializers.ValidationError(serializer.errors)
+
+        try:
+            user = AuthUser.objects.get(username=data["username"])
+        except ObjectDoesNotExist:
+            raise serializers.ValidationError('ユーザが見つかりませんでした')
+
+        if not user.check_password(data['password'].encode('utf-8')):
+            raise serializers.ValidationError('パスワードが違います')
+
+        user.email = data['new_email']
+        user.save()
+
+        return Response({'username': str(user)})
