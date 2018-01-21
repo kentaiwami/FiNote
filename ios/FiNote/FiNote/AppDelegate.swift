@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import KeychainAccess
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,7 +16,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        let keychain = Keychain()
+        
+        if IsReset() {
+            try! keychain.remove("username")
+            try! keychain.remove("password")
+            try! keychain.remove("id")
+        }
+        
+        if IsInsertDummyData() {
+            let data = GetDummyData()
+            try! keychain.set(data.username, key: "username")
+            try! keychain.set(data.password, key: "password")
+            try! keychain.set(data.id, key: "id")
+        }
+        
+        let username = try! keychain.getString("username")
+        
+        if username == nil {
+            let settingVC = SignPageViewController()
+            let nav = UINavigationController()
+            nav.viewControllers = [settingVC]
+            nav.navigationBar.barTintColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
+            nav.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+            self.window!.rootViewController = nav
+            self.window?.makeKeyAndVisible()
+        }
         return true
     }
 

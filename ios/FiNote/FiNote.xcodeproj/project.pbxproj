@@ -18,6 +18,9 @@
 		376031722014820800E69674 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376031712014820800E69674 /* Extensions.swift */; };
 		376031742014824E00E69674 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376031732014824E00E69674 /* Utility.swift */; };
 		377D38D9201484D6008A36CC /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377D38D8201484D6008A36CC /* Model.swift */; };
+		377D38DC20148992008A36CC /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377D38DB20148992008A36CC /* SignUpViewController.swift */; };
+		377D38DE201489A9008A36CC /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377D38DD201489A9008A36CC /* SignInViewController.swift */; };
+		377D38E0201489C1008A36CC /* SignPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377D38DF201489C1008A36CC /* SignPageViewController.swift */; };
 		747DA20B1392E0EFCC94895C /* Pods_FiNote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F9B3ACA4F672A8807D425EC /* Pods_FiNote.framework */; };
 /* End PBXBuildFile section */
 
@@ -38,6 +41,9 @@
 		376031712014820800E69674 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		376031732014824E00E69674 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		377D38D8201484D6008A36CC /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		377D38DB20148992008A36CC /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		377D38DD201489A9008A36CC /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		377D38DF201489C1008A36CC /* SignPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignPageViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +79,7 @@
 		374D67872011EAF300706D4F /* FiNote */ = {
 			isa = PBXGroup;
 			children = (
+				377D38DA20148963008A36CC /* Sign */,
 				3760316C2014804D00E69674 /* Social */,
 				3760316B2014804800E69674 /* User */,
 				3760316A2014803C00E69674 /* Movie */,
@@ -119,6 +126,16 @@
 			children = (
 			);
 			path = Social;
+			sourceTree = "<group>";
+		};
+		377D38DA20148963008A36CC /* Sign */ = {
+			isa = PBXGroup;
+			children = (
+				377D38DB20148992008A36CC /* SignUpViewController.swift */,
+				377D38DD201489A9008A36CC /* SignInViewController.swift */,
+				377D38DF201489C1008A36CC /* SignPageViewController.swift */,
+			);
+			path = Sign;
 			sourceTree = "<group>";
 		};
 		983CCFB0FE4EB9DDF7B89ADA /* Frameworks */ = {
@@ -289,8 +306,11 @@
 				374D67892011EAF300706D4F /* AppDelegate.swift in Sources */,
 				3760316E2014809D00E69674 /* Setting.swift in Sources */,
 				374D678B2011EAF300706D4F /* FirstViewController.swift in Sources */,
+				377D38DC20148992008A36CC /* SignUpViewController.swift in Sources */,
 				376031702014816000E69674 /* Design.swift in Sources */,
+				377D38DE201489A9008A36CC /* SignInViewController.swift in Sources */,
 				377D38D9201484D6008A36CC /* Model.swift in Sources */,
+				377D38E0201489C1008A36CC /* SignPageViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,7 +455,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Kenta.FiNote;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -451,7 +471,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Kenta.FiNote;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

@@ -7,3 +7,7 @@
 //
 
 import Foundation
+
+enum Color:String {
+    case main = "#572C09"
+}
