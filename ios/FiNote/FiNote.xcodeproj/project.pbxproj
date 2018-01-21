@@ -13,6 +13,7 @@
 		374D67902011EAF300706D4F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 374D678E2011EAF300706D4F /* Main.storyboard */; };
 		374D67922011EAF300706D4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 374D67912011EAF300706D4F /* Assets.xcassets */; };
 		374D67952011EAF300706D4F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 374D67932011EAF300706D4F /* LaunchScreen.storyboard */; };
+		3760316E2014809D00E69674 /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3760316D2014809C00E69674 /* Setting.swift */; };
 		747DA20B1392E0EFCC94895C /* Pods_FiNote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F9B3ACA4F672A8807D425EC /* Pods_FiNote.framework */; };
 /* End PBXBuildFile section */
 
@@ -28,6 +29,7 @@
 		374D67912011EAF300706D4F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		374D67942011EAF300706D4F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		374D67962011EAF300706D4F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3760316D2014809C00E69674 /* Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,10 @@
 		374D67872011EAF300706D4F /* FiNote */ = {
 			isa = PBXGroup;
 			children = (
+				3760316C2014804D00E69674 /* Social */,
+				3760316B2014804800E69674 /* User */,
+				3760316A2014803C00E69674 /* Movie */,
+				376031692014800A00E69674 /* Setting */,
 				374D67882011EAF300706D4F /* AppDelegate.swift */,
 				374D678A2011EAF300706D4F /* FirstViewController.swift */,
 				374D678C2011EAF300706D4F /* SecondViewController.swift */,
@@ -72,6 +78,35 @@
 				374D67962011EAF300706D4F /* Info.plist */,
 			);
 			path = FiNote;
+			sourceTree = "<group>";
+		};
+		376031692014800A00E69674 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				3760316D2014809C00E69674 /* Setting.swift */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
+		3760316A2014803C00E69674 /* Movie */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Movie;
+			sourceTree = "<group>";
+		};
+		3760316B2014804800E69674 /* User */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		3760316C2014804D00E69674 /* Social */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Social;
 			sourceTree = "<group>";
 		};
 		983CCFB0FE4EB9DDF7B89ADA /* Frameworks */ = {
@@ -236,6 +271,7 @@
 			files = (
 				374D678D2011EAF300706D4F /* SecondViewController.swift in Sources */,
 				374D67892011EAF300706D4F /* AppDelegate.swift in Sources */,
+				3760316E2014809D00E69674 /* Setting.swift in Sources */,
 				374D678B2011EAF300706D4F /* FirstViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
