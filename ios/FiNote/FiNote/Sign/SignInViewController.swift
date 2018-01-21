@@ -8,6 +8,7 @@
 
 import Eureka
 import PopupDialog
+import NVActivityIndicatorView
 
 class SignInViewController: FormViewController {
 

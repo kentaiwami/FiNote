@@ -8,6 +8,10 @@
 
 import Eureka
 import PopupDialog
+import NVActivityIndicatorView
+import Alamofire
+import SwiftyJSON
+import KeychainAccess
 
 class SignUpViewController: FormViewController {
 
@@ -112,7 +116,7 @@ class SignUpViewController: FormViewController {
                 $0.options = birthyears
                 $0.add(rule: RuleRequired(msg: "必須項目です"))
                 $0.validationOptions = .validatesOnChange
-                $0.tag = "payday"
+                $0.tag = "birthyear"
             }
             .onRowValidationChanged {cell, row in
                 let rowIndex = row.indexPath!.row
@@ -144,11 +148,37 @@ class SignUpViewController: FormViewController {
                 popup.addButtons([button])
 
                 if IsCheckFormValue(form: self.form) {
-                    
+                    self.CallSignUpAPI()
                 }else {
                     self.present(popup, animated: true, completion: nil)
                 }
             }
+    }
+    
+    func CallSignUpAPI() {
+        let activityData = ActivityData(message: "Sign Up Now", type: .lineScaleParty)
+        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
+
+        DispatchQueue(label: "sign-up").async {
+            let urlString = API.base.rawValue+API.v1.rawValue+API.user.rawValue+API.signup.rawValue
+            Alamofire.request(urlString, method: .post, parameters: self.form.values(), encoding: JSONEncoding(options: [])).responseJSON { (response) in
+                let obj = JSON(response.result.value)
+                print("***** API results *****")
+                print(obj)
+                print("***** API results *****")
+                
+                let keychain = Keychain()
+                try! keychain.set(self.form.values()["username"] as! String, key: "username")
+                try! keychain.set(self.form.values()["password"] as! String, key: "password")
+                try! keychain.set(obj["id"].stringValue, key: "id")
+                
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let signVC = storyboard.instantiateViewController(withIdentifier: "Main")
+                self.present(signVC, animated: true, completion: nil)
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
