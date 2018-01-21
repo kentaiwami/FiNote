@@ -22,7 +22,7 @@
 		377D38DE201489A9008A36CC /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377D38DD201489A9008A36CC /* SignInViewController.swift */; };
 		379728B9201539B10045EB61 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379728B8201539B10045EB61 /* Common.swift */; };
 		379728BB201545030045EB61 /* MoviesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379728BA201545030045EB61 /* MoviesViewController.swift */; };
-		379728BE201546370045EB61 /* 11.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 379728BD201546370045EB61 /* 11.jpg */; };
+		379728BE201546370045EB61 /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 379728BD201546370045EB61 /* 1.jpg */; };
 		747DA20B1392E0EFCC94895C /* Pods_FiNote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F9B3ACA4F672A8807D425EC /* Pods_FiNote.framework */; };
 /* End PBXBuildFile section */
 
@@ -47,7 +47,7 @@
 		377D38DD201489A9008A36CC /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		379728B8201539B10045EB61 /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
 		379728BA201545030045EB61 /* MoviesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesViewController.swift; sourceTree = "<group>"; };
-		379728BD201546370045EB61 /* 11.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 11.jpg; sourceTree = "<group>"; };
+		379728BD201546370045EB61 /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,7 +147,7 @@
 		379728BC201545FF0045EB61 /* sample_img */ = {
 			isa = PBXGroup;
 			children = (
-				379728BD201546370045EB61 /* 11.jpg */,
+				379728BD201546370045EB61 /* 1.jpg */,
 			);
 			path = sample_img;
 			sourceTree = "<group>";
@@ -232,7 +232,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				374D67952011EAF300706D4F /* LaunchScreen.storyboard in Resources */,
-				379728BE201546370045EB61 /* 11.jpg in Resources */,
+				379728BE201546370045EB61 /* 1.jpg in Resources */,
 				374D67922011EAF300706D4F /* Assets.xcassets in Resources */,
 				374D67902011EAF300706D4F /* Main.storyboard in Resources */,
 			);
