@@ -130,7 +130,7 @@ class SignUpViewController: FormViewController {
             }
         
         
-        form +++ Section(header: "Sign Up", footer: "他サービスで使用しているユーザ名、パスワードは使用しないでください")
+        form +++ Section(header: "", footer: "他サービスで使用しているユーザ名、パスワードは使用しないでください")
             <<< ButtonRow(){
                 $0.title = "Sign Up"
                 $0.baseCell.backgroundColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
