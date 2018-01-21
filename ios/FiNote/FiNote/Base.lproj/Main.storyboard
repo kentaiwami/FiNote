@@ -45,9 +45,25 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="750" y="-320"/>
+            <point key="canvasLocation" x="750" y="-681"/>
         </scene>
-        <!--Second-->
+        <!--User-->
+        <scene sceneID="yB9-TI-ngx">
+            <objects>
+                <viewController id="nNq-mE-UwP" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Rrm-xw-kAP">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="oiz-eH-2zr"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="User" image="tab_user" id="IKm-7B-w87"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ffb-Bx-3pP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="750" y="752"/>
+        </scene>
+        <!--Social-->
         <scene sceneID="wg7-f3-ORb">
             <objects>
                 <viewController id="8rJ-Kc-sve" customClass="SecondViewController" customModule="FiNote" customModuleProvider="target" sceneMemberID="viewController">
@@ -78,11 +94,11 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="O1u-W8-tvY"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Second" image="second" id="cPa-gy-q4n"/>
+                    <tabBarItem key="tabBarItem" title="Social" image="tab_social" id="cPa-gy-q4n"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="750" y="360"/>
+            <point key="canvasLocation" x="750" y="0.0"/>
         </scene>
         <!--Sign In-->
         <scene sceneID="u4a-0I-y9f">
@@ -148,6 +164,7 @@
                     <connections>
                         <segue destination="9pv-A4-QxB" kind="relationship" relationship="viewControllers" id="u7Y-xg-7CH"/>
                         <segue destination="8rJ-Kc-sve" kind="relationship" relationship="viewControllers" id="lzU-1b-eKA"/>
+                        <segue destination="nNq-mE-UwP" kind="relationship" relationship="viewControllers" id="EXc-zn-rUE"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
@@ -156,10 +173,11 @@
         </scene>
     </scenes>
     <resources>
-        <image name="second" width="30" height="30"/>
         <image name="tab_movies" width="30" height="30"/>
         <image name="tab_sign_in" width="30" height="30"/>
         <image name="tab_sign_up" width="30" height="30"/>
+        <image name="tab_social" width="30" height="30"/>
+        <image name="tab_user" width="30" height="30"/>
     </resources>
     <color key="tintColor" red="0.2156862745" green="0.1058823529" blue="0.035294117649999998" alpha="1" colorSpace="calibratedRGB"/>
 </document>
