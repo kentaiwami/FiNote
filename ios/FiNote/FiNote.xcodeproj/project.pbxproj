@@ -20,7 +20,6 @@
 		377D38D9201484D6008A36CC /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377D38D8201484D6008A36CC /* Model.swift */; };
 		377D38DC20148992008A36CC /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377D38DB20148992008A36CC /* SignUpViewController.swift */; };
 		377D38DE201489A9008A36CC /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377D38DD201489A9008A36CC /* SignInViewController.swift */; };
-		377D38E0201489C1008A36CC /* SignPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377D38DF201489C1008A36CC /* SignPageViewController.swift */; };
 		747DA20B1392E0EFCC94895C /* Pods_FiNote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F9B3ACA4F672A8807D425EC /* Pods_FiNote.framework */; };
 /* End PBXBuildFile section */
 
@@ -43,7 +42,6 @@
 		377D38D8201484D6008A36CC /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		377D38DB20148992008A36CC /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		377D38DD201489A9008A36CC /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
-		377D38DF201489C1008A36CC /* SignPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignPageViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,7 +131,6 @@
 			children = (
 				377D38DB20148992008A36CC /* SignUpViewController.swift */,
 				377D38DD201489A9008A36CC /* SignInViewController.swift */,
-				377D38DF201489C1008A36CC /* SignPageViewController.swift */,
 			);
 			path = Sign;
 			sourceTree = "<group>";
@@ -274,7 +271,6 @@
 				"${BUILT_PRODUCTS_DIR}/PopupDialog/PopupDialog.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/TinyConstraints/TinyConstraints.framework",
-				"${BUILT_PRODUCTS_DIR}/XLPagerTabStrip/XLPagerTabStrip.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -286,7 +282,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PopupDialog.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TinyConstraints.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XLPagerTabStrip.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -310,7 +305,6 @@
 				376031702014816000E69674 /* Design.swift in Sources */,
 				377D38DE201489A9008A36CC /* SignInViewController.swift in Sources */,
 				377D38D9201484D6008A36CC /* Model.swift in Sources */,
-				377D38E0201489C1008A36CC /* SignPageViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

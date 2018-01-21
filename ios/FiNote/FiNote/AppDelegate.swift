@@ -34,9 +34,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let username = try! keychain.getString("username")
         
         if username == nil {
-            let settingVC = SignPageViewController()
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let signVC = storyboard.instantiateViewController(withIdentifier: "Sign")
             let nav = UINavigationController()
-            nav.viewControllers = [settingVC]
+            nav.viewControllers = [signVC]
             nav.navigationBar.barTintColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
             nav.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
             self.window!.rootViewController = nav

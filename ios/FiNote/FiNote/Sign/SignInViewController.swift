@@ -6,21 +6,20 @@
 //  Copyright © 2018年 Kenta. All rights reserved.
 //
 
-import XLPagerTabStrip
+import Eureka
 
-class SignInViewController: UIViewController, IndicatorInfoProvider {
+class SignInViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.view.backgroundColor = UIColor.clear
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.navigationItem.title = "Sign In"
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-    }
-    
-    func indicatorInfo(for pagerTabStripController: PagerTabStripViewController) -> IndicatorInfo {
-        return IndicatorInfo(title: "Sign In")
     }
 }
