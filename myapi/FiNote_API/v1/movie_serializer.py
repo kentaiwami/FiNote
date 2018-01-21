@@ -1,12 +1,13 @@
 from rest_framework import serializers
 
 
-class UpdateDVDFAVSerializer(serializers.Serializer):
+class UpdateMovieUserInformationSerializer(serializers.Serializer):
     username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
     password = serializers.CharField(max_length=256, allow_blank=False, required=True)
     tmdb_id = serializers.IntegerField(allow_null=False, required=True)
-    dvd = serializers.BooleanField(required=True)
-    fav = serializers.BooleanField(required=True)
+    onomatopoeia = serializers.ListField(required=False)
+    dvd = serializers.BooleanField(required=False)
+    fav = serializers.BooleanField(required=False)
 
 
 class AddMovieSerializer(serializers.Serializer):
@@ -20,13 +21,6 @@ class AddMovieSerializer(serializers.Serializer):
     onomatopoeia = serializers.ListField(allow_null=False, required=True)
     dvd = serializers.BooleanField(required=True)
     fav = serializers.BooleanField(required=True)
-
-
-class UpdateOnomatopoeiaSerializer(serializers.Serializer):
-    username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
-    password = serializers.CharField(max_length=256, allow_blank=False, required=True)
-    tmdb_id = serializers.IntegerField(allow_null=False, required=True)
-    onomatopoeia = serializers.ListField(allow_null=False, required=True)
 
 
 class DeleteMovieSerializer(serializers.Serializer):

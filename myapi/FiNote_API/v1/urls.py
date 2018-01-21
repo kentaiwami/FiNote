@@ -11,9 +11,7 @@ router.register(r'user/update/email', UpdateEmailViewSet, base_name='update-emai
 
 
 router.register(r'movie', AddMovieViewSet, base_name='add-movie')
-
-router.register(r'movie/update/dvdfav', UpdateDVDFAVViewSet, base_name='update-dvdfav')
-router.register(r'movie/update/onomatopoeia', UpdateOnomatopoeiaViewSet, base_name='update-onomatopoeia')
+router.register(r'movie/update', UpdateMovieUserInformationViewSet, base_name='update-movie')
 router.register(r'movie/delete', DeleteMovieViewSet, 'delete-movie')
 
 router.register(r'movie/recently', GetRecentlyMovieViewSet, 'get-recently-movie')

@@ -91,6 +91,29 @@ response：
 }
 ```
 
+### Add Movie
+```
+method：POST
+endpoint：api/v1/movie/
+request：
+{
+	"tmdb_id": 12,
+	"username": "hogehoge",
+	"password": "hogehoge",
+	"dvd": 1,
+	"fav": 0,
+	"onomatopoeia": ["hoge","fuga", "piyo"],
+	"title": "movie title",
+	"genre": [28,12,16],
+	"overview": "movie overview",
+	"poster": "http://hogehoge.com/hoge.jpg"
+}
+response：
+{
+    "msg": "success"
+}
+```
+
 ### Get Movies
 ```
 method：GET
@@ -121,41 +144,18 @@ response：
     ]
 ```
 
-### Update DVD and FAV
+### Update Movie User Information(Onomatopoeia, DVD, FAV)
 ```
 method：POST
-endpoint：api/v1/movie/update/dvdfav/
+endpoint：api/v1/movie/update/
 request：
 {
     "username": "hogehoge",
     "password": "hogehoge",
     "tmdb_id": 1234,
-    "dvd": 0,
-    "fav": 1
-}
-response：
-{
-    "dvd": 0,
-    "fav": 1
-}
-```
-
-### Add Movie
-```
-method：POST
-endpoint：api/v1/movie/
-request：
-{
-	"tmdb_id": 12,
-	"username": "hogehoge",
-	"password": "hogehoge",
-	"dvd": 1,
-	"fav": 0,
-	"onomatopoeia": ["hoge","fuga", "piyo"],
-	"title": "movie title",
-	"genre": [28,12,16],
-	"overview": "movie overview",
-	"poster": "http://hogehoge.com/hoge.jpg"
+    "dvd": 0,   (optional)
+    "fav": 1,   (optional)
+    "onomatopoeia": ["hoge", "fuga", "piyo"]    (optional)
 }
 response：
 {
