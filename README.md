@@ -1,4 +1,4 @@
-<img src="icon.png" align="right" />
+<img src="img/icon.png" align="right" />
 
 FiNote(フィノート)
 ====
@@ -12,7 +12,7 @@ FiNote(フィノート)
 * 検索結果は日本語を優先していますが、日本語データが存在しない場合は英語を表示しております。
 
 ## デモ
-![demo](demo.gif)
+![demo](img/demo.gif)
 
 
 ## 使い方
@@ -346,7 +346,7 @@ response：
 
 
 ## 使用している外部サービス
-![THE MOVIE DB](tmdb_logo.png)
+![THE MOVIE DB](img/tmdb_logo.png)
 
 
-![Yahoo Japan Movie](yahoo_movie_logo.png)
+![Yahoo Japan Movie](img/yahoo_movie_logo.png)
