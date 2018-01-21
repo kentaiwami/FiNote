@@ -12,7 +12,7 @@ FiNote(フィノート)
 * 検索結果は日本語を優先していますが、日本語データが存在しない場合は英語を表示しております。
 
 ## デモ
-![demo](https://github.com/kentaiwami/FiNote/blob/master/demo.gif)
+![demo](demo.gif)
 
 
 ## 使い方
@@ -347,3 +347,4 @@ response：
 
 ## 使用している外部サービス
 ![THE MOVIE DB](tmdb_logo.png)
+![THE MOVIE DB](yahoo_movie_logo.png)
