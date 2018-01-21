@@ -9,6 +9,7 @@
 import Eureka
 import PopupDialog
 
+
 class SignUpViewController: FormViewController {
 
     override func viewDidLoad() {
@@ -151,8 +152,6 @@ class SignUpViewController: FormViewController {
             }
     }
     
-    
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }

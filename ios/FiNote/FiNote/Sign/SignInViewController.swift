@@ -8,10 +8,7 @@
 
 import Eureka
 import PopupDialog
-import NVActivityIndicatorView
-import Alamofire
-import SwiftyJSON
-import KeychainAccess
+
 
 class SignInViewController: FormViewController {
 
