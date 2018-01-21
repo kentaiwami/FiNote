@@ -341,7 +341,7 @@ response：
 ```
 
 
-### Get Movie Title
+### Get Movie Origin Titles
 ```
 method：GET
 endpoint：api/v1/movie/search/titles?title=hoge&page=1
@@ -366,7 +366,7 @@ method：GET
 endpoint：api/v1/movie/search/origin?id=1
 response：
 {
-    "title": "hogehoge"
+    "title": "hogehoge origin title"
 }
 ```
 
