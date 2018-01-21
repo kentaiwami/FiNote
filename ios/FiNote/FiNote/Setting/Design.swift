@@ -6,8 +6,6 @@
 //  Copyright © 2018年 Kenta. All rights reserved.
 //
 
-import Foundation
-
-enum Color:String {
+enum Color: String {
     case main = "#572C09"
 }
