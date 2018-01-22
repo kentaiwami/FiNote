@@ -11,6 +11,7 @@ import NVActivityIndicatorView
 import SwiftyJSON
 import Alamofire
 import KeychainAccess
+import PopupDialog
 
 class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITabBarControllerDelegate {
     
@@ -76,15 +77,24 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 print(obj)
                 print("***** API results *****")
                 
-                self.movies.removeAll()
-                
-                for movie in obj["results"].arrayValue {
-                    self.movies.append(Movies().GetData(json: movie))
+                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                    self.movies.removeAll()
+                    
+                    for movie in obj["results"].arrayValue {
+                        self.movies.append(Movies().GetData(json: movie))
+                    }
+                    
+                    self.myTableView.reloadData()
+                    
+                    NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                }else {
+                    let popup = PopupDialog(title: "Error", message: obj.arrayValue[0].stringValue)
+                    let button = DefaultButton(title: "OK", dismissOnTap: true) {}
+                    popup.addButtons([button])
+                    
+                    NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                    self.present(popup, animated: true, completion: nil)
                 }
-                
-                self.myTableView.reloadData()
-                
-                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
             }
         }
     }
