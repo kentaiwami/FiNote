@@ -33,7 +33,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         myTableView.rowHeight = 150
         myTableView.delegate = self
         myTableView.dataSource = self
-        myTableView.register(MyCell.self, forCellReuseIdentifier: NSStringFromClass(MyCell.self))
+        myTableView.register(Cell.self, forCellReuseIdentifier: NSStringFromClass(Cell.self))
         self.view.addSubview(myTableView)
         
         myTableView.autoresizingMask = UIViewAutoresizing(rawValue: UIViewAutoresizing.RawValue(UInt8(UIViewAutoresizing.flexibleHeight.rawValue) | UInt8(UIViewAutoresizing.flexibleWidth.rawValue)))
@@ -71,24 +71,24 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let base_url = "https://image.tmdb.org/t/p/w300_and_h450_bestv2"
-        let cell = tableView.dequeueReusableCell(withIdentifier: NSStringFromClass(MyCell.self), for: indexPath) as! MyCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: NSStringFromClass(Cell.self), for: indexPath) as! Cell
         cell.accessoryType = .disclosureIndicator
         
         let indicator = Indicator()
-        indicator.showIndicator(view: cell.myImageView)
+        indicator.showIndicator(view: cell.poster)
         
         if searchController.isActive {
             let urlRequest = URL(string: base_url+searchResults[indexPath.row].poster)!
             
-            cell.myLabel.text = searchResults[indexPath.row].title
-            cell.myImageView.af_setImage(withURL: urlRequest) { res in
+            cell.title.text = searchResults[indexPath.row].title
+            cell.poster.af_setImage(withURL: urlRequest) { res in
                 indicator.stopIndicator()
             }
         } else {
             let urlRequest = URL(string: base_url+movies[indexPath.row].poster)!
             
-            cell.myLabel.text = movies[indexPath.row].title
-            cell.myImageView.af_setImage(withURL: urlRequest) { res in
+            cell.title.text = movies[indexPath.row].title
+            cell.poster.af_setImage(withURL: urlRequest) { res in
                 indicator.stopIndicator()
             }
         }
@@ -161,20 +161,19 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
 }
 
-class MyCell: UITableViewCell {
-    var myLabel: UILabel!
-    var myImageView: UIImageView!
+class Cell: UITableViewCell {
+    var title: UILabel!
+    var poster: UIImageView!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        myLabel = UILabel(frame: CGRect.zero)
-        myLabel.textAlignment = .left
-        contentView.addSubview(myLabel)
+        title = UILabel(frame: CGRect.zero)
+        title.textAlignment = .left
+        contentView.addSubview(title)
         
-        myImageView = UIImageView()
-        myImageView.contentMode = .center
-        contentView.addSubview(myImageView)
+        poster = UIImageView()
+        contentView.addSubview(poster)
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -187,8 +186,8 @@ class MyCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        myLabel.frame = CGRect(x: 110, y: 0, width: frame.width - 100, height: frame.height)
-        myImageView.frame = CGRect(x: 0, y: 0, width: 100, height: frame.height)
+        title.frame = CGRect(x: 110, y: 0, width: frame.width - 100, height: frame.height)
+        poster.frame = CGRect(x: 0, y: 0, width: 100, height: frame.height)
     }
     
 }
