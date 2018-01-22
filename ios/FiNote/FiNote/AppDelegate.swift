@@ -16,6 +16,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        UINavigationBar.appearance().isTranslucent = false
+        UINavigationBar.appearance().tintColor = UIColor.white
+        UINavigationBar.appearance().barTintColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        
         let keychain = Keychain()
         
         if IsReset() {
@@ -38,9 +44,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let signVC = storyboard.instantiateViewController(withIdentifier: "Sign")
             let nav = UINavigationController()
             nav.viewControllers = [signVC]
-            nav.navigationBar.barTintColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
-            nav.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
-            nav.navigationBar.isTranslucent = false
             self.window!.rootViewController = nav
             self.window?.makeKeyAndVisible()
         }

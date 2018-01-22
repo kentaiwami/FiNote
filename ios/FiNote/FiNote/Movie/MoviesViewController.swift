@@ -14,11 +14,17 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         super.viewDidLoad()
         
         let myTableView = UITableView(frame: view.frame, style: .plain)
-        myTableView.rowHeight = 70
+        myTableView.rowHeight = 150
         myTableView.delegate      =   self
         myTableView.dataSource    =   self
         myTableView.register(MyCell.self, forCellReuseIdentifier: NSStringFromClass(MyCell.self))
         self.view.addSubview(myTableView)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.tabBarController?.navigationItem.title = "Movies"
     }
 
     override func didReceiveMemoryWarning() {
@@ -26,25 +32,19 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return 20
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: NSStringFromClass(MyCell.self), for: indexPath) as! MyCell
         cell.myLabel.text = "まぐろ"
+        cell.accessoryType = .disclosureIndicator
         return cell
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
-    }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Sample"
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("HOGEOHGE:", indexPath)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
