@@ -13,11 +13,13 @@ import Alamofire
 import KeychainAccess
 import PopupDialog
 
-class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITabBarControllerDelegate {
+class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITabBarControllerDelegate, UISearchResultsUpdating {
     
     var movies:[Movies.Data] = []
+    var searchResults:[Movies.Data] = []
     var preViewName = "Movies"
     var myTableView = UITableView()
+    var searchController = UISearchController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +37,16 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         myTableView.autoresizingMask = UIViewAutoresizing(rawValue: UIViewAutoresizing.RawValue(UInt8(UIViewAutoresizing.flexibleHeight.rawValue) | UInt8(UIViewAutoresizing.flexibleWidth.rawValue)))
         
+        searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.sizeToFit()
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.searchBar.placeholder = "映画のタイトルやオノマトペで検索"
+        definesPresentationContext = true
+        
+        myTableView.tableHeaderView = searchController.searchBar
+        
         self.tabBarController?.delegate = self
     }
     
@@ -49,19 +61,47 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return movies.count
+        if searchController.isActive {
+            return searchResults.count
+        } else {
+            return movies.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: NSStringFromClass(MyCell.self), for: indexPath) as! MyCell
         cell.myLabel.text = movies[indexPath.row].title
         cell.accessoryType = .disclosureIndicator
+        
+        if searchController.isActive {
+            cell.myLabel.text = searchResults[indexPath.row].title
+        } else {
+            cell.myLabel.text = movies[indexPath.row].title
+        }
+
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("HOGEOHGE:", indexPath)
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        self.searchResults = movies.filter{
+            $0.title.lowercased().contains(searchController.searchBar.text!.lowercased()) || IsContainOnomatopoeia(onomatopoeia: $0.onomatopoeia)
+        }
+        myTableView.reloadData()
+    }
+    
+    func IsContainOnomatopoeia(onomatopoeia: [String]) -> Bool {
+        for name in onomatopoeia {
+            if name.lowercased().contains(searchController.searchBar.text!.lowercased()) {
+                return true
+            }
+        }
+        
+        return false
     }
     
     func CallMoviesAPI(id: String) {
