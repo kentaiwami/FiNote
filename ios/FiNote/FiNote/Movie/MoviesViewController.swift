@@ -168,6 +168,7 @@ class Cell: UITableViewCell {
     var title: UILabel!
     var onomatopoeia: UILabel!
     var poster: UIImageView!
+    var save: UIImageView!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -182,8 +183,14 @@ class Cell: UITableViewCell {
         onomatopoeia.lineBreakMode = .byWordWrapping
         onomatopoeia.font = UIFont(name: Font.hiragino_W3.rawValue, size: 18)
         
+        save = UIImageView(frame: CGRect.zero)
+        save.image = UIImage(named: "icon_save")
+        save.image = save.image!.withRenderingMode(.alwaysTemplate)
+        save.tintColor = UIColor.hex("#999999", alpha: 1.0)
+        
         contentView.addSubview(title)
         contentView.addSubview(onomatopoeia)
+        contentView.addSubview(save)
         
         poster = UIImageView()
         contentView.addSubview(poster)
@@ -208,6 +215,11 @@ class Cell: UITableViewCell {
         onomatopoeia.trailing(to: contentView)
         onomatopoeia.topToBottom(of: title, offset: 20)
         onomatopoeia.leadingToTrailing(of: poster, offset: 20)
+        
+        save.leadingToTrailing(of: poster, offset: 20)
+        save.bottom(to: contentView, offset: -10)
+        save.width(30)
+        save.height(30)
     }
     
 }
