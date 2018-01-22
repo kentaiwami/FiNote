@@ -86,6 +86,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             cell.poster.af_setImage(withURL: urlRequest) { res in
                 indicator.stopIndicator()
             }
+            cell.add.text = searchResults[indexPath.row].add
         } else {
             let urlRequest = URL(string: base_url+movies[indexPath.row].poster)!
             
@@ -94,6 +95,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             cell.poster.af_setImage(withURL: urlRequest) { res in
                 indicator.stopIndicator()
             }
+            cell.add.text = movies[indexPath.row].add
         }
         
         return cell
@@ -167,6 +169,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
 class Cell: UITableViewCell {
     var title: UILabel!
     var onomatopoeia: UILabel!
+    var add: UILabel!
     var poster: UIImageView!
     var save: UIImageView!
     
@@ -188,9 +191,15 @@ class Cell: UITableViewCell {
         save.image = save.image!.withRenderingMode(.alwaysTemplate)
         save.tintColor = UIColor.hex("#999999", alpha: 1.0)
         
+        add = UILabel(frame: CGRect.zero)
+        add.textAlignment = .left
+        add.font = UIFont(name: Font.hiragino_W3.rawValue, size: 14)
+        add.textColor = UIColor.hex("#999999", alpha: 1.0)
+        
         contentView.addSubview(title)
         contentView.addSubview(onomatopoeia)
         contentView.addSubview(save)
+        contentView.addSubview(add)
         
         poster = UIImageView()
         contentView.addSubview(poster)
@@ -218,8 +227,12 @@ class Cell: UITableViewCell {
         
         save.leadingToTrailing(of: poster, offset: 20)
         save.bottom(to: contentView, offset: -10)
-        save.width(30)
-        save.height(30)
+        save.width(20)
+        save.height(20)
+        
+        add.leadingToTrailing(of: save, offset: 10)
+        add.top(to: save)
+        add.bottom(to: save)
     }
     
 }
