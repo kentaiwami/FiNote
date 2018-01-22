@@ -10,6 +10,7 @@ import UIKit
 import NVActivityIndicatorView
 import SwiftyJSON
 import Alamofire
+import AlamofireImage
 import KeychainAccess
 import PopupDialog
 
@@ -69,16 +70,22 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let base_url = "https://image.tmdb.org/t/p/w300_and_h450_bestv2"
         let cell = tableView.dequeueReusableCell(withIdentifier: NSStringFromClass(MyCell.self), for: indexPath) as! MyCell
-        cell.myLabel.text = movies[indexPath.row].title
         cell.accessoryType = .disclosureIndicator
         
         if searchController.isActive {
+            let urlRequest = URL(string: base_url+searchResults[indexPath.row].poster)!
+            
             cell.myLabel.text = searchResults[indexPath.row].title
+            cell.myImageView.af_setImage(withURL: urlRequest)
         } else {
+            let urlRequest = URL(string: base_url+movies[indexPath.row].poster)!
+            
             cell.myLabel.text = movies[indexPath.row].title
+            cell.myImageView.af_setImage(withURL: urlRequest)
         }
-
+        
         return cell
     }
     
@@ -151,7 +158,6 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
 class MyCell: UITableViewCell {
     var myLabel: UILabel!
-    var myImage: UIImage!
     var myImageView: UIImageView!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -161,8 +167,7 @@ class MyCell: UITableViewCell {
         myLabel.textAlignment = .left
         contentView.addSubview(myLabel)
         
-        myImage = UIImage(named: "1.jpg")
-        myImageView = UIImageView(image: myImage)
+        myImageView = UIImageView()
         contentView.addSubview(myImageView)
     }
     
