@@ -13,6 +13,7 @@ import Alamofire
 import AlamofireImage
 import KeychainAccess
 import PopupDialog
+import TinyConstraints
 
 class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITabBarControllerDelegate, UISearchResultsUpdating {
     
@@ -81,6 +82,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             let urlRequest = URL(string: base_url+searchResults[indexPath.row].poster)!
             
             cell.title.text = searchResults[indexPath.row].title
+            cell.onomatopoeia.text = searchResults[indexPath.row].onomatopoeia.joined(separator: " ")
             cell.poster.af_setImage(withURL: urlRequest) { res in
                 indicator.stopIndicator()
             }
@@ -88,6 +90,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             let urlRequest = URL(string: base_url+movies[indexPath.row].poster)!
             
             cell.title.text = movies[indexPath.row].title
+            cell.onomatopoeia.text = movies[indexPath.row].onomatopoeia.joined(separator: " ")
             cell.poster.af_setImage(withURL: urlRequest) { res in
                 indicator.stopIndicator()
             }
@@ -163,6 +166,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
 class Cell: UITableViewCell {
     var title: UILabel!
+    var onomatopoeia: UILabel!
     var poster: UIImageView!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -170,7 +174,16 @@ class Cell: UITableViewCell {
         
         title = UILabel(frame: CGRect.zero)
         title.textAlignment = .left
+        title.lineBreakMode = .byTruncatingTail
+        title.font = UIFont(name: Font.hiragino_W6.rawValue, size: 22)
+        
+        onomatopoeia = UILabel(frame: CGRect.zero)
+        onomatopoeia.textAlignment = .left
+        onomatopoeia.lineBreakMode = .byWordWrapping
+        onomatopoeia.font = UIFont(name: Font.hiragino_W3.rawValue, size: 18)
+        
         contentView.addSubview(title)
+        contentView.addSubview(onomatopoeia)
         
         poster = UIImageView()
         contentView.addSubview(poster)
@@ -186,8 +199,15 @@ class Cell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        title.frame = CGRect(x: 110, y: 0, width: frame.width - 100, height: frame.height)
-        poster.frame = CGRect(x: 0, y: 0, width: 100, height: frame.height)
+        poster.frame = CGRect(x: 0, y: 0, width: 100, height: contentView.frame.height)
+        
+        title.trailing(to: contentView)
+        title.leadingToTrailing(of: poster, offset: 20)
+        title.top(to: contentView, offset: 20)
+        
+        onomatopoeia.trailing(to: contentView)
+        onomatopoeia.topToBottom(of: title, offset: 20)
+        onomatopoeia.leadingToTrailing(of: poster, offset: 20)
     }
     
 }
