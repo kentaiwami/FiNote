@@ -15,20 +15,23 @@ import KeychainAccess
 class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var movies:[Movies.Data] = []
+    var myTableView = UITableView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let myTableView = UITableView(frame: view.frame, style: .plain)
-        myTableView.rowHeight = 150
-        myTableView.delegate      =   self
-        myTableView.dataSource    =   self
-        myTableView.register(MyCell.self, forCellReuseIdentifier: NSStringFromClass(MyCell.self))
-        self.view.addSubview(myTableView)
-        
         let keychain = Keychain()
         let id = try! keychain.getString("id")
         self.CallMoviesAPI(id: id!)
+        
+        myTableView = UITableView(frame: view.frame, style: .plain)
+        myTableView.rowHeight = 150
+        myTableView.delegate = self
+        myTableView.dataSource = self
+        myTableView.register(MyCell.self, forCellReuseIdentifier: NSStringFromClass(MyCell.self))
+        self.view.addSubview(myTableView)
+        
+        myTableView.autoresizingMask = UIViewAutoresizing(rawValue: UIViewAutoresizing.RawValue(UInt8(UIViewAutoresizing.flexibleHeight.rawValue) | UInt8(UIViewAutoresizing.flexibleWidth.rawValue)))
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -42,12 +45,12 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        return movies.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: NSStringFromClass(MyCell.self), for: indexPath) as! MyCell
-        cell.myLabel.text = "まぐろ"
+        cell.myLabel.text = movies[indexPath.row].title
         cell.accessoryType = .disclosureIndicator
         return cell
     }
@@ -75,6 +78,8 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 for movie in obj["results"].arrayValue {
                     self.movies.append(Movies().GetData(json: movie))
                 }
+                
+                self.myTableView.reloadData()
                 
                 NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
             }
