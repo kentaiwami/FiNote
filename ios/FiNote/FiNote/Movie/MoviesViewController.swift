@@ -7,8 +7,14 @@
 //
 
 import UIKit
+import NVActivityIndicatorView
+import SwiftyJSON
+import Alamofire
+import KeychainAccess
 
 class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    var movies:[Movies.Data] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,6 +25,10 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         myTableView.dataSource    =   self
         myTableView.register(MyCell.self, forCellReuseIdentifier: NSStringFromClass(MyCell.self))
         self.view.addSubview(myTableView)
+        
+        let keychain = Keychain()
+        let id = try! keychain.getString("id")
+        self.CallMoviesAPI(id: id!)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -45,6 +55,30 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("HOGEOHGE:", indexPath)
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func CallMoviesAPI(id: String) {
+        let activityData = ActivityData(message: "Get Movies", type: .lineScaleParty)
+        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
+        
+        DispatchQueue(label: "get-movies").async {
+            let urlString = API.base.rawValue+API.v1.rawValue+API.movies.rawValue+"?user_id=\(11)"
+            print(urlString)
+            Alamofire.request(urlString, method: .get).responseJSON { (response) in
+                let obj = JSON(response.result.value)
+                print("***** API results *****")
+                print(obj)
+                print("***** API results *****")
+                
+                self.movies.removeAll()
+                
+                for movie in obj["results"].arrayValue {
+                    self.movies.append(Movies().GetData(json: movie))
+                }
+                
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+            }
+        }
     }
 }
 
