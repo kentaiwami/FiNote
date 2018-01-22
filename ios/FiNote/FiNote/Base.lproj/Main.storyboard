@@ -13,7 +13,7 @@
         <!--Movies-->
         <scene sceneID="hNz-n2-bh7">
             <objects>
-                <viewController id="9pv-A4-QxB" customClass="MoviesViewController" customModule="FiNote" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Movies" useStoryboardIdentifierAsRestorationIdentifier="YES" id="9pv-A4-QxB" customClass="MoviesViewController" customModule="FiNote" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tsR-hK-woN">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -29,7 +29,7 @@
         <!--User-->
         <scene sceneID="yB9-TI-ngx">
             <objects>
-                <viewController id="nNq-mE-UwP" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="User" useStoryboardIdentifierAsRestorationIdentifier="YES" id="nNq-mE-UwP" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Rrm-xw-kAP">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -45,7 +45,7 @@
         <!--Social-->
         <scene sceneID="wg7-f3-ORb">
             <objects>
-                <viewController id="8rJ-Kc-sve" customClass="SecondViewController" customModule="FiNote" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Social" useStoryboardIdentifierAsRestorationIdentifier="YES" id="8rJ-Kc-sve" customClass="SecondViewController" customModule="FiNote" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="QS5-Rx-YEW">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

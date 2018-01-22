@@ -12,9 +12,10 @@ import SwiftyJSON
 import Alamofire
 import KeychainAccess
 
-class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITabBarControllerDelegate {
     
     var movies:[Movies.Data] = []
+    var preViewName = "Movies"
     var myTableView = UITableView()
 
     override func viewDidLoad() {
@@ -32,6 +33,8 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.view.addSubview(myTableView)
         
         myTableView.autoresizingMask = UIViewAutoresizing(rawValue: UIViewAutoresizing.RawValue(UInt8(UIViewAutoresizing.flexibleHeight.rawValue) | UInt8(UIViewAutoresizing.flexibleWidth.rawValue)))
+        
+        self.tabBarController?.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -85,6 +88,15 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
         }
     }
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if viewController.restorationIdentifier! == "Movies" && preViewName == "Movies" {
+            myTableView.scroll(to: .top, animated: true)
+        }
+        
+        preViewName = viewController.restorationIdentifier!
+    }
+
 }
 
 class MyCell: UITableViewCell {
