@@ -74,16 +74,23 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let cell = tableView.dequeueReusableCell(withIdentifier: NSStringFromClass(MyCell.self), for: indexPath) as! MyCell
         cell.accessoryType = .disclosureIndicator
         
+        let indicator = Indicator()
+        indicator.showIndicator(view: cell.myImageView)
+        
         if searchController.isActive {
             let urlRequest = URL(string: base_url+searchResults[indexPath.row].poster)!
             
             cell.myLabel.text = searchResults[indexPath.row].title
-            cell.myImageView.af_setImage(withURL: urlRequest)
+            cell.myImageView.af_setImage(withURL: urlRequest) { res in
+                indicator.stopIndicator()
+            }
         } else {
             let urlRequest = URL(string: base_url+movies[indexPath.row].poster)!
             
             cell.myLabel.text = movies[indexPath.row].title
-            cell.myImageView.af_setImage(withURL: urlRequest)
+            cell.myImageView.af_setImage(withURL: urlRequest) { res in
+                indicator.stopIndicator()
+            }
         }
         
         return cell
@@ -107,7 +114,6 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 return true
             }
         }
-        
         return false
     }
     
@@ -116,8 +122,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
         
         DispatchQueue(label: "get-movies").async {
-            let urlString = API.base.rawValue+API.v1.rawValue+API.movies.rawValue+"?user_id=\(11)"
-            print(urlString)
+            let urlString = API.base.rawValue+API.v1.rawValue+API.movies.rawValue+"?user_id=\(12)"
             Alamofire.request(urlString, method: .get).responseJSON { (response) in
                 let obj = JSON(response.result.value)
                 print("***** API results *****")
@@ -168,6 +173,7 @@ class MyCell: UITableViewCell {
         contentView.addSubview(myLabel)
         
         myImageView = UIImageView()
+        myImageView.contentMode = .center
         contentView.addSubview(myImageView)
     }
     
