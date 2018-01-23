@@ -106,6 +106,8 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             indicator.stopIndicator()
         }
         cell.add.text = tmp_lists[indexPath.row].add
+        cell.dvd.tag = Int(tmp_lists[indexPath.row].id)!
+        cell.fav.tag = Int(tmp_lists[indexPath.row].id)!
         
         ChangeButtonColor(cell: cell, list: tmp_lists, indexPath: indexPath)
         
@@ -205,8 +207,8 @@ class Cell: UITableViewCell {
     var add: UILabel!
     var poster: UIImageView!
     var save_icon: UIImageView!
-    var dvd: UIButton!
-    var fav: UIButton!
+    var dvd: OriginButton!
+    var fav: OriginButton!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -231,13 +233,17 @@ class Cell: UITableViewCell {
         add.font = UIFont.systemFont(ofSize: 14)
         add.textColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
         
-        dvd = UIButton(frame: CGRect.zero)
+        dvd = OriginButton(frame: CGRect.zero)
         dvd.setImage(UIImage(named: "icon_dvd")?.withRenderingMode(.alwaysTemplate), for: .normal)
         dvd.tintColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
+        dvd.addTarget(self, action: #selector(self.TapDVDFAVButton(sender:)), for: .touchUpInside)
+        dvd.isdvd = true
         
-        fav = UIButton(frame: CGRect.zero)
+        fav = OriginButton(frame: CGRect.zero)
         fav.setImage(UIImage(named: "icon_fav")?.withRenderingMode(.alwaysTemplate), for: .normal)
         fav.tintColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
+        fav.addTarget(self, action: #selector(self.TapDVDFAVButton(sender:)), for: .touchUpInside)
+        fav.isdvd = false
         
         contentView.addSubview(title)
         contentView.addSubview(onomatopoeia)
@@ -293,4 +299,13 @@ class Cell: UITableViewCell {
         fav.height(button_wh)
     }
     
+    func TapDVDFAVButton(sender: OriginButton) {
+        print(sender.tag)
+        print(sender.isdvd)
+    }
+    
+}
+
+class OriginButton:UIButton {
+    var isdvd:Bool?
 }
