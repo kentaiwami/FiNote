@@ -239,14 +239,14 @@ class Cell: UITableViewCell {
         
         title.trailing(to: contentView)
         title.leadingToTrailing(of: poster, offset: 20)
-        title.top(to: contentView, offset: 10)
+        title.top(to: contentView, offset: 5)
         
         onomatopoeia.trailing(to: contentView)
         onomatopoeia.topToBottom(of: title, offset: 5)
         onomatopoeia.leadingToTrailing(of: poster, offset: 20)
         
         add.trailing(to: contentView, offset: 0)
-        add.bottom(to: contentView, offset: -20)
+        add.bottom(to: contentView, offset: -10)
         
         save_icon.trailingToLeading(of: add, offset: -10)
         save_icon.centerY(to: add)
