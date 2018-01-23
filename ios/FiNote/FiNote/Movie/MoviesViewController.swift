@@ -242,7 +242,7 @@ class Cell: UITableViewCell {
         title.top(to: contentView, offset: 10)
         
         onomatopoeia.trailing(to: contentView)
-        onomatopoeia.topToBottom(of: title, offset: 10)
+        onomatopoeia.topToBottom(of: title, offset: 5)
         onomatopoeia.leadingToTrailing(of: poster, offset: 20)
         
         add.trailing(to: contentView, offset: 0)
