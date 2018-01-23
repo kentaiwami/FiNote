@@ -30,8 +30,12 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let id = try! keychain.getString("id")
         self.CallMoviesAPI(id: id!)
         
+        let main_width = UIScreen.main.bounds.width
+        let width = main_width * 0.2
+        let height = width * 1.5
+        
         myTableView = UITableView(frame: view.frame, style: .plain)
-        myTableView.rowHeight = 150
+        myTableView.rowHeight = height
         myTableView.delegate = self
         myTableView.dataSource = self
         myTableView.register(Cell.self, forCellReuseIdentifier: NSStringFromClass(Cell.self))
@@ -171,7 +175,8 @@ class Cell: UITableViewCell {
     var onomatopoeia: UILabel!
     var add: UILabel!
     var poster: UIImageView!
-    var save: UIImageView!
+    var save_icon: UIImageView!
+    var dvd: UIButton!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -186,20 +191,27 @@ class Cell: UITableViewCell {
         onomatopoeia.lineBreakMode = .byWordWrapping
         onomatopoeia.font = UIFont(name: Font.hiragino_W3.rawValue, size: 18)
         
-        save = UIImageView(frame: CGRect.zero)
-        save.image = UIImage(named: "icon_save")
-        save.image = save.image!.withRenderingMode(.alwaysTemplate)
-        save.tintColor = UIColor.hex("#999999", alpha: 1.0)
+        save_icon = UIImageView(frame: CGRect.zero)
+        save_icon.image = UIImage(named: "icon_save")
+        save_icon.image = save_icon.image!.withRenderingMode(.alwaysTemplate)
+        save_icon.tintColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
         
         add = UILabel(frame: CGRect.zero)
         add.textAlignment = .left
         add.font = UIFont(name: Font.hiragino_W3.rawValue, size: 14)
-        add.textColor = UIColor.hex("#999999", alpha: 1.0)
+        add.textColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
+        
+//        dvd = UIButton(type: .custom)
+//        dvd.setImage(UIImage(named: "icon_dvd")?.withRenderingMode(.alwaysTemplate), for: .normal)
+//        dvd.tintColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
+//        dvd.setAttributedTitle(NSMutableAttributedString(string: "DVD"), for: .normal)
+        
         
         contentView.addSubview(title)
         contentView.addSubview(onomatopoeia)
-        contentView.addSubview(save)
+        contentView.addSubview(save_icon)
         contentView.addSubview(add)
+//        contentView.addSubview(dvd)
         
         poster = UIImageView()
         contentView.addSubview(poster)
@@ -215,24 +227,26 @@ class Cell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        poster.frame = CGRect(x: 0, y: 0, width: 100, height: contentView.frame.height)
+        poster.frame = CGRect(x: 0, y: 0, width: contentView.frame.height/1.5, height: contentView.frame.height)
         
         title.trailing(to: contentView)
         title.leadingToTrailing(of: poster, offset: 20)
         title.top(to: contentView, offset: 20)
         
         onomatopoeia.trailing(to: contentView)
-        onomatopoeia.topToBottom(of: title, offset: 20)
+        onomatopoeia.topToBottom(of: title, offset: 10)
         onomatopoeia.leadingToTrailing(of: poster, offset: 20)
         
-        save.leadingToTrailing(of: poster, offset: 20)
-        save.bottom(to: contentView, offset: -10)
-        save.width(20)
-        save.height(20)
+        add.trailing(to: contentView, offset: 0)
+        add.bottom(to: contentView, offset: -20)
         
-        add.leadingToTrailing(of: save, offset: 10)
-        add.top(to: save)
-        add.bottom(to: save)
+        save_icon.trailingToLeading(of: add, offset: -10)
+        save_icon.centerY(to: add)
+        save_icon.width(20)
+        save_icon.height(20)
+        
+//        dvd.leadingToTrailing(of: add, offset: 50)
+//        dvd.centerY(to: add)
     }
     
 }
