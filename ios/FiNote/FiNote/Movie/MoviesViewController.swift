@@ -185,7 +185,7 @@ class Cell: UITableViewCell {
         title = UILabel(frame: CGRect.zero)
         title.textAlignment = .left
         title.lineBreakMode = .byTruncatingTail
-        title.font = UIFont(name: Font.hiragino_W6.rawValue, size: 22)
+        title.font = UIFont(name: Font.hiragino_W3.rawValue, size: 22)
         
         onomatopoeia = UILabel(frame: CGRect.zero)
         onomatopoeia.textAlignment = .left
@@ -235,14 +235,14 @@ class Cell: UITableViewCell {
         
         title.trailing(to: contentView)
         title.leadingToTrailing(of: poster, offset: 20)
-        title.top(to: contentView, offset: 20)
+        title.top(to: contentView, offset: 10)
         
         onomatopoeia.trailing(to: contentView)
         onomatopoeia.topToBottom(of: title, offset: 10)
         onomatopoeia.leadingToTrailing(of: poster, offset: 20)
         
         add.trailing(to: contentView, offset: 0)
-        add.topToBottom(of: onomatopoeia, offset: 20)
+        add.bottom(to: contentView, offset: -20)
         
         save_icon.trailingToLeading(of: add, offset: -10)
         save_icon.centerY(to: add)
