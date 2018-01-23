@@ -69,21 +69,3 @@ extension Date {
     }
 }
 
-class Indicator {
-    let indicator = UIActivityIndicatorView()
-    
-    func showIndicator(view: UIView) {
-        indicator.activityIndicatorViewStyle = .whiteLarge
-        indicator.center = view.center
-        indicator.color = UIColor.gray
-        indicator.hidesWhenStopped = true
-        view.addSubview(indicator)
-        view.bringSubview(toFront: indicator)
-        indicator.startAnimating()
-    }
-    
-    func stopIndicator() {
-        self.indicator.stopAnimating()
-    }
-}
-
