@@ -201,17 +201,15 @@ class Cell: UITableViewCell {
         add.font = UIFont(name: Font.hiragino_W3.rawValue, size: 14)
         add.textColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
         
-//        dvd = UIButton(type: .custom)
-//        dvd.setImage(UIImage(named: "icon_dvd")?.withRenderingMode(.alwaysTemplate), for: .normal)
-//        dvd.tintColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
-//        dvd.setAttributedTitle(NSMutableAttributedString(string: "DVD"), for: .normal)
-        
+        dvd = UIButton(frame: CGRect.zero)
+        dvd.setImage(UIImage(named: "icon_dvd")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        dvd.tintColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
         
         contentView.addSubview(title)
         contentView.addSubview(onomatopoeia)
         contentView.addSubview(save_icon)
         contentView.addSubview(add)
-//        contentView.addSubview(dvd)
+        contentView.addSubview(dvd)
         
         poster = UIImageView()
         contentView.addSubview(poster)
@@ -245,8 +243,8 @@ class Cell: UITableViewCell {
         save_icon.width(20)
         save_icon.height(20)
         
-//        dvd.leadingToTrailing(of: add, offset: 50)
-//        dvd.centerY(to: add)
+        dvd.leadingToTrailing(of: poster, offset: 20)
+        dvd.centerY(to: save_icon)
     }
     
 }
