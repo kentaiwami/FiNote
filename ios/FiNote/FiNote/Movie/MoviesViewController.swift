@@ -277,7 +277,7 @@ class Cell: UITableViewCell {
         dvd.width(button_wh)
         dvd.height(button_wh)
         
-        fav.leadingToTrailing(of: dvd, offset: 40)
+        fav.leadingToTrailing(of: dvd, offset: 20)
         fav.centerY(to: dvd)
         fav.width(button_wh)
         fav.height(button_wh)
