@@ -22,6 +22,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var preViewName = "Movies"
     var myTableView = UITableView()
     var searchController = UISearchController()
+    let refresh_controll = UIRefreshControl()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,8 +53,15 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         definesPresentationContext = true
         
         myTableView.tableHeaderView = searchController.searchBar
+        myTableView.refreshControl = refresh_controll
+        refresh_controll.addTarget(self, action: #selector(self.refresh(sender:)), for: .valueChanged)
         
         self.tabBarController?.delegate = self
+    }
+    
+    func refresh(sender: UIRefreshControl) {
+        refresh_controll.beginRefreshing()
+        CallMoviesAPI(id: String(11))
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -167,12 +175,14 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     self.myTableView.reloadData()
                     
                     NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                    self.refresh_controll.endRefreshing()
                 }else {
                     let popup = PopupDialog(title: "Error", message: obj.arrayValue[0].stringValue)
                     let button = DefaultButton(title: "OK", dismissOnTap: true) {}
                     popup.addButtons([button])
                     
                     NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                    self.refresh_controll.endRefreshing()
                     self.present(popup, animated: true, completion: nil)
                 }
             }
