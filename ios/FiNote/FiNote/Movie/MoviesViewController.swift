@@ -23,13 +23,14 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var myTableView = UITableView()
     var searchController = UISearchController()
     let refresh_controll = UIRefreshControl()
+    var user_id = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let keychain = Keychain()
-        let id = try! keychain.getString("id")
-        self.CallMoviesAPI(id: id!)
+        user_id = (try! keychain.getString("id"))!
+        self.CallMoviesAPI()
         
         let main_width = UIScreen.main.bounds.width
         let width = main_width * 0.2
@@ -61,7 +62,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func refresh(sender: UIRefreshControl) {
         refresh_controll.beginRefreshing()
-        CallMoviesAPI(id: String(11))
+        CallMoviesAPI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -155,12 +156,12 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.fav.tintColor = fav_color
     }
     
-    func CallMoviesAPI(id: String) {
+    func CallMoviesAPI() {
         let activityData = ActivityData(message: "Get Movies", type: .lineScaleParty)
         NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
         
         DispatchQueue(label: "get-movies").async {
-            let urlString = API.base.rawValue+API.v1.rawValue+API.movies.rawValue+"?user_id=\(12)"
+            let urlString = API.base.rawValue+API.v1.rawValue+API.movies.rawValue+"?user_id=\(self.user_id)"
             Alamofire.request(urlString, method: .get).responseJSON { (response) in
                 let obj = JSON(response.result.value)
                 print("***** API results *****")
@@ -300,8 +301,11 @@ class Cell: UITableViewCell {
     }
     
     func TapDVDFAVButton(sender: OriginButton) {
-        print(sender.tag)
-        print(sender.isdvd)
+        if sender.isdvd! {
+            
+        }else {
+            
+        }
     }
     
 }
