@@ -9,4 +9,5 @@
 enum Color: String {
     case main = "#572C09"
     case gray = "#999999"
+    case red = "#E62F3D"
 }

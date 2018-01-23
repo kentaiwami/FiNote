@@ -91,6 +91,8 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 indicator.stopIndicator()
             }
             cell.add.text = searchResults[indexPath.row].add
+            
+            ChangeButtonColor(cell: cell, list: searchResults, indexPath: indexPath)
         } else {
             let urlRequest = URL(string: base_url+movies[indexPath.row].poster)!
             
@@ -100,6 +102,8 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 indicator.stopIndicator()
             }
             cell.add.text = movies[indexPath.row].add
+            
+            ChangeButtonColor(cell: cell, list: movies, indexPath: indexPath)
         }
         
         return cell
@@ -124,6 +128,16 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
         }
         return false
+    }
+    
+    func ChangeButtonColor(cell: Cell, list: [Movies.Data], indexPath: IndexPath) {
+        if list[indexPath.row].dvd {
+            cell.dvd.tintColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
+        }
+        
+        if list[indexPath.row].fav {
+            cell.fav.tintColor = UIColor.hex(Color.red.rawValue, alpha: 1.0)
+        }
     }
     
     func CallMoviesAPI(id: String) {
