@@ -49,7 +49,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         searchController.searchBar.sizeToFit()
         searchController.dimsBackgroundDuringPresentation = false
         searchController.hidesNavigationBarDuringPresentation = false
-        searchController.searchBar.placeholder = "映画のタイトルやオノマトペで検索"
+        searchController.searchBar.placeholder = "タイトルやオノマトペで絞り込む"
         definesPresentationContext = true
         
         myTableView.tableHeaderView = searchController.searchBar
