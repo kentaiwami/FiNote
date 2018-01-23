@@ -82,29 +82,24 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let indicator = Indicator()
         indicator.showIndicator(view: cell.poster)
         
+        var tmp_lists: [Movies.Data] = []
+        
         if searchController.isActive {
-            let urlRequest = URL(string: base_url+searchResults[indexPath.row].poster)!
-            
-            cell.title.text = searchResults[indexPath.row].title
-            cell.onomatopoeia.text = searchResults[indexPath.row].onomatopoeia.joined(separator: " ")
-            cell.poster.af_setImage(withURL: urlRequest) { res in
-                indicator.stopIndicator()
-            }
-            cell.add.text = searchResults[indexPath.row].add
-            
-            ChangeButtonColor(cell: cell, list: searchResults, indexPath: indexPath)
-        } else {
-            let urlRequest = URL(string: base_url+movies[indexPath.row].poster)!
-            
-            cell.title.text = movies[indexPath.row].title
-            cell.onomatopoeia.text = movies[indexPath.row].onomatopoeia.joined(separator: " ")
-            cell.poster.af_setImage(withURL: urlRequest) { res in
-                indicator.stopIndicator()
-            }
-            cell.add.text = movies[indexPath.row].add
-            
-            ChangeButtonColor(cell: cell, list: movies, indexPath: indexPath)
+            tmp_lists = searchResults
+        }else {
+            tmp_lists = movies
         }
+        
+        let urlRequest = URL(string: base_url+tmp_lists[indexPath.row].poster)!
+        
+        cell.title.text = tmp_lists[indexPath.row].title
+        cell.onomatopoeia.text = tmp_lists[indexPath.row].onomatopoeia.joined(separator: " ")
+        cell.poster.af_setImage(withURL: urlRequest) { res in
+            indicator.stopIndicator()
+        }
+        cell.add.text = tmp_lists[indexPath.row].add
+        
+        ChangeButtonColor(cell: cell, list: tmp_lists, indexPath: indexPath)
         
         return cell
     }
@@ -131,13 +126,23 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func ChangeButtonColor(cell: Cell, list: [Movies.Data], indexPath: IndexPath) {
+        var dvd_color = UIColor()
+        var fav_color = UIColor()
+        
         if list[indexPath.row].dvd {
-            cell.dvd.tintColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
+            dvd_color = UIColor.hex(Color.main.rawValue, alpha: 1.0)
+        }else {
+            dvd_color = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
         }
         
         if list[indexPath.row].fav {
-            cell.fav.tintColor = UIColor.hex(Color.red.rawValue, alpha: 1.0)
+            fav_color = UIColor.hex(Color.red.rawValue, alpha: 1.0)
+        }else {
+            fav_color = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
         }
+        
+        cell.dvd.tintColor = dvd_color
+        cell.fav.tintColor = fav_color
     }
     
     func CallMoviesAPI(id: String) {
