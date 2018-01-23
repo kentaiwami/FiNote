@@ -10,8 +10,3 @@ enum Color: String {
     case main = "#572C09"
     case gray = "#999999"
 }
-
-enum Font: String {
-    case hiragino_W6 = "HiraginoSans-W6"
-    case hiragino_W3 = "HiraginoSans-W3"
-}

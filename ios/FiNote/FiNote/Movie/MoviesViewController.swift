@@ -185,12 +185,12 @@ class Cell: UITableViewCell {
         title = UILabel(frame: CGRect.zero)
         title.textAlignment = .left
         title.lineBreakMode = .byTruncatingTail
-        title.font = UIFont(name: Font.hiragino_W3.rawValue, size: 22)
+        title.font = UIFont.systemFont(ofSize: 22)
         
         onomatopoeia = UILabel(frame: CGRect.zero)
         onomatopoeia.textAlignment = .left
         onomatopoeia.lineBreakMode = .byWordWrapping
-        onomatopoeia.font = UIFont(name: Font.hiragino_W3.rawValue, size: 18)
+        onomatopoeia.font = UIFont.systemFont(ofSize: 18)
         
         save_icon = UIImageView(frame: CGRect.zero)
         save_icon.image = UIImage(named: "icon_save")
@@ -199,7 +199,7 @@ class Cell: UITableViewCell {
         
         add = UILabel(frame: CGRect.zero)
         add.textAlignment = .left
-        add.font = UIFont(name: Font.hiragino_W3.rawValue, size: 14)
+        add.font = UIFont.systemFont(ofSize: 14)
         add.textColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
         
         dvd = UIButton(frame: CGRect.zero)
@@ -231,6 +231,10 @@ class Cell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        
+        let button_wh = 25 as CGFloat
+        let icon_wh = 20 as CGFloat
+        
         poster.frame = CGRect(x: 0, y: 0, width: contentView.frame.height/1.5, height: contentView.frame.height)
         
         title.trailing(to: contentView)
@@ -246,14 +250,18 @@ class Cell: UITableViewCell {
         
         save_icon.trailingToLeading(of: add, offset: -10)
         save_icon.centerY(to: add)
-        save_icon.width(20)
-        save_icon.height(20)
+        save_icon.width(icon_wh)
+        save_icon.height(icon_wh)
         
         dvd.leadingToTrailing(of: poster, offset: 20)
         dvd.centerY(to: save_icon)
+        dvd.width(button_wh)
+        dvd.height(button_wh)
         
-        fav.leadingToTrailing(of: dvd, offset: 30)
+        fav.leadingToTrailing(of: dvd, offset: 40)
         fav.centerY(to: dvd)
+        fav.width(button_wh)
+        fav.height(button_wh)
     }
     
 }
