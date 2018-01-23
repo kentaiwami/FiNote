@@ -177,6 +177,7 @@ class Cell: UITableViewCell {
     var poster: UIImageView!
     var save_icon: UIImageView!
     var dvd: UIButton!
+    var fav: UIButton!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -205,11 +206,16 @@ class Cell: UITableViewCell {
         dvd.setImage(UIImage(named: "icon_dvd")?.withRenderingMode(.alwaysTemplate), for: .normal)
         dvd.tintColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
         
+        fav = UIButton(frame: CGRect.zero)
+        fav.setImage(UIImage(named: "icon_fav")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        fav.tintColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
+        
         contentView.addSubview(title)
         contentView.addSubview(onomatopoeia)
         contentView.addSubview(save_icon)
         contentView.addSubview(add)
         contentView.addSubview(dvd)
+        contentView.addSubview(fav)
         
         poster = UIImageView()
         contentView.addSubview(poster)
@@ -245,6 +251,9 @@ class Cell: UITableViewCell {
         
         dvd.leadingToTrailing(of: poster, offset: 20)
         dvd.centerY(to: save_icon)
+        
+        fav.leadingToTrailing(of: dvd, offset: 30)
+        fav.centerY(to: dvd)
     }
     
 }
