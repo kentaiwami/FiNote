@@ -143,7 +143,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         
         let detailVC = MovieDetailViewController()
-        detailVC.SetMovie(movie: tmp_lists[indexPath.row])
+        detailVC.SetMovieID(movie_id: tmp_lists[indexPath.row].id)
         self.navigationController!.pushViewController(detailVC, animated: true)
     }
     

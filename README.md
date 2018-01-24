@@ -137,7 +137,7 @@ response：
 ### Get Movie
 ```
 method：GET
-endpoint：api/v1/movie/detail/?user_id=2&tmdb_id=1234
+endpoint：api/v1/movie/detail/?user_id=2&movie_id=1234
 response：
 "results": [
         {
