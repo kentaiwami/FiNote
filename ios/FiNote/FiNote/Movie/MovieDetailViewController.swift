@@ -58,7 +58,7 @@ class MovieDetailViewController: UIViewController {
                     let button = DefaultButton(title: "OK", dismissOnTap: true) {}
                     popup.addButtons([button])
                     
-                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                    NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
                     self.present(popup, animated: true, completion: nil)
                 }
             }
