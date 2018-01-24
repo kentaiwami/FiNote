@@ -16,5 +16,4 @@ target 'FiNote' do
 	pod 'NVActivityIndicatorView', '3.7.0'
 	pod 'AlamofireImage', '~> 3.3'
 	pod 'StatusProvider'
-	pod 'PromiseKit', '~> 4.4'
 end

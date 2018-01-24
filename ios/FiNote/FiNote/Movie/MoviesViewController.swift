@@ -106,7 +106,6 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let base_url = "https://image.tmdb.org/t/p/w300_and_h450_bestv2"
         let cell = tableView.dequeueReusableCell(withIdentifier: NSStringFromClass(MoviesCell.self), for: indexPath) as! MoviesCell
         cell.accessoryType = .disclosureIndicator
         
@@ -118,7 +117,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             tmp_lists = movies
         }
         
-        let urlRequest = URL(string: base_url+tmp_lists[indexPath.row].poster)!
+        let urlRequest = URL(string: API.poster_base.rawValue+tmp_lists[indexPath.row].poster)!
         
         cell.title.text = tmp_lists[indexPath.row].title
         cell.onomatopoeia.text = tmp_lists[indexPath.row].onomatopoeia.joined(separator: " ")

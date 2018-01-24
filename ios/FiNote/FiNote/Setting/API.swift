@@ -27,4 +27,5 @@ enum API: String {
     case search = "search/"
     case titles = "titles/"
     case origin = "origin/"
+    case poster_base = "https://image.tmdb.org/t/p/w300_and_h450_bestv2"
 }

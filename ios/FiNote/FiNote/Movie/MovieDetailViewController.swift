@@ -14,13 +14,14 @@ import AlamofireImage
 import KeychainAccess
 import PopupDialog
 import TinyConstraints
-import PromiseKit
 
 class MovieDetailViewController: UIViewController {
 
     var movie_id = ""
     var user_id = ""
     var movie = Movie.Data()
+    
+    var poster = UIImageView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,48 +32,42 @@ class MovieDetailViewController: UIViewController {
         let keychain = Keychain()
         user_id = (try! keychain.getString("id"))!
         
-        let activityData = ActivityData(message: "Get Movie", type: .lineScaleParty)
-        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
-        
-        CallMovieAPI().then { _ in
-            NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
-        }.catch { err in
-            let ns_err = err as NSError
-            let popup = PopupDialog(title: "Error", message: ns_err.domain)
-            let button = DefaultButton(title: "OK", dismissOnTap: true) {}
-            popup.addButtons([button])
-
-            NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
-            self.present(popup, animated: true, completion: nil)
-        }
+        CallMovieAPI()
     }
     
     func SetMovieID(movie_id: String) {
         self.movie_id = movie_id
     }
     
-    func CallMovieAPI() -> Promise<String>{
+    func CallMovieAPI() {
         let urlString = API.base.rawValue+API.v1.rawValue+API.movie.rawValue+API.detail.rawValue+"?user_id=\(self.user_id)&movie_id=\(self.movie_id)"
-        let promise = Promise<String> { (resolve, reject) in
-            DispatchQueue(label: "get-movie").async {
-                Alamofire.request(urlString, method: .get).responseJSON { (response) in
-                    let obj = JSON(response.result.value)
-                    print("***** API results *****")
-                    print(obj)
-                    print("***** API results *****")
-                    
-                    if IsHTTPStatus(statusCode: response.response?.statusCode) {
-                        self.movie = Movie().GetData(json: obj)
-                        resolve("OK")
-                    }else {
-                        reject(NSError(domain: obj.arrayValue[0].stringValue, code: (response.response?.statusCode)!, userInfo: nil))
+        let activityData = ActivityData(message: "Get Movie", type: .lineScaleParty)
+        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
+        
+        DispatchQueue(label: "get-movies").async {
+            Alamofire.request(urlString, method: .get).responseJSON { (response) in
+                let obj = JSON(response.result.value)
+                print("***** API results *****")
+                print(obj)
+                print("***** API results *****")
+                
+                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                    self.movie = Movie().GetData(json: obj)
+                    self.poster.af_setImage(withURL: URL(string: API.poster_base.rawValue+self.movie.poster)!) { res in
+                        print(res)
                     }
+                    NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                }else {
+                    let popup = PopupDialog(title: "Error", message: obj.arrayValue[0].stringValue)
+                    let button = DefaultButton(title: "OK", dismissOnTap: true) {}
+                    popup.addButtons([button])
+                    
+                    NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                    self.present(popup, animated: true, completion: nil)
                 }
             }
         }
-        return promise
     }
-
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
