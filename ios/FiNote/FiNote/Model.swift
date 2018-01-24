@@ -7,3 +7,26 @@
 //
 
 import SwiftyJSON
+
+class Movies {
+    struct Data {
+        var add = ""
+        var id = ""
+        var title = ""
+        var poster = ""
+        var onomatopoeia:[String] = []
+    }
+    
+    func GetData(json: JSON) -> Data {
+        var data = Data()
+        let dateOnlyString = Date.stringFromString(string: json["add"].stringValue, formatIn: "yyyy-MM-dd'T'HH:mm:ss", formatOut: "yyyy-MM-dd")
+        
+        data.add = dateOnlyString
+        data.id = json["id"].stringValue
+        data.title = json["title"].stringValue
+        data.poster = json["poster"].stringValue
+        data.onomatopoeia = json["onomatopoeia"].arrayValue.map{$0.stringValue}
+        
+        return data
+    }
+}

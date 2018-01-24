@@ -14,4 +14,6 @@ target 'FiNote' do
 	pod 'Floaty', '~> 3.0.0'
 	pod 'PopupDialog', '0.5.4'
 	pod 'NVActivityIndicatorView', '3.7.0'
+	pod 'AlamofireImage', '~> 3.3'
+	pod 'StatusProvider'
 end
