@@ -14,13 +14,15 @@ import AlamofireImage
 import KeychainAccess
 import PopupDialog
 import TinyConstraints
+import Floaty
 
-class MovieDetailViewController: UIViewController {
+class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
 
     var movie_id = ""
     var user_id = ""
     var movie = Movie.Data()
     
+    var scrollView = UIScrollView()
     var poster = UIImageView()
     
     override func viewDidLoad() {
@@ -39,6 +41,21 @@ class MovieDetailViewController: UIViewController {
         self.movie_id = movie_id
     }
     
+    func InitScrollView() {
+        scrollView.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height)
+        self.view.addSubview(scrollView)
+        scrollView.delegate = self
+        
+        scrollView.top(to: self.view)
+        scrollView.leading(to: self.view)
+        scrollView.trailing(to: self.view)
+        scrollView.bottom(to: self.view)
+    }
+    
+    func UpdateScrollViewContentSize(frame: CGRect) {
+        scrollView.contentSize = CGSize(width: self.view.bounds.width, height: frame.height+frame.origin.y)
+    }
+    
     func CallMovieAPI() {
         let urlString = API.base.rawValue+API.v1.rawValue+API.movie.rawValue+API.detail.rawValue+"?user_id=\(self.user_id)&movie_id=\(self.movie_id)"
         let activityData = ActivityData(message: "Get Movie", type: .lineScaleParty)
@@ -53,10 +70,9 @@ class MovieDetailViewController: UIViewController {
                 
                 if IsHTTPStatus(statusCode: response.response?.statusCode) {
                     self.movie = Movie().GetData(json: obj)
-                    self.poster.af_setImage(withURL: URL(string: API.poster_base.rawValue+self.movie.poster)!) { res in
-                        print(res)
-                    }
+                    self.poster.af_setImage(withURL: URL(string: API.poster_base.rawValue+self.movie.poster)!)
                     NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                    self.DrawViews()
                 }else {
                     let popup = PopupDialog(title: "Error", message: obj.arrayValue[0].stringValue)
                     let button = DefaultButton(title: "OK", dismissOnTap: true) {}
@@ -67,6 +83,17 @@ class MovieDetailViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    func DrawViews() {
+        InitScrollView()
+        //TODO: poster
+        //TODO: title
+        //TODO: overview
+        //TODO: public icon
+        //TODO: public date
+        //TODO: delete button
+        //TODO: floaty
     }
 
     override func didReceiveMemoryWarning() {
