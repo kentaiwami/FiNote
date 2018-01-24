@@ -20,7 +20,7 @@ class GetMoviesViewSet(viewsets.ViewSet):
 
         :param request: URLクエリにuser_idを含む
         :returns        title, tmdb_id, add datetime, poster,
-                        dvd, fav, onomatopoeia names
+                        onomatopoeia names
         """
 
         if not 'user_id' in request.GET:
@@ -46,8 +46,6 @@ class GetMoviesViewSet(viewsets.ViewSet):
                 'id': movie_user_obj.movie.tmdb_id,
                 'add': movie_user_obj.created_at,
                 'poster': movie_user_obj.movie.poster,
-                'dvd': movie_user_obj.dvd,
-                'fav': movie_user_obj.fav,
                 'onomatopoeia': onomatopoeia_name_list
             })
 
