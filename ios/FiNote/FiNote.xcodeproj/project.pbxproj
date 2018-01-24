@@ -24,6 +24,7 @@
 		379728B9201539B10045EB61 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379728B8201539B10045EB61 /* Common.swift */; };
 		379728BB201545030045EB61 /* MoviesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379728BA201545030045EB61 /* MoviesViewController.swift */; };
 		379728BE201546370045EB61 /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 379728BD201546370045EB61 /* 1.jpg */; };
+		37CF06E62019039600E99129 /* MovieDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CF06E52019039600E99129 /* MovieDetailViewController.swift */; };
 		747DA20B1392E0EFCC94895C /* Pods_FiNote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F9B3ACA4F672A8807D425EC /* Pods_FiNote.framework */; };
 /* End PBXBuildFile section */
 
@@ -52,6 +53,7 @@
 		379728B8201539B10045EB61 /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
 		379728BA201545030045EB61 /* MoviesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesViewController.swift; sourceTree = "<group>"; };
 		379728BD201546370045EB61 /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
+		37CF06E52019039600E99129 /* MovieDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +123,7 @@
 			children = (
 				379728BA201545030045EB61 /* MoviesViewController.swift */,
 				371D1F4A2018F39100977971 /* MoviesCell.swift */,
+				37CF06E52019039600E99129 /* MovieDetailViewController.swift */,
 			);
 			path = Movie;
 			sourceTree = "<group>";
@@ -326,6 +329,7 @@
 				374D678D2011EAF300706D4F /* SecondViewController.swift in Sources */,
 				376031722014820800E69674 /* Extensions.swift in Sources */,
 				371D1F4B2018F39100977971 /* MoviesCell.swift in Sources */,
+				37CF06E62019039600E99129 /* MovieDetailViewController.swift in Sources */,
 				374D67892011EAF300706D4F /* AppDelegate.swift in Sources */,
 				379728B9201539B10045EB61 /* Common.swift in Sources */,
 				37349E2E20151EBA00A37D2D /* API.swift in Sources */,

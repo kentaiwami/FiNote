@@ -111,7 +111,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.accessoryType = .disclosureIndicator
         
         var tmp_lists: [Movies.Data] = []
-        
+
         if searchController.isActive {
             tmp_lists = searchResults
         }else {
@@ -132,8 +132,19 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("HOGEOHGE:", indexPath)
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        var tmp_lists: [Movies.Data] = []
+        
+        if searchController.isActive {
+            tmp_lists = searchResults
+        }else {
+            tmp_lists = movies
+        }
+        
+        let detailVC = MovieDetailViewController()
+        detailVC.SetMovie(movie: tmp_lists[indexPath.row])
+        self.navigationController!.pushViewController(detailVC, animated: true)
     }
     
     func updateSearchResults(for searchController: UISearchController) {
