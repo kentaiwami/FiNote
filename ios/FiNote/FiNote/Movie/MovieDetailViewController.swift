@@ -44,7 +44,7 @@ class MovieDetailViewController: UIViewController {
         let activityData = ActivityData(message: "Get Movie", type: .lineScaleParty)
         NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
         
-        DispatchQueue(label: "get-movies").async {
+        DispatchQueue(label: "get-movie").async {
             Alamofire.request(urlString, method: .get).responseJSON { (response) in
                 let obj = JSON(response.result.value)
                 print("***** API results *****")
