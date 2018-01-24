@@ -127,10 +127,6 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             placeholderImage: UIImage(named: "no_image")
         )
         cell.add.text = tmp_lists[indexPath.row].add
-        cell.dvd.tag = Int(tmp_lists[indexPath.row].id)!
-        cell.fav.tag = Int(tmp_lists[indexPath.row].id)!
-        
-        ChangeButtonColor(cell: cell, list: tmp_lists, indexPath: indexPath)
         
         return cell
     }
@@ -154,26 +150,6 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
         }
         return false
-    }
-    
-    func ChangeButtonColor(cell: MoviesCell, list: [Movies.Data], indexPath: IndexPath) {
-        var dvd_color = UIColor()
-        var fav_color = UIColor()
-        
-        if list[indexPath.row].dvd {
-            dvd_color = UIColor.hex(Color.main.rawValue, alpha: 1.0)
-        }else {
-            dvd_color = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
-        }
-        
-        if list[indexPath.row].fav {
-            fav_color = UIColor.hex(Color.red.rawValue, alpha: 1.0)
-        }else {
-            fav_color = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
-        }
-        
-        cell.dvd.tintColor = dvd_color
-        cell.fav.tintColor = fav_color
     }
     
     func CallMoviesAPI() {

@@ -14,8 +14,6 @@ class MoviesCell: UITableViewCell {
     var add: UILabel!
     var poster: UIImageView!
     var save_icon: UIImageView!
-    var dvd: OriginButton!
-    var fav: OriginButton!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -28,6 +26,7 @@ class MoviesCell: UITableViewCell {
         onomatopoeia = UILabel(frame: CGRect.zero)
         onomatopoeia.textAlignment = .left
         onomatopoeia.lineBreakMode = .byWordWrapping
+        onomatopoeia.numberOfLines = 0
         onomatopoeia.font = UIFont.systemFont(ofSize: 18)
         
         save_icon = UIImageView(frame: CGRect.zero)
@@ -40,24 +39,10 @@ class MoviesCell: UITableViewCell {
         add.font = UIFont.systemFont(ofSize: 14)
         add.textColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
         
-        dvd = OriginButton(frame: CGRect.zero)
-        dvd.setImage(UIImage(named: "icon_dvd")?.withRenderingMode(.alwaysTemplate), for: .normal)
-        dvd.tintColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
-        dvd.addTarget(self, action: #selector(self.TapDVDFAVButton(sender:)), for: .touchUpInside)
-        dvd.isdvd = true
-        
-        fav = OriginButton(frame: CGRect.zero)
-        fav.setImage(UIImage(named: "icon_fav")?.withRenderingMode(.alwaysTemplate), for: .normal)
-        fav.tintColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
-        fav.addTarget(self, action: #selector(self.TapDVDFAVButton(sender:)), for: .touchUpInside)
-        fav.isdvd = false
-        
         contentView.addSubview(title)
         contentView.addSubview(onomatopoeia)
         contentView.addSubview(save_icon)
         contentView.addSubview(add)
-        contentView.addSubview(dvd)
-        contentView.addSubview(fav)
         
         poster = UIImageView()
         contentView.addSubview(poster)
@@ -74,7 +59,6 @@ class MoviesCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        let button_wh = 25 as CGFloat
         let icon_wh = 20 as CGFloat
         
         poster.frame = CGRect(x: 0, y: 0, width: contentView.frame.height/1.5, height: contentView.frame.height)
@@ -94,27 +78,5 @@ class MoviesCell: UITableViewCell {
         save_icon.centerY(to: add)
         save_icon.width(icon_wh)
         save_icon.height(icon_wh)
-        
-        dvd.leadingToTrailing(of: poster, offset: 20)
-        dvd.centerY(to: save_icon)
-        dvd.width(button_wh)
-        dvd.height(button_wh)
-        
-        fav.leadingToTrailing(of: dvd, offset: 20)
-        fav.centerY(to: dvd)
-        fav.width(button_wh)
-        fav.height(button_wh)
     }
-    
-    func TapDVDFAVButton(sender: OriginButton) {
-        if sender.isdvd! {
-            
-        }else {
-            
-        }
-    }
-}
-
-class OriginButton:UIButton {
-    var isdvd:Bool?
 }
