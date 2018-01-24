@@ -11,9 +11,9 @@ import UIKit
 class MoviesCell: UITableViewCell {
     var title: UILabel!
     var onomatopoeia: UILabel!
-    var add: UILabel!
+    var add_date: UILabel!
     var poster: UIImageView!
-    var save_icon: UIImageView!
+    var added_list_icon: UIImageView!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -29,20 +29,20 @@ class MoviesCell: UITableViewCell {
         onomatopoeia.numberOfLines = 0
         onomatopoeia.font = UIFont.systemFont(ofSize: 18)
         
-        save_icon = UIImageView(frame: CGRect.zero)
-        save_icon.image = UIImage(named: "icon_save")
-        save_icon.image = save_icon.image!.withRenderingMode(.alwaysTemplate)
-        save_icon.tintColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
+        added_list_icon = UIImageView(frame: CGRect.zero)
+        added_list_icon.image = UIImage(named: "icon_add_list")
+        added_list_icon.image = added_list_icon.image!.withRenderingMode(.alwaysTemplate)
+        added_list_icon.tintColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
         
-        add = UILabel(frame: CGRect.zero)
-        add.textAlignment = .left
-        add.font = UIFont.systemFont(ofSize: 14)
-        add.textColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
+        add_date = UILabel(frame: CGRect.zero)
+        add_date.textAlignment = .left
+        add_date.font = UIFont.systemFont(ofSize: 16)
+        add_date.textColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
         
         contentView.addSubview(title)
         contentView.addSubview(onomatopoeia)
-        contentView.addSubview(save_icon)
-        contentView.addSubview(add)
+        contentView.addSubview(added_list_icon)
+        contentView.addSubview(add_date)
         
         poster = UIImageView()
         contentView.addSubview(poster)
@@ -59,7 +59,7 @@ class MoviesCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        let icon_wh = 20 as CGFloat
+        let icon_wh = 30 as CGFloat
         
         poster.frame = CGRect(x: 0, y: 0, width: contentView.frame.height/1.5, height: contentView.frame.height)
         
@@ -71,12 +71,12 @@ class MoviesCell: UITableViewCell {
         onomatopoeia.topToBottom(of: title, offset: 5)
         onomatopoeia.leadingToTrailing(of: poster, offset: 20)
         
-        add.trailing(to: contentView, offset: 0)
-        add.bottom(to: contentView, offset: -10)
+        add_date.trailing(to: contentView, offset: 0)
+        add_date.bottom(to: contentView, offset: -10)
         
-        save_icon.trailingToLeading(of: add, offset: -10)
-        save_icon.centerY(to: add)
-        save_icon.width(icon_wh)
-        save_icon.height(icon_wh)
+        added_list_icon.trailingToLeading(of: add_date, offset: -5)
+        added_list_icon.centerY(to: add_date)
+        added_list_icon.width(icon_wh)
+        added_list_icon.height(icon_wh)
     }
 }

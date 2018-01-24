@@ -126,7 +126,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             withURL: urlRequest,
             placeholderImage: UIImage(named: "no_image")
         )
-        cell.add.text = tmp_lists[indexPath.row].add
+        cell.add_date.text = tmp_lists[indexPath.row].add
         
         return cell
     }
