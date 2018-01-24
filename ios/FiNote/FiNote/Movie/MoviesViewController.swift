@@ -88,9 +88,6 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let cell = tableView.dequeueReusableCell(withIdentifier: NSStringFromClass(Cell.self), for: indexPath) as! Cell
         cell.accessoryType = .disclosureIndicator
         
-        let indicator = Indicator()
-        indicator.showIndicator(view: cell.poster)
-        
         var tmp_lists: [Movies.Data] = []
         
         if searchController.isActive {
@@ -103,9 +100,10 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         cell.title.text = tmp_lists[indexPath.row].title
         cell.onomatopoeia.text = tmp_lists[indexPath.row].onomatopoeia.joined(separator: " ")
-        cell.poster.af_setImage(withURL: urlRequest) { res in
-            indicator.stopIndicator()
-        }
+        cell.poster.af_setImage(
+            withURL: urlRequest,
+            placeholderImage: UIImage(named: "no_image")
+        )
         cell.add.text = tmp_lists[indexPath.row].add
         cell.dvd.tag = Int(tmp_lists[indexPath.row].id)!
         cell.fav.tag = Int(tmp_lists[indexPath.row].id)!
