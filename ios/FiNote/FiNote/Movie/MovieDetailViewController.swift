@@ -14,6 +14,7 @@ class MovieDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(movie.id)
     }
     
     func SetMovie(movie: Movies.Data) {

@@ -52,6 +52,50 @@ class GetMoviesViewSet(viewsets.ViewSet):
         return Response({'results': results})
 
 
+class GetMovieViewSet(viewsets.ViewSet):
+    @staticmethod
+    def list(request):
+        """
+        ユーザが追加した映画に関する詳細情報を返す
+
+        :param request: URLクエリにuser_idを含む
+        :returns        title, tmdb_id, add datetime, poster, overview
+                        onomatopoeia names, dvd, fav
+        """
+
+        if not 'user_id' in request.GET:
+            raise serializers.ValidationError('user_idが含まれていません')
+
+        if not 'movie_id' in request.GET:
+            raise serializers.ValidationError('movie_idが含まれていません')
+
+        user_id = request.GET.get('user_id')
+        movie_id = request.GET.get('movie_id')
+
+        try:
+            user = AuthUser.objects.get(pk=user_id)
+            movie = Movie.objects.get(tmdb_id=movie_id)
+            movie_user_obj = Movie_User.objects.get(user=user, movie=movie)
+        except:
+            raise serializers.ValidationError('該当データが見つかりませんでした')
+
+        movie_user_onomatopoeia_list = Movie_User_Onomatopoeia.objects.filter(movie_user=movie_user_obj)
+        onomatopoeia_name_list = [movie_user_onomatopoeia.onomatopoeia.name for movie_user_onomatopoeia in
+                                  movie_user_onomatopoeia_list]
+
+        results = {
+            'title': movie_user_obj.movie.title,
+            'overview': movie_user_obj.movie.overview,
+            'poster': movie_user_obj.movie.poster,
+            'add': movie_user_obj.created_at,
+            'onomatopoeia': onomatopoeia_name_list,
+            'dvd': movie_user_obj.dvd,
+            'fav': movie_user_obj.fav
+        }
+
+        return Response(results)
+
+
 class UpdateMovieUserInformationViewSet(viewsets.ViewSet):
     serializer_class = UpdateMovieUserInformationSerializer
 

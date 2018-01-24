@@ -134,6 +134,35 @@ response：
     ]
 ```
 
+### Get Movie
+```
+method：GET
+endpoint：api/v1/movie/detail/?user_id=2&tmdb_id=1234
+response：
+"results": [
+        {
+            "add": "2018-01-12T00:02:37.612840",
+            "id": "12345",
+            "title": "hoge2",
+            "poster": "http://",
+            "onomatopoeia": ["hoge","fuga","piyo"],
+            "dvd": true,
+            "fav": false,
+            "overview": "movie overview hogehoge..."
+        },
+        {
+            "add": "2018-01-12T00:01:54.697333",
+            "id": "1234",
+            "title": "hoge",
+            "poster": "http://",
+            "onomatopoeia": ["hoge","fuga","piyo"],
+            "dvd": true,
+            "fav": true,
+            "overview": "movie overview hogehoge..."
+        }
+    ]
+```
+
 ### Update Movie User Information(Onomatopoeia, DVD, FAV)
 ```
 method：POST
