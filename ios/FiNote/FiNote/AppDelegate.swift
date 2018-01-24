@@ -37,6 +37,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             try! keychain.set(data.id, key: "id")
         }
         
+        if IsInsertEmptyDummyData() {
+            let data = GetEmptyDummyData()
+            try! keychain.set(data.username, key: "username")
+            try! keychain.set(data.password, key: "password")
+            try! keychain.set(data.id, key: "id")
+        }
+        
         let username = try! keychain.getString("username")
         
         if username == nil {

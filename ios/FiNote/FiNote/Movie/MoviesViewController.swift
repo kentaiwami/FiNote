@@ -14,15 +14,16 @@ import AlamofireImage
 import KeychainAccess
 import PopupDialog
 import TinyConstraints
+import StatusProvider
 
-class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITabBarControllerDelegate, UISearchResultsUpdating {
+class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITabBarControllerDelegate, UISearchResultsUpdating, StatusController {
     
     var movies:[Movies.Data] = []
     var searchResults:[Movies.Data] = []
     var preViewName = "Movies"
     var myTableView = UITableView()
     var searchController = UISearchController()
-    let refresh_controll = UIRefreshControl()
+    var refresh_controll = UIRefreshControl()
     var user_id = ""
 
     override func viewDidLoad() {
@@ -31,6 +32,10 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let keychain = Keychain()
         user_id = (try! keychain.getString("id"))!
         self.CallMoviesAPI()
+    }
+    
+    func ShowLoadData() {
+        Init()
         
         let main_width = UIScreen.main.bounds.width
         let width = main_width * 0.2
@@ -41,8 +46,6 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         myTableView.delegate = self
         myTableView.dataSource = self
         myTableView.register(Cell.self, forCellReuseIdentifier: NSStringFromClass(Cell.self))
-        self.view.addSubview(myTableView)
-        
         myTableView.autoresizingMask = UIViewAutoresizing(rawValue: UIViewAutoresizing.RawValue(UInt8(UIViewAutoresizing.flexibleHeight.rawValue) | UInt8(UIViewAutoresizing.flexibleWidth.rawValue)))
         
         searchController = UISearchController(searchResultsController: nil)
@@ -58,6 +61,25 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         refresh_controll.addTarget(self, action: #selector(self.refresh(sender:)), for: .valueChanged)
         
         self.tabBarController?.delegate = self
+        self.view.addSubview(myTableView)
+    }
+    
+    func ShowNoDataView() {
+        Init()
+        
+        let status = Status(title: "No Data", description: "映画を登録するとデータが表示されます", actionTitle: "Reload", image: nil) {
+            self.hideStatus()
+            self.CallMoviesAPI()
+        }
+        
+        show(status: status)
+    }
+    
+    func Init() {
+        myTableView.removeFromSuperview()
+        myTableView = UITableView()
+        searchController = UISearchController()
+        refresh_controll = UIRefreshControl()
     }
     
     func refresh(sender: UIRefreshControl) {
@@ -173,8 +195,12 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
                         self.movies.append(Movies().GetData(json: movie))
                     }
                     
-                    self.myTableView.reloadData()
-                    
+                    if self.movies.count == 0 {
+                        self.ShowNoDataView()
+                    }else {
+                        self.ShowLoadData()
+                        self.myTableView.reloadData()
+                    }
                     NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
                     self.refresh_controll.endRefreshing()
                 }else {
