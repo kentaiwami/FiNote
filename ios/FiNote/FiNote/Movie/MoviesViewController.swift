@@ -45,7 +45,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         myTableView.rowHeight = height
         myTableView.delegate = self
         myTableView.dataSource = self
-        myTableView.register(Cell.self, forCellReuseIdentifier: NSStringFromClass(Cell.self))
+        myTableView.register(MoviesCell.self, forCellReuseIdentifier: NSStringFromClass(MoviesCell.self))
         myTableView.autoresizingMask = UIViewAutoresizing(rawValue: UIViewAutoresizing.RawValue(UInt8(UIViewAutoresizing.flexibleHeight.rawValue) | UInt8(UIViewAutoresizing.flexibleWidth.rawValue)))
         
         searchController = UISearchController(searchResultsController: nil)
@@ -107,7 +107,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let base_url = "https://image.tmdb.org/t/p/w300_and_h450_bestv2"
-        let cell = tableView.dequeueReusableCell(withIdentifier: NSStringFromClass(Cell.self), for: indexPath) as! Cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: NSStringFromClass(MoviesCell.self), for: indexPath) as! MoviesCell
         cell.accessoryType = .disclosureIndicator
         
         var tmp_lists: [Movies.Data] = []
@@ -156,7 +156,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return false
     }
     
-    func ChangeButtonColor(cell: Cell, list: [Movies.Data], indexPath: IndexPath) {
+    func ChangeButtonColor(cell: MoviesCell, list: [Movies.Data], indexPath: IndexPath) {
         var dvd_color = UIColor()
         var fav_color = UIColor()
         
@@ -226,7 +226,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
 }
 
-class Cell: UITableViewCell {
+class MoviesCell: UITableViewCell {
     var title: UILabel!
     var onomatopoeia: UILabel!
     var add: UILabel!
