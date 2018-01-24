@@ -16,6 +16,7 @@ enum API: String {
     case password = "password/"
     case email = "email/"
     case movie = "movie/"
+    case detail = "detail/"
     case movies = "movies/"
     case onomatopoeia = "onomatopoeia/"
     case delete = "delete/"
