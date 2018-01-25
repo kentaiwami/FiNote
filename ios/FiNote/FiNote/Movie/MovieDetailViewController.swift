@@ -50,10 +50,23 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
         scrollView.leading(to: self.view)
         scrollView.trailing(to: self.view)
         scrollView.bottom(to: self.view)
+        
+        scrollView.contentSize = CGSize(width: self.view.bounds.width, height: 1000)
     }
     
     func UpdateScrollViewContentSize(frame: CGRect) {
         scrollView.contentSize = CGSize(width: self.view.bounds.width, height: frame.height+frame.origin.y)
+    }
+    
+    func InitPosterView() {
+        let view = UIImageView()
+        view.image = poster.image
+        scrollView.addSubview(view)
+        
+        view.top(to: scrollView, offset: 50)
+        view.centerX(to: scrollView)
+        view.width(200)
+        view.height(300)
     }
     
     func CallMovieAPI() {
@@ -87,7 +100,7 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
     
     func DrawViews() {
         InitScrollView()
-        //TODO: poster
+        InitPosterView()
         //TODO: title
         //TODO: overview
         //TODO: public icon
