@@ -22,10 +22,9 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
     var user_id = ""
     var movie = Movie.Data()
     
-    var scrollView = UIScrollView()
     var contentView = UIView()
     var tmp_poster = UIImageView()
-    var posterImageView = UIImageView()
+    var latestView = UIView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +43,7 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func InitScrollView() {
+        let scrollView = UIScrollView()
         scrollView.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height)
         self.view.addSubview(scrollView)
         scrollView.delegate = self
@@ -64,12 +64,12 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
         contentView.height(1000)
     }
     
-    func UpdateScrollViewContentSize(frame: CGRect) {
-        scrollView.contentSize = CGSize(width: self.view.bounds.width, height: frame.height+frame.origin.y)
-    }
+//    func UpdateScrollViewContentSize(frame: CGRect) {
+//        scrollView.contentSize = CGSize(width: self.view.bounds.width, height: frame.height+frame.origin.y)
+//    }
     
     func InitPosterView() {
-        posterImageView = UIImageView()
+        let posterImageView = UIImageView()
         posterImageView.image = tmp_poster.image
         posterImageView.layer.shadowOpacity = 0.5
         posterImageView.layer.shadowColor = UIColor.black.cgColor
@@ -82,6 +82,8 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
         posterImageView.centerX(to: contentView)
         posterImageView.width(200)
         posterImageView.height(300)
+        
+        latestView = posterImageView
     }
     
     func InitFloaty() {
@@ -91,19 +93,39 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func InitTitleView() {
-        let view = UILabel()
+        let titleView = UILabel()
         let offset = 28 as CGFloat
-        view.textAlignment = .center
-        view.lineBreakMode = .byWordWrapping
-        view.numberOfLines = 0
-        view.font = UIFont.systemFont(ofSize: 22)
-        view.text = movie.title
-        contentView.addSubview(view)
+        titleView.textAlignment = .center
+        titleView.lineBreakMode = .byWordWrapping
+        titleView.numberOfLines = 0
+        titleView.font = UIFont.systemFont(ofSize: 24)
+        titleView.text = movie.title
+        contentView.addSubview(titleView)
         
-        view.topToBottom(of: posterImageView, offset: 50)
-        view.leading(to: contentView, offset: offset)
-        view.centerX(to: contentView)
-        view.trailing(to: contentView, offset: -offset)
+        titleView.topToBottom(of: latestView, offset: 50)
+        titleView.leading(to: contentView, offset: offset)
+        titleView.centerX(to: contentView)
+        titleView.trailing(to: contentView, offset: -offset)
+        
+        latestView = titleView
+    }
+    
+    func InitOverView() {
+        let overviewView = UILabel()
+        let offset = 28 as CGFloat
+        overviewView.textAlignment = .center
+        overviewView.lineBreakMode = .byWordWrapping
+        overviewView.numberOfLines = 0
+        overviewView.font = UIFont.systemFont(ofSize: 20)
+        overviewView.text = movie.overview
+        contentView.addSubview(overviewView)
+
+        overviewView.topToBottom(of: latestView, offset: 10)
+        overviewView.leading(to: contentView, offset: offset)
+        overviewView.centerX(to: contentView)
+        overviewView.trailing(to: contentView, offset: -offset)
+        
+        latestView = overviewView
     }
     
     func CallMovieAPI() {
@@ -140,7 +162,7 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
         InitPosterView()
         InitFloaty()
         InitTitleView()
-        //TODO: overview
+        InitOverView()
         //TODO: public icon
         //TODO: public date
         //TODO: delete button
