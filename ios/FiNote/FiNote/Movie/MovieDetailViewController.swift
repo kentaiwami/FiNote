@@ -23,7 +23,7 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
     var movie = Movie.Data()
     
     var scrollView = UIScrollView()
-    var poster = UIImageView()
+    var tmp_poster = UIImageView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,7 +60,12 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
     
     func InitPosterView() {
         let view = UIImageView()
-        view.image = poster.image
+        view.image = tmp_poster.image
+        view.layer.shadowOpacity = 0.5
+        view.layer.shadowColor = UIColor.black.cgColor
+        view.layer.shadowOffset = CGSize(width: 1, height: 1)
+        view.layer.shadowRadius = 3
+        view.layer.masksToBounds = false
         scrollView.addSubview(view)
         
         view.top(to: scrollView, offset: 50)
@@ -83,7 +88,7 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
                 
                 if IsHTTPStatus(statusCode: response.response?.statusCode) {
                     self.movie = Movie().GetData(json: obj)
-                    self.poster.af_setImage(withURL: URL(string: API.poster_base.rawValue+self.movie.poster)!)
+                    self.tmp_poster.af_setImage(withURL: URL(string: API.poster_base.rawValue+self.movie.poster)!)
                     NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
                     self.DrawViews()
                 }else {
