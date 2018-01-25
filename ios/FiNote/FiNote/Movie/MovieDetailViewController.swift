@@ -15,9 +15,8 @@ import KeychainAccess
 import PopupDialog
 import TinyConstraints
 import Floaty
-import Eureka
 
-class MovieDetailViewController: FormViewController {
+class MovieDetailViewController: UIViewController {
 
     var movie_id = ""
     var user_id = ""
@@ -151,7 +150,7 @@ class MovieDetailViewController: FormViewController {
     }
     
     func InitDeleteView() {
-        //TODO: delete
+        
     }
     
     func CallMovieAPI() {
