@@ -129,7 +129,25 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func InitPublicInfoView() {
-        //TODO: hoge
+        let icon_wh = 20 as CGFloat
+        let public_icon = UIImageView(image: UIImage(named: "tab_movies"))
+        public_icon.image = public_icon.image!.withRenderingMode(.alwaysTemplate)
+        public_icon.tintColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
+        contentView.addSubview(public_icon)
+        
+        public_icon.topToBottom(of: latestView, offset: 10)
+        public_icon.centerX(to: contentView)
+        public_icon.width(icon_wh)
+        public_icon.height(icon_wh)
+        
+        let public_date = UILabel()
+        public_date.font = UIFont.systemFont(ofSize: 16)
+        public_date.textColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
+        public_date.text = movie.add
+        contentView.addSubview(public_date)
+        
+        public_date.centerY(to: public_icon)
+        public_date.leadingToTrailing(of: public_icon, offset: 10)
     }
     
     func CallMovieAPI() {
