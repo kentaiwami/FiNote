@@ -23,7 +23,9 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
     var movie = Movie.Data()
     
     var scrollView = UIScrollView()
+    var contentView = UIView()
     var tmp_poster = UIImageView()
+    var posterImageView = UIImageView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,7 +53,15 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
         scrollView.trailing(to: self.view)
         scrollView.bottom(to: self.view)
         
-        scrollView.contentSize = CGSize(width: self.view.bounds.width, height: 1000)
+        contentView = UIView()
+        scrollView.addSubview(contentView)
+        contentView.top(to: scrollView)
+        contentView.leading(to: scrollView)
+        contentView.trailing(to: scrollView)
+        contentView.bottom(to: scrollView)
+        contentView.width(to: scrollView)
+        
+        contentView.height(1000)
     }
     
     func UpdateScrollViewContentSize(frame: CGRect) {
@@ -59,25 +69,41 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func InitPosterView() {
-        let view = UIImageView()
-        view.image = tmp_poster.image
-        view.layer.shadowOpacity = 0.5
-        view.layer.shadowColor = UIColor.black.cgColor
-        view.layer.shadowOffset = CGSize(width: 1, height: 1)
-        view.layer.shadowRadius = 3
-        view.layer.masksToBounds = false
-        scrollView.addSubview(view)
+        posterImageView = UIImageView()
+        posterImageView.image = tmp_poster.image
+        posterImageView.layer.shadowOpacity = 0.5
+        posterImageView.layer.shadowColor = UIColor.black.cgColor
+        posterImageView.layer.shadowOffset = CGSize(width: 1, height: 1)
+        posterImageView.layer.shadowRadius = 3
+        posterImageView.layer.masksToBounds = false
+        contentView.addSubview(posterImageView)
         
-        view.top(to: scrollView, offset: 50)
-        view.centerX(to: scrollView)
-        view.width(200)
-        view.height(300)
+        posterImageView.top(to: contentView, offset: 50)
+        posterImageView.centerX(to: contentView)
+        posterImageView.width(200)
+        posterImageView.height(300)
     }
     
     func InitFloaty() {
         let floaty = Floaty()
         floaty.addItem(title: "Hello, World!")
         self.view.addSubview(floaty)
+    }
+    
+    func InitTitleView() {
+        let view = UILabel()
+        let offset = 28 as CGFloat
+        view.textAlignment = .center
+        view.lineBreakMode = .byWordWrapping
+        view.numberOfLines = 0
+        view.font = UIFont.systemFont(ofSize: 22)
+        view.text = movie.title
+        contentView.addSubview(view)
+        
+        view.topToBottom(of: posterImageView, offset: 50)
+        view.leading(to: contentView, offset: offset)
+        view.centerX(to: contentView)
+        view.trailing(to: contentView, offset: -offset)
     }
     
     func CallMovieAPI() {
@@ -113,7 +139,7 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
         InitScrollView()
         InitPosterView()
         InitFloaty()
-        //TODO: title
+        InitTitleView()
         //TODO: overview
         //TODO: public icon
         //TODO: public date
