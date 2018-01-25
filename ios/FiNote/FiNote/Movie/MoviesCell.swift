@@ -21,7 +21,7 @@ class MoviesCell: UITableViewCell {
         title = UILabel(frame: CGRect.zero)
         title.textAlignment = .left
         title.lineBreakMode = .byTruncatingTail
-        title.font = UIFont.systemFont(ofSize: 22)
+        title.font = UIFont.systemFont(ofSize: 20)
         
         onomatopoeia = UILabel(frame: CGRect.zero)
         onomatopoeia.textAlignment = .left
@@ -36,7 +36,7 @@ class MoviesCell: UITableViewCell {
         
         add_date = UILabel(frame: CGRect.zero)
         add_date.textAlignment = .left
-        add_date.font = UIFont.systemFont(ofSize: 16)
+        add_date.font = UIFont.systemFont(ofSize: 14)
         add_date.textColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
         
         contentView.addSubview(title)
@@ -59,7 +59,7 @@ class MoviesCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        let icon_wh = 30 as CGFloat
+        let icon_wh = 20 as CGFloat
         
         poster.frame = CGRect(x: 0, y: 0, width: contentView.frame.height/1.5, height: contentView.frame.height)
         
@@ -75,7 +75,7 @@ class MoviesCell: UITableViewCell {
         add_date.bottom(to: contentView, offset: -10)
         
         added_list_icon.trailingToLeading(of: add_date, offset: -5)
-        added_list_icon.centerY(to: add_date)
+        added_list_icon.centerY(to: add_date, offset: 1)
         added_list_icon.width(icon_wh)
         added_list_icon.height(icon_wh)
     }
