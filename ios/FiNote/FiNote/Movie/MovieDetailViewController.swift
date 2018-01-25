@@ -74,6 +74,12 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
         view.height(300)
     }
     
+    func InitFloaty() {
+        let floaty = Floaty()
+        floaty.addItem(title: "Hello, World!")
+        self.view.addSubview(floaty)
+    }
+    
     func CallMovieAPI() {
         let urlString = API.base.rawValue+API.v1.rawValue+API.movie.rawValue+API.detail.rawValue+"?user_id=\(self.user_id)&movie_id=\(self.movie_id)"
         let activityData = ActivityData(message: "Get Movie", type: .lineScaleParty)
@@ -106,6 +112,7 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
     func DrawViews() {
         InitScrollView()
         InitPosterView()
+        InitFloaty()
         //TODO: title
         //TODO: overview
         //TODO: public icon
