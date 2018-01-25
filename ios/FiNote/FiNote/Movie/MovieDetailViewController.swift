@@ -98,7 +98,7 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
         titleView.textAlignment = .center
         titleView.lineBreakMode = .byWordWrapping
         titleView.numberOfLines = 0
-        titleView.font = UIFont.systemFont(ofSize: 24)
+        titleView.font = UIFont.systemFont(ofSize: 22)
         titleView.text = movie.title
         contentView.addSubview(titleView)
         
@@ -116,7 +116,7 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
         overviewView.textAlignment = .center
         overviewView.lineBreakMode = .byWordWrapping
         overviewView.numberOfLines = 0
-        overviewView.font = UIFont.systemFont(ofSize: 20)
+        overviewView.font = UIFont.systemFont(ofSize: 16)
         overviewView.text = movie.overview
         contentView.addSubview(overviewView)
 
@@ -126,6 +126,10 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
         overviewView.trailing(to: contentView, offset: -offset)
         
         latestView = overviewView
+    }
+    
+    func InitPublicInfoView() {
+        //TODO: hoge
     }
     
     func CallMovieAPI() {
@@ -163,10 +167,8 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
         InitFloaty()
         InitTitleView()
         InitOverView()
-        //TODO: public icon
-        //TODO: public date
+        InitPublicInfoView()
         //TODO: delete button
-        //TODO: floaty
     }
 
     override func didReceiveMemoryWarning() {
