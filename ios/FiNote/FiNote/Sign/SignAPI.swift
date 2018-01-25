@@ -1,5 +1,5 @@
 //
-//  Common.swift
+//  SignAPI.swift
 //  FiNote
 //
 //  Created by 岩見建汰 on 2018/01/22.
