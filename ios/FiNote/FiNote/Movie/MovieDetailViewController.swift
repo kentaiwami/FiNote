@@ -25,6 +25,7 @@ class MovieDetailViewController: UIViewController {
     var contentView = UIView()
     var tmp_poster = UIImageView()
     var latestView = UIView()
+    var is_done_api = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,13 +60,7 @@ class MovieDetailViewController: UIViewController {
         contentView.trailing(to: scrollView)
         contentView.bottom(to: scrollView)
         contentView.width(to: scrollView)
-        
-        contentView.height(1000)
     }
-    
-//    func UpdateScrollViewContentSize(frame: CGRect) {
-//        scrollView.contentSize = CGSize(width: self.view.bounds.width, height: frame.height+frame.origin.y)
-//    }
     
     func InitPosterView() {
         let posterImageView = UIImageView()
@@ -163,10 +158,22 @@ class MovieDetailViewController: UIViewController {
         button.width(200)
         button.height(50)
         button.centerX(to: contentView)
+        
+        latestView = button
     }
     
     func TapDeleteButton(sender: UIButton) {
         print("TAP")
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        // 最後に追加したDelete Buttonのframeが決定した場合に動作
+        let tmp = latestView as? UIButton
+        if is_done_api && tmp != nil && tmp!.frame != CGRect.zero {
+            contentView.bottom(to: latestView, offset: 100)
+        }
     }
     
     func CallMovieAPI() {
@@ -185,6 +192,7 @@ class MovieDetailViewController: UIViewController {
                     self.movie = Movie().GetData(json: obj)
                     self.tmp_poster.af_setImage(withURL: URL(string: API.poster_base.rawValue+self.movie.poster)!)
                     NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                    self.is_done_api = true
                     self.DrawViews()
                 }else {
                     let popup = PopupDialog(title: "Error", message: obj.arrayValue[0].stringValue)
