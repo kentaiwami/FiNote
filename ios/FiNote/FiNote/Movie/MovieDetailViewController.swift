@@ -147,10 +147,26 @@ class MovieDetailViewController: UIViewController {
         
         public_date.centerY(to: public_icon)
         public_date.leadingToTrailing(of: public_icon, offset: 10)
+        
+        latestView = public_date
     }
     
     func InitDeleteView() {
+        let button = UIButton(type: .system)
+        button.backgroundColor = UIColor.red
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.setTitle("Delete", for: .normal)
+        button.addTarget(self, action: #selector(TapDeleteButton(sender:)), for: .touchUpInside)
+        contentView.addSubview(button)
         
+        button.topToBottom(of: latestView, offset: 50)
+        button.width(200)
+        button.height(50)
+        button.centerX(to: contentView)
+    }
+    
+    func TapDeleteButton(sender: UIButton) {
+        print("TAP")
     }
     
     func CallMovieAPI() {
