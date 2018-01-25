@@ -136,7 +136,7 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
         contentView.addSubview(public_icon)
         
         public_icon.topToBottom(of: latestView, offset: 10)
-        public_icon.centerX(to: contentView)
+        public_icon.centerX(to: contentView, offset: -50)
         public_icon.width(icon_wh)
         public_icon.height(icon_wh)
         
