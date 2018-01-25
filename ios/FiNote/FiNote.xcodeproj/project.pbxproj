@@ -21,7 +21,7 @@
 		377D38D9201484D6008A36CC /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377D38D8201484D6008A36CC /* Model.swift */; };
 		377D38DC20148992008A36CC /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377D38DB20148992008A36CC /* SignUpViewController.swift */; };
 		377D38DE201489A9008A36CC /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377D38DD201489A9008A36CC /* SignInViewController.swift */; };
-		379728B9201539B10045EB61 /* SignAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379728B8201539B10045EB61 /* SignAPI.swift */; };
+		379728B9201539B10045EB61 /* CommonAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379728B8201539B10045EB61 /* CommonAPI.swift */; };
 		379728BB201545030045EB61 /* MoviesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379728BA201545030045EB61 /* MoviesViewController.swift */; };
 		379728BE201546370045EB61 /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 379728BD201546370045EB61 /* 1.jpg */; };
 		37CF06E62019039600E99129 /* MovieDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CF06E52019039600E99129 /* MovieDetailViewController.swift */; };
@@ -50,7 +50,7 @@
 		377D38DD201489A9008A36CC /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		378705AD201643AB0044B6B7 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Main.strings; sourceTree = "<group>"; };
 		378705AE201643AB0044B6B7 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
-		379728B8201539B10045EB61 /* SignAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignAPI.swift; sourceTree = "<group>"; };
+		379728B8201539B10045EB61 /* CommonAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonAPI.swift; sourceTree = "<group>"; };
 		379728BA201545030045EB61 /* MoviesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesViewController.swift; sourceTree = "<group>"; };
 		379728BD201546370045EB61 /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
 		37CF06E52019039600E99129 /* MovieDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailViewController.swift; sourceTree = "<group>"; };
@@ -147,7 +147,7 @@
 			children = (
 				377D38DB20148992008A36CC /* SignUpViewController.swift */,
 				377D38DD201489A9008A36CC /* SignInViewController.swift */,
-				379728B8201539B10045EB61 /* SignAPI.swift */,
+				379728B8201539B10045EB61 /* CommonAPI.swift */,
 			);
 			path = Sign;
 			sourceTree = "<group>";
@@ -331,7 +331,7 @@
 				371D1F4B2018F39100977971 /* MoviesCell.swift in Sources */,
 				37CF06E62019039600E99129 /* MovieDetailViewController.swift in Sources */,
 				374D67892011EAF300706D4F /* AppDelegate.swift in Sources */,
-				379728B9201539B10045EB61 /* SignAPI.swift in Sources */,
+				379728B9201539B10045EB61 /* CommonAPI.swift in Sources */,
 				37349E2E20151EBA00A37D2D /* API.swift in Sources */,
 				3760316E2014809D00E69674 /* Setting.swift in Sources */,
 				377D38DC20148992008A36CC /* SignUpViewController.swift in Sources */,
