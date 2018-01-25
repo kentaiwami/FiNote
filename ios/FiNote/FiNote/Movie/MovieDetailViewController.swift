@@ -15,8 +15,9 @@ import KeychainAccess
 import PopupDialog
 import TinyConstraints
 import Floaty
+import Eureka
 
-class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
+class MovieDetailViewController: FormViewController {
 
     var movie_id = ""
     var user_id = ""
@@ -46,7 +47,6 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
         let scrollView = UIScrollView()
         scrollView.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height)
         self.view.addSubview(scrollView)
-        scrollView.delegate = self
         
         scrollView.top(to: self.view)
         scrollView.leading(to: self.view)
@@ -150,6 +150,10 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
         public_date.leadingToTrailing(of: public_icon, offset: 10)
     }
     
+    func InitDeleteView() {
+        //TODO: delete
+    }
+    
     func CallMovieAPI() {
         let urlString = API.base.rawValue+API.v1.rawValue+API.movie.rawValue+API.detail.rawValue+"?user_id=\(self.user_id)&movie_id=\(self.movie_id)"
         let activityData = ActivityData(message: "Get Movie", type: .lineScaleParty)
@@ -186,7 +190,7 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
         InitTitleView()
         InitOverView()
         InitPublicInfoView()
-        //TODO: delete button
+        InitDeleteView()
     }
 
     override func didReceiveMemoryWarning() {
