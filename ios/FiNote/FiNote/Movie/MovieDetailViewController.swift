@@ -81,8 +81,24 @@ class MovieDetailViewController: UIViewController {
     }
     
     func InitFloaty() {
+        let item = FloatyItem()
+        item.title = "Delete Movie"
+        item.buttonColor = UIColor.hex(Color.red.rawValue, alpha: 1.0)
+        item.icon = UIImage(named: "icon_trash")
+        item.handler = { (hoge) in
+            print("TAP")
+        }
+        
         let floaty = Floaty()
-        floaty.addItem(title: "Hello, World!")
+        floaty.addItem("Edit Info", icon: UIImage(named: "icon_list")) { (hoge) in
+            print("TAP")
+        }
+        
+        floaty.addItem(item: item)
+        
+        floaty.buttonColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
+        floaty.buttonImage = UIImage(named: "icon_edit")
+        floaty.rotationDegrees = 0.0
         self.view.addSubview(floaty)
     }
     
