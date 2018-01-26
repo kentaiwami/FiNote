@@ -5,9 +5,9 @@ class UpdateMovieUserInformationSerializer(serializers.Serializer):
     username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
     password = serializers.CharField(max_length=256, allow_blank=False, required=True)
     tmdb_id = serializers.IntegerField(allow_null=False, required=True)
-    onomatopoeia = serializers.ListField(required=False)
-    dvd = serializers.BooleanField(required=False)
-    fav = serializers.BooleanField(required=False)
+    onomatopoeia = serializers.ListField(required=True, allow_null=False)
+    dvd = serializers.BooleanField(required=True)
+    fav = serializers.BooleanField(required=True)
 
 
 class AddMovieSerializer(serializers.Serializer):

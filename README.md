@@ -171,9 +171,9 @@ request：
     "username": "hogehoge",
     "password": "hogehoge",
     "tmdb_id": 1234,
-    "dvd": 0,   (optional)
-    "fav": 1,   (optional)
-    "onomatopoeia": ["hoge", "fuga", "piyo"]    (optional)
+    "dvd": false,
+    "fav": true,
+    "onomatopoeia": ["hoge", "fuga", "piyo"]
 }
 response：
 {

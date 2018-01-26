@@ -11,9 +11,11 @@ import Eureka
 import NVActivityIndicatorView
 import Alamofire
 import SwiftyJSON
+import KeychainAccess
 
 class MovieInfoViewController: FormViewController {
 
+    var movie_id = ""
     var onomatopoeia: [String] = []
     var dvd = false
     var fav = false
@@ -37,29 +39,17 @@ class MovieInfoViewController: FormViewController {
     }
     
     func TapSaveButton() {
-        var choosing: [String] = []
-        
-        // 選択済みのオノマトペ名で配列を生成
-        for dict in form.values() {
-            if dict.key.contains("onomatopoeia_") {
-                choosing.append(dict.value as! String)
-            }
-        }
+        let choosing = GetChoosingOnomatopoeia()
         
         if choosing.count == 0 {
             ShowStandardAlert(title: "Error", msg: "オノマトペは少なくとも1つ以上追加する必要があります", vc: self)
         }else {
-            //TODO: call update api
-            //TODO: update appdelegate
-            
-            
-//            let nav = self.presentingViewController as! UINavigationController
-//            let detailvc = nav.viewControllers.last!
-
-            // MovieInfo画面を閉じる前にMovieDetail画面でpop(Moviesへ遷移)
-//            detailvc.navigationController?.popViewController(animated: true)
-//            self.dismiss(animated: true, completion: nil)
+            CallUpdateMovieUserInfoAPI()
         }
+    }
+    
+    func SetMovieID(movie_id: String) {
+        self.movie_id = movie_id
     }
     
     func SetOnomatopoeia(onomatopoeia: [String]) {
@@ -95,7 +85,7 @@ class MovieInfoViewController: FormViewController {
                             $0.tag = "onomatopoeia"
                             $0.multivaluedRowToInsertAt = { _ in
                                 return PickerInputRow<String>{
-                                    let options = self.GetOnomatopoeiaFromFormValues()
+                                    let options = self.GetOnomatopoeiaNewChoices()
                                     $0.title = "タップして選択..."
                                     $0.options = options
                                     $0.value = options.first!
@@ -108,7 +98,7 @@ class MovieInfoViewController: FormViewController {
                                 $0 <<< PickerInputRow<String> {
                                     $0.title = "タップして選択..."
                                     $0.value = name
-                                    $0.options = self.GetOnomatopoeiaFromFormValues()
+                                    $0.options = self.GetOnomatopoeiaNewChoices()
                                     $0.tag = "onomatopoeia_\(i)"
                                 }
                                 count = i+1
@@ -142,19 +132,68 @@ class MovieInfoViewController: FormViewController {
         }
     }
     
-    func GetOnomatopoeiaFromFormValues() -> [String] {
-        var choosing: [String] = []
-        var new_choices = choices
+    func CallUpdateMovieUserInfoAPI() {
+        let urlString = API.base.rawValue+API.v1.rawValue+API.movie.rawValue+API.update.rawValue
+        let activityData = ActivityData(message: "Updating", type: .lineScaleParty)
+        let keychain = Keychain()
         
-        // 選択済みのオノマトペ名で配列を生成
+        let params = [
+            "username": (try! keychain.getString("username"))!,
+            "password": (try! keychain.getString("password"))!,
+            "tmdb_id": Int(movie_id)!,
+            "dvd": form.values()["dvd"] as! Bool,
+            "fav": form.values()["fav"] as! Bool,
+            "onomatopoeia": GetChoosingOnomatopoeia()
+            ] as [String : Any]
+        
+        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
+        
+        DispatchQueue(label: "update-movie-user-info").async {
+            Alamofire.request(urlString, method: .post, parameters: params, encoding: JSONEncoding.default).responseJSON { (response) in
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                
+                guard let res = response.result.value else{return}
+                let obj = JSON(res)
+                print("***** API results *****")
+                print(obj)
+                print("***** API results *****")
+                
+                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                    let nav = self.presentingViewController as! UINavigationController
+                    let detailvc = nav.viewControllers.last!
+                    
+                    // MovieInfo画面を閉じる前にMovieDetail画面でpop(Moviesへ遷移)
+                    detailvc.navigationController?.popViewController(animated: true)
+                    self.dismiss(animated: true, completion: nil)
+
+                    //TODO: update appdelegate
+//                    self.choices = obj["results"].arrayValue.map{$0.stringValue}
+                }else {
+                    ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
+                }
+            }
+        }
+    }
+    
+    func GetChoosingOnomatopoeia() -> [String] {
+        // オノマトペとタグ番号の辞書を生成
+        var choosing: [String:Int] = [:]
         for dict in form.values() {
-            if dict.key.contains("onomatopoeia_") {
-                choosing.append(dict.value as! String)
+            var tmp_matches: [String] = []
+            if dict.key.pregMatche(pattern: "onomatopoeia_([0-9]+)", matches: &tmp_matches) {
+                choosing[dict.value as! String] = Int(tmp_matches[1])!
             }
         }
         
+        // タグ番号の昇順でオノマトペを返す
+        return choosing.sorted(by: {$0.value < $1.value}).map({$0.key})
+    }
+    
+    func GetOnomatopoeiaNewChoices() -> [String] {
+        var new_choices = choices
+        
         // 選択済みのオノマトペ名を選択肢配列から削除
-        for name in choosing {
+        for name in GetChoosingOnomatopoeia() {
             let index = new_choices.index(of: name)
             
             if index != nil {

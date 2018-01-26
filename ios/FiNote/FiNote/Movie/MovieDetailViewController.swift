@@ -106,6 +106,7 @@ class MovieDetailViewController: UIViewController {
             movie_info_VC.SetDVD(dvd: self.movie.dvd)
             movie_info_VC.SetFAV(fav: self.movie.fav)
             movie_info_VC.SetOnomatopoeia(onomatopoeia: self.movie.onomatopoeia)
+            movie_info_VC.SetMovieID(movie_id: self.movie_id)
             
             let nav = UINavigationController()
             nav.viewControllers = [movie_info_VC]

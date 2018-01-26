@@ -123,7 +123,7 @@ class UpdateMovieUserInformationViewSet(viewsets.ViewSet):
         ユーザのdvd, fav, onomatopoeiaの状態を更新する
 
         :param request: username, password, tmdb_id, dvd, fav, onomatopoeia
-        :return:        更新後のdvd, fav, onomatopoeia
+        :return:        Message
         """
 
         data = request.data
