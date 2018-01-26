@@ -78,7 +78,7 @@ class MovieInfoViewController: FormViewController {
                            footer: "映画を観た気分を登録してください") {
                             $0.tag = "onomatopoeia"
                             $0.multivaluedRowToInsertAt = { _ in
-                                return PickerInputRow<String>{                                    
+                                return PickerInputRow<String>{
                                     $0.title = "タップして選ぶ..."
                                     $0.options = self.GetOnomatopoeiaFromFormValues()
                                     $0.tag = "onomatopoeia_\(self.count)"
@@ -90,7 +90,6 @@ class MovieInfoViewController: FormViewController {
                                 $0.options = self.GetOnomatopoeiaFromFormValues()
                                 $0.tag = "onomatopoeia_0"
                             }
-                            
         }
     }
     
