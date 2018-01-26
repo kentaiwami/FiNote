@@ -20,12 +20,22 @@ class MovieInfoViewController: FormViewController {
         self.navigationItem.title = "Edit Info"
         
         let close = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(TapCloseButton))
+        let save = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(TapSaveButton))
         self.navigationItem.setLeftBarButton(close, animated: true)
+        self.navigationItem.setRightBarButton(save, animated: true)
         
         CreateForm()
     }
     
     func TapCloseButton() {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func TapSaveButton() {
+        let nav = self.presentingViewController as! UINavigationController
+        let detailvc = nav.viewControllers.last!
+        
+        detailvc.navigationController?.popViewController(animated: true)
         self.dismiss(animated: true, completion: nil)
     }
     
