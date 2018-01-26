@@ -8,6 +8,9 @@
 
 import UIKit
 import Eureka
+import NVActivityIndicatorView
+import Alamofire
+import SwiftyJSON
 
 class MovieInfoViewController: FormViewController {
 
@@ -94,10 +97,27 @@ class MovieInfoViewController: FormViewController {
     }
     
     func CallGetOnomatopoeiaAPI() {
-        //TODO: オノマトペを取得
-        choices = ["ハラハラ", "ドキドキ","モヤモヤ", "フツフツ","シクシク"]
+        let activityData = ActivityData(message: "Get Onomatopoeia", type: .lineScaleParty)
+        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
         
-        CreateForm()
+        DispatchQueue(label: "get-onomatopoeia").async {
+            let urlString = API.base.rawValue+API.v1.rawValue+API.onomatopoeia.rawValue+API.choice.rawValue
+            Alamofire.request(urlString, method: .get).responseJSON { (response) in
+                let obj = JSON(response.result.value)
+                print("***** API results *****")
+                print(obj)
+                print("***** API results *****")
+                
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                
+                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                    self.choices = obj["results"].arrayValue.map{$0.stringValue}
+                    self.CreateForm()
+                }else {
+                    ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
+                }
+            }
+        }
     }
     
     func GetOnomatopoeiaFromFormValues() -> [String] {

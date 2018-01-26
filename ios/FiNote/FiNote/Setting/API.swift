@@ -19,6 +19,7 @@ enum API: String {
     case detail = "detail/"
     case movies = "movies/"
     case onomatopoeia = "onomatopoeia/"
+    case choice = "choice/"
     case delete = "delete/"
     case recently = "recently/"
     case byage = "byage/"
