@@ -122,58 +122,34 @@ class MovieDetailViewController: UIViewController {
         latestView = overviewView
     }
     
-    func InitPublicInfoView() {
-        let icon_wh = 20 as CGFloat
-        let public_icon = UIImageView(image: UIImage(named: "tab_movies"))
-        public_icon.image = public_icon.image!.withRenderingMode(.alwaysTemplate)
-        public_icon.tintColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
-        contentView.addSubview(public_icon)
+    func InitAddInfoView() {
+        let icon_wh = 25 as CGFloat
+        let add_icon = UIImageView(image: UIImage(named: "icon_add_list"))
+        add_icon.image = add_icon.image!.withRenderingMode(.alwaysTemplate)
+        add_icon.tintColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
+        contentView.addSubview(add_icon)
         
-        public_icon.topToBottom(of: latestView, offset: 10)
-        public_icon.centerX(to: contentView, offset: -50)
-        public_icon.width(icon_wh)
-        public_icon.height(icon_wh)
+        add_icon.topToBottom(of: latestView, offset: 10)
+        add_icon.centerX(to: contentView, offset: -50)
+        add_icon.width(icon_wh)
+        add_icon.height(icon_wh)
         
-        let public_date = UILabel()
-        public_date.font = UIFont.systemFont(ofSize: 16)
-        public_date.textColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
-        public_date.text = movie.add
-        contentView.addSubview(public_date)
+        let add_date = UILabel()
+        add_date.font = UIFont.systemFont(ofSize: 16)
+        add_date.textColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
+        add_date.text = movie.add
+        contentView.addSubview(add_date)
         
-        public_date.centerY(to: public_icon)
-        public_date.leadingToTrailing(of: public_icon, offset: 10)
+        add_date.centerY(to: add_icon, offset: 0)
+        add_date.leadingToTrailing(of: add_icon, offset: 10)
         
-        latestView = public_date
-    }
-    
-    func InitDeleteView() {
-        let button = UIButton(type: .system)
-        button.backgroundColor = UIColor.red
-        button.setTitleColor(UIColor.white, for: .normal)
-        button.setTitle("Delete", for: .normal)
-        button.addTarget(self, action: #selector(TapDeleteButton(sender:)), for: .touchUpInside)
-        contentView.addSubview(button)
+        latestView = add_date
         
-        button.topToBottom(of: latestView, offset: 50)
-        button.width(200)
-        button.height(50)
-        button.centerX(to: contentView)
-        
-        latestView = button
+        contentView.bottom(to: latestView, offset: 100)
     }
     
     func TapDeleteButton(sender: UIButton) {
         print("TAP")
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        // 最後に追加したDelete Buttonのframeが決定した場合に動作
-        let tmp = latestView as? UIButton
-        if is_done_api && tmp != nil && tmp!.frame != CGRect.zero {
-            contentView.bottom(to: latestView, offset: 100)
-        }
     }
     
     func CallMovieAPI() {
@@ -212,8 +188,7 @@ class MovieDetailViewController: UIViewController {
         InitFloaty()
         InitTitleView()
         InitOverView()
-        InitPublicInfoView()
-        InitDeleteView()
+        InitAddInfoView()
     }
 
     override func didReceiveMemoryWarning() {
