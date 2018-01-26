@@ -89,7 +89,7 @@ class MovieDetailViewController: UIViewController {
         delete_item.title = "Delete Movie"
         delete_item.buttonColor = UIColor.hex(Color.red.rawValue, alpha: 1.0)
         delete_item.icon = UIImage(named: "icon_trash")
-        delete_item.handler = { (hoge) in
+        delete_item.handler = { (_) in
             let popup = PopupDialog(title: "Movie Delete", message: "本当に削除しますか？")
             let delete = DestructiveButton(title: "Delete", action: {
                 self.CallDeleteMovieAPI()
@@ -102,7 +102,15 @@ class MovieDetailViewController: UIViewController {
         
         let floaty = Floaty()
         floaty.addItem("Edit Info", icon: UIImage(named: "icon_list")) { (hoge) in
-            print("TAP")
+            let movie_info_VC = MovieInfoViewController()
+            movie_info_VC.SetDVD(dvd: self.movie.dvd)
+            movie_info_VC.SetFAV(fav: self.movie.fav)
+            movie_info_VC.SetOnomatopoeia(onomatopoeia: self.movie.onomatopoeia)
+            
+            let nav = UINavigationController()
+            nav.viewControllers = [movie_info_VC]
+            
+            self.present(nav, animated: true, completion: nil)
         }
         
         floaty.addItem(item: delete_item)

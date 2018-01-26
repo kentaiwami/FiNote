@@ -17,6 +17,16 @@ class MovieInfoViewController: FormViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.title = "Edit Info"
+        
+        let close = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(TapCloseButton))
+        self.navigationItem.setLeftBarButton(close, animated: true)
+        
+        CreateForm()
+    }
+    
+    func TapCloseButton() {
+        self.dismiss(animated: true, completion: nil)
     }
     
     func SetOnomatopoeia(onomatopoeia: [String]) {
@@ -29,6 +39,21 @@ class MovieInfoViewController: FormViewController {
     
     func SetFAV(fav: Bool) {
         self.fav = fav
+    }
+    
+    func CreateForm() {
+        form +++ Section(header: "", footer: "")
+            <<< SwitchRow("") { row in
+                row.title = "DVD"
+                row.value = dvd
+                row.tag = "dvd"
+            }
+        
+            <<< SwitchRow("") { row in
+                row.title = "Favourite"
+                row.value = fav
+                row.tag = "fav"
+            }
     }
 
     override func didReceiveMemoryWarning() {
