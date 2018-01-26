@@ -79,16 +79,21 @@ class MovieInfoViewController: FormViewController {
                             $0.tag = "onomatopoeia"
                             $0.multivaluedRowToInsertAt = { _ in
                                 return PickerInputRow<String>{
-                                    $0.title = "タップして選ぶ..."
+                                    $0.title = "タップして選択..."
                                     $0.options = self.GetOnomatopoeiaFromFormValues()
                                     $0.tag = "onomatopoeia_\(self.count)"
                                     self.count += 1
                                 }
                             }
-                            $0 <<< PickerInputRow<String> {
-                                $0.title = "タップして選ぶ..."
-                                $0.options = self.GetOnomatopoeiaFromFormValues()
-                                $0.tag = "onomatopoeia_0"
+                            
+                            for (i, name) in onomatopoeia.enumerated() {
+                                $0 <<< PickerInputRow<String> {
+                                    $0.title = "タップして選択..."
+                                    $0.value = name
+                                    $0.options = self.GetOnomatopoeiaFromFormValues()
+                                    $0.tag = "onomatopoeia_\(i)"
+                                }
+                                count = i+1
                             }
         }
     }
