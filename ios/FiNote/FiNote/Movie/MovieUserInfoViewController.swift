@@ -136,14 +136,15 @@ class MovieUserInfoViewController: FormViewController {
         let urlString = API.base.rawValue+API.v1.rawValue+API.movie.rawValue+API.update.rawValue
         let activityData = ActivityData(message: "Updating", type: .lineScaleParty)
         let keychain = Keychain()
-        
+        let appdelegate = GetAppDelegate()
+        let choosing_onomatopoeia = GetChoosingOnomatopoeia()
         let params = [
             "username": (try! keychain.getString("username"))!,
             "password": (try! keychain.getString("password"))!,
             "tmdb_id": Int(movie_id)!,
             "dvd": form.values()["dvd"] as! Bool,
             "fav": form.values()["fav"] as! Bool,
-            "onomatopoeia": GetChoosingOnomatopoeia()
+            "onomatopoeia": choosing_onomatopoeia
             ] as [String : Any]
         
         NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
@@ -159,15 +160,16 @@ class MovieUserInfoViewController: FormViewController {
                 print("***** API results *****")
                 
                 if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                    let index = appdelegate.movies.index(where: {$0.id == self.movie_id})
+                    let index_int = index?.advanced(by: 0)
+                    appdelegate.movies[index_int!].onomatopoeia = choosing_onomatopoeia
+                    
                     let nav = self.presentingViewController as! UINavigationController
                     let detailvc = nav.viewControllers.last!
                     
                     // MovieInfo画面を閉じる前にMovieDetail画面でpop(Moviesへ遷移)
                     detailvc.navigationController?.popViewController(animated: true)
                     self.dismiss(animated: true, completion: nil)
-
-                    //TODO: update appdelegate
-//                    self.choices = obj["results"].arrayValue.map{$0.stringValue}
                 }else {
                     ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
                 }
