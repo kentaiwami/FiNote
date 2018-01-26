@@ -19,8 +19,8 @@ class MovieInfoViewController: FormViewController {
         super.viewDidLoad()
         self.navigationItem.title = "Edit Info"
         
-        let close = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(TapCloseButton))
-        let save = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(TapSaveButton))
+        let close = UIBarButtonItem(image: UIImage(named: "icon_cancel"), style: .plain, target: self, action: #selector(TapCloseButton))
+        let save = UIBarButtonItem(image: UIImage(named: "icon_check"), style: .plain, target: self, action: #selector(TapSaveButton))
         self.navigationItem.setLeftBarButton(close, animated: true)
         self.navigationItem.setRightBarButton(save, animated: true)
         
