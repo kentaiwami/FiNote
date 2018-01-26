@@ -96,7 +96,8 @@ class MovieUserInfoViewController: FormViewController {
                                         $0.tag = "onomatopoeia_\(self.count)"
                                         self.count += 1
                                     }.onCellSelection({ (cell, row) in
-                                        row.options = self.GetOnomatopoeiaNewChoices()
+                                        row.options = self.GetOnomatopoeiaNewChoices(ignore: row.value!)
+                                        row.updateCell()
                                     })
                                 }else {
                                     return PickerInputRow<String>{
@@ -106,7 +107,8 @@ class MovieUserInfoViewController: FormViewController {
                                         $0.tag = "onomatopoeia_\(self.count)"
                                         self.count += 1
                                     }.onCellSelection({ (cell, row) in
-                                        row.options = self.GetOnomatopoeiaNewChoices()
+                                        row.options = self.GetOnomatopoeiaNewChoices(ignore: row.value!)
+                                        row.updateCell()
                                     })
                                 }
                             }
@@ -118,8 +120,8 @@ class MovieUserInfoViewController: FormViewController {
                                     $0.options = self.GetOnomatopoeiaNewChoices()
                                     $0.tag = "onomatopoeia_\(i)"
                                     }.onCellSelection({ (cell, row) in
-                                        //TODO: 自分は含める
-                                        row.options = self.GetOnomatopoeiaNewChoices()
+                                        row.options = self.GetOnomatopoeiaNewChoices(ignore: row.value!)
+                                        row.updateCell()
                                     })
                                 count = i+1
                             }
@@ -213,14 +215,15 @@ class MovieUserInfoViewController: FormViewController {
         return choosing.sorted(by: {$0.value < $1.value}).map({$0.key})
     }
     
-    func GetOnomatopoeiaNewChoices() -> [String] {
+    func GetOnomatopoeiaNewChoices(ignore: String = "") -> [String] {
         var new_choices = choices
         
         // 選択済みのオノマトペ名を選択肢配列から削除
         for name in GetChoosingOnomatopoeia() {
             let index = new_choices.index(of: name)
             
-            if index != nil {
+            // ignoreと同じ場合は候補から削除しない
+            if index != nil && name != ignore {
                 new_choices.remove(at: index!.advanced(by: 0))
             }
         }
