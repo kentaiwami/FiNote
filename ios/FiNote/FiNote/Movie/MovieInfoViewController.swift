@@ -14,6 +14,7 @@ class MovieInfoViewController: FormViewController {
     var onomatopoeia: [String] = []
     var dvd = false
     var fav = false
+    var count = 1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,11 +35,14 @@ class MovieInfoViewController: FormViewController {
     func TapSaveButton() {
         //TODO: call update api
         
-        let nav = self.presentingViewController as! UINavigationController
-        let detailvc = nav.viewControllers.last!
+        print(form.values())
         
-        detailvc.navigationController?.popViewController(animated: true)
-        self.dismiss(animated: true, completion: nil)
+        print(form.values()["onomatopoeia"])
+//        let nav = self.presentingViewController as! UINavigationController
+//        let detailvc = nav.viewControllers.last!
+//
+//        detailvc.navigationController?.popViewController(animated: true)
+//        self.dismiss(animated: true, completion: nil)
     }
     
     func SetOnomatopoeia(onomatopoeia: [String]) {
@@ -66,6 +70,27 @@ class MovieInfoViewController: FormViewController {
                 row.value = fav
                 row.tag = "fav"
             }
+        
+        
+        form +++ MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
+                           header: "オノマトペの登録",
+                           footer: "映画を観た気分を登録してください") {
+                            $0.tag = "onomatopoeia"
+                            $0.multivaluedRowToInsertAt = { _ in
+                                return PickerInputRow<String>{
+                                    $0.title = "タップして選ぶ..."
+                                    $0.options = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"]
+                                    $0.tag = "onomatopoeia_\(self.count)"
+                                    self.count += 1
+                                }
+                            }
+                            $0 <<< PickerInputRow<String> {
+                                $0.title = "タップして選ぶ..."
+                                $0.options = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"]
+                                $0.tag = "onomatopoeia_0"
+                            }
+                            
+        }
     }
 
     override func didReceiveMemoryWarning() {
