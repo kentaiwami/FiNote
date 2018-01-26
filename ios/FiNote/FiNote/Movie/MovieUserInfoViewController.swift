@@ -161,7 +161,8 @@ class MovieUserInfoViewController: FormViewController {
         let activityData = ActivityData(message: "Updating", type: .lineScaleParty)
         let keychain = Keychain()
         let appdelegate = GetAppDelegate()
-        let choosing_onomatopoeia = GetChoosingOnomatopoeia()
+        
+        let choosing_onomatopoeia = NSOrderedSet(array: GetChoosingOnomatopoeia()).array as! [String]
         let params = [
             "username": (try! keychain.getString("username"))!,
             "password": (try! keychain.getString("password"))!,
