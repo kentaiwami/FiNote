@@ -8,14 +8,29 @@
 
 import UIKit
 
-class MovieAddSearchViewController: UIViewController {
+class MovieAddSearchViewController: UIViewController, UISearchBarDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.title = "Movie Search"
+        
+        let searchBar = UISearchBar()
+        searchBar.delegate = self
+        searchBar.placeholder = "追加する映画のタイトルで検索"
+        
+        self.navigationItem.titleView = searchBar
         self.view.backgroundColor = UIColor.white
     }
-
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+        CallMovieSearchAPI()
+    }
+    
+    func CallMovieSearchAPI() {
+        //TODO: get request
+        //TODO: create table
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
