@@ -27,7 +27,6 @@ class MovieDetailViewController: UIViewController {
     var contentView = UIView()
     var tmp_poster = UIImageView()
     var latestView = UIView()
-    var is_done_api = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -202,8 +201,6 @@ class MovieDetailViewController: UIViewController {
                 if IsHTTPStatus(statusCode: response.response?.statusCode) {
                     self.movie = Movie().GetData(json: obj)
                     self.tmp_poster.af_setImage(withURL: URL(string: API.poster_base.rawValue+self.movie.poster)!)
-                    
-                    self.is_done_api = true
                     self.DrawViews()
                 }else {
                     ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)

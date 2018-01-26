@@ -7,6 +7,10 @@
 //
 
 import UIKit
+import KeychainAccess
+import NVActivityIndicatorView
+import SwiftyJSON
+import Alamofire
 
 class MovieAddSearchViewController: UIViewController, UISearchBarDelegate {
 
@@ -23,11 +27,36 @@ class MovieAddSearchViewController: UIViewController, UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
-        CallMovieSearchAPI()
+        CallMovieSearchAPI(text: searchBar.text!)
     }
     
-    func CallMovieSearchAPI() {
-        //TODO: get request
+    func CallMovieSearchAPI(text: String) {
+        let api_key = GetTMDBAPIKey()
+        let keychain = Keychain()
+        let adult = (try! keychain.getString("adult"))!
+        let urlString = API.tmdb_search.rawValue+"?query="+text+"&api_key="+api_key+"&language=ja"+"&include_adult="+adult
+        let encURL = (NSURL(string:urlString.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)!)?.absoluteString)!
+        let activityData = ActivityData(message: "Search Movie", type: .lineScaleParty)
+        
+        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
+        
+        DispatchQueue(label: "search-tmdb-movie").async {
+            Alamofire.request(encURL, method: .get).responseJSON { (response) in
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                
+                guard let res = response.result.value else{return}
+                let obj = JSON(res)
+                print("***** API results *****")
+                print(obj)
+                print("***** API results *****")
+                
+                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                    print("OK")
+                }else {
+                    ShowStandardAlert(title: "Error", msg: obj["status_message"].stringValue, vc: self)
+                }
+            }
+        }
         //TODO: create table
     }
     
