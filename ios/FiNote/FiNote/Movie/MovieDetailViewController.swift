@@ -33,7 +33,7 @@ class MovieDetailViewController: UIViewController {
         super.viewDidLoad()
         
         self.view.backgroundColor = UIColor.white
-        self.navigationItem.title = "Detail Movie"
+        self.navigationItem.title = "Movie Detail"
         
         let keychain = Keychain()
         user_id = (try! keychain.getString("id"))!
