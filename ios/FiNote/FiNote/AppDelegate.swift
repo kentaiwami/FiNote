@@ -25,9 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let keychain = Keychain()
         
         if IsReset() {
-            try! keychain.remove("username")
-            try! keychain.remove("password")
-            try! keychain.remove("id")
+            try! keychain.removeAll()
         }
         
         if IsInsertDummyData() {
@@ -35,6 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             try! keychain.set(data.username, key: "username")
             try! keychain.set(data.password, key: "password")
             try! keychain.set(data.id, key: "id")
+            try! keychain.set(data.adult, key: "adult")
         }
         
         if IsInsertEmptyDummyData() {
@@ -42,6 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             try! keychain.set(data.username, key: "username")
             try! keychain.set(data.password, key: "password")
             try! keychain.set(data.id, key: "id")
+            try! keychain.set(data.adult, key: "adult")
         }
         
         let username = try! keychain.getString("username")
