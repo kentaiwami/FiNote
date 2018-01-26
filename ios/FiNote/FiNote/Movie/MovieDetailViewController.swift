@@ -161,11 +161,7 @@ class MovieDetailViewController: UIViewController {
         
         latestView = add_date
         
-        contentView.bottom(to: latestView, offset: 100)
-    }
-    
-    func TapDeleteButton(sender: UIButton) {
-        print("TAP")
+        contentView.bottom(to: latestView, offset: 200)
     }
     
     func CallMovieAPI() {
