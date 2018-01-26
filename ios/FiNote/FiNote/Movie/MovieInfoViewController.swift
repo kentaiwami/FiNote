@@ -37,13 +37,29 @@ class MovieInfoViewController: FormViewController {
     }
     
     func TapSaveButton() {
-        //TODO: call update api
-        //TODO: update appdelegate
-//        let nav = self.presentingViewController as! UINavigationController
-//        let detailvc = nav.viewControllers.last!
-//
-//        detailvc.navigationController?.popViewController(animated: true)
-//        self.dismiss(animated: true, completion: nil)
+        var choosing: [String] = []
+        
+        // 選択済みのオノマトペ名で配列を生成
+        for dict in form.values() {
+            if dict.key.contains("onomatopoeia_") {
+                choosing.append(dict.value as! String)
+            }
+        }
+        
+        if choosing.count == 0 {
+            ShowStandardAlert(title: "Error", msg: "オノマトペは少なくとも1つ以上追加する必要があります", vc: self)
+        }else {
+            //TODO: call update api
+            //TODO: update appdelegate
+            
+            
+//            let nav = self.presentingViewController as! UINavigationController
+//            let detailvc = nav.viewControllers.last!
+
+            // MovieInfo画面を閉じる前にMovieDetail画面でpop(Moviesへ遷移)
+//            detailvc.navigationController?.popViewController(animated: true)
+//            self.dismiss(animated: true, completion: nil)
+        }
     }
     
     func SetOnomatopoeia(onomatopoeia: [String]) {
@@ -79,8 +95,10 @@ class MovieInfoViewController: FormViewController {
                             $0.tag = "onomatopoeia"
                             $0.multivaluedRowToInsertAt = { _ in
                                 return PickerInputRow<String>{
+                                    let options = self.GetOnomatopoeiaFromFormValues()
                                     $0.title = "タップして選択..."
-                                    $0.options = self.GetOnomatopoeiaFromFormValues()
+                                    $0.options = options
+                                    $0.value = options.first!
                                     $0.tag = "onomatopoeia_\(self.count)"
                                     self.count += 1
                                 }
@@ -130,7 +148,7 @@ class MovieInfoViewController: FormViewController {
         
         // 選択済みのオノマトペ名で配列を生成
         for dict in form.values() {
-            if dict.value != nil && dict.key.contains("onomatopoeia_") {
+            if dict.key.contains("onomatopoeia_") {
                 choosing.append(dict.value as! String)
             }
         }
