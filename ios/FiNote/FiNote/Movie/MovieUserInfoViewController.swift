@@ -86,14 +86,28 @@ class MovieUserInfoViewController: FormViewController {
                            footer: "映画を観た気分を登録してください") {
                             $0.tag = "onomatopoeia"
                             $0.multivaluedRowToInsertAt = { _ in
-                                return PickerInputRow<String>{
-                                    let options = self.GetOnomatopoeiaNewChoices()
-                                    $0.title = "タップして選択..."
-                                    $0.options = options
-                                    //TODO: fix
-                                    $0.value = options.first!
-                                    $0.tag = "onomatopoeia_\(self.count)"
-                                    self.count += 1
+                                let options = self.GetOnomatopoeiaNewChoices()
+                                
+                                if options.count == 0 {
+                                    return PickerInputRow<String>{
+                                        $0.title = "タップして選択..."
+                                        $0.options = options
+                                        $0.value = ""
+                                        $0.tag = "onomatopoeia_\(self.count)"
+                                        self.count += 1
+                                    }.onCellSelection({ (cell, row) in
+                                        row.options = self.GetOnomatopoeiaNewChoices()
+                                    })
+                                }else {
+                                    return PickerInputRow<String>{
+                                        $0.title = "タップして選択..."
+                                        $0.options = options
+                                        $0.value = options.first!
+                                        $0.tag = "onomatopoeia_\(self.count)"
+                                        self.count += 1
+                                    }.onCellSelection({ (cell, row) in
+                                        row.options = self.GetOnomatopoeiaNewChoices()
+                                    })
                                 }
                             }
                             
@@ -103,7 +117,10 @@ class MovieUserInfoViewController: FormViewController {
                                     $0.value = name
                                     $0.options = self.GetOnomatopoeiaNewChoices()
                                     $0.tag = "onomatopoeia_\(i)"
-                                }
+                                    }.onCellSelection({ (cell, row) in
+                                        //TODO: 自分は含める
+                                        row.options = self.GetOnomatopoeiaNewChoices()
+                                    })
                                 count = i+1
                             }
         }
