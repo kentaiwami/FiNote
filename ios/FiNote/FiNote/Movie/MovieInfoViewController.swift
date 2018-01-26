@@ -15,6 +15,7 @@ class MovieInfoViewController: FormViewController {
     var dvd = false
     var fav = false
     var count = 1
+    var choices: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +26,7 @@ class MovieInfoViewController: FormViewController {
         self.navigationItem.setLeftBarButton(close, animated: true)
         self.navigationItem.setRightBarButton(save, animated: true)
         
-        CreateForm()
+        CallGetOnomatopoeiaAPI()
     }
     
     func TapCloseButton() {
@@ -34,10 +35,7 @@ class MovieInfoViewController: FormViewController {
     
     func TapSaveButton() {
         //TODO: call update api
-        
-        print(form.values())
-        
-        print(form.values()["onomatopoeia"])
+        //TODO: update appdelegate
 //        let nav = self.presentingViewController as! UINavigationController
 //        let detailvc = nav.viewControllers.last!
 //
@@ -79,18 +77,25 @@ class MovieInfoViewController: FormViewController {
                             $0.multivaluedRowToInsertAt = { _ in
                                 return PickerInputRow<String>{
                                     $0.title = "タップして選ぶ..."
-                                    $0.options = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"]
+                                    $0.options = self.choices
                                     $0.tag = "onomatopoeia_\(self.count)"
                                     self.count += 1
                                 }
                             }
                             $0 <<< PickerInputRow<String> {
                                 $0.title = "タップして選ぶ..."
-                                $0.options = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"]
+                                $0.options = self.choices
                                 $0.tag = "onomatopoeia_0"
                             }
                             
         }
+    }
+    
+    func CallGetOnomatopoeiaAPI() {
+        //TODO: オノマトペを取得
+        choices = ["ハラハラ", "ドキドキ","モヤモヤ", "フツフツ","シクシク"]
+        
+        CreateForm()
     }
 
     override func didReceiveMemoryWarning() {
