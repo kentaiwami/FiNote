@@ -31,7 +31,16 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         let keychain = Keychain()
         user_id = (try! keychain.getString("id"))!
+        
+        let add = UIBarButtonItem(image: UIImage(named: "icon_add"), style: .plain, target: self, action: #selector(TapAddButton))
+        self.tabBarController?.navigationItem.setRightBarButton(add, animated: true)
+        
         self.CallMoviesAPI()
+    }
+    
+    func TapAddButton() {
+        let add_searchVC = MovieAddSearchViewController()
+        self.navigationController!.pushViewController(add_searchVC, animated: true)
     }
     
     func ShowLoadData() {
