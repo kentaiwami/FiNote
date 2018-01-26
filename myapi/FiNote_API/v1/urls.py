@@ -25,3 +25,4 @@ router.register(r'movie/search/origin', GetOriginalTitleViewSet, 'get-movie-orig
 
 
 router.register(r'movies', GetMoviesViewSet, base_name='get-movies')
+router.register(r'onomatopoeia/choice', GetOnomatopoeiaChoiceViewSet, base_name='get-onomatopoeia-choice')
