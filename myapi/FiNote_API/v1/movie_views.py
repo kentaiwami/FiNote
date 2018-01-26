@@ -142,44 +142,40 @@ class UpdateMovieUserInformationViewSet(viewsets.ViewSet):
         if not user.check_password(data['password'].encode('utf-8')):
             raise serializers.ValidationError('該当するデータが見つかりませんでした')
 
-        if 'dvd' in data:
-            movie_user.dvd = data['dvd']
-
-        if 'fav' in data:
-            movie_user.fav = data['fav']
-
+        # dvd, favの状態を保存
+        movie_user.dvd = data['dvd']
+        movie_user.fav = data['fav']
         movie_user.save()
 
-        if 'onomatopoeia' in data:
-            # movie user onomatopoeiaの該当するレコードを削除
-            movie_user = Movie_User.objects.get(user=user, movie=movie)
-            Movie_User_Onomatopoeia.objects.filter(movie_user=movie_user).delete()
+        # movie user onomatopoeiaの該当するレコードを削除
+        movie_user = Movie_User.objects.get(user=user, movie=movie)
+        Movie_User_Onomatopoeia.objects.filter(movie_user=movie_user).delete()
 
-            for onomatopoeia_name in data['onomatopoeia']:
-                # オノマトペがなければ新規作成
-                onomatopoeia_obj, created = Onomatopoeia.objects.get_or_create(
-                    name=onomatopoeia_name,
-                    defaults={'name': onomatopoeia_name}
-                )
+        for onomatopoeia_name in data['onomatopoeia']:
+            # オノマトペがなければ新規作成
+            onomatopoeia_obj, created = Onomatopoeia.objects.get_or_create(
+                name=onomatopoeia_name,
+                defaults={'name': onomatopoeia_name}
+            )
 
-                # Movie Onomatopoeiaがなければ作成
-                if not movie.onomatopoeia.all().filter(name=onomatopoeia_obj.name).exists():
-                    Movie_Onomatopoeia(movie=movie, onomatopoeia=onomatopoeia_obj).save()
+            # Movie Onomatopoeiaがなければ作成
+            if not movie.onomatopoeia.all().filter(name=onomatopoeia_obj.name).exists():
+                Movie_Onomatopoeia(movie=movie, onomatopoeia=onomatopoeia_obj).save()
 
-                # オノマトペカウントオブジェクトの新規追加 or 取得
-                onomatopoeia_count_obj, created_oc = Movie_Onomatopoeia.objects.get_or_create(
-                    onomatopoeia=onomatopoeia_obj,
-                    movie=movie,
-                    defaults={'count': 1, 'onomatopoeia': onomatopoeia_obj, 'movie': movie}
-                )
+            # オノマトペカウントオブジェクトの新規追加 or 取得
+            onomatopoeia_count_obj, created_oc = Movie_Onomatopoeia.objects.get_or_create(
+                onomatopoeia=onomatopoeia_obj,
+                movie=movie,
+                defaults={'count': 1, 'onomatopoeia': onomatopoeia_obj, 'movie': movie}
+            )
 
-                # オノマトペカウントオブジェクトの更新
-                if not created_oc:
-                    onomatopoeia_count_obj.count += 1
-                    onomatopoeia_count_obj.save()
+            # オノマトペカウントオブジェクトの更新
+            if not created_oc:
+                onomatopoeia_count_obj.count += 1
+                onomatopoeia_count_obj.save()
 
-                # movie user onomatopoeiaの保存
-                Movie_User_Onomatopoeia(movie_user=movie_user, onomatopoeia=onomatopoeia_obj).save()
+            # movie user onomatopoeiaの保存
+            Movie_User_Onomatopoeia(movie_user=movie_user, onomatopoeia=onomatopoeia_obj).save()
 
         return Response({'msg': 'success'})
 
