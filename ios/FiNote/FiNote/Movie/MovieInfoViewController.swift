@@ -97,18 +97,20 @@ class MovieInfoViewController: FormViewController {
     }
     
     func CallGetOnomatopoeiaAPI() {
+        let urlString = API.base.rawValue+API.v1.rawValue+API.onomatopoeia.rawValue+API.choice.rawValue
         let activityData = ActivityData(message: "Get Onomatopoeia", type: .lineScaleParty)
         NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
         
         DispatchQueue(label: "get-onomatopoeia").async {
-            let urlString = API.base.rawValue+API.v1.rawValue+API.onomatopoeia.rawValue+API.choice.rawValue
+            
             Alamofire.request(urlString, method: .get).responseJSON { (response) in
-                let obj = JSON(response.result.value)
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                
+                guard let res = response.result.value else{return}
+                let obj = JSON(res)
                 print("***** API results *****")
                 print(obj)
                 print("***** API results *****")
-                
-                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
                 
                 if IsHTTPStatus(statusCode: response.response?.statusCode) {
                     self.choices = obj["results"].arrayValue.map{$0.stringValue}

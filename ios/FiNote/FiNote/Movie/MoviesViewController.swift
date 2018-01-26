@@ -174,15 +174,13 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 self.refresh_controll.endRefreshing()
                 
                 guard let res = response.result.value else{return}
+                let obj = JSON(res)
+                print("***** API results *****")
+                print(obj)
+                print("***** API results *****")
                 
                 if IsHTTPStatus(statusCode: response.response?.statusCode) {
                     self.appdelegate.movies.removeAll()
-                    
-                    let obj = JSON(res)
-                    
-                    print("***** API results *****")
-                    print(obj)
-                    print("***** API results *****")
                     
                     for movie in obj["results"].arrayValue {
                         self.appdelegate.movies.append(Movies().GetData(json: movie))
@@ -195,7 +193,6 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
                         self.myTableView.reloadData()
                     }
                 }else {
-                    let obj = JSON(res)
                     ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
                 }
             }

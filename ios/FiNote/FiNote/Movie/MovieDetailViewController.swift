@@ -190,12 +190,13 @@ class MovieDetailViewController: UIViewController {
         
         DispatchQueue(label: "get-movie").async {
             Alamofire.request(urlString, method: .get).responseJSON { (response) in
-                let obj = JSON(response.result.value)
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                
+                guard let res = response.result.value else{return}
+                let obj = JSON(res)
                 print("***** API results *****")
                 print(obj)
                 print("***** API results *****")
-                
-                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
                 
                 if IsHTTPStatus(statusCode: response.response?.statusCode) {
                     self.movie = Movie().GetData(json: obj)
@@ -214,27 +215,29 @@ class MovieDetailViewController: UIViewController {
         let urlString = API.base.rawValue+API.v1.rawValue+API.movie.rawValue+API.delete.rawValue
         let appdelegate = GetAppDelegate()
         let activityData = ActivityData(message: "Delete Movie", type: .lineScaleParty)
-        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
-        
         let params = [
             "username": username,
             "password": password,
             "tmdb_id": movie_id
             ] as [String : Any]
         
+        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
+        
         DispatchQueue(label: "delete-movie").async {
             Alamofire.request(urlString, method: .post, parameters: params).responseJSON { (response) in
-                let obj = JSON(response.result.value)
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                
+                guard let res = response.result.value else{return}
+                let obj = JSON(res)
                 print("***** API results *****")
                 print(obj)
                 print("***** API results *****")
                 
-                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
-                let index = appdelegate.movies.index(where: {$0.id == self.movie_id})
-                let index_int = index?.advanced(by: 0)
-                appdelegate.movies.remove(at: index_int!)
-                
                 if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                    let index = appdelegate.movies.index(where: {$0.id == self.movie_id})
+                    let index_int = index?.advanced(by: 0)
+                    appdelegate.movies.remove(at: index_int!)
+                    
                     self.navigationController?.popViewController(animated: true)
                 }else {
                     ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
