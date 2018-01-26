@@ -82,14 +82,14 @@ class MovieInfoViewController: FormViewController {
                                     //TODO: values()とchocesを比較して被りを削除
                                     
                                     $0.title = "タップして選ぶ..."
-                                    $0.options = self.choices
+                                    $0.options = self.GetOnomatopoeiaFromFormValues()
                                     $0.tag = "onomatopoeia_\(self.count)"
                                     self.count += 1
                                 }
                             }
                             $0 <<< PickerInputRow<String> {
                                 $0.title = "タップして選ぶ..."
-                                $0.options = self.choices
+                                $0.options = self.GetOnomatopoeiaFromFormValues()
                                 $0.tag = "onomatopoeia_0"
                             }
                             
@@ -123,9 +123,26 @@ class MovieInfoViewController: FormViewController {
     }
     
     func GetOnomatopoeiaFromFormValues() -> [String] {
-        //TODO: tagにonomatopoeiaが含まれるvalueを取得
+        var choosing: [String] = []
+        var new_choices = choices
         
-        return [""]
+        // 選択済みのオノマトペ名で配列を生成
+        for dict in form.values() {
+            if dict.value != nil && dict.key.contains("onomatopoeia_") {
+                choosing.append(dict.value as! String)
+            }
+        }
+        
+        // 選択済みのオノマトペ名を選択肢配列から削除
+        for name in choosing {
+            let index = new_choices.index(of: name)
+            
+            if index != nil {
+                new_choices.remove(at: index!.advanced(by: 0))
+            }
+        }
+        
+        return new_choices
     }
 
     override func didReceiveMemoryWarning() {
