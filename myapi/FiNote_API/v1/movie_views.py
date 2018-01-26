@@ -96,6 +96,24 @@ class GetMovieViewSet(viewsets.ViewSet):
         return Response(results)
 
 
+
+class GetOnomatopoeiaChoiceViewSet(viewsets.ViewSet):
+    @staticmethod
+    def list(request):
+        """
+        オノマトペの選択肢を返す
+
+        :param request: None
+        :returns        Onomatopoeia names
+        """
+
+        hogehoge = [onomatopoeia.name for onomatopoeia in Onomatopoeia.objects.all()]
+
+        results = {'results': hogehoge}
+
+        return Response(results)
+
+
 class UpdateMovieUserInformationViewSet(viewsets.ViewSet):
     serializer_class = UpdateMovieUserInformationSerializer
 

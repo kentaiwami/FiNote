@@ -152,6 +152,16 @@ response：
     ]
 ```
 
+### Get Onomatopoeia Choice
+```
+method：GET
+endpoint：api/v1/onomatopoeia/choice/
+response：
+{
+    "results": ["hoge", "fuga", "piyo]
+}
+```
+
 ### Update Movie User Information(Onomatopoeia, DVD, FAV)
 ```
 method：POST
