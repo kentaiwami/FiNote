@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		371D1F4B2018F39100977971 /* MoviesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371D1F4A2018F39100977971 /* MoviesCell.swift */; };
-		3733676D201B0EB300AFE5E6 /* MovieInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3733676C201B0EB300AFE5E6 /* MovieInfoViewController.swift */; };
+		3733676D201B0EB300AFE5E6 /* MovieUserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3733676C201B0EB300AFE5E6 /* MovieUserInfoViewController.swift */; };
 		37349E2E20151EBA00A37D2D /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37349E2D20151EBA00A37D2D /* API.swift */; };
 		374D67892011EAF300706D4F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374D67882011EAF300706D4F /* AppDelegate.swift */; };
 		374D678D2011EAF300706D4F /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374D678C2011EAF300706D4F /* SecondViewController.swift */; };
@@ -34,7 +34,7 @@
 		30DD223F71E3BE17917D7C0F /* Pods-FiNote.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FiNote.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FiNote/Pods-FiNote.debug.xcconfig"; sourceTree = "<group>"; };
 		33A5E5BB6CFE9A0C87249A88 /* Pods-FiNote.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FiNote.release.xcconfig"; path = "Pods/Target Support Files/Pods-FiNote/Pods-FiNote.release.xcconfig"; sourceTree = "<group>"; };
 		371D1F4A2018F39100977971 /* MoviesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesCell.swift; sourceTree = "<group>"; };
-		3733676C201B0EB300AFE5E6 /* MovieInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieInfoViewController.swift; sourceTree = "<group>"; };
+		3733676C201B0EB300AFE5E6 /* MovieUserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieUserInfoViewController.swift; sourceTree = "<group>"; };
 		37349E2D20151EBA00A37D2D /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		374D67852011EAF300706D4F /* FiNote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FiNote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		374D67882011EAF300706D4F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -126,7 +126,7 @@
 				379728BA201545030045EB61 /* MoviesViewController.swift */,
 				371D1F4A2018F39100977971 /* MoviesCell.swift */,
 				37CF06E52019039600E99129 /* MovieDetailViewController.swift */,
-				3733676C201B0EB300AFE5E6 /* MovieInfoViewController.swift */,
+				3733676C201B0EB300AFE5E6 /* MovieUserInfoViewController.swift */,
 			);
 			path = Movie;
 			sourceTree = "<group>";
@@ -339,7 +339,7 @@
 				3760316E2014809D00E69674 /* Setting.swift in Sources */,
 				377D38DC20148992008A36CC /* SignUpViewController.swift in Sources */,
 				376031702014816000E69674 /* Design.swift in Sources */,
-				3733676D201B0EB300AFE5E6 /* MovieInfoViewController.swift in Sources */,
+				3733676D201B0EB300AFE5E6 /* MovieUserInfoViewController.swift in Sources */,
 				377D38DE201489A9008A36CC /* SignInViewController.swift in Sources */,
 				377D38D9201484D6008A36CC /* Model.swift in Sources */,
 				379728BB201545030045EB61 /* MoviesViewController.swift in Sources */,

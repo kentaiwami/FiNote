@@ -1,5 +1,5 @@
 //
-//  MovieInfoViewController.swift
+//  MovieUserInfoViewController.swift
 //  FiNote
 //
 //  Created by 岩見建汰 on 2018/01/26.
@@ -13,7 +13,7 @@ import Alamofire
 import SwiftyJSON
 import KeychainAccess
 
-class MovieInfoViewController: FormViewController {
+class MovieUserInfoViewController: FormViewController {
 
     var movie_id = ""
     var onomatopoeia: [String] = []
