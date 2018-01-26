@@ -170,16 +170,19 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         DispatchQueue(label: "get-movies").async {
             let urlString = API.base.rawValue+API.v1.rawValue+API.movies.rawValue+"?user_id=\(self.user_id)"
             Alamofire.request(urlString, method: .get).responseJSON { (response) in
-                let obj = JSON(response.result.value)
-                print("***** API results *****")
-                print(obj)
-                print("***** API results *****")
-                
                 NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
                 self.refresh_controll.endRefreshing()
                 
+                guard let res = response.result.value else{return}
+                
                 if IsHTTPStatus(statusCode: response.response?.statusCode) {
                     self.appdelegate.movies.removeAll()
+                    
+                    let obj = JSON(res)
+                    
+                    print("***** API results *****")
+                    print(obj)
+                    print("***** API results *****")
                     
                     for movie in obj["results"].arrayValue {
                         self.appdelegate.movies.append(Movies().GetData(json: movie))
@@ -192,6 +195,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
                         self.myTableView.reloadData()
                     }
                 }else {
+                    let obj = JSON(res)
                     ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
                 }
             }
