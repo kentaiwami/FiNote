@@ -32,6 +32,8 @@ class MovieInfoViewController: FormViewController {
     }
     
     func TapSaveButton() {
+        //TODO: call update api
+        
         let nav = self.presentingViewController as! UINavigationController
         let detailvc = nav.viewControllers.last!
         
@@ -52,7 +54,7 @@ class MovieInfoViewController: FormViewController {
     }
     
     func CreateForm() {
-        form +++ Section(header: "", footer: "")
+        form +++ Section(header: "DVDの所持・お気に入り登録", footer: "")
             <<< SwitchRow("") { row in
                 row.title = "DVD"
                 row.value = dvd
@@ -60,7 +62,7 @@ class MovieInfoViewController: FormViewController {
             }
         
             <<< SwitchRow("") { row in
-                row.title = "Favourite"
+                row.title = "Favorite"
                 row.value = fav
                 row.tag = "fav"
             }
