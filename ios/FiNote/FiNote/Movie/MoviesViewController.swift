@@ -18,7 +18,7 @@ import StatusProvider
 
 class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITabBarControllerDelegate, UISearchResultsUpdating, StatusController {
     
-    var movies:[Movies.Data] = []
+    var appdelegate = GetAppDelegate()
     var searchResults:[Movies.Data] = []
     var preViewName = "Movies"
     var myTableView = UITableView()
@@ -91,6 +91,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         super.viewWillAppear(animated)
         
         self.tabBarController?.navigationItem.title = "Movies"
+        myTableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -101,7 +102,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if searchController.isActive {
             return searchResults.count
         } else {
-            return movies.count
+            return appdelegate.movies.count
         }
     }
     
@@ -114,7 +115,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if searchController.isActive {
             tmp_lists = searchResults
         }else {
-            tmp_lists = movies
+            tmp_lists = appdelegate.movies
         }
         
         let urlRequest = URL(string: API.poster_base.rawValue+tmp_lists[indexPath.row].poster)!
@@ -138,7 +139,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if searchController.isActive {
             tmp_lists = searchResults
         }else {
-            tmp_lists = movies
+            tmp_lists = appdelegate.movies
         }
         
         let detailVC = MovieDetailViewController()
@@ -147,7 +148,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func updateSearchResults(for searchController: UISearchController) {
-        self.searchResults = movies.filter{
+        self.searchResults = appdelegate.movies.filter{
             $0.title.lowercased().contains(searchController.searchBar.text!.lowercased()) || IsContainOnomatopoeia(onomatopoeia: $0.onomatopoeia)
         }
         myTableView.reloadData()
@@ -177,13 +178,13 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
                 
                 if IsHTTPStatus(statusCode: response.response?.statusCode) {
-                    self.movies.removeAll()
+                    self.appdelegate.movies.removeAll()
                     
                     for movie in obj["results"].arrayValue {
-                        self.movies.append(Movies().GetData(json: movie))
+                        self.appdelegate.movies.append(Movies().GetData(json: movie))
                     }
                     
-                    if self.movies.count == 0 {
+                    if self.appdelegate.movies.count == 0 {
                         self.ShowNoDataView()
                     }else {
                         self.ShowLoadData()

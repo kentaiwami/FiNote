@@ -204,13 +204,14 @@ class MovieDetailViewController: UIViewController {
     
     func CallDeleteMovieAPI() {
         let urlString = API.base.rawValue+API.v1.rawValue+API.movie.rawValue+API.delete.rawValue
+        let appdelegate = GetAppDelegate()
         let activityData = ActivityData(message: "Delete Movie", type: .lineScaleParty)
         NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
         
         let params = [
             "username": username,
             "password": password,
-            "tmdb_id": movie.id
+            "tmdb_id": movie_id
             ] as [String : Any]
         
         DispatchQueue(label: "delete-movie").async {
@@ -221,6 +222,9 @@ class MovieDetailViewController: UIViewController {
                 print("***** API results *****")
                 
                 NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                let index = appdelegate.movies.index(where: {$0.id == self.movie_id})
+                let index_int = index?.advanced(by: 0)
+                appdelegate.movies.remove(at: index_int!)
                 
                 if IsHTTPStatus(statusCode: response.response?.statusCode) {
                     self.navigationController?.popViewController(animated: true)
