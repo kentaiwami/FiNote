@@ -181,23 +181,6 @@ response：
 }
 ```
 
-### Update Onomatopoeia
-```
-method：POST
-endpoint：api/v1/movie/update/onomatopoeia/
-request：
-{
-    "tmdb_id": 12,
-    "username": "hogehoge",
-    "password": "hogehoge",
-    "onomatopoeia": ["HOGE","FUGA"]
-}
-response：
-{
-    "msg": "success"
-}
-```
-
 ### Delete Movie
 ```
 method：POST
