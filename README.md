@@ -149,16 +149,6 @@ response：
             "dvd": true,
             "fav": false,
             "overview": "movie overview hogehoge..."
-        },
-        {
-            "add": "2018-01-12T00:01:54.697333",
-            "id": "1234",
-            "title": "hoge",
-            "poster": "http://",
-            "onomatopoeia": ["hoge","fuga","piyo"],
-            "dvd": true,
-            "fav": true,
-            "overview": "movie overview hogehoge..."
         }
     ]
 ```

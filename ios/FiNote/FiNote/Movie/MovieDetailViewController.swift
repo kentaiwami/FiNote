@@ -20,6 +20,8 @@ class MovieDetailViewController: UIViewController {
 
     var movie_id = ""
     var user_id = ""
+    var username = ""
+    var password = ""
     var movie = Movie.Data()
     
     var contentView = UIView()
@@ -35,6 +37,8 @@ class MovieDetailViewController: UIViewController {
         
         let keychain = Keychain()
         user_id = (try! keychain.getString("id"))!
+        username = (try! keychain.getString("username"))!
+        password = (try! keychain.getString("password"))!
         
         CallMovieAPI()
     }
@@ -86,7 +90,14 @@ class MovieDetailViewController: UIViewController {
         delete_item.buttonColor = UIColor.hex(Color.red.rawValue, alpha: 1.0)
         delete_item.icon = UIImage(named: "icon_trash")
         delete_item.handler = { (hoge) in
-            print("TAP")
+            let popup = PopupDialog(title: "Movie Delete", message: "本当に削除しますか？")
+            let delete = DestructiveButton(title: "Delete", action: {
+                self.CallDeleteMovieAPI()
+            })
+            let cancel = CancelButton(title: "Cancel", action: nil)
+            popup.addButtons([delete, cancel])
+            
+            self.present(popup, animated: true, completion: nil)
         }
         
         let floaty = Floaty()
@@ -176,19 +187,45 @@ class MovieDetailViewController: UIViewController {
                 print(obj)
                 print("***** API results *****")
                 
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                
                 if IsHTTPStatus(statusCode: response.response?.statusCode) {
                     self.movie = Movie().GetData(json: obj)
                     self.tmp_poster.af_setImage(withURL: URL(string: API.poster_base.rawValue+self.movie.poster)!)
-                    NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                    
                     self.is_done_api = true
                     self.DrawViews()
                 }else {
-                    let popup = PopupDialog(title: "Error", message: obj.arrayValue[0].stringValue)
-                    let button = DefaultButton(title: "OK", dismissOnTap: true) {}
-                    popup.addButtons([button])
-                    
-                    NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
-                    self.present(popup, animated: true, completion: nil)
+                    ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
+                }
+            }
+        }
+    }
+    
+    func CallDeleteMovieAPI() {
+        let urlString = API.base.rawValue+API.v1.rawValue+API.movie.rawValue+API.delete.rawValue
+        let activityData = ActivityData(message: "Delete Movie", type: .lineScaleParty)
+        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
+        
+        let params = [
+            "username": username,
+            "password": password,
+            "tmdb_id": movie.id
+            ] as [String : Any]
+        
+        DispatchQueue(label: "delete-movie").async {
+            Alamofire.request(urlString, method: .post, parameters: params).responseJSON { (response) in
+                let obj = JSON(response.result.value)
+                print("***** API results *****")
+                print(obj)
+                print("***** API results *****")
+                
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                
+                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                    self.navigationController?.popViewController(animated: true)
+                }else {
+                    ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
                 }
             }
         }

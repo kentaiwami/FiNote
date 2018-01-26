@@ -8,6 +8,7 @@
 
 import UIKit
 import Eureka
+import PopupDialog
 
 func GetAppDelegate() -> AppDelegate {
     return UIApplication.shared.delegate as! AppDelegate
@@ -44,6 +45,13 @@ func IsHTTPStatus(statusCode: Int?) -> Bool {
     }else {
         return false
     }
+}
+
+func ShowStandardAlert(title: String, msg: String, vc: UIViewController) {
+    let popup = PopupDialog(title: title, message: msg)
+    let button = DefaultButton(title: "OK", dismissOnTap: true) {}
+    popup.addButtons([button])
+    vc.present(popup, animated: true, completion: nil)
 }
 
 class Indicator {

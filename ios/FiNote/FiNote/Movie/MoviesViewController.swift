@@ -174,6 +174,8 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 print(obj)
                 print("***** API results *****")
                 
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                
                 if IsHTTPStatus(statusCode: response.response?.statusCode) {
                     self.movies.removeAll()
                     
@@ -187,14 +189,13 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
                         self.ShowLoadData()
                         self.myTableView.reloadData()
                     }
-                    NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                    
                     self.refresh_controll.endRefreshing()
                 }else {
                     let popup = PopupDialog(title: "Error", message: obj.arrayValue[0].stringValue)
                     let button = DefaultButton(title: "OK", dismissOnTap: true) {}
                     popup.addButtons([button])
                     
-                    NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
                     self.refresh_controll.endRefreshing()
                     self.present(popup, animated: true, completion: nil)
                 }
