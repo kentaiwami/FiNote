@@ -1,0 +1,21 @@
+
+/* Class = "UITabBarItem"; title = "Sign Up"; ObjectID = "1Pt-RB-nLa"; */
+"1Pt-RB-nLa.title" = "Sign Up";
+
+/* Class = "UITabBarItem"; title = "Sign In"; ObjectID = "ARM-RO-cFy"; */
+"ARM-RO-cFy.title" = "Sign In";
+
+/* Class = "UITabBarItem"; title = "User"; ObjectID = "IKm-7B-w87"; */
+"IKm-7B-w87.title" = "User";
+
+/* Class = "UILabel"; text = "Loaded by SecondViewController"; ObjectID = "NDk-cv-Gan"; */
+"NDk-cv-Gan.text" = "Loaded by SecondViewController";
+
+/* Class = "UITabBarItem"; title = "Movies"; ObjectID = "acW-dT-cKf"; */
+"acW-dT-cKf.title" = "Movies";
+
+/* Class = "UITabBarItem"; title = "Social"; ObjectID = "cPa-gy-q4n"; */
+"cPa-gy-q4n.title" = "Social";
+
+/* Class = "UILabel"; text = "Second View"; ObjectID = "zEq-FU-wV5"; */
+"zEq-FU-wV5.text" = "Second View";

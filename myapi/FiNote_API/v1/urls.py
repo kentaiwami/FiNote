@@ -11,6 +11,7 @@ router.register(r'user/update/email', UpdateEmailViewSet, base_name='update-emai
 
 
 router.register(r'movie', AddMovieViewSet, base_name='add-movie')
+router.register(r'movie/detail', GetMovieViewSet, base_name='get-movie')
 router.register(r'movie/update', UpdateMovieUserInformationViewSet, base_name='update-movie')
 router.register(r'movie/delete', DeleteMovieViewSet, 'delete-movie')
 
@@ -24,3 +25,4 @@ router.register(r'movie/search/origin', GetOriginalTitleViewSet, 'get-movie-orig
 
 
 router.register(r'movies', GetMoviesViewSet, base_name='get-movies')
+router.register(r'onomatopoeia/choice', GetOnomatopoeiaChoiceViewSet, base_name='get-onomatopoeia-choice')

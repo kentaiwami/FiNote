@@ -7,15 +7,53 @@
 //
 
 import UIKit
+import KeychainAccess
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var movies:[Movies.Data] = []
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        UINavigationBar.appearance().isTranslucent = false
+        UINavigationBar.appearance().tintColor = UIColor.white
+        UINavigationBar.appearance().barTintColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        
+        let keychain = Keychain()
+        
+        if IsReset() {
+            try! keychain.remove("username")
+            try! keychain.remove("password")
+            try! keychain.remove("id")
+        }
+        
+        if IsInsertDummyData() {
+            let data = GetDummyData()
+            try! keychain.set(data.username, key: "username")
+            try! keychain.set(data.password, key: "password")
+            try! keychain.set(data.id, key: "id")
+        }
+        
+        if IsInsertEmptyDummyData() {
+            let data = GetEmptyDummyData()
+            try! keychain.set(data.username, key: "username")
+            try! keychain.set(data.password, key: "password")
+            try! keychain.set(data.id, key: "id")
+        }
+        
+        let username = try! keychain.getString("username")
+        
+        if username == nil {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let signVC = storyboard.instantiateViewController(withIdentifier: "Sign")
+            let nav = UINavigationController()
+            nav.viewControllers = [signVC]
+            self.window!.rootViewController = nav
+            self.window?.makeKeyAndVisible()
+        }
         return true
     }
 

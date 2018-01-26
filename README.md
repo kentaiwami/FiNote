@@ -120,22 +120,46 @@ response：
         {
             "add": "2018-01-12T00:02:37.612840",
             "id": "12345",
-            "fav": 1,
             "title": "hoge2",
-            "dvd": 1,
             "poster": "http://",
             "onomatopoeia": ["hoge","fuga","piyo"]
         },
         {
             "add": "2018-01-12T00:01:54.697333",
             "id": "1234",
-            "fav": 0,
             "title": "hoge",
-            "dvd": 1,
             "poster": "http://",
             "onomatopoeia": ["hoge","fuga","piyo"]
         }
     ]
+```
+
+### Get Movie
+```
+method：GET
+endpoint：api/v1/movie/detail/?user_id=2&movie_id=1234
+response：
+"results": [
+        {
+            "add": "2018-01-12T00:02:37.612840",
+            "title": "hoge2",
+            "poster": "http://",
+            "onomatopoeia": ["hoge","fuga","piyo"],
+            "dvd": true,
+            "fav": false,
+            "overview": "movie overview hogehoge..."
+        }
+    ]
+```
+
+### Get Onomatopoeia Choice
+```
+method：GET
+endpoint：api/v1/onomatopoeia/choice/
+response：
+{
+    "results": ["hoge", "fuga", "piyo]
+}
 ```
 
 ### Update Movie User Information(Onomatopoeia, DVD, FAV)
@@ -147,9 +171,9 @@ request：
     "username": "hogehoge",
     "password": "hogehoge",
     "tmdb_id": 1234,
-    "dvd": 0,   (optional)
-    "fav": 1,   (optional)
-    "onomatopoeia": ["hoge", "fuga", "piyo"]    (optional)
+    "dvd": false,
+    "fav": true,
+    "onomatopoeia": ["hoge", "fuga", "piyo"]
 }
 response：
 {

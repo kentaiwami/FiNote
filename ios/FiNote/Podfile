@@ -13,5 +13,8 @@ target 'FiNote' do
 	pod 'TinyConstraints', :git => 'https://github.com/roberthein/TinyConstraints.git', :branch => 'Release_2.1.2'
 	pod 'Floaty', '~> 3.0.0'
 	pod 'PopupDialog', '0.5.4'
-
+	pod 'NVActivityIndicatorView', '3.7.0'
+	pod 'AlamofireImage', '~> 3.3'
+	pod 'StatusProvider'
+	pod 'Floaty', '~> 3.0.0'
 end
