@@ -11,9 +11,9 @@ import Eureka
 
 class MovieInfoViewController: FormViewController {
 
-    private var onomatopoeia: [String] = []
-    private var dvd = false
-    private var fav = false
+    var onomatopoeia: [String] = []
+    var dvd = false
+    var fav = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
