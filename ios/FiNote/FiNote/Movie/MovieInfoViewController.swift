@@ -76,7 +76,7 @@ class MovieInfoViewController: FormViewController {
                             $0.tag = "onomatopoeia"
                             $0.multivaluedRowToInsertAt = { _ in
                                 return PickerInputRow<String>{
-                                    //TODO: values()とchocesを比較して被りを削除                                    
+                                    //TODO: values()とchocesを比較して被りを削除
                                     
                                     $0.title = "タップして選ぶ..."
                                     $0.options = self.choices
