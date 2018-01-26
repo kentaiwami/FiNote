@@ -99,6 +99,12 @@ class MovieInfoViewController: FormViewController {
         
         CreateForm()
     }
+    
+    func GetOnomatopoeiaFromFormValues() -> [String] {
+        //TODO: tagにonomatopoeiaが含まれるvalueを取得
+        
+        return [""]
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
