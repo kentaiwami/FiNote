@@ -65,6 +65,8 @@ class MovieUserInfoViewController: FormViewController {
     }
     
     func CreateForm() {
+        UIView.setAnimationsEnabled(false)
+        
         form +++ Section(header: "DVDの所持・お気に入り登録", footer: "")
             <<< SwitchRow("") { row in
                 row.title = "DVD"
@@ -88,6 +90,7 @@ class MovieUserInfoViewController: FormViewController {
                                     let options = self.GetOnomatopoeiaNewChoices()
                                     $0.title = "タップして選択..."
                                     $0.options = options
+                                    //TODO: fix
                                     $0.value = options.first!
                                     $0.tag = "onomatopoeia_\(self.count)"
                                     self.count += 1
@@ -104,6 +107,8 @@ class MovieUserInfoViewController: FormViewController {
                                 count = i+1
                             }
         }
+        
+        UIView.setAnimationsEnabled(true)
     }
     
     func CallGetOnomatopoeiaAPI() {
