@@ -100,7 +100,7 @@ class MovieAddSearchDetailViewController: UIViewController {
         save_item.buttonColor = UIColor.hex(Color.blue.rawValue, alpha: 1.0)
         save_item.icon = UIImage(named: "icon_check")
         save_item.handler = { (_) in
-            //TODO: CALL SAVE API
+            self.CallAddMovieAPI()
         }
         
         let floaty = Floaty()
@@ -185,6 +185,10 @@ class MovieAddSearchDetailViewController: UIViewController {
         latestView = release_date
         
         contentView.bottom(to: latestView, offset: 200)
+    }
+    
+    func CallAddMovieAPI() {
+        //TODO: CallAddMovieAPI
     }
 
     override func didReceiveMemoryWarning() {
