@@ -12,7 +12,7 @@ class MovieAddSearchCell: UITableViewCell {
     var title: UILabel!
     var overview: UILabel!
     var poster: UIImageView!
-    var public_date: UILabel!
+    var release_date: UILabel!
     var public_date_icon: UIImageView!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {

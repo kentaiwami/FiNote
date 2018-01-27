@@ -112,23 +112,15 @@ class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, UITab
         let cell = tableView.dequeueReusableCell(withIdentifier: NSStringFromClass(MovieAddSearchCell.self), for: indexPath) as! MovieAddSearchCell
         cell.accessoryType = .disclosureIndicator
         
-//        var tmp_lists: [Movies.Data] = []
-//
-//        if searchController.isActive {
-//            tmp_lists = searchResults
-//        }else {
-//            tmp_lists = appdelegate.movies
-//        }
-//
-//        let urlRequest = URL(string: API.poster_base.rawValue+tmp_lists[indexPath.row].poster)!
-//
-//        cell.title.text = tmp_lists[indexPath.row].title
-//        cell.onomatopoeia.text = tmp_lists[indexPath.row].onomatopoeia.joined(separator: " ")
-//        cell.poster.af_setImage(
-//            withURL: urlRequest,
-//            placeholderImage: UIImage(named: "no_image")
-//        )
-//        cell.add_date.text = tmp_lists[indexPath.row].add
+        let urlRequest = URL(string: API.poster_base.rawValue+search_results[indexPath.row].poster)!
+
+        cell.title.text = search_results[indexPath.row].title
+        cell.overview.text = search_results[indexPath.row].overview
+        cell.poster.af_setImage(
+            withURL: urlRequest,
+            placeholderImage: UIImage(named: "no_image")
+        )
+        cell.release_date.text = search_results[indexPath.row].release_date
         
         return cell
     }
