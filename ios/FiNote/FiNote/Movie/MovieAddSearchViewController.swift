@@ -69,7 +69,8 @@ class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, Statu
             let status = Status(title: "No Results", description: "指定した検索ワードを含む映画は見つかりませんでした", actionTitle: "原題で検索", image: nil) {
                 self.hideStatus()
                 //TODO: タイトル一覧を取得するAPIをコール
-                //TODO: コール後、結果を描画
+                //TODO: コール後、一覧を取得できた場合はタイトル一覧用のviewへ遷移
+                //TODO: 一覧がなかった場合はアラート表示
             }
             
             show(status: status)
