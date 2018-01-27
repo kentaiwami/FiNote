@@ -95,30 +95,16 @@ class MovieAddSearchDetailViewController: UIViewController {
     }
     
     func InitFloaty() {
-        let save_item = FloatyItem()
-        save_item.title = "Add Movie"
-        save_item.buttonColor = UIColor.hex(Color.blue.rawValue, alpha: 1.0)
-        save_item.icon = UIImage(named: "icon_check")
-        save_item.handler = { (_) in
-            self.CallAddMovieAPI()
-        }
-        
         let floaty = Floaty()
         floaty.addItem("Edit Info", icon: UIImage(named: "icon_list")) { (_) in
-            //TODO: 遷移
-//            let movie_info_VC = MoviesUserInfoViewController()
-//            movie_info_VC.SetDVD(dvd: self.movie.dvd)
-//            movie_info_VC.SetFAV(fav: self.movie.fav)
-//            movie_info_VC.SetOnomatopoeia(onomatopoeia: self.movie.onomatopoeia)
-//            movie_info_VC.SetMovieID(movie_id: self.movie_id)
-//
-//            let nav = UINavigationController()
-//            nav.viewControllers = [movie_info_VC]
-//
-//            self.present(nav, animated: true, completion: nil)
+            let movie_search_info_VC = MovieAddSearchUserInfoViewController()
+            movie_search_info_VC.SetMovie(movie: self.searched_movie)
+            let nav = UINavigationController()
+            nav.viewControllers = [movie_search_info_VC]
+
+            self.present(nav, animated: true, completion: nil)
         }
         
-        floaty.addItem(item: save_item)
         floaty.buttonColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
         floaty.buttonImage = UIImage(named: "icon_edit")
         floaty.rotationDegrees = 0.0
@@ -187,10 +173,6 @@ class MovieAddSearchDetailViewController: UIViewController {
         contentView.bottom(to: latestView, offset: 200)
     }
     
-    func CallAddMovieAPI() {
-        //TODO: CallAddMovieAPI
-    }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }

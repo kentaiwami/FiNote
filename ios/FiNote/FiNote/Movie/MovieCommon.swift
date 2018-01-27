@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import NVActivityIndicatorView
+import Alamofire
+import SwiftyJSON
 
 func GetChoosingOnomatopoeia(values: [String:Any?]) -> [String] {
     // オノマトペとタグ番号の辞書を生成
@@ -36,4 +39,28 @@ func GetOnomatopoeiaNewChoices(ignore: String = "", values: [String:Any?], choic
     }
     
     return new_choices
+}
+
+func CallGetOnomatopoeiaAPI(act: @escaping (JSON) -> Void, vc: UIViewController) {
+    let urlString = API.base.rawValue+API.v1.rawValue+API.onomatopoeia.rawValue+API.choice.rawValue
+    let activityData = ActivityData(message: "Get Onomatopoeia", type: .lineScaleParty)
+    NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
+    
+    DispatchQueue(label: "get-onomatopoeia").async {
+        Alamofire.request(urlString, method: .get).responseJSON { (response) in
+            NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+            
+            guard let res = response.result.value else{return}
+            let obj = JSON(res)
+            print("***** API results *****")
+            print(obj)
+            print("***** API results *****")
+            
+            if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                act(obj)
+            }else {
+                ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: vc)
+            }
+        }
+    }
 }

@@ -90,6 +90,8 @@ class MoviesDetailViewController: UIViewController {
         delete_item.icon = UIImage(named: "icon_trash")
         delete_item.handler = { (_) in
             let popup = PopupDialog(title: "Movie Delete", message: "本当に削除しますか？")
+            popup.transitionStyle = .zoomIn
+            
             let delete = DestructiveButton(title: "Delete", action: {
                 self.CallDeleteMovieAPI()
             })

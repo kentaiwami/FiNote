@@ -31,7 +31,10 @@ class MoviesUserInfoViewController: FormViewController {
         self.navigationItem.setLeftBarButton(close, animated: true)
         self.navigationItem.setRightBarButton(save, animated: true)
         
-        CallGetOnomatopoeiaAPI()
+        CallGetOnomatopoeiaAPI(act: { obj in
+            self.choices = obj["results"].arrayValue.map{$0.stringValue}
+            self.CreateForm()
+        }, vc: self)
     }
     
     func TapCloseButton() {
@@ -130,31 +133,31 @@ class MoviesUserInfoViewController: FormViewController {
         UIView.setAnimationsEnabled(true)
     }
     
-    func CallGetOnomatopoeiaAPI() {
-        let urlString = API.base.rawValue+API.v1.rawValue+API.onomatopoeia.rawValue+API.choice.rawValue
-        let activityData = ActivityData(message: "Get Onomatopoeia", type: .lineScaleParty)
-        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
-        
-        DispatchQueue(label: "get-onomatopoeia").async {
-            
-            Alamofire.request(urlString, method: .get).responseJSON { (response) in
-                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
-                
-                guard let res = response.result.value else{return}
-                let obj = JSON(res)
-                print("***** API results *****")
-                print(obj)
-                print("***** API results *****")
-                
-                if IsHTTPStatus(statusCode: response.response?.statusCode) {
-                    self.choices = obj["results"].arrayValue.map{$0.stringValue}
-                    self.CreateForm()
-                }else {
-                    ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
-                }
-            }
-        }
-    }
+//    func CallGetOnomatopoeiaAPI() {
+//        let urlString = API.base.rawValue+API.v1.rawValue+API.onomatopoeia.rawValue+API.choice.rawValue
+//        let activityData = ActivityData(message: "Get Onomatopoeia", type: .lineScaleParty)
+//        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
+//
+//        DispatchQueue(label: "get-onomatopoeia").async {
+//
+//            Alamofire.request(urlString, method: .get).responseJSON { (response) in
+//                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+//
+//                guard let res = response.result.value else{return}
+//                let obj = JSON(res)
+//                print("***** API results *****")
+//                print(obj)
+//                print("***** API results *****")
+//
+//                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+//                    self.choices = obj["results"].arrayValue.map{$0.stringValue}
+//                    self.CreateForm()
+//                }else {
+//                    ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
+//                }
+//            }
+//        }
+//    }
     
     func CallUpdateMovieUserInfoAPI() {
         let urlString = API.base.rawValue+API.v1.rawValue+API.movie.rawValue+API.update.rawValue

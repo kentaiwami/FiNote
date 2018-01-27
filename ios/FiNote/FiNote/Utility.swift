@@ -48,8 +48,9 @@ func IsHTTPStatus(statusCode: Int?) -> Bool {
 }
 
 func ShowStandardAlert(title: String, msg: String, vc: UIViewController) {
-    let popup = PopupDialog(title: title, message: msg)
     let button = DefaultButton(title: "OK", dismissOnTap: true) {}
+    let popup = PopupDialog(title: title, message: msg)
+    popup.transitionStyle = .zoomIn
     popup.addButtons([button])
     vc.present(popup, animated: true, completion: nil)
 }
