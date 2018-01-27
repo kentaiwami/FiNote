@@ -34,7 +34,6 @@ class Movies {
 class Movie {
     struct Data {
         var add = ""
-        var id = ""
         var title = ""
         var poster = ""
         var onomatopoeia:[String] = []
@@ -54,6 +53,40 @@ class Movie {
         data.overview = json["overview"].stringValue
         data.dvd = json["dvd"].boolValue
         data.fav = json["fav"].boolValue
+        
+        return data
+    }
+}
+
+class MovieAddSearchResult {
+    struct Data {
+        var id = 0
+        var title = ""
+        var poster = ""
+        var overview = ""
+        var genre:[Int] = []
+        var release_date = ""
+    }
+    
+    func GetData(json: JSON) -> Data {
+        var data = Data()
+        
+        if json["title"].stringValue == "" {
+            data.title = json["original_title"].stringValue
+        }else {
+            data.title = json["title"].stringValue
+        }
+        
+        if json["poster_path"].stringValue == "" {
+            data.poster = json["backdrop_path"].stringValue
+        }else {
+            data.poster = json["poster_path"].stringValue
+        }
+        
+        data.id = json["id"].intValue
+        data.overview = json["overview"].stringValue
+        data.release_date = json["release_date"].stringValue
+        data.genre = json["genre_ids"].arrayValue.map({$0.intValue})
         
         return data
     }
