@@ -34,11 +34,6 @@ class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, UITab
         self.view.backgroundColor = UIColor.white
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        searchBar.becomeFirstResponder()
-    }
-    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
         RunSearch(text: searchBar.text!)
