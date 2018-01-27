@@ -42,9 +42,9 @@ class MovieAddSearchCell: UITableViewCell {
         
         poster.frame = CGRect(x: 0, y: 0, width: contentView.frame.height/1.5, height: contentView.frame.height)
         
-        title.trailing(to: contentView)
-        title.leadingToTrailing(of: poster, offset: 20)
-        title.top(to: contentView, offset: 5)        
+//        title.trailing(to: contentView)
+//        title.leadingToTrailing(of: poster, offset: 20)
+//        title.top(to: contentView, offset: 5)
     }
 
 }

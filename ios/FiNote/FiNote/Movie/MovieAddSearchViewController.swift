@@ -14,9 +14,11 @@ import Alamofire
 import PromiseKit
 import StatusProvider
 
-class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, StatusController {
+class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, StatusController {
 
     let searchBar = UISearchBar()
+    var myTableView = UITableView()
+    var search_results: [MovieAddSearchResult.Data] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,21 +53,34 @@ class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, Statu
             }.then { results -> Void in
                 en_results = results
                 NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
-                let shaped = self.DataShape(ja_results: ja_results, en_results: en_results)
-                self.DrawView(data: shaped)
+                self.ShapeOverview(ja_results: ja_results, en_results: en_results)
+                self.DrawView()
             }.catch { err in
                 let tmp_err = err as NSError
                 ShowStandardAlert(title: "Error", msg: tmp_err.domain, vc: self)
         }
     }
     
-    func DataShape(ja_results: [MovieAddSearchResult.Data], en_results: [MovieAddSearchResult.Data]) -> [MovieAddSearchResult.Data] {
-        //TODO: データ加工
-        return []
+    func ShapeOverview(ja_results: [MovieAddSearchResult.Data], en_results: [MovieAddSearchResult.Data]) {
+        var results: [MovieAddSearchResult.Data] = []
+        
+        // 日本語のoverviewが空の場合に、英語のoverviewを適用
+        for (ja, en) in zip(ja_results, en_results) {
+            var tmp = ja
+            if tmp.overview == "" {
+                tmp.overview = en.overview
+            }
+            results.append(tmp)
+        }
+        
+        search_results = results
     }
     
-    func DrawView(data: [MovieAddSearchResult.Data]) {
-        if data.count == 0 {
+    func DrawView() {
+        myTableView.removeFromSuperview()
+        myTableView = UITableView()
+        
+        if search_results.count == 0 {
             let status = Status(title: "No Results", description: "指定した検索ワードを含む映画は見つかりませんでした", actionTitle: "原題で検索", image: nil) {
                 self.hideStatus()
                 //TODO: タイトル一覧を取得するAPIをコール
@@ -75,8 +90,64 @@ class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, Statu
             
             show(status: status)
         }else {
-            //TODO: tableの表示
+            let main_width = UIScreen.main.bounds.width
+            let width = main_width * 0.2
+            let height = width * 1.5
+            
+            myTableView = UITableView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height), style: .plain)
+            myTableView.rowHeight = height
+            myTableView.delegate = self
+            myTableView.dataSource = self
+            myTableView.register(MovieAddSearchCell.self, forCellReuseIdentifier: NSStringFromClass(MovieAddSearchCell.self))
+            myTableView.autoresizingMask = UIViewAutoresizing(rawValue: UIViewAutoresizing.RawValue(UInt8(UIViewAutoresizing.flexibleHeight.rawValue) | UInt8(UIViewAutoresizing.flexibleWidth.rawValue)))
+            self.view.addSubview(myTableView)
         }
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return search_results.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: NSStringFromClass(MovieAddSearchCell.self), for: indexPath) as! MovieAddSearchCell
+        cell.accessoryType = .disclosureIndicator
+        
+//        var tmp_lists: [Movies.Data] = []
+//
+//        if searchController.isActive {
+//            tmp_lists = searchResults
+//        }else {
+//            tmp_lists = appdelegate.movies
+//        }
+//
+//        let urlRequest = URL(string: API.poster_base.rawValue+tmp_lists[indexPath.row].poster)!
+//
+//        cell.title.text = tmp_lists[indexPath.row].title
+//        cell.onomatopoeia.text = tmp_lists[indexPath.row].onomatopoeia.joined(separator: " ")
+//        cell.poster.af_setImage(
+//            withURL: urlRequest,
+//            placeholderImage: UIImage(named: "no_image")
+//        )
+//        cell.add_date.text = tmp_lists[indexPath.row].add
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        print("TAP")
+//        var tmp_lists: [Movies.Data] = []
+        
+//        if searchController.isActive {
+//            tmp_lists = searchResults
+//        }else {
+//            tmp_lists = appdelegate.movies
+//        }
+//
+//        let detailVC = MovieDetailViewController()
+//        detailVC.SetMovieID(movie_id: tmp_lists[indexPath.row].id)
+//        self.navigationController!.pushViewController(detailVC, animated: true)
     }
     
     func CallMovieSearchAPI(text: String, language: String) -> Promise<[MovieAddSearchResult.Data]>{
