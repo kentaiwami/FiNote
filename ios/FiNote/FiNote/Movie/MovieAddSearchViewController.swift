@@ -25,7 +25,7 @@ class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, UITab
         super.viewDidLoad()
         
         searchBar.delegate = self
-        searchBar.placeholder = "追加する映画のタイトルで検索"
+        searchBar.placeholder = "映画のタイトルで検索"
         if #available(iOS 11.0, *) {
             searchBar.height(44)
         }
