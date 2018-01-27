@@ -1,5 +1,5 @@
 //
-//  MovieDetailViewController.swift
+//  MoviesDetailViewController.swift
 //  FiNote
 //
 //  Created by 岩見建汰 on 2018/01/25.
@@ -16,7 +16,7 @@ import PopupDialog
 import TinyConstraints
 import Floaty
 
-class MovieDetailViewController: UIViewController {
+class MoviesDetailViewController: UIViewController {
 
     var movie_id = ""
     var user_id = ""
@@ -101,7 +101,7 @@ class MovieDetailViewController: UIViewController {
         
         let floaty = Floaty()
         floaty.addItem("Edit Info", icon: UIImage(named: "icon_list")) { (hoge) in
-            let movie_info_VC = MovieUserInfoViewController()
+            let movie_info_VC = MoviesUserInfoViewController()
             movie_info_VC.SetDVD(dvd: self.movie.dvd)
             movie_info_VC.SetFAV(fav: self.movie.fav)
             movie_info_VC.SetOnomatopoeia(onomatopoeia: self.movie.onomatopoeia)
