@@ -86,7 +86,7 @@ class MoviesUserInfoViewController: FormViewController {
                            footer: "映画を観た気分を登録してください") {
                             $0.tag = "onomatopoeia"
                             $0.multivaluedRowToInsertAt = { _ in
-                                let options = self.GetOnomatopoeiaNewChoices()
+                                let options = GetOnomatopoeiaNewChoices(values: self.form.values(), choices: self.choices)
                                 
                                 if options.count == 0 {
                                     return PickerInputRow<String>{
@@ -96,7 +96,7 @@ class MoviesUserInfoViewController: FormViewController {
                                         $0.tag = "onomatopoeia_\(self.count)"
                                         self.count += 1
                                     }.onCellSelection({ (cell, row) in
-                                        row.options = self.GetOnomatopoeiaNewChoices(ignore: row.value!)
+                                        row.options = GetOnomatopoeiaNewChoices(ignore: row.value!, values: self.form.values(), choices: self.choices)
                                         row.updateCell()
                                     })
                                 }else {
@@ -107,7 +107,7 @@ class MoviesUserInfoViewController: FormViewController {
                                         $0.tag = "onomatopoeia_\(self.count)"
                                         self.count += 1
                                     }.onCellSelection({ (cell, row) in
-                                        row.options = self.GetOnomatopoeiaNewChoices(ignore: row.value!)
+                                        row.options = GetOnomatopoeiaNewChoices(ignore: row.value!, values: self.form.values(), choices: self.choices)
                                         row.updateCell()
                                     })
                                 }
@@ -117,10 +117,10 @@ class MoviesUserInfoViewController: FormViewController {
                                 $0 <<< PickerInputRow<String> {
                                     $0.title = "タップして選択..."
                                     $0.value = name
-                                    $0.options = self.GetOnomatopoeiaNewChoices()
+                                    $0.options = GetOnomatopoeiaNewChoices(values: self.form.values(), choices: self.choices)
                                     $0.tag = "onomatopoeia_\(i)"
                                     }.onCellSelection({ (cell, row) in
-                                        row.options = self.GetOnomatopoeiaNewChoices(ignore: row.value!)
+                                        row.options = GetOnomatopoeiaNewChoices(ignore: row.value!, values: self.form.values(), choices: self.choices)
                                         row.updateCell()
                                     })
                                 count = i+1
@@ -200,22 +200,6 @@ class MoviesUserInfoViewController: FormViewController {
                 }
             }
         }
-    }
-    
-    func GetOnomatopoeiaNewChoices(ignore: String = "") -> [String] {
-        var new_choices = choices
-        
-        // 選択済みのオノマトペ名を選択肢配列から削除
-        for name in GetChoosingOnomatopoeia(values: form.values()) {
-            let index = new_choices.index(of: name)
-            
-            // ignoreと同じ場合は候補から削除しない
-            if index != nil && name != ignore {
-                new_choices.remove(at: index!.advanced(by: 0))
-            }
-        }
-        
-        return new_choices
     }
 
     override func didReceiveMemoryWarning() {

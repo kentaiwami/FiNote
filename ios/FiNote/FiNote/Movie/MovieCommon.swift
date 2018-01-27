@@ -21,3 +21,19 @@ func GetChoosingOnomatopoeia(values: [String:Any?]) -> [String] {
     // タグ番号の昇順でオノマトペを返す
     return choosing.sorted(by: {$0.value < $1.value}).map({$0.key})
 }
+
+func GetOnomatopoeiaNewChoices(ignore: String = "", values: [String:Any?], choices: [String]) -> [String] {
+    var new_choices = choices
+    
+    // 選択済みのオノマトペ名を選択肢配列から削除
+    for name in GetChoosingOnomatopoeia(values: values) {
+        let index = new_choices.index(of: name)
+        
+        // ignoreと同じ場合は候補から削除しない
+        if index != nil && name != ignore {
+            new_choices.remove(at: index!.advanced(by: 0))
+        }
+    }
+    
+    return new_choices
+}
