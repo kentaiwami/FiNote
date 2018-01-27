@@ -20,10 +20,8 @@ class MovieAddSearchViewController: UIViewController, UISearchBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         searchBar.delegate = self
         searchBar.placeholder = "追加する映画のタイトルで検索"
-        
         
         self.navigationItem.titleView = searchBar
         self.view.backgroundColor = UIColor.white
