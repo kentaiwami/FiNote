@@ -84,81 +84,55 @@ class MoviesUserInfoViewController: FormViewController {
             }
         
         
-        form +++ MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
-                           header: "オノマトペの登録",
-                           footer: "映画を観た気分を登録してください") {
-                            $0.tag = "onomatopoeia"
-                            $0.multivaluedRowToInsertAt = { _ in
-                                let options = GetOnomatopoeiaNewChoices(values: self.form.values(), choices: self.choices)
-                                
-                                if options.count == 0 {
-                                    return PickerInputRow<String>{
-                                        $0.title = "タップして選択..."
-                                        $0.options = options
-                                        $0.value = ""
-                                        $0.tag = "onomatopoeia_\(self.count)"
-                                        self.count += 1
-                                    }.onCellSelection({ (cell, row) in
-                                        row.options = GetOnomatopoeiaNewChoices(ignore: row.value!, values: self.form.values(), choices: self.choices)
-                                        row.updateCell()
-                                    })
-                                }else {
-                                    return PickerInputRow<String>{
-                                        $0.title = "タップして選択..."
-                                        $0.options = options
-                                        $0.value = options.first!
-                                        $0.tag = "onomatopoeia_\(self.count)"
-                                        self.count += 1
-                                    }.onCellSelection({ (cell, row) in
-                                        row.options = GetOnomatopoeiaNewChoices(ignore: row.value!, values: self.form.values(), choices: self.choices)
-                                        row.updateCell()
-                                    })
-                                }
-                            }
+        form +++ MultivaluedSection(
+            multivaluedOptions: [.Insert, .Delete],
+            header: "オノマトペの登録",
+            footer: "映画を観た気分を登録してください") {
+                $0.tag = "onomatopoeia"
+                $0.multivaluedRowToInsertAt = { _ in
+                    let options = GetOnomatopoeiaNewChoices(values: self.form.values(), choices: self.choices)
+                    if options.count == 0 {
+                        return PickerInputRow<String>{
+                            $0.title = "タップして選択..."
+                            $0.options = options
+                            $0.value = ""
+                            $0.tag = "onomatopoeia_\(self.count)"
+                            self.count += 1
+                        }.onCellSelection({ (cell, row) in
+                            row.options = GetOnomatopoeiaNewChoices(ignore: row.value!, values: self.form.values(), choices: self.choices)
+                            row.updateCell()
+                        })
+                    }else {
+                        return PickerInputRow<String>{
+                            $0.title = "タップして選択..."
+                            $0.options = options
+                            $0.value = options.first!
+                            $0.tag = "onomatopoeia_\(self.count)"
+                            self.count += 1
+                        }.onCellSelection({ (cell, row) in
+                            row.options = GetOnomatopoeiaNewChoices(ignore: row.value!, values: self.form.values(), choices: self.choices)
+                            row.updateCell()
+                        })
+                    }
+                }
                             
-                            for (i, name) in onomatopoeia.enumerated() {
-                                $0 <<< PickerInputRow<String> {
-                                    $0.title = "タップして選択..."
-                                    $0.value = name
-                                    $0.options = GetOnomatopoeiaNewChoices(values: self.form.values(), choices: self.choices)
-                                    $0.tag = "onomatopoeia_\(i)"
-                                    }.onCellSelection({ (cell, row) in
-                                        row.options = GetOnomatopoeiaNewChoices(ignore: row.value!, values: self.form.values(), choices: self.choices)
-                                        row.updateCell()
-                                    })
-                                count = i+1
-                            }
+                for (i, name) in onomatopoeia.enumerated() {
+                    $0 <<< PickerInputRow<String> {
+                        $0.title = "タップして選択..."
+                        $0.value = name
+                        $0.options = GetOnomatopoeiaNewChoices(values: self.form.values(), choices: self.choices)
+                        $0.tag = "onomatopoeia_\(i)"
+                        }.onCellSelection({ (cell, row) in
+                            row.options = GetOnomatopoeiaNewChoices(ignore: row.value!, values: self.form.values(), choices: self.choices)
+                            row.updateCell()
+                        })
+                    count = i+1
+                }
         }
         
         UIView.setAnimationsEnabled(true)
     }
-    
-//    func CallGetOnomatopoeiaAPI() {
-//        let urlString = API.base.rawValue+API.v1.rawValue+API.onomatopoeia.rawValue+API.choice.rawValue
-//        let activityData = ActivityData(message: "Get Onomatopoeia", type: .lineScaleParty)
-//        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
-//
-//        DispatchQueue(label: "get-onomatopoeia").async {
-//
-//            Alamofire.request(urlString, method: .get).responseJSON { (response) in
-//                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
-//
-//                guard let res = response.result.value else{return}
-//                let obj = JSON(res)
-//                print("***** API results *****")
-//                print(obj)
-//                print("***** API results *****")
-//
-//                if IsHTTPStatus(statusCode: response.response?.statusCode) {
-//                    self.choices = obj["results"].arrayValue.map{$0.stringValue}
-//                    self.CreateForm()
-//                }else {
-//                    ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
-//                }
-//            }
-//        }
-//    }
-    
+        
     func CallUpdateMovieUserInfoAPI() {
         let urlString = API.base.rawValue+API.v1.rawValue+API.movie.rawValue+API.update.rawValue
         let activityData = ActivityData(message: "Updating", type: .lineScaleParty)

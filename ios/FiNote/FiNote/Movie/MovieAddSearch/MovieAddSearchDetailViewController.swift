@@ -25,6 +25,7 @@ class MovieAddSearchDetailViewController: UIViewController {
     
     var contentView = UIView()
     var latestView = UIView()
+    var posterImageView = UIImageView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,7 +75,7 @@ class MovieAddSearchDetailViewController: UIViewController {
     
     func InitPosterView() {
         let urlRequest = URL(string: API.poster_base.rawValue+searched_movie.poster)!
-        let posterImageView = UIImageView()
+        posterImageView = UIImageView()
         posterImageView.af_setImage(
             withURL: urlRequest,
             placeholderImage: UIImage(named: "no_image")
@@ -99,6 +100,7 @@ class MovieAddSearchDetailViewController: UIViewController {
         floaty.addItem("Edit Info", icon: UIImage(named: "icon_list")) { (_) in
             let movie_search_info_VC = MovieAddSearchUserInfoViewController()
             movie_search_info_VC.SetMovie(movie: self.searched_movie)
+            movie_search_info_VC.SetPoster(poster: self.posterImageView.image!)
             let nav = UINavigationController()
             nav.viewControllers = [movie_search_info_VC]
 
