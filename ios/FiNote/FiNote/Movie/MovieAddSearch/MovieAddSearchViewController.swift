@@ -131,10 +131,9 @@ class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, UITab
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        //TODO: 詳細画面へ遷移
-//        let detailVC = MovieDetailViewController()
-//        detailVC.SetMovieID(movie_id: String(search_results[indexPath.row].id))
-//        self.navigationController!.pushViewController(detailVC, animated: true)
+        let detailVC = MovieAddSearchDetailViewController()
+        detailVC.SetMovieID(searched_movie: search_results[indexPath.row])
+        self.navigationController!.pushViewController(detailVC, animated: true)
     }
     
     func CallMovieSearchAPI(text: String, language: String) -> Promise<[MovieAddSearchResult.Data]>{

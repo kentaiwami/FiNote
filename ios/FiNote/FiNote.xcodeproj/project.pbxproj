@@ -28,6 +28,7 @@
 		37CF06E62019039600E99129 /* MoviesDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CF06E52019039600E99129 /* MoviesDetailViewController.swift */; };
 		37EE9F81201B918900E39E4A /* MovieAddSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EE9F80201B918900E39E4A /* MovieAddSearchViewController.swift */; };
 		37EE9F83201CC15100E39E4A /* MovieAddSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EE9F82201CC15100E39E4A /* MovieAddSearchCell.swift */; };
+		37EE9F8A201CE53900E39E4A /* MovieAddSearchDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EE9F89201CE53900E39E4A /* MovieAddSearchDetailViewController.swift */; };
 		747DA20B1392E0EFCC94895C /* Pods_FiNote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F9B3ACA4F672A8807D425EC /* Pods_FiNote.framework */; };
 /* End PBXBuildFile section */
 
@@ -60,6 +61,7 @@
 		37CF06E52019039600E99129 /* MoviesDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesDetailViewController.swift; sourceTree = "<group>"; };
 		37EE9F80201B918900E39E4A /* MovieAddSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieAddSearchViewController.swift; sourceTree = "<group>"; };
 		37EE9F82201CC15100E39E4A /* MovieAddSearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieAddSearchCell.swift; sourceTree = "<group>"; };
+		37EE9F89201CE53900E39E4A /* MovieAddSearchDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieAddSearchDetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,6 +183,7 @@
 			children = (
 				37EE9F80201B918900E39E4A /* MovieAddSearchViewController.swift */,
 				37EE9F82201CC15100E39E4A /* MovieAddSearchCell.swift */,
+				37EE9F89201CE53900E39E4A /* MovieAddSearchDetailViewController.swift */,
 			);
 			path = MovieAddSearch;
 			sourceTree = "<group>";
@@ -360,6 +363,7 @@
 				374D67892011EAF300706D4F /* AppDelegate.swift in Sources */,
 				379728B9201539B10045EB61 /* CommonAPI.swift in Sources */,
 				37EE9F81201B918900E39E4A /* MovieAddSearchViewController.swift in Sources */,
+				37EE9F8A201CE53900E39E4A /* MovieAddSearchDetailViewController.swift in Sources */,
 				37349E2E20151EBA00A37D2D /* API.swift in Sources */,
 				3760316E2014809D00E69674 /* Setting.swift in Sources */,
 				377D38DC20148992008A36CC /* SignUpViewController.swift in Sources */,
