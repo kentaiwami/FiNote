@@ -34,6 +34,10 @@ class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, UITab
         self.view.backgroundColor = UIColor.white
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        searchBar.resignFirstResponder()
+    }
+    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
         RunSearch(text: searchBar.text!)
