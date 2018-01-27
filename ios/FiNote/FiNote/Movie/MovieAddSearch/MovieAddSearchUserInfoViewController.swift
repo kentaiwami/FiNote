@@ -149,7 +149,47 @@ class MovieAddSearchUserInfoViewController: FormViewController {
     }
     
     func CallMovieAddAPI() {
-        //TODO: CallMovieAddAPIの実装
+        let urlString = API.base.rawValue+API.v1.rawValue+API.movie.rawValue
+        let activityData = ActivityData(message: "Adding", type: .lineScaleParty)
+        let appdelegate = GetAppDelegate()
+        let keychain = Keychain()
+        let values = form.values()
+        let params = [
+            "username": (try! keychain.getString("username"))!,
+            "password": (try! keychain.getString("password"))!,
+            "tmdb_id": searched_movie.id,
+            "title": searched_movie.title,
+            "overview": searched_movie.overview,
+            "poster": searched_movie.poster,
+            "genre": searched_movie.genre,
+            "dvd": values["dvd"] as! Bool,
+            "fav": values["fav"] as! Bool,
+            "onomatopoeia": GetChoosingOnomatopoeia(values: values)
+            ] as [String : Any]
+        
+        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
+        
+        DispatchQueue(label: "update-movie-user-info").async {
+            Alamofire.request(urlString, method: .post, parameters: params, encoding: JSONEncoding.default).responseJSON { (response) in
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                
+                guard let res = response.result.value else{return}
+                let obj = JSON(res)
+                print("***** API results *****")
+                print(obj)
+                print("***** API results *****")
+                
+                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                    //TODO: addを生成
+                    //TODO: Movies.Dataを生成
+                    //TODO: appdelegateへ追加
+                    //TODO: popを2回
+                    //TODO: 画面を閉じる
+                }else {
+                    ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
+                }
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
