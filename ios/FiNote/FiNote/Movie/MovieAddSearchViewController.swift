@@ -12,8 +12,9 @@ import NVActivityIndicatorView
 import SwiftyJSON
 import Alamofire
 import PromiseKit
+import StatusProvider
 
-class MovieAddSearchViewController: UIViewController, UISearchBarDelegate {
+class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, StatusController {
 
     let searchBar = UISearchBar()
     
@@ -50,9 +51,30 @@ class MovieAddSearchViewController: UIViewController, UISearchBarDelegate {
             }.then { results -> Void in
                 en_results = results
                 NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                let shaped = self.DataShape(ja_results: ja_results, en_results: en_results)
+                self.DrawView(data: shaped)
             }.catch { err in
                 let tmp_err = err as NSError
                 ShowStandardAlert(title: "Error", msg: tmp_err.domain, vc: self)
+        }
+    }
+    
+    func DataShape(ja_results: [MovieAddSearchResult.Data], en_results: [MovieAddSearchResult.Data]) -> [MovieAddSearchResult.Data] {
+        //TODO: データ加工
+        return []
+    }
+    
+    func DrawView(data: [MovieAddSearchResult.Data]) {
+        if data.count == 0 {
+            let status = Status(title: "No Results", description: "指定した検索ワードを含む映画は見つかりませんでした", actionTitle: "原題で検索", image: nil) {
+                self.hideStatus()
+                //TODO: タイトル一覧を取得するAPIをコール
+                //TODO: コール後、結果を描画
+            }
+            
+            show(status: status)
+        }else {
+            //TODO: tableの表示
         }
     }
     

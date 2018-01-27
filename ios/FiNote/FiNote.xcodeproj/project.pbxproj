@@ -27,6 +27,7 @@
 		379728BE201546370045EB61 /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 379728BD201546370045EB61 /* 1.jpg */; };
 		37CF06E62019039600E99129 /* MovieDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CF06E52019039600E99129 /* MovieDetailViewController.swift */; };
 		37EE9F81201B918900E39E4A /* MovieAddSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EE9F80201B918900E39E4A /* MovieAddSearchViewController.swift */; };
+		37EE9F83201CC15100E39E4A /* MovieAddSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EE9F82201CC15100E39E4A /* MovieAddSearchCell.swift */; };
 		747DA20B1392E0EFCC94895C /* Pods_FiNote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F9B3ACA4F672A8807D425EC /* Pods_FiNote.framework */; };
 /* End PBXBuildFile section */
 
@@ -58,6 +59,7 @@
 		379728BD201546370045EB61 /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
 		37CF06E52019039600E99129 /* MovieDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailViewController.swift; sourceTree = "<group>"; };
 		37EE9F80201B918900E39E4A /* MovieAddSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieAddSearchViewController.swift; sourceTree = "<group>"; };
+		37EE9F82201CC15100E39E4A /* MovieAddSearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieAddSearchCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +132,7 @@
 				37CF06E52019039600E99129 /* MovieDetailViewController.swift */,
 				3733676C201B0EB300AFE5E6 /* MovieUserInfoViewController.swift */,
 				37EE9F80201B918900E39E4A /* MovieAddSearchViewController.swift */,
+				37EE9F82201CC15100E39E4A /* MovieAddSearchCell.swift */,
 			);
 			path = Movie;
 			sourceTree = "<group>";
@@ -344,6 +347,7 @@
 				37349E2E20151EBA00A37D2D /* API.swift in Sources */,
 				3760316E2014809D00E69674 /* Setting.swift in Sources */,
 				377D38DC20148992008A36CC /* SignUpViewController.swift in Sources */,
+				37EE9F83201CC15100E39E4A /* MovieAddSearchCell.swift in Sources */,
 				376031702014816000E69674 /* Design.swift in Sources */,
 				3733676D201B0EB300AFE5E6 /* MovieUserInfoViewController.swift in Sources */,
 				377D38DE201489A9008A36CC /* SignInViewController.swift in Sources */,
