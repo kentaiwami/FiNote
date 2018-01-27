@@ -100,7 +100,7 @@ class MoviesDetailViewController: UIViewController {
         }
         
         let floaty = Floaty()
-        floaty.addItem("Edit Info", icon: UIImage(named: "icon_list")) { (hoge) in
+        floaty.addItem("Edit Info", icon: UIImage(named: "icon_list")) { (_) in
             let movie_info_VC = MoviesUserInfoViewController()
             movie_info_VC.SetDVD(dvd: self.movie.dvd)
             movie_info_VC.SetFAV(fav: self.movie.fav)

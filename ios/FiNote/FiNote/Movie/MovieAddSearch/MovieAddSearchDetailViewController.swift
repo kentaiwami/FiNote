@@ -95,8 +95,16 @@ class MovieAddSearchDetailViewController: UIViewController {
     }
     
     func InitFloaty() {
+        let save_item = FloatyItem()
+        save_item.title = "Add Movie"
+        save_item.buttonColor = UIColor.hex(Color.blue.rawValue, alpha: 1.0)
+        save_item.icon = UIImage(named: "icon_check")
+        save_item.handler = { (_) in
+            //TODO: CALL SAVE API
+        }
+        
         let floaty = Floaty()
-        floaty.addItem("Edit Info", icon: UIImage(named: "icon_list")) { (hoge) in
+        floaty.addItem("Edit Info", icon: UIImage(named: "icon_list")) { (_) in
             //TODO: 遷移
 //            let movie_info_VC = MoviesUserInfoViewController()
 //            movie_info_VC.SetDVD(dvd: self.movie.dvd)
@@ -110,6 +118,7 @@ class MovieAddSearchDetailViewController: UIViewController {
 //            self.present(nav, animated: true, completion: nil)
         }
         
+        floaty.addItem(item: save_item)
         floaty.buttonColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
         floaty.buttonImage = UIImage(named: "icon_edit")
         floaty.rotationDegrees = 0.0
