@@ -39,7 +39,7 @@ class MoviesUserInfoViewController: FormViewController {
     }
     
     func TapSaveButton() {
-        let choosing = GetChoosingOnomatopoeia()
+        let choosing = GetChoosingOnomatopoeia(values: form.values())
         
         if choosing.count == 0 {
             ShowStandardAlert(title: "Error", msg: "オノマトペは少なくとも1つ以上追加する必要があります", vc: self)
@@ -162,7 +162,7 @@ class MoviesUserInfoViewController: FormViewController {
         let keychain = Keychain()
         let appdelegate = GetAppDelegate()
         
-        let choosing_onomatopoeia = NSOrderedSet(array: GetChoosingOnomatopoeia()).array as! [String]
+        let choosing_onomatopoeia = NSOrderedSet(array: GetChoosingOnomatopoeia(values: form.values())).array as! [String]
         let params = [
             "username": (try! keychain.getString("username"))!,
             "password": (try! keychain.getString("password"))!,
@@ -202,25 +202,11 @@ class MoviesUserInfoViewController: FormViewController {
         }
     }
     
-    func GetChoosingOnomatopoeia() -> [String] {
-        // オノマトペとタグ番号の辞書を生成
-        var choosing: [String:Int] = [:]
-        for dict in form.values() {
-            var tmp_matches: [String] = []
-            if dict.key.pregMatche(pattern: "onomatopoeia_([0-9]+)", matches: &tmp_matches) {
-                choosing[dict.value as! String] = Int(tmp_matches[1])!
-            }
-        }
-        
-        // タグ番号の昇順でオノマトペを返す
-        return choosing.sorted(by: {$0.value < $1.value}).map({$0.key})
-    }
-    
     func GetOnomatopoeiaNewChoices(ignore: String = "") -> [String] {
         var new_choices = choices
         
         // 選択済みのオノマトペ名を選択肢配列から削除
-        for name in GetChoosingOnomatopoeia() {
+        for name in GetChoosingOnomatopoeia(values: form.values()) {
             let index = new_choices.index(of: name)
             
             // ignoreと同じ場合は候補から削除しない
