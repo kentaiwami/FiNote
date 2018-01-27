@@ -13,6 +13,7 @@ import SwiftyJSON
 import Alamofire
 import PromiseKit
 import StatusProvider
+import TinyConstraints
 
 class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, StatusController {
 
@@ -25,6 +26,9 @@ class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, UITab
         
         searchBar.delegate = self
         searchBar.placeholder = "追加する映画のタイトルで検索"
+        if #available(iOS 11.0, *) {
+            searchBar.height(44)
+        }
         
         self.navigationItem.titleView = searchBar
         self.view.backgroundColor = UIColor.white
@@ -127,19 +131,9 @@ class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, UITab
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
-        print("TAP")
-//        var tmp_lists: [Movies.Data] = []
-        
-//        if searchController.isActive {
-//            tmp_lists = searchResults
-//        }else {
-//            tmp_lists = appdelegate.movies
-//        }
-//
-//        let detailVC = MovieDetailViewController()
-//        detailVC.SetMovieID(movie_id: tmp_lists[indexPath.row].id)
-//        self.navigationController!.pushViewController(detailVC, animated: true)
+        let detailVC = MovieDetailViewController()
+        detailVC.SetMovieID(movie_id: String(search_results[indexPath.row].id))
+        self.navigationController!.pushViewController(detailVC, animated: true)
     }
     
     func CallMovieSearchAPI(text: String, language: String) -> Promise<[MovieAddSearchResult.Data]>{
