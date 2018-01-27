@@ -14,7 +14,6 @@ import AlamofireImage
 import KeychainAccess
 import PopupDialog
 import TinyConstraints
-import Floaty
 
 class MovieAddSearchDetailViewController: UIViewController {
 
@@ -96,21 +95,31 @@ class MovieAddSearchDetailViewController: UIViewController {
     }
     
     func InitFloaty() {
-        let floaty = Floaty()
-        floaty.addItem("Edit Info", icon: UIImage(named: "icon_list")) { (_) in
-            let movie_search_info_VC = MovieAddSearchUserInfoViewController()
-            movie_search_info_VC.SetMovie(movie: self.searched_movie)
-            movie_search_info_VC.SetPoster(poster: self.posterImageView.image!)
-            let nav = UINavigationController()
-            nav.viewControllers = [movie_search_info_VC]
-
-            self.present(nav, animated: true, completion: nil)
-        }
-        
-        floaty.buttonColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
-        floaty.buttonImage = UIImage(named: "icon_edit")
-        floaty.rotationDegrees = 0.0
+        let floaty = UIButton(frame: CGRect.zero)
+        floaty.backgroundColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
+        floaty.tintColor = UIColor.white
+        floaty.setBackgroundImage(UIColorToUIImage(hex: "#FFFFFF", alpha: 0.2), for: .highlighted)
+        floaty.setImage(UIImage(named: "icon_edit"), for: .normal)
+        floaty.setImage(UIImage(named: "icon_edit"), for: .highlighted)
+        floaty.layer.masksToBounds = true
+        floaty.layer.cornerRadius = 56/2
+        floaty.addTarget(self, action: #selector(TapFloatyButton), for: .touchUpInside)
         self.view.addSubview(floaty)
+        
+        floaty.trailing(to: self.view, offset: -10)
+        floaty.bottom(to: self.view, offset: -10)
+        floaty.width(56)
+        floaty.height(56)
+    }
+    
+    func TapFloatyButton() {
+        let movie_search_info_VC = MovieAddSearchUserInfoViewController()
+        movie_search_info_VC.SetMovie(movie: self.searched_movie)
+        movie_search_info_VC.SetPoster(poster: self.posterImageView.image!)
+        let nav = UINavigationController()
+        nav.viewControllers = [movie_search_info_VC]
+        
+        self.present(nav, animated: true, completion: nil)
     }
     
     func InitTitleView() {

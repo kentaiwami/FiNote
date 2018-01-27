@@ -55,6 +55,20 @@ func ShowStandardAlert(title: String, msg: String, vc: UIViewController) {
     vc.present(popup, animated: true, completion: nil)
 }
 
+func UIColorToUIImage(hex: String, alpha: CGFloat) -> UIImage? {
+    let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
+    UIGraphicsBeginImageContext(rect.size)
+    
+    let context = UIGraphicsGetCurrentContext()
+    context!.setFillColor(UIColor.hex(hex, alpha: alpha).cgColor)
+    context!.fill(rect)
+    
+    let image = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    
+    return image
+}
+
 class Indicator {
     let indicator = UIActivityIndicatorView()
     
