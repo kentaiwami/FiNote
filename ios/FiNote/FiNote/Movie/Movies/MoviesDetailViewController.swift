@@ -16,6 +16,7 @@ import PopupDialog
 import TinyConstraints
 import Floaty
 
+
 class MoviesDetailViewController: UIViewController {
 
     var movie_id = 0

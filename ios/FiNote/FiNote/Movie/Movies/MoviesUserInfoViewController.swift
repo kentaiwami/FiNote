@@ -13,6 +13,7 @@ import Alamofire
 import SwiftyJSON
 import KeychainAccess
 
+
 class MoviesUserInfoViewController: FormViewController {
 
     var MovieCommonFunc = MovieCommon()
