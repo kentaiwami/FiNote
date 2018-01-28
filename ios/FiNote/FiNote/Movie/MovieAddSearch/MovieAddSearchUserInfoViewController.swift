@@ -17,6 +17,7 @@ import PopupDialog
 class MovieAddSearchUserInfoViewController: FormViewController {
 
     var searched_movie = MovieAddSearchResult.Data()
+    let MovieCommonFunc = MovieCommon()
     var poster = UIImage()
     var onomatopoeia: [String] = []
     var count = 1
@@ -32,7 +33,7 @@ class MovieAddSearchUserInfoViewController: FormViewController {
         self.navigationItem.setLeftBarButton(close, animated: true)
         self.navigationItem.setRightBarButton(save, animated: true)
         
-        CallGetOnomatopoeiaAPI(act: { obj in
+        MovieCommonFunc.CallGetOnomatopoeiaAPI(act: { obj in
             self.choices = obj["results"].arrayValue.map{$0.stringValue}
             self.CreateForm()
         }, vc: self)
@@ -43,7 +44,7 @@ class MovieAddSearchUserInfoViewController: FormViewController {
     }
     
     func TapSaveButton() {
-        let choosing = GetChoosingOnomatopoeia(values: form.values())
+        let choosing = MovieCommonFunc.GetChoosingOnomatopoeia(values: form.values())
         
         if choosing.count == 0 {
             ShowStandardAlert(title: "Error", msg: "オノマトペは少なくとも1つ以上追加する必要があります", vc: self)
@@ -60,7 +61,7 @@ class MovieAddSearchUserInfoViewController: FormViewController {
                 fav_msg = "お気に入りへ登録済み"
             }
             
-            let onomatopoeia = GetChoosingOnomatopoeia(values: form.values())
+            let onomatopoeia = MovieCommonFunc.GetChoosingOnomatopoeia(values: form.values())
             let popup = PopupDialog(
                 title: searched_movie.title,
                 message: "映画を下記の状態で追加しますか？\n\n\(onomatopoeia.joined(separator: " "))\n\n\(dvd_msg)\n\(fav_msg)"
@@ -105,7 +106,7 @@ class MovieAddSearchUserInfoViewController: FormViewController {
             footer: "映画を観た気分を登録してください") {
                 $0.tag = "onomatopoeia"
                 $0.multivaluedRowToInsertAt = { _ in
-                    let options = GetOnomatopoeiaNewChoices(values: self.form.values(), choices: self.choices)
+                    let options = self.MovieCommonFunc.GetOnomatopoeiaNewChoices(values: self.form.values(), choices: self.choices)
                     if options.count == 0 {
                         return PickerInputRow<String>{
                             $0.title = "タップして選択..."
@@ -114,7 +115,7 @@ class MovieAddSearchUserInfoViewController: FormViewController {
                             $0.tag = "onomatopoeia_\(self.count)"
                             self.count += 1
                             }.onCellSelection({ (cell, row) in
-                                row.options = GetOnomatopoeiaNewChoices(ignore: row.value!, values: self.form.values(), choices: self.choices)
+                                row.options = self.MovieCommonFunc.GetOnomatopoeiaNewChoices(ignore: row.value!, values: self.form.values(), choices: self.choices)
                                 row.updateCell()
                             })
                     }else {
@@ -125,7 +126,7 @@ class MovieAddSearchUserInfoViewController: FormViewController {
                             $0.tag = "onomatopoeia_\(self.count)"
                             self.count += 1
                             }.onCellSelection({ (cell, row) in
-                                row.options = GetOnomatopoeiaNewChoices(ignore: row.value!, values: self.form.values(), choices: self.choices)
+                                row.options = self.MovieCommonFunc.GetOnomatopoeiaNewChoices(ignore: row.value!, values: self.form.values(), choices: self.choices)
                                 row.updateCell()
                             })
                     }
@@ -135,10 +136,10 @@ class MovieAddSearchUserInfoViewController: FormViewController {
                     $0 <<< PickerInputRow<String> {
                         $0.title = "タップして選択..."
                         $0.value = name
-                        $0.options = GetOnomatopoeiaNewChoices(values: self.form.values(), choices: self.choices)
+                        $0.options = MovieCommonFunc.GetOnomatopoeiaNewChoices(values: self.form.values(), choices: self.choices)
                         $0.tag = "onomatopoeia_\(i)"
                         }.onCellSelection({ (cell, row) in
-                            row.options = GetOnomatopoeiaNewChoices(ignore: row.value!, values: self.form.values(), choices: self.choices)
+                            row.options = self.MovieCommonFunc.GetOnomatopoeiaNewChoices(ignore: row.value!, values: self.form.values(), choices: self.choices)
                             row.updateCell()
                         })
                     count = i+1
@@ -164,7 +165,7 @@ class MovieAddSearchUserInfoViewController: FormViewController {
             "genre": searched_movie.genre,
             "dvd": values["dvd"] as! Bool,
             "fav": values["fav"] as! Bool,
-            "onomatopoeia": GetChoosingOnomatopoeia(values: values)
+            "onomatopoeia": MovieCommonFunc.GetChoosingOnomatopoeia(values: values)
             ] as [String : Any]
         NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
         
@@ -186,7 +187,7 @@ class MovieAddSearchUserInfoViewController: FormViewController {
                     var tmp = Movies.Data()
                     tmp.add = add_date
                     tmp.id = String(self.searched_movie.id)
-                    tmp.onomatopoeia = GetChoosingOnomatopoeia(values: values)
+                    tmp.onomatopoeia = self.MovieCommonFunc.GetChoosingOnomatopoeia(values: values)
                     tmp.poster = self.searched_movie.poster
                     tmp.title = self.searched_movie.title
                     appdelegate.movies.insert(tmp, at: 0)

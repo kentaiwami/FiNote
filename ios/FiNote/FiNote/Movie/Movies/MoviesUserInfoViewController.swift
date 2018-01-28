@@ -15,6 +15,7 @@ import KeychainAccess
 
 class MoviesUserInfoViewController: FormViewController {
 
+    var MovieCommonFunc = MovieCommon()
     var movie_id = ""
     var onomatopoeia: [String] = []
     var dvd = false
@@ -31,7 +32,7 @@ class MoviesUserInfoViewController: FormViewController {
         self.navigationItem.setLeftBarButton(close, animated: true)
         self.navigationItem.setRightBarButton(save, animated: true)
         
-        CallGetOnomatopoeiaAPI(act: { obj in
+        MovieCommonFunc.CallGetOnomatopoeiaAPI(act: { obj in
             self.choices = obj["results"].arrayValue.map{$0.stringValue}
             self.CreateForm()
         }, vc: self)
@@ -42,7 +43,7 @@ class MoviesUserInfoViewController: FormViewController {
     }
     
     func TapSaveButton() {
-        let choosing = GetChoosingOnomatopoeia(values: form.values())
+        let choosing = MovieCommonFunc.GetChoosingOnomatopoeia(values: form.values())
         
         if choosing.count == 0 {
             ShowStandardAlert(title: "Error", msg: "オノマトペは少なくとも1つ以上追加する必要があります", vc: self)
@@ -90,7 +91,7 @@ class MoviesUserInfoViewController: FormViewController {
             footer: "映画を観た気分を登録してください") {
                 $0.tag = "onomatopoeia"
                 $0.multivaluedRowToInsertAt = { _ in
-                    let options = GetOnomatopoeiaNewChoices(values: self.form.values(), choices: self.choices)
+                    let options = self.MovieCommonFunc.GetOnomatopoeiaNewChoices(values: self.form.values(), choices: self.choices)
                     if options.count == 0 {
                         return PickerInputRow<String>{
                             $0.title = "タップして選択..."
@@ -99,7 +100,7 @@ class MoviesUserInfoViewController: FormViewController {
                             $0.tag = "onomatopoeia_\(self.count)"
                             self.count += 1
                         }.onCellSelection({ (cell, row) in
-                            row.options = GetOnomatopoeiaNewChoices(ignore: row.value!, values: self.form.values(), choices: self.choices)
+                            row.options = self.MovieCommonFunc.GetOnomatopoeiaNewChoices(ignore: row.value!, values: self.form.values(), choices: self.choices)
                             row.updateCell()
                         })
                     }else {
@@ -110,7 +111,7 @@ class MoviesUserInfoViewController: FormViewController {
                             $0.tag = "onomatopoeia_\(self.count)"
                             self.count += 1
                         }.onCellSelection({ (cell, row) in
-                            row.options = GetOnomatopoeiaNewChoices(ignore: row.value!, values: self.form.values(), choices: self.choices)
+                            row.options = self.MovieCommonFunc.GetOnomatopoeiaNewChoices(ignore: row.value!, values: self.form.values(), choices: self.choices)
                             row.updateCell()
                         })
                     }
@@ -120,10 +121,10 @@ class MoviesUserInfoViewController: FormViewController {
                     $0 <<< PickerInputRow<String> {
                         $0.title = "タップして選択..."
                         $0.value = name
-                        $0.options = GetOnomatopoeiaNewChoices(values: self.form.values(), choices: self.choices)
+                        $0.options = MovieCommonFunc.GetOnomatopoeiaNewChoices(values: self.form.values(), choices: self.choices)
                         $0.tag = "onomatopoeia_\(i)"
                         }.onCellSelection({ (cell, row) in
-                            row.options = GetOnomatopoeiaNewChoices(ignore: row.value!, values: self.form.values(), choices: self.choices)
+                            row.options = self.MovieCommonFunc.GetOnomatopoeiaNewChoices(ignore: row.value!, values: self.form.values(), choices: self.choices)
                             row.updateCell()
                         })
                     count = i+1
@@ -139,7 +140,7 @@ class MoviesUserInfoViewController: FormViewController {
         let keychain = Keychain()
         let appdelegate = GetAppDelegate()
         
-        let choosing_onomatopoeia = NSOrderedSet(array: GetChoosingOnomatopoeia(values: form.values())).array as! [String]
+        let choosing_onomatopoeia = NSOrderedSet(array: MovieCommonFunc.GetChoosingOnomatopoeia(values: form.values())).array as! [String]
         let params = [
             "username": (try! keychain.getString("username"))!,
             "password": (try! keychain.getString("password"))!,
