@@ -13,8 +13,8 @@ import SwiftyJSON
 import Alamofire
 import PromiseKit
 import StatusProvider
-import TinyConstraints
 import PopupDialog
+
 
 class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, StatusController {
 
@@ -168,6 +168,7 @@ class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, UITab
             
             DispatchQueue(label: "search-tmdb-movie").async {
                 Alamofire.request(encURL, method: .get).responseJSON { (response) in
+                    
                     guard let res = response.result.value else{return}
                     let obj = JSON(res)
                     print("***** API results *****")

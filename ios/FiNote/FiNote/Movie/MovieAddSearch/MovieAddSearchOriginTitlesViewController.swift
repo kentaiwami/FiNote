@@ -11,6 +11,7 @@ import Alamofire
 import SwiftyJSON
 import NVActivityIndicatorView
 
+
 class MovieAddSearchOriginTitlesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var search_title = ""
@@ -46,10 +47,12 @@ class MovieAddSearchOriginTitlesViewController: UIViewController, UITableViewDel
         let urlString = API.base.rawValue+API.v1.rawValue+API.movie.rawValue+API.search.rawValue+API.titles.rawValue+"?title=\(search_title)&page=\(page)"
         let encURL = (NSURL(string:urlString.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)!)?.absoluteString)!
         let activityData = ActivityData(message: "Get Titles", type: .lineScaleParty)
+        
         NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
         
         DispatchQueue(label: "get-titles").async {
             Alamofire.request(encURL, method: .get).responseJSON { (response) in
+                
                 NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
                 
                 guard let res = response.result.value else{return}
@@ -81,10 +84,12 @@ class MovieAddSearchOriginTitlesViewController: UIViewController, UITableViewDel
         let urlString = API.base.rawValue+API.v1.rawValue+API.movie.rawValue+API.search.rawValue+API.origin.rawValue+"?id=\(id)"
         let encURL = (NSURL(string:urlString.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)!)?.absoluteString)!
         let activityData = ActivityData(message: "Get Origin Title", type: .lineScaleParty)
+        
         NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
         
         DispatchQueue(label: "get-origin-title").async {
             Alamofire.request(encURL, method: .get).responseJSON { (response) in
+                
                 NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
                 
                 guard let res = response.result.value else{return}

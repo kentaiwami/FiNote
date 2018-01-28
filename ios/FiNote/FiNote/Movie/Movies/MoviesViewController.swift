@@ -13,7 +13,6 @@ import Alamofire
 import AlamofireImage
 import KeychainAccess
 import PopupDialog
-import TinyConstraints
 import StatusProvider
 
 

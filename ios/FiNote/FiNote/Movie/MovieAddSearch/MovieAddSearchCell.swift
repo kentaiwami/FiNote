@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class MovieAddSearchCell: UITableViewCell {
     var title: UILabel!
     var overview: UILabel!
