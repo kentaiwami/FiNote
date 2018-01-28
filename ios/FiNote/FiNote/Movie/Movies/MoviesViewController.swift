@@ -25,6 +25,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var searchController = UISearchController()
     var refresh_controll = UIRefreshControl()
     var user_id = ""
+    var is_startup = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,7 +101,21 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         super.viewWillAppear(animated)
         
         self.tabBarController?.navigationItem.title = "Movies"
-        myTableView.reloadData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if !is_startup {
+            if appdelegate.movies.count == 0 {
+                ShowNoDataView()
+            }else {
+                ShowLoadData()
+                myTableView.reloadData()
+            }
+        }
+        
+        is_startup = false
     }
 
     override func didReceiveMemoryWarning() {
