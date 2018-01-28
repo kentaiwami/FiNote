@@ -37,7 +37,7 @@ class SocialPopularViewController: UIViewController, UICollectionViewDelegate, U
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 24
+        return 50
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -56,16 +56,13 @@ class SocialPopularViewController: UIViewController, UICollectionViewDelegate, U
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        // アイテムを作成
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
         cell.backgroundColor = UIColor.lightGray
         
-        // アイテムセルを再利用する際、前に追加していた要素（今回はラベル）を削除する
         for subview in cell.contentView.subviews {
             subview.removeFromSuperview()
         }
         
-        // テキストラベルを設定して表示
         let label = UILabel()
         label.font = UIFont(name: "Arial", size: 24)
         label.text = "Item \(indexPath.row)"
