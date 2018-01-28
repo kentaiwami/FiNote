@@ -43,14 +43,14 @@ class UserDetailFormViewController: FormViewController {
         }
         
         if err == 0 {
-            //TODO: CALL API
+            CallUpdateAPI()
         }else {
             ShowStandardAlert(title: "Error", msg: "入力を再確認してください", vc: self)
         }
     }
     
     func CallUpdateAPI() {
-        
+        //TODO: 実装
     }
     
     func Create() {
