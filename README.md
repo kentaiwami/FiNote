@@ -97,8 +97,8 @@ request：
     "tmdb_id": 12,
     "username": "hogehoge",
     "password": "hogehoge",
-    "dvd": 1,
-    "fav": 0,
+    "dvd": true,
+    "fav": false,
     "onomatopoeia": ["hoge","fuga", "piyo"],
     "title": "movie title",
     "genre": [28,12,16],
@@ -119,14 +119,14 @@ response：
 "results": [
         {
             "add": "2018-01-12T00:02:37.612840",
-            "id": "12345",
+            "id": 12345,
             "title": "hoge2",
             "poster": "http://",
             "onomatopoeia": ["hoge","fuga","piyo"]
         },
         {
             "add": "2018-01-12T00:01:54.697333",
-            "id": "1234",
+            "id": 1234,
             "title": "hoge",
             "poster": "http://",
             "onomatopoeia": ["hoge","fuga","piyo"]

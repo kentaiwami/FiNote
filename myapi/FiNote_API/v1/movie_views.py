@@ -474,7 +474,7 @@ class GetSearchMovieTitleViewSet(viewsets.ViewSet):
         for li_tag in li_tag_list:
             title = li_tag.find('h3', class_='text-xsmall text-overflow').attrs['title']
             id = li_tag.attrs['data-cinema-id']
-            title_id_list.append({'title': title, 'id': id})
+            title_id_list.append({'title': title, 'id': int(id)})
 
         res.append({'total': total_resutls_count})
         res.append({'results': title_id_list})
