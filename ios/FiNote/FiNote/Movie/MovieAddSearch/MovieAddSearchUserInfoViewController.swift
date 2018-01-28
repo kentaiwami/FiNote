@@ -166,7 +166,6 @@ class MovieAddSearchUserInfoViewController: FormViewController {
             "fav": values["fav"] as! Bool,
             "onomatopoeia": GetChoosingOnomatopoeia(values: values)
             ] as [String : Any]
-        
         NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
         
         DispatchQueue(label: "update-movie-user-info").async {
@@ -180,11 +179,21 @@ class MovieAddSearchUserInfoViewController: FormViewController {
                 print("***** API results *****")
                 
                 if IsHTTPStatus(statusCode: response.response?.statusCode) {
-                    //TODO: addを生成
-                    //TODO: Movies.Dataを生成
-                    //TODO: appdelegateへ追加
-                    //TODO: popを2回
-                    //TODO: 画面を閉じる
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = "yyyy-MM-dd"
+                    let add_date = formatter.string(from: Date())
+
+                    var tmp = Movies.Data()
+                    tmp.add = add_date
+                    tmp.id = String(self.searched_movie.id)
+                    tmp.onomatopoeia = GetChoosingOnomatopoeia(values: values)
+                    tmp.poster = self.searched_movie.poster
+                    tmp.title = self.searched_movie.title
+                    appdelegate.movies.insert(tmp, at: 0)
+
+                    let nav = self.presentingViewController as! UINavigationController
+                    nav.popToRootViewController(animated: false)
+                    self.dismiss(animated: true, completion: nil)
                 }else {
                     ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
                 }

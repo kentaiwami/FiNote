@@ -166,11 +166,9 @@ class MoviesUserInfoViewController: FormViewController {
                     let index_int = index?.advanced(by: 0)
                     appdelegate.movies[index_int!].onomatopoeia = choosing_onomatopoeia
                     
-                    let nav = self.presentingViewController as! UINavigationController
-                    let detailvc = nav.viewControllers.last!
-                    
                     // MovieInfo画面を閉じる前にMovieDetail画面でpop(Moviesへ遷移)
-                    detailvc.navigationController?.popViewController(animated: true)
+                    let nav = self.presentingViewController as! UINavigationController
+                    nav.popViewController(animated: true)
                     self.dismiss(animated: true, completion: nil)
                 }else {
                     ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
