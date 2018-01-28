@@ -77,11 +77,38 @@ class MovieAddSearchOriginTitlesViewController: UIViewController, UITableViewDel
         }
     }
     
+    func CallGetOriginTitleAPI(id: Int) {
+        let urlString = API.base.rawValue+API.v1.rawValue+API.movie.rawValue+API.search.rawValue+API.origin.rawValue+"?id=\(id)"
+        let encURL = (NSURL(string:urlString.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)!)?.absoluteString)!
+        let activityData = ActivityData(message: "Get Origin Title", type: .lineScaleParty)
+        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
+        
+        DispatchQueue(label: "get-origin-title").async {
+            Alamofire.request(encURL, method: .get).responseJSON { (response) in
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                
+                guard let res = response.result.value else{return}
+                let obj = JSON(res)
+                print("***** API results *****")
+                print(obj)
+                print("***** API results *****")
+                
+                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                    let nav = self.presentingViewController as! UINavigationController
+                    let searchVC = nav.viewControllers.last! as! MovieAddSearchViewController
+                    searchVC.searchBar.text = obj["title"].stringValue
+                    searchVC.RunSearch(text: obj["title"].stringValue)
+                    self.dismiss(animated: true, completion: nil)
+                }else {
+                    ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
+                }
+            }
+        }
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        //TODO: 画面を閉じる
-        //TODO: keyborad出す&検索バーにテキスト入力
-        //TODO: 検索バーにテキストを入れて、検索までやっちゃう
+        CallGetOriginTitleAPI(id: results[indexPath.row].id)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
