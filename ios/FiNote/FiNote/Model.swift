@@ -91,3 +91,18 @@ class MovieAddSearchResult {
         return data
     }
 }
+
+class MovieOriginTitleSearchResult {
+    struct Data {
+        var id = 0
+        var title = ""
+    }
+    
+    func GetData(json: JSON) -> Data {
+        var data = Data()
+        data.id = json["id"].intValue
+        data.title = json["title"].stringValue
+        
+        return data
+    }
+}
