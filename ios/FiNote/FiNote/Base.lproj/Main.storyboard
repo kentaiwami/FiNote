@@ -29,7 +29,7 @@
         <!--User-->
         <scene sceneID="yB9-TI-ngx">
             <objects>
-                <viewController storyboardIdentifier="User" useStoryboardIdentifierAsRestorationIdentifier="YES" id="nNq-mE-UwP" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="User" useStoryboardIdentifierAsRestorationIdentifier="YES" id="nNq-mE-UwP" customClass="UserViewController" customModule="FiNote" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Rrm-xw-kAP">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
