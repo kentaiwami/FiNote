@@ -14,6 +14,8 @@ class MovieAddSearchCell: UITableViewCell {
     var poster: UIImageView!
     var release_date: UILabel!
     var release_date_icon: UIImageView!
+    var added_icon: UIImageView!
+    var added_msg: UILabel!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -40,10 +42,23 @@ class MovieAddSearchCell: UITableViewCell {
         release_date_icon.image = release_date_icon.image!.withRenderingMode(.alwaysTemplate)
         release_date_icon.tintColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
         
+        added_icon = UIImageView(frame: CGRect.zero)
+        added_icon.image = UIImage(named: "icon_circle_check")
+        added_icon.image = added_icon.image!.withRenderingMode(.alwaysTemplate)
+        added_icon.tintColor = UIColor.hex(Color.main.rawValue, alpha: 0.8)
+        
+        added_msg = UILabel(frame: CGRect.zero)
+        added_msg.textAlignment = .left
+        added_msg.text = "追加済み"
+        added_msg.textColor = UIColor.hex(Color.main.rawValue, alpha: 0.8)
+        added_msg.font = UIFont.systemFont(ofSize: 14)
+        
         contentView.addSubview(title)
         contentView.addSubview(overview)
         contentView.addSubview(release_date)
         contentView.addSubview(release_date_icon)
+        contentView.addSubview(added_icon)
+        contentView.addSubview(added_msg)
         
         poster = UIImageView()
         contentView.addSubview(poster)
@@ -80,6 +95,14 @@ class MovieAddSearchCell: UITableViewCell {
         
         release_date.leadingToTrailing(of: release_date_icon, offset: 5)
         release_date.centerY(to: release_date_icon, offset: 1)
+        
+        added_msg.trailing(to: contentView)
+        added_msg.centerY(to: release_date)
+        
+        added_icon.trailingToLeading(of: added_msg, offset: -5)
+        added_icon.centerY(to: release_date_icon, offset: 1)
+        added_icon.width(icon_wh)
+        added_icon.height(icon_wh)
     }
 
 }
