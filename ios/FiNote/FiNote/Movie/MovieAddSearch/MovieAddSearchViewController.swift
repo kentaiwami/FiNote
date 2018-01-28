@@ -14,6 +14,7 @@ import Alamofire
 import PromiseKit
 import StatusProvider
 import TinyConstraints
+import PopupDialog
 
 class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, StatusController {
 
@@ -148,9 +149,15 @@ class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, UITab
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let detailVC = MovieAddSearchDetailViewController()
-        detailVC.SetMovieID(searched_movie: search_results[indexPath.row])
-        self.navigationController!.pushViewController(detailVC, animated: true)
+        
+        if GetAppDelegate().movies.filter({$0.id == search_results[indexPath.row].id}).count == 0 {
+            let detailVC = MovieAddSearchDetailViewController()
+            detailVC.SetMovieID(searched_movie: search_results[indexPath.row])
+            self.navigationController!.pushViewController(detailVC, animated: true)
+        }else {
+            let msg = "この映画は追加済みです。\n追加済みの映画はTop画面から編集することができます。"
+            ShowStandardAlert(title: "", msg: msg, vc: self)
+        }
     }
     
     func CallMovieSearchAPI(text: String, language: String) -> Promise<[MovieAddSearchResult.Data]>{
