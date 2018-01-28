@@ -84,7 +84,7 @@ class UserDetailFormViewController: FormViewController {
                 "username": username,
                 "password": form.values()["now_pass"] as! String,
                 "birthyear": form.values()["birthyear"] as! Int
-            ], base+API.birth.rawValue)
+            ], base+API.birthyear.rawValue)
         default:
             return ([:], "")
         }
