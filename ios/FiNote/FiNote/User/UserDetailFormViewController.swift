@@ -9,11 +9,21 @@
 import UIKit
 import Eureka
 import KeychainAccess
+import NVActivityIndicatorView
+import Alamofire
+import SwiftyJSON
+import PopupDialog
 
 class UserDetailFormViewController: FormViewController {
 
     var api_name = ""
     var screen_title = ""
+    
+    let keychain = Keychain()
+    var username = ""
+    var password = ""
+    var email = ""
+    var birthyear = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +38,11 @@ class UserDetailFormViewController: FormViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        username = (try! keychain.get("username"))!
+        password = (try! keychain.get("password"))!
+        email = (try! keychain.get("email"))!
+        birthyear = Int((try! keychain.get("birthyear"))!)!
         
         Create()
         
@@ -49,15 +64,81 @@ class UserDetailFormViewController: FormViewController {
         }
     }
     
+    func GetParamsURL() -> (params:[String:Any], url: String) {
+        let base = API.base.rawValue+API.v1.rawValue+API.user.rawValue+API.update.rawValue
+        switch api_name {
+        case "password":
+            return ([
+                "username": username,
+                "now_password": form.values()["now_pass"] as! String,
+                "new_password": form.values()["new_pass"] as! String
+            ], base+API.password.rawValue)
+        case "email":
+            return ([
+                "username": username,
+                "password": form.values()["now_pass"] as! String,
+                "new_email": form.values()["new_email"] as! String
+            ], base+API.email.rawValue)
+        case "birthyear":
+            return ([
+                "username": username,
+                "password": form.values()["now_pass"] as! String,
+                "birthyear": form.values()["birthyear"] as! Int
+            ], base+API.birth.rawValue)
+        default:
+            return ([:], "")
+        }
+    }
+    
     func CallUpdateAPI() {
-        //TODO: 実装
+        let params_url = GetParamsURL()
+        let activityData = ActivityData(message: "Updating", type: .lineScaleParty)
+        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
+        
+        DispatchQueue(label: "update-user-info").async {
+            Alamofire.request(params_url.url, method: .post, parameters: params_url.params, encoding: JSONEncoding.default).responseJSON { (response) in
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                
+                guard let res = response.result.value else{return}
+                let obj = JSON(res)
+                print("***** API results *****")
+                print(obj)
+                print("***** API results *****")
+                
+                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                    // 対象となるキーが含まれている場合のみ値を更新
+                    if self.form.values()["new_pass"] != nil {
+                        try! self.keychain.set(self.form.values()["new_pass"] as! String, key: "password")
+                    }
+                    
+                    if self.form.values()["new_email"] != nil {
+                        try! self.keychain.set(self.form.values()["new_email"] as! String, key: "email")
+                    }
+                    
+                    if self.form.values()["birthyear"] != nil {
+                        let tmp = self.form.values()["birthyear"] as! Int
+                        try! self.keychain.set(String(tmp), key: "birthyear")
+                    }
+                    
+                    // 成功時のポップアップ
+                    let ok = DefaultButton(title: "OK", action: {
+                        self.navigationController?.popViewController(animated: true)
+                    })
+                    let popup = PopupDialog(title: "Success", message: "情報を更新しました")
+                    popup.transitionStyle = .zoomIn
+                    popup.addButtons([ok])
+                    self.present(popup, animated: true, completion: nil)
+                }else {
+                    ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
+                }
+            }
+        }
     }
     
     func Create() {
         UIView.setAnimationsEnabled(false)
         form.removeAll()
         
-        let keychain = Keychain()
         let section = Section("")
         
         switch api_name {
@@ -67,12 +148,12 @@ class UserDetailFormViewController: FormViewController {
             section.append(CreatePassWordRow(title: "新しいパスワード", tag: "new_pass"))
         case "email":
             screen_title = "Edit Email"
-            section.append(CreateTextRow(title: "現在のアドレス", value: (try! keychain.get("email"))!, tag: "now_email", disabled: true))
+            section.append(CreateTextRow(title: "現在のアドレス", value: email, tag: "now_email", disabled: true))
             section.append(CreatePassWordRow(title: "パスワード", tag: "now_pass"))
             section.append(CreateTextRow(title: "新しいアドレス", tag: "new_email", disabled: false))
         case "birthyear":
             screen_title = "Edit birthyear"
-            section.append(CreatePickerInputRow(value: Int((try! keychain.get("birthyear"))!)!))
+            section.append(CreatePickerInputRow(value: birthyear))
         default:
             screen_title = ""
             break

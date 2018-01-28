@@ -46,6 +46,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             try! keychain.set(data.birthyear, key: "birthyear")
         }
         
+        print(try! keychain.getString("username"))
+        print(try! keychain.getString("password"))
+        print(try! keychain.getString("email"))
+        print(try! keychain.getString("birthyear"))
+        
         let username = try! keychain.getString("username")
         
         if username == nil {
