@@ -23,3 +23,9 @@ class UpdateEmailSerializer(serializers.Serializer):
     username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
     password = serializers.CharField(allow_blank=False, allow_null=False, required=True)
     new_email = serializers.EmailField(allow_blank=False, allow_null=False, required=True)
+
+
+class UpdateBirthYearSerializer(serializers.Serializer):
+    username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
+    password = serializers.CharField(allow_blank=False, allow_null=False, required=True)
+    birthyear = serializers.IntegerField(allow_null=False, required=True)

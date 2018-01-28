@@ -89,6 +89,22 @@ response：
 }
 ```
 
+### Update Birth Year
+```
+method：POST
+endpoint：api/v1/user/update/birth/
+request：
+{
+    "username": "hogehoge",
+    "password": "hogehoge",
+    "birthyear": 1999
+}
+response：
+{
+    "user": "hogehoge"
+}
+```
+
 ### Add Movie
 ```
 method：POST
