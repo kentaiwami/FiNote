@@ -17,17 +17,10 @@ class SocialPopularViewController: UIViewController, UICollectionViewDelegate, U
         
         let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height), collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.backgroundColor = UIColor.white
-        
-        // セルの再利用のための設定
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
-        
-        // デリゲート設定
         collectionView.delegate = self
         collectionView.dataSource = self
-        
         collectionView.autoresizingMask = UIViewAutoresizing(rawValue: UIViewAutoresizing.RawValue(UInt8(UIViewAutoresizing.flexibleHeight.rawValue) | UInt8(UIViewAutoresizing.flexibleWidth.rawValue)))
-        
-        // UICollectionView を表示
         self.view.addSubview(collectionView)
     }
     
