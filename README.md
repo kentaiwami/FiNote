@@ -97,7 +97,7 @@ response：
 ### Update Birth Year
 ```
 method：POST
-endpoint：api/v1/user/update/birth/
+endpoint：api/v1/user/update/birthyear/
 request：
 {
     "username": "hogehoge",

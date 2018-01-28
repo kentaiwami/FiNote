@@ -8,7 +8,7 @@ router.register(r'user/signin', SignInUserViewSet, base_name='sign-in-user')
 
 router.register(r'user/update/password', UpdatePasswordViewSet, base_name='update-password')
 router.register(r'user/update/email', UpdateEmailViewSet, base_name='update-email')
-router.register(r'user/update/birth', UpdateBirthYearViewSet, base_name='update-birth')
+router.register(r'user/update/birthyear', UpdateBirthYearViewSet, base_name='update-birth')
 
 
 router.register(r'movie', AddMovieViewSet, base_name='add-movie')
