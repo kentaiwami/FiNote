@@ -18,15 +18,30 @@ class UserViewController: FormViewController {
         super.viewDidLoad()
         
         tableView.isScrollEnabled = false
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.tabBarController?.navigationItem.title = "User"
+        let check = UIBarButtonItem(image: UIImage(named: "icon_check"), style: .plain, target: self, action: #selector(TapCheckButton))
+        self.tabBarController?.navigationItem.setRightBarButton(check, animated: true)
         
         CreateForm()
+    }
+    
+    func TapCheckButton() {
+        
     }
     
     func CreateForm() {
         let keychain = Keychain()
         let birthyears = GetBirthYears()
         
-        form +++ Section("ユーザ情報")
+        UIView.setAnimationsEnabled(false)
+        form.removeAll()
+        
+        form +++ Section(header: "ユーザ情報", footer: "右上のチェックボタンをタップして更新を反映させてください")
             <<< TextRow(){
                 $0.title = "UserName"
                 $0.value = (try! keychain.getString("username"))!
@@ -122,6 +137,8 @@ class UserViewController: FormViewController {
                     }
                 }
             }
+        
+        UIView.setAnimationsEnabled(true)
     }
 
     override func didReceiveMemoryWarning() {
