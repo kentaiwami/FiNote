@@ -17,6 +17,13 @@ class UserDetailFormViewController: FormViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        LabelRow.defaultCellUpdate = { cell, row in
+            cell.contentView.backgroundColor = .red
+            cell.textLabel?.textColor = .white
+            cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 13)
+            cell.textLabel?.textAlignment = .right
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -30,7 +37,16 @@ class UserDetailFormViewController: FormViewController {
     }
     
     func TapCheckButton() {
+        var err = 0
+        for row in form.allRows {
+            err += row.validate().count
+        }
         
+        if err == 0 {
+            //TODO: CALL API
+        }else {
+            ShowStandardAlert(title: "Error", msg: "入力を再確認してください", vc: self)
+        }
     }
     
     func CallUpdateAPI() {
@@ -77,6 +93,21 @@ class UserDetailFormViewController: FormViewController {
         row.add(rule: RuleRequired(msg: "必須項目です"))
         row.validationOptions = .validatesOnChange
         row.tag = tag
+        row.onRowValidationChanged { cell, row in
+            let rowIndex = row.indexPath!.row
+            while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
+                row.section?.remove(at: rowIndex + 1)
+            }
+            if !row.isValid {
+                for (index, err) in row.validationErrors.map({ $0.msg }).enumerated() {
+                    let labelRow = LabelRow() {
+                        $0.title = err
+                        $0.cell.height = { 30 }
+                    }
+                    row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
+                }
+            }
+        }
         
         return row
     }
@@ -89,6 +120,21 @@ class UserDetailFormViewController: FormViewController {
         row.add(rule: RuleRegExp(regExpr: "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}", allowsEmpty: false, msg: "メールアドレスの形式を再確認してください"))
         row.validationOptions = .validatesOnChange
         row.tag = tag
+        row.onRowValidationChanged { cell, row in
+            let rowIndex = row.indexPath!.row
+            while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
+                row.section?.remove(at: rowIndex + 1)
+            }
+            if !row.isValid {
+                for (index, err) in row.validationErrors.map({ $0.msg }).enumerated() {
+                    let labelRow = LabelRow() {
+                        $0.title = err
+                        $0.cell.height = { 30 }
+                    }
+                    row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
+                }
+            }
+        }
         
         return row
     }
