@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             try! keychain.set(data.password, key: "password")
             try! keychain.set(data.id, key: "id")
             try! keychain.set(data.email, key: "email")
-            try! keychain.set(data.email, key: "birthyear")
+            try! keychain.set(data.birthyear, key: "birthyear")
         }
         
         if IsInsertEmptyDummyData() {
@@ -43,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             try! keychain.set(data.password, key: "password")
             try! keychain.set(data.id, key: "id")
             try! keychain.set(data.email, key: "email")
-            try! keychain.set(data.email, key: "birthyear")
+            try! keychain.set(data.birthyear, key: "birthyear")
         }
         
         let username = try! keychain.getString("username")
