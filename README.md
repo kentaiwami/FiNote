@@ -37,6 +37,9 @@ request：
 }
 response：
 {
+    "username": "hogehoge",
+    "email": "hoge@hoge.com",
+    "birthday": 1900,
     "id": 1
 }
 ```
@@ -52,6 +55,9 @@ request：
 }
 response：
 {
+    "username": "hogehoge",
+    "email": "hoge@hoge.com",
+    "birthday": 1900,
     "id": 1
 }
 ```
@@ -81,6 +87,22 @@ request：
     "username": "hogehoge",
     "password": "hogehoge",
     "new_email": "hoge@hoge.com"
+}
+response：
+{
+    "user": "hogehoge"
+}
+```
+
+### Update Birth Year
+```
+method：POST
+endpoint：api/v1/user/update/birthyear/
+request：
+{
+    "username": "hogehoge",
+    "password": "hogehoge",
+    "birthyear": 1999
 }
 response：
 {

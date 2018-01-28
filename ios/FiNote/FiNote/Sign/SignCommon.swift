@@ -31,7 +31,8 @@ class SignCommon {
                     try! keychain.set(values["username"] as! String, key: "username")
                     try! keychain.set(values["password"] as! String, key: "password")
                     try! keychain.set(obj["id"].stringValue, key: "id")
-                    try! keychain.set("false", key: "adult")
+                    try! keychain.set(obj["email"].stringValue, key: "email")
+                    try! keychain.set(obj["birthyear"].stringValue, key: "birthyear")
                     
                     NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
                     
