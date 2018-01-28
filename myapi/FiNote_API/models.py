@@ -69,7 +69,7 @@ class Onomatopoeia(models.Model):
 
 class Movie(models.Model):
     title = models.CharField(max_length=200)
-    tmdb_id = models.CharField(max_length=100, unique=True)
+    tmdb_id = models.IntegerField(unique=True)
     overview = models.TextField(max_length=1000, default='')
     poster = models.CharField(max_length=1000, default='')
     created_at = models.DateTimeField(auto_now_add=True)

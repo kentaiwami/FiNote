@@ -1,5 +1,5 @@
 //
-//  MovieDetailViewController.swift
+//  MoviesDetailViewController.swift
 //  FiNote
 //
 //  Created by 岩見建汰 on 2018/01/25.
@@ -16,9 +16,9 @@ import PopupDialog
 import TinyConstraints
 import Floaty
 
-class MovieDetailViewController: UIViewController {
+class MoviesDetailViewController: UIViewController {
 
-    var movie_id = ""
+    var movie_id = 0
     var user_id = ""
     var username = ""
     var password = ""
@@ -27,7 +27,6 @@ class MovieDetailViewController: UIViewController {
     var contentView = UIView()
     var tmp_poster = UIImageView()
     var latestView = UIView()
-    var is_done_api = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +42,7 @@ class MovieDetailViewController: UIViewController {
         CallMovieAPI()
     }
     
-    func SetMovieID(movie_id: String) {
+    func SetMovieID(movie_id: Int) {
         self.movie_id = movie_id
     }
     
@@ -91,6 +90,8 @@ class MovieDetailViewController: UIViewController {
         delete_item.icon = UIImage(named: "icon_trash")
         delete_item.handler = { (_) in
             let popup = PopupDialog(title: "Movie Delete", message: "本当に削除しますか？")
+            popup.transitionStyle = .zoomIn
+            
             let delete = DestructiveButton(title: "Delete", action: {
                 self.CallDeleteMovieAPI()
             })
@@ -101,8 +102,8 @@ class MovieDetailViewController: UIViewController {
         }
         
         let floaty = Floaty()
-        floaty.addItem("Edit Info", icon: UIImage(named: "icon_list")) { (hoge) in
-            let movie_info_VC = MovieUserInfoViewController()
+        floaty.addItem("Edit Info", icon: UIImage(named: "icon_list")) { (_) in
+            let movie_info_VC = MoviesUserInfoViewController()
             movie_info_VC.SetDVD(dvd: self.movie.dvd)
             movie_info_VC.SetFAV(fav: self.movie.fav)
             movie_info_VC.SetOnomatopoeia(onomatopoeia: self.movie.onomatopoeia)
@@ -202,8 +203,6 @@ class MovieDetailViewController: UIViewController {
                 if IsHTTPStatus(statusCode: response.response?.statusCode) {
                     self.movie = Movie().GetData(json: obj)
                     self.tmp_poster.af_setImage(withURL: URL(string: API.poster_base.rawValue+self.movie.poster)!)
-                    
-                    self.is_done_api = true
                     self.DrawViews()
                 }else {
                     ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)

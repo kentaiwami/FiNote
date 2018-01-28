@@ -25,13 +25,23 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var searchController = UISearchController()
     var refresh_controll = UIRefreshControl()
     var user_id = ""
+    var is_startup = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let keychain = Keychain()
         user_id = (try! keychain.getString("id"))!
+        
+        let add = UIBarButtonItem(image: UIImage(named: "icon_add"), style: .plain, target: self, action: #selector(TapAddButton))
+        self.tabBarController?.navigationItem.setRightBarButton(add, animated: true)
+        
         self.CallMoviesAPI()
+    }
+    
+    func TapAddButton() {
+        let add_searchVC = MovieAddSearchViewController()
+        self.navigationController!.pushViewController(add_searchVC, animated: true)
     }
     
     func ShowLoadData() {
@@ -91,7 +101,21 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         super.viewWillAppear(animated)
         
         self.tabBarController?.navigationItem.title = "Movies"
-        myTableView.reloadData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if !is_startup {
+            if appdelegate.movies.count == 0 {
+                ShowNoDataView()
+            }else {
+                ShowLoadData()
+                myTableView.reloadData()
+            }
+        }
+        
+        is_startup = false
     }
 
     override func didReceiveMemoryWarning() {
@@ -142,7 +166,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             tmp_lists = appdelegate.movies
         }
         
-        let detailVC = MovieDetailViewController()
+        let detailVC = MoviesDetailViewController()
         detailVC.SetMovieID(movie_id: tmp_lists[indexPath.row].id)
         self.navigationController!.pushViewController(detailVC, animated: true)
     }
