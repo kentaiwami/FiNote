@@ -186,7 +186,7 @@ class MovieAddSearchUserInfoViewController: FormViewController {
 
                     var tmp = Movies.Data()
                     tmp.add = add_date
-                    tmp.id = String(self.searched_movie.id)
+                    tmp.id = self.searched_movie.id
                     tmp.onomatopoeia = self.MovieCommonFunc.GetChoosingOnomatopoeia(values: values)
                     tmp.poster = self.searched_movie.poster
                     tmp.title = self.searched_movie.title

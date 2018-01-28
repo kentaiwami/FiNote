@@ -18,7 +18,7 @@ import Floaty
 
 class MoviesDetailViewController: UIViewController {
 
-    var movie_id = ""
+    var movie_id = 0
     var user_id = ""
     var username = ""
     var password = ""
@@ -42,7 +42,7 @@ class MoviesDetailViewController: UIViewController {
         CallMovieAPI()
     }
     
-    func SetMovieID(movie_id: String) {
+    func SetMovieID(movie_id: Int) {
         self.movie_id = movie_id
     }
     

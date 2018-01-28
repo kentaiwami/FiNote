@@ -16,7 +16,7 @@ import KeychainAccess
 class MoviesUserInfoViewController: FormViewController {
 
     var MovieCommonFunc = MovieCommon()
-    var movie_id = ""
+    var movie_id = 0
     var onomatopoeia: [String] = []
     var dvd = false
     var fav = false
@@ -52,7 +52,7 @@ class MoviesUserInfoViewController: FormViewController {
         }
     }
     
-    func SetMovieID(movie_id: String) {
+    func SetMovieID(movie_id: Int) {
         self.movie_id = movie_id
     }
     
@@ -144,7 +144,7 @@ class MoviesUserInfoViewController: FormViewController {
         let params = [
             "username": (try! keychain.getString("username"))!,
             "password": (try! keychain.getString("password"))!,
-            "tmdb_id": Int(movie_id)!,
+            "tmdb_id": movie_id,
             "dvd": form.values()["dvd"] as! Bool,
             "fav": form.values()["fav"] as! Bool,
             "onomatopoeia": choosing_onomatopoeia
