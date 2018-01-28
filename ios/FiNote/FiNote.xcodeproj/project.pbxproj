@@ -27,6 +27,7 @@
 		379728BE201546370045EB61 /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 379728BD201546370045EB61 /* 1.jpg */; };
 		37CF06E62019039600E99129 /* MoviesDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CF06E52019039600E99129 /* MoviesDetailViewController.swift */; };
 		37E152D7201DB73E00375656 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E152D6201DB73E00375656 /* UserViewController.swift */; };
+		37E152D9201DF18E00375656 /* UserDetailFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E152D8201DF18E00375656 /* UserDetailFormViewController.swift */; };
 		37E1A9EA201CF7E3007D6657 /* MovieAddSearchUserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E1A9E9201CF7E3007D6657 /* MovieAddSearchUserInfoViewController.swift */; };
 		37E1A9EC201D9943007D6657 /* MovieAddSearchOriginTitlesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E1A9EB201D9943007D6657 /* MovieAddSearchOriginTitlesViewController.swift */; };
 		37EE9F81201B918900E39E4A /* MovieAddSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EE9F80201B918900E39E4A /* MovieAddSearchViewController.swift */; };
@@ -64,6 +65,7 @@
 		379728BD201546370045EB61 /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
 		37CF06E52019039600E99129 /* MoviesDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesDetailViewController.swift; sourceTree = "<group>"; };
 		37E152D6201DB73E00375656 /* UserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
+		37E152D8201DF18E00375656 /* UserDetailFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailFormViewController.swift; sourceTree = "<group>"; };
 		37E1A9E9201CF7E3007D6657 /* MovieAddSearchUserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieAddSearchUserInfoViewController.swift; sourceTree = "<group>"; };
 		37E1A9EB201D9943007D6657 /* MovieAddSearchOriginTitlesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieAddSearchOriginTitlesViewController.swift; sourceTree = "<group>"; };
 		37EE9F80201B918900E39E4A /* MovieAddSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieAddSearchViewController.swift; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 			isa = PBXGroup;
 			children = (
 				37E152D6201DB73E00375656 /* UserViewController.swift */,
+				37E152D8201DF18E00375656 /* UserDetailFormViewController.swift */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -381,6 +384,7 @@
 				37EE9F8A201CE53900E39E4A /* MovieAddSearchDetailViewController.swift in Sources */,
 				37349E2E20151EBA00A37D2D /* API.swift in Sources */,
 				3760316E2014809D00E69674 /* Setting.swift in Sources */,
+				37E152D9201DF18E00375656 /* UserDetailFormViewController.swift in Sources */,
 				377D38DC20148992008A36CC /* SignUpViewController.swift in Sources */,
 				37EE9F83201CC15100E39E4A /* MovieAddSearchCell.swift in Sources */,
 				376031702014816000E69674 /* Design.swift in Sources */,
