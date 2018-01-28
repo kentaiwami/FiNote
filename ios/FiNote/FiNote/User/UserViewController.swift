@@ -31,10 +31,17 @@ class UserViewController: FormViewController {
     }
     
     func TapCheckButton() {
-        
+        //TODO: update
     }
     
     func CreateForm() {
+        LabelRow.defaultCellUpdate = { cell, row in
+            cell.contentView.backgroundColor = .red
+            cell.textLabel?.textColor = .white
+            cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 13)
+            cell.textLabel?.textAlignment = .right
+        }
+
         let keychain = Keychain()
         let birthyears = GetBirthYears()
         
