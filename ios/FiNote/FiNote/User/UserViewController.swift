@@ -27,8 +27,8 @@ class UserViewController: FormViewController {
         let username = try! keychain.getString("username")
         let password = try! keychain.getString("password")
         let email = try! keychain.getString("username")
-        let username = try! keychain.getString("username")
-        let username = try! keychain.getString("username")
+//        let username = try! keychain.getString("username")
+//        let username = try! keychain.getString("username")
     }
 
     override func didReceiveMemoryWarning() {

@@ -66,7 +66,10 @@ class SignInUserViewSet(viewsets.ViewSet):
         if not user.check_password(data['password'].encode('utf-8')):
             raise serializers.ValidationError('パスワードが間違っています')
 
-        return Response({'id': user.pk})
+        return Response({
+            'id': user.pk,
+            'email': user.email
+        })
 
 
 class UpdatePasswordViewSet(viewsets.ViewSet):

@@ -140,8 +140,7 @@ class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, UITab
     func CallMovieSearchAPI(text: String, language: String) -> Promise<[MovieAddSearchResult.Data]>{
         
         let promise = Promise<[MovieAddSearchResult.Data]> { (resolve, reject) in
-            let adult = (try! Keychain().getString("adult"))!
-            let urlString = API.tmdb_search.rawValue+"?query=\(text)&api_key=\(GetTMDBAPIKey())&language=\(language)&include_adult=\(adult)"
+            let urlString = API.tmdb_search.rawValue+"?query=\(text)&api_key=\(GetTMDBAPIKey())&language=\(language)&include_adult=\(String(false))"
             let encURL = (NSURL(string:urlString.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)!)?.absoluteString)!
             
             DispatchQueue(label: "search-tmdb-movie").async {
