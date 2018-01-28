@@ -85,10 +85,13 @@ class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, UITab
         
         if search_results.count == 0 {
             let status = Status(title: "No Results", description: "指定した検索ワードを含む映画は見つかりませんでした", actionTitle: "原題で検索", image: nil) {
-                self.hideStatus()
-                //TODO: タイトル一覧を取得するAPIをコール
-                //TODO: コール後、一覧を取得できた場合はタイトル一覧用のviewへ遷移
-                //TODO: 一覧がなかった場合はアラート表示
+//                self.hideStatus()
+                
+                let origin_titlesVC = MovieAddSearchOriginTitlesViewController()
+                let nav = UINavigationController()
+                nav.viewControllers = [origin_titlesVC]
+                
+                self.present(nav, animated: true, completion: nil)
             }
             
             show(status: status)
