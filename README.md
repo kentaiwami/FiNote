@@ -37,6 +37,9 @@ request：
 }
 response：
 {
+    "username": "hogehoge",
+    "email": "hoge@hoge.com",
+    "birthday": 1900,
     "id": 1
 }
 ```
@@ -52,8 +55,10 @@ request：
 }
 response：
 {
-    "id": 1,
-    "email": hogehoge@hoge.com"
+    "username": "hogehoge",
+    "email": "hoge@hoge.com",
+    "birthday": 1900,
+    "id": 1
 }
 ```
 

@@ -37,7 +37,12 @@ class SignUpUserViewSet(viewsets.ViewSet):
             birthyear=data['birthyear'],
         )
 
-        return Response({'id': user.pk})
+        return Response({
+            'username': user.username,
+            'id': user.pk,
+            'email': user.email,
+            'birthyear': user.birthyear
+        })
 
 
 class SignInUserViewSet(viewsets.ViewSet):
@@ -67,8 +72,10 @@ class SignInUserViewSet(viewsets.ViewSet):
             raise serializers.ValidationError('パスワードが間違っています')
 
         return Response({
+            'username': user.username,
             'id': user.pk,
-            'email': user.email
+            'email': user.email,
+            'birthyear': user.birthyear
         })
 
 
