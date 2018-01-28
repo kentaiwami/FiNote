@@ -14,6 +14,7 @@ import Alamofire
 import SwiftyJSON
 import PopupDialog
 
+
 class UserDetailFormViewController: FormViewController {
 
     var api_name = ""

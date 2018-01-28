@@ -13,7 +13,8 @@ import SwiftyJSON
 import Alamofire
 import PromiseKit
 import StatusProvider
-import TinyConstraints
+import PopupDialog
+
 
 class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, StatusController {
 
@@ -115,26 +116,48 @@ class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, UITab
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: NSStringFromClass(MovieAddSearchCell.self), for: indexPath) as! MovieAddSearchCell
-        cell.accessoryType = .disclosureIndicator
         
-        let urlRequest = URL(string: API.poster_base.rawValue+search_results[indexPath.row].poster)!
-
+        cell.accessoryType = .disclosureIndicator
         cell.title.text = search_results[indexPath.row].title
-        cell.overview.text = search_results[indexPath.row].overview
         cell.poster.af_setImage(
-            withURL: urlRequest,
+            withURL: URL(string: API.poster_base.rawValue+search_results[indexPath.row].poster)!,
             placeholderImage: UIImage(named: "no_image")
         )
-        cell.release_date.text = search_results[indexPath.row].release_date
+        
+        if search_results[indexPath.row].release_date.count == 0 {
+            cell.release_date.text = "no data"
+        }else {
+            cell.release_date.text = search_results[indexPath.row].release_date
+        }
+        
+        if search_results[indexPath.row].overview.count == 0 {
+            cell.overview.text = "no data"
+        }else {
+            cell.overview.text = search_results[indexPath.row].overview
+        }
+        
+        if GetAppDelegate().movies.filter({$0.id == search_results[indexPath.row].id}).count == 0 {
+            cell.added_msg.isHidden = true
+            cell.added_icon.isHidden = true
+        }else {
+            cell.added_msg.isHidden = false
+            cell.added_icon.isHidden = false
+        }
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let detailVC = MovieAddSearchDetailViewController()
-        detailVC.SetMovieID(searched_movie: search_results[indexPath.row])
-        self.navigationController!.pushViewController(detailVC, animated: true)
+        
+        if GetAppDelegate().movies.filter({$0.id == search_results[indexPath.row].id}).count == 0 {
+            let detailVC = MovieAddSearchDetailViewController()
+            detailVC.SetMovieID(searched_movie: search_results[indexPath.row])
+            self.navigationController!.pushViewController(detailVC, animated: true)
+        }else {
+            let msg = "この映画は追加済みです。\n追加済みの映画はTop画面から編集することができます。"
+            ShowStandardAlert(title: "", msg: msg, vc: self)
+        }
     }
     
     func CallMovieSearchAPI(text: String, language: String) -> Promise<[MovieAddSearchResult.Data]>{
@@ -145,6 +168,7 @@ class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, UITab
             
             DispatchQueue(label: "search-tmdb-movie").async {
                 Alamofire.request(encURL, method: .get).responseJSON { (response) in
+                    
                     guard let res = response.result.value else{return}
                     let obj = JSON(res)
                     print("***** API results *****")

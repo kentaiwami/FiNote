@@ -11,6 +11,7 @@ import NVActivityIndicatorView
 import Alamofire
 import SwiftyJSON
 
+
 class MovieCommon {
     func GetChoosingOnomatopoeia(values: [String:Any?]) -> [String] {
         // オノマトペとタグ番号の辞書を生成

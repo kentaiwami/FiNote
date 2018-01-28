@@ -12,8 +12,8 @@ import SwiftyJSON
 import Alamofire
 import AlamofireImage
 import KeychainAccess
-import PopupDialog
 import TinyConstraints
+
 
 class MovieAddSearchDetailViewController: UIViewController {
 

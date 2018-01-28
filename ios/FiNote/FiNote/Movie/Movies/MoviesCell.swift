@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class MoviesCell: UITableViewCell {
     var title: UILabel!
     var onomatopoeia: UILabel!

@@ -13,8 +13,8 @@ import Alamofire
 import AlamofireImage
 import KeychainAccess
 import PopupDialog
-import TinyConstraints
 import StatusProvider
+
 
 class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITabBarControllerDelegate, UISearchResultsUpdating, StatusController {
     
@@ -187,12 +187,13 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func CallMoviesAPI() {
+        let urlString = API.base.rawValue+API.v1.rawValue+API.movies.rawValue+"?user_id=\(self.user_id)"
         let activityData = ActivityData(message: "Get Movies", type: .lineScaleParty)
         NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
         
         DispatchQueue(label: "get-movies").async {
-            let urlString = API.base.rawValue+API.v1.rawValue+API.movies.rawValue+"?user_id=\(self.user_id)"
             Alamofire.request(urlString, method: .get).responseJSON { (response) in
+                
                 NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
                 self.refresh_controll.endRefreshing()
                 

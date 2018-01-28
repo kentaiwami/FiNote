@@ -14,6 +14,7 @@ import SwiftyJSON
 import KeychainAccess
 import PopupDialog
 
+
 class MovieAddSearchUserInfoViewController: FormViewController {
 
     var searched_movie = MovieAddSearchResult.Data()
@@ -167,10 +168,12 @@ class MovieAddSearchUserInfoViewController: FormViewController {
             "fav": values["fav"] as! Bool,
             "onomatopoeia": MovieCommonFunc.GetChoosingOnomatopoeia(values: values)
             ] as [String : Any]
+        
         NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
         
         DispatchQueue(label: "update-movie-user-info").async {
             Alamofire.request(urlString, method: .post, parameters: params, encoding: JSONEncoding.default).responseJSON { (response) in
+                
                 NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
                 
                 guard let res = response.result.value else{return}

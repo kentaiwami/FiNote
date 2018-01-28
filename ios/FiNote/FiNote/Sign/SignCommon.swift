@@ -11,17 +11,21 @@ import SwiftyJSON
 import Alamofire
 import KeychainAccess
 import NVActivityIndicatorView
-import PopupDialog
+
 
 class SignCommon {
     func CallSignAPI(msg: String, label: String, endpoint: String, values: [String:Any?], vc: UIViewController) {
         let activityData = ActivityData(message: msg, type: .lineScaleParty)
+        let urlString = API.base.rawValue+API.v1.rawValue+API.user.rawValue+endpoint
+
         NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
         
         DispatchQueue(label: label).async {
-            let urlString = API.base.rawValue+API.v1.rawValue+API.user.rawValue+endpoint
             Alamofire.request(urlString, method: .post, parameters: values, encoding: JSONEncoding(options: [])).responseJSON { (response) in
-                let obj = JSON(response.result.value)
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                
+                guard let res = response.result.value else{return}
+                let obj = JSON(res)
                 print("***** API results *****")
                 print(obj)
                 print("***** API results *****")
@@ -34,18 +38,11 @@ class SignCommon {
                     try! keychain.set(obj["email"].stringValue, key: "email")
                     try! keychain.set(obj["birthyear"].stringValue, key: "birthyear")
                     
-                    NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
-                    
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
                     let mainVC = storyboard.instantiateViewController(withIdentifier: "Main")
                     vc.present(mainVC, animated: true, completion: nil)
                 }else {
-                    let popup = PopupDialog(title: "Error", message: obj.arrayValue[0].stringValue)
-                    let button = DefaultButton(title: "OK", dismissOnTap: true) {}
-                    popup.addButtons([button])
-                    
-                    NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
-                    vc.present(popup, animated: true, completion: nil)
+                    ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: vc)
                 }
             }
         }
