@@ -54,13 +54,15 @@ class UserViewController: FormViewController {
                 
                 $0.title = "メールアドレスの変更"
                 $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return vc}, onDismiss: {vc in vc.navigationController?.popViewController(animated: true)})
+                $0.tag = "email"
             }
             
-            //TODO: 変更が完了した時にAPI叩く
-            <<< PickerInputRow<Int>(""){
-                $0.title = "BirthYear"
-                $0.value = Int((try! keychain.get("birthyear"))!)
-                $0.options = GetBirthYears()
+            <<< ButtonRow("") {
+                let vc = UserDetailFormViewController()
+                vc.SetAPIName(name: "birthyear")
+                
+                $0.title = "誕生年の変更"
+                $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return vc}, onDismiss: {vc in vc.navigationController?.popViewController(animated: true)})
                 $0.tag = "birthyear"
             }
         
