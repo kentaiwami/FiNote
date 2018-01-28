@@ -41,6 +41,7 @@ class UserDetailFormViewController: FormViewController {
         UIView.setAnimationsEnabled(false)
         form.removeAll()
         
+        let keychain = Keychain()
         let section = Section("")
         
         switch api_name {
@@ -50,6 +51,9 @@ class UserDetailFormViewController: FormViewController {
             section.append(CreatePassWordRow(title: "新しいパスワード", tag: "new_pass"))
         case "email":
             screen_title = "Edit Email"
+            section.append(CreateTextRow(title: "現在のアドレス", value: (try! keychain.get("email"))!, tag: "now_email", disabled: true))
+            section.append(CreatePassWordRow(title: "パスワード", tag: "now_pass"))
+            section.append(CreateTextRow(title: "新しいアドレス", tag: "new_email", disabled: false))
         case "birthyear":
             screen_title = "Edit birthyear"
         default:
@@ -77,8 +81,16 @@ class UserDetailFormViewController: FormViewController {
         return row
     }
     
-    func CreateTextRow() {
+    func CreateTextRow(title: String, value: String="", tag: String, disabled: Condition) -> TextRow {
+        let row = TextRow()
+        row.title = title
+        row.value = value
+        row.disabled = disabled
+        row.add(rule: RuleRegExp(regExpr: "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}", allowsEmpty: false, msg: "メールアドレスの形式を再確認してください"))
+        row.validationOptions = .validatesOnChange
+        row.tag = tag
         
+        return row
     }
 
     override func didReceiveMemoryWarning() {
