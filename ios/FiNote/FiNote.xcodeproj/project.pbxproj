@@ -14,6 +14,7 @@
 		374D67902011EAF300706D4F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 374D678E2011EAF300706D4F /* Main.storyboard */; };
 		374D67922011EAF300706D4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 374D67912011EAF300706D4F /* Assets.xcassets */; };
 		374D67952011EAF300706D4F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 374D67932011EAF300706D4F /* LaunchScreen.storyboard */; };
+		375085D9201E52C000C04703 /* SocialPopularViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375085D8201E52C000C04703 /* SocialPopularViewController.swift */; };
 		3760316E2014809D00E69674 /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3760316D2014809C00E69674 /* Setting.swift */; };
 		376031702014816000E69674 /* Design.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3760316F2014816000E69674 /* Design.swift */; };
 		376031722014820800E69674 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376031712014820800E69674 /* Extensions.swift */; };
@@ -49,6 +50,7 @@
 		374D67912011EAF300706D4F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		374D67942011EAF300706D4F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		374D67962011EAF300706D4F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		375085D8201E52C000C04703 /* SocialPopularViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialPopularViewController.swift; sourceTree = "<group>"; };
 		3760316D2014809C00E69674 /* Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
 		3760316F2014816000E69674 /* Design.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Design.swift; sourceTree = "<group>"; };
 		376031712014820800E69674 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 		3760316C2014804D00E69674 /* Social */ = {
 			isa = PBXGroup;
 			children = (
+				375085D8201E52C000C04703 /* SocialPopularViewController.swift */,
 			);
 			path = Social;
 			sourceTree = "<group>";
@@ -375,6 +378,7 @@
 				37E1A9EC201D9943007D6657 /* MovieAddSearchOriginTitlesViewController.swift in Sources */,
 				374D67892011EAF300706D4F /* AppDelegate.swift in Sources */,
 				379728B9201539B10045EB61 /* SignCommon.swift in Sources */,
+				375085D9201E52C000C04703 /* SocialPopularViewController.swift in Sources */,
 				37EE9F81201B918900E39E4A /* MovieAddSearchViewController.swift in Sources */,
 				37EE9F8E201CF4A800E39E4A /* MovieCommon.swift in Sources */,
 				37EE9F8A201CE53900E39E4A /* MovieAddSearchDetailViewController.swift in Sources */,
