@@ -11,6 +11,7 @@ import Eureka
 import Alamofire
 import SwiftyJSON
 import KeychainAccess
+import PopupDialog
 
 class UserViewController: FormViewController {
 
@@ -31,7 +32,20 @@ class UserViewController: FormViewController {
     }
     
     func TapCheckButton() {
-        //TODO: update
+        var err_count = 0
+        for row in form.allRows {
+            err_count += row.validate().count
+        }
+        
+        if err_count == 0 {
+            CallUserInfoUpdateAPI()
+        }else {
+            ShowStandardAlert(title: "Error", msg: "入力されていない項目があります", vc: self)
+        }
+    }
+    
+    func CallUserInfoUpdateAPI() {
+        //TODO: 実装
     }
     
     func CreateForm() {
@@ -52,24 +66,7 @@ class UserViewController: FormViewController {
             <<< TextRow(){
                 $0.title = "UserName"
                 $0.value = (try! keychain.getString("username"))!
-                $0.add(rule: RuleRequired(msg: "必須項目です"))
-                $0.validationOptions = .validatesOnChange
-                $0.tag = "username"
-            }
-            .onRowValidationChanged {cell, row in
-                let rowIndex = row.indexPath!.row
-                while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
-                    row.section?.remove(at: rowIndex + 1)
-                }
-                if !row.isValid {
-                    for (index, err) in row.validationErrors.map({ $0.msg }).enumerated() {
-                        let labelRow = LabelRow() {
-                            $0.title = err
-                            $0.cell.height = { 30 }
-                        }
-                        row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
-                    }
-                }
+                $0.disabled = true
             }
             
             <<< PasswordRow(){
