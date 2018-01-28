@@ -72,6 +72,7 @@ class UserDetailFormViewController: FormViewController {
             section.append(CreateTextRow(title: "新しいアドレス", tag: "new_email", disabled: false))
         case "birthyear":
             screen_title = "Edit birthyear"
+            section.append(CreatePickerInputRow(value: Int((try! keychain.get("birthyear"))!)!))
         default:
             screen_title = ""
             break
@@ -136,6 +137,15 @@ class UserDetailFormViewController: FormViewController {
             }
         }
         
+        return row
+    }
+    
+    func CreatePickerInputRow(value: Int) -> PickerInputRow<Int> {
+        let row = PickerInputRow<Int>()
+        row.title = "BirthYear"
+        row.value = value
+        row.options = GetBirthYears()
+        row.tag = "birthyear"
         return row
     }
 
