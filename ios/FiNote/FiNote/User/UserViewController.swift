@@ -41,6 +41,7 @@ class UserViewController: FormViewController {
             
             <<< ButtonRow("") {
                 let vc = UserDetailFormViewController()
+                vc.SetAPIName(name: "password")
                 
                 $0.title = "パスワードの変更"
                 $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return vc}, onDismiss: {vc in vc.navigationController?.popViewController(animated: true)})
@@ -49,6 +50,7 @@ class UserViewController: FormViewController {
             
             <<< ButtonRow("") {
                 let vc = UserDetailFormViewController()
+                vc.SetAPIName(name: "email")
                 
                 $0.title = "メールアドレスの変更"
                 $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return vc}, onDismiss: {vc in vc.navigationController?.popViewController(animated: true)})

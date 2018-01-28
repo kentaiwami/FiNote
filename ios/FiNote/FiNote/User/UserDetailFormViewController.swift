@@ -10,26 +10,41 @@ import UIKit
 
 class UserDetailFormViewController: UIViewController {
 
+    var api_name = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        self.navigationItem.title = "Edit Info"
+        let check = UIBarButtonItem(image: UIImage(named: "icon_check"), style: .plain, target: self, action: #selector(TapCheckButton))
+        self.navigationItem.setRightBarButton(check, animated: true)
+    }
+    
+    func TapCheckButton() {
+        
+    }
+    
+    func CallUpdateAPI() {
+        
+    }
+    
+    func CreateForm() {
+        
+    }
+    
+    func SetAPIName(name: String) {
+        api_name = name
+    }
+    
+    func CreatePassWordRow() {
+        
+    }
+    
+    func CreateTextRow() {
+        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
