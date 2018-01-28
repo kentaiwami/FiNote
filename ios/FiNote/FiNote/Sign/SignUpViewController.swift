@@ -145,7 +145,7 @@ class SignUpViewController: FormViewController {
                 popup.addButtons([button])
 
                 if IsCheckFormValue(form: self.form) {
-                    CallSignAPI(msg: "Sign Up Now", label: "sign-up", endpoint: API.signup.rawValue, values: self.form.values(), vc: self)
+                    SignCommon().CallSignAPI(msg: "Sign Up Now", label: "sign-up", endpoint: API.signup.rawValue, values: self.form.values(), vc: self)
                 }else {
                     self.present(popup, animated: true, completion: nil)
                 }
