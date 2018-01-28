@@ -31,6 +31,7 @@ func CallSignAPI(msg: String, label: String, endpoint: String, values: [String:A
                 try! keychain.set(values["username"] as! String, key: "username")
                 try! keychain.set(values["password"] as! String, key: "password")
                 try! keychain.set(obj["id"].stringValue, key: "id")
+                try! keychain.set("false", key: "adult")
                 
                 NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
                 
