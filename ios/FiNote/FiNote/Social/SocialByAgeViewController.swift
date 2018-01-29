@@ -18,6 +18,7 @@ class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UIC
     var latestView: UIView!
     var scrollView = UIScrollView()
     var refresh_controll = UIRefreshControl()
+    var movies: [[MovieByAge.Data]] = [[]]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,7 +33,7 @@ class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UIC
     }
     
     func CallGetByAgeAPI() {
-        let urlString = API.base.rawValue+API.v1.rawValue+API.movie.rawValue+API.recently.rawValue
+        let urlString = API.base.rawValue+API.v1.rawValue+API.movie.rawValue+API.byage.rawValue
         let activityData = ActivityData(message: "Get Data", type: .lineScaleParty)
         NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
         
@@ -47,8 +48,20 @@ class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UIC
                 print(obj)
                 print("***** API results *****")
                 
+                self.movies.removeAll()
+                
                 if IsHTTPStatus(statusCode: response.response?.statusCode) {
-                    //TODO: 結果をパース
+                    // 結果をパース
+                    let dictionaryValue = obj["results"].dictionaryValue
+                    for key in stride(from: 10, to: 60, by: 10) {
+                        // 10,20...ごとに配列を取得
+                        let arrayValue = dictionaryValue[String(key)]?.arrayValue
+                        
+                        // title, overview, poster, countごとにまとめた配列を取得
+                        let data_array = MovieByAge().GetDataArray(json: arrayValue!)
+                        self.movies.append(data_array)
+                    }
+                    
                     self.DrawViews()
                 }else {
                     ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
@@ -122,7 +135,7 @@ class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UIC
         layout.itemSize = CGSize(width: w, height: h)
         layout.minimumInteritemSpacing = margin
         layout.minimumLineSpacing = margin
-        layout.sectionInset = UIEdgeInsets(top: margin, left: margin, bottom: margin*2, right: margin)
+        layout.sectionInset = UIEdgeInsets(top: 0, left: margin, bottom: 0, right: margin)
         layout.scrollDirection = .horizontal
         
         let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)

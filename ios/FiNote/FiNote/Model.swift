@@ -123,3 +123,27 @@ class MovieRecentlly {
         return data
     }
 }
+
+class MovieByAge {
+    struct Data {
+        var title = ""
+        var poster = ""
+        var overview = ""
+        var count = 0
+    }
+    
+    func GetDataArray(json: [JSON]) -> [Data] {
+        var tmp: [Data] = []
+        
+        for obj in json {
+            var data = Data()
+            data.title = obj["title"].stringValue
+            data.poster = obj["poster"].stringValue
+            data.overview = obj["overview"].stringValue
+            tmp.append(data)
+        }
+        
+        return tmp
+    }
+}
+
