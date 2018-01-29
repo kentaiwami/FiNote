@@ -18,12 +18,12 @@ class SocialPopularViewController: UIViewController, UICollectionViewDelegate, U
         let w = 150.0 as CGFloat
         let h = w*1.5 as CGFloat
         let margin = (self.view.frame.width - w*2) / 4
+        
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: w, height: h)
         layout.minimumInteritemSpacing = margin
         layout.minimumLineSpacing = margin
         layout.sectionInset = UIEdgeInsets(top: margin, left: margin, bottom: margin, right: margin)
-        
         
         let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height), collectionViewLayout: layout)
         collectionView.backgroundColor = UIColor.white
