@@ -38,6 +38,7 @@
 		37F2FF9F201EDC7A0062B130 /* SocialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F2FF9E201EDC7A0062B130 /* SocialViewController.swift */; };
 		37F2FFA1201EE80E0062B130 /* SocialComparisonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F2FFA0201EE80E0062B130 /* SocialComparisonViewController.swift */; };
 		37F2FFA3201EE8240062B130 /* SocialContainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F2FFA2201EE8240062B130 /* SocialContainViewController.swift */; };
+		37F2FFA5201F2AA30062B130 /* SocialByAgeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F2FFA4201F2AA30062B130 /* SocialByAgeCell.swift */; };
 		747DA20B1392E0EFCC94895C /* Pods_FiNote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F9B3ACA4F672A8807D425EC /* Pods_FiNote.framework */; };
 /* End PBXBuildFile section */
 
@@ -80,6 +81,7 @@
 		37F2FF9E201EDC7A0062B130 /* SocialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialViewController.swift; sourceTree = "<group>"; };
 		37F2FFA0201EE80E0062B130 /* SocialComparisonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialComparisonViewController.swift; sourceTree = "<group>"; };
 		37F2FFA2201EE8240062B130 /* SocialContainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialContainViewController.swift; sourceTree = "<group>"; };
+		37F2FFA4201F2AA30062B130 /* SocialByAgeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialByAgeCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +170,7 @@
 				37F2FF9E201EDC7A0062B130 /* SocialViewController.swift */,
 				375085D8201E52C000C04703 /* SocialRecentlyViewController.swift */,
 				37F2FF9C201ED63F0062B130 /* SocialByAgeViewController.swift */,
+				37F2FFA4201F2AA30062B130 /* SocialByAgeCell.swift */,
 				37F2FFA0201EE80E0062B130 /* SocialComparisonViewController.swift */,
 				37F2FFA2201EE8240062B130 /* SocialContainViewController.swift */,
 			);
@@ -389,6 +392,7 @@
 				37F2FF9D201ED63F0062B130 /* SocialByAgeViewController.swift in Sources */,
 				37CF06E62019039600E99129 /* MoviesDetailViewController.swift in Sources */,
 				37E1A9EC201D9943007D6657 /* MovieAddSearchOriginTitlesViewController.swift in Sources */,
+				37F2FFA5201F2AA30062B130 /* SocialByAgeCell.swift in Sources */,
 				374D67892011EAF300706D4F /* AppDelegate.swift in Sources */,
 				379728B9201539B10045EB61 /* SignCommon.swift in Sources */,
 				375085D9201E52C000C04703 /* SocialRecentlyViewController.swift in Sources */,
