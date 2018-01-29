@@ -165,9 +165,9 @@
 		3760316C2014804D00E69674 /* Social */ = {
 			isa = PBXGroup;
 			children = (
+				37F2FF9E201EDC7A0062B130 /* SocialViewController.swift */,
 				375085D8201E52C000C04703 /* SocialRecentlyViewController.swift */,
 				37F2FF9C201ED63F0062B130 /* SocialByAgeViewController.swift */,
-				37F2FF9E201EDC7A0062B130 /* SocialViewController.swift */,
 				37F2FFA0201EE80E0062B130 /* SocialComparisonViewController.swift */,
 				37F2FFA2201EE8240062B130 /* SocialContainViewController.swift */,
 			);
