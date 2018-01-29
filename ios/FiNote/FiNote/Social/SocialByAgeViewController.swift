@@ -34,7 +34,7 @@ class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UIC
     
     func CallGetByAgeAPI() {
         let urlString = API.base.rawValue+API.v1.rawValue+API.movie.rawValue+API.byage.rawValue
-        let activityData = ActivityData(message: "Get Data", type: .lineScaleParty)
+        let activityData = ActivityData(message: "Get Movies", type: .lineScaleParty)
         NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
         
         DispatchQueue(label: "get-byage").async {
