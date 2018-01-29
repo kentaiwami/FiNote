@@ -7,17 +7,54 @@
 //
 
 import UIKit
+import NVActivityIndicatorView
+import SwiftyJSON
+import Alamofire
+import AlamofireImage
 
 class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
     var contentView: UIView!
     var latestView: UIView!
+    var scrollView = UIScrollView()
+    var refresh_controll = UIRefreshControl()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.backgroundColor = UIColor.clear
-        DrawViews()
+        CallGetByAgeAPI()
+    }
+    
+    func refresh(sender: UIRefreshControl) {
+        refresh_controll.beginRefreshing()
+        CallGetByAgeAPI()
+    }
+    
+    func CallGetByAgeAPI() {
+        let urlString = API.base.rawValue+API.v1.rawValue+API.movie.rawValue+API.recently.rawValue
+        let activityData = ActivityData(message: "Get Data", type: .lineScaleParty)
+        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
+        
+        DispatchQueue(label: "get-byage").async {
+            Alamofire.request(urlString, method: .get).responseJSON { (response) in
+                self.refresh_controll.endRefreshing()
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                
+                guard let res = response.result.value else{return}
+                let obj = JSON(res)
+                print("***** API results *****")
+                print(obj)
+                print("***** API results *****")
+                
+                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                    //TODO: 結果をパース
+                    self.DrawViews()
+                }else {
+                    ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
+                }
+            }
+        }
     }
     
     func DrawViews() {
@@ -34,8 +71,13 @@ class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UIC
     }
     
     func InitScrollView() {
-        let scrollView = UIScrollView()
+        scrollView.removeFromSuperview()
+        refresh_controll = UIRefreshControl()
+        
+        scrollView = UIScrollView()
         scrollView.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height)
+        scrollView.refreshControl = refresh_controll
+        refresh_controll.addTarget(self, action: #selector(self.refresh(sender:)), for: .valueChanged)
         self.view.addSubview(scrollView)
         
         scrollView.top(to: self.view)
