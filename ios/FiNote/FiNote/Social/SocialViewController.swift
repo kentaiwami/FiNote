@@ -29,34 +29,45 @@ class SocialViewController: UIViewController {
     
     func TapMenuButton() {
         let cancel = CancelButton(title: "Cancel", action: nil)
-        let recently = DefaultButton(title: "Recently") {
+        let recently = DefaultButton(title: "人気ランキング") {
             self.SetUpView(vc: SocialRecentlyViewController())
         }
-        let byage = DefaultButton(title: "By Age") {
+        let byage = DefaultButton(title: "年代別のランキング") {
             self.SetUpView(vc: SocialByAgeViewController())
         }
-        let contain = DefaultButton(title: "Contain") {
+        let contain = DefaultButton(title: "オノマトペで検索") {
             self.SetUpView(vc: SocialContainViewController())
         }
-        let comparison = DefaultButton(title: "Comparison") {
+        let comparison = DefaultButton(title: "オノマトペの比較") {
             self.SetUpView(vc: SocialComparisonViewController())
         }
         
-        let popup = PopupDialog(title: "画面切り替え", message: "hogehoge")
-        let class_name = vc.GetClassName()
-        switch class_name {
+        let recently_msg = "「人気ランキング」では1週間で追加されたユーザ数が多い順に最近話題になっている映画を確認することができます。"
+        let byage_msg = "「年代別のランキング」では10代〜50代で人気のある映画をランキングで見ることができます。"
+        let contain_msg = "「オノマトペで検索」は検索ワードに入れたオノマトペを含む映画を見つけることができます。"
+        let comparison_msg = "「オノマトペの比較」ではあなたが登録した映画に付けたオノマトペと他の人がどのようなオノマトペを追加しているのかを見ることができます。"
+        var dynamic_msg = ""
+        var popup_buttons: [PopupDialogButton] = []
+        
+        switch vc.GetClassName() {
         case "SocialRecentlyViewController":
-            popup.addButtons([byage, contain, comparison, cancel])
+            dynamic_msg = byage_msg + "\n\n" + contain_msg + "\n\n" + comparison_msg
+            popup_buttons = [byage, contain, comparison, cancel]
         case "SocialByAgeViewController":
-            popup.addButtons([recently, contain, comparison, cancel])
+            dynamic_msg = recently_msg + "\n\n" + contain_msg + "\n\n" + comparison_msg
+            popup_buttons = [recently, contain, comparison, cancel]
         case "SocialContainViewController":
-            popup.addButtons([recently, byage, comparison, cancel])
+            dynamic_msg = recently_msg + "\n\n" + byage_msg + "\n\n" + comparison_msg
+            popup_buttons = [recently, byage, comparison, cancel]
         case "SocialComparisonViewController":
-            popup.addButtons([recently, byage, contain, cancel])
+            dynamic_msg = recently_msg + "\n\n" + byage_msg + "\n\n" + contain_msg
+            popup_buttons = [recently, byage, contain, cancel]
         default:
-            popup.addButtons([cancel])
+            popup_buttons = [cancel]
         }
         
+        let popup = PopupDialog(title: "画面の切り替え", message: dynamic_msg)
+        popup.addButtons(popup_buttons)
         self.present(popup, animated: true, completion: nil)
     }
     
