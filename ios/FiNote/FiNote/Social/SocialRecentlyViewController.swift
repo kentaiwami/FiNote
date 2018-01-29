@@ -119,6 +119,11 @@ class SocialRecentlyViewController: UIViewController, UICollectionViewDelegate, 
             placeholderImage: UIImage(named: "no_image")
         )
         poster.frame = CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: cell.contentView.frame.height)
+        poster.layer.shadowOpacity = 0.5
+        poster.layer.shadowColor = UIColor.black.cgColor
+        poster.layer.shadowOffset = CGSize(width: 1, height: 1)
+        poster.layer.shadowRadius = 3
+        poster.layer.masksToBounds = false
         cell.contentView.addSubview(poster)
         
         return cell
