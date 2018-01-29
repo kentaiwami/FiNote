@@ -49,7 +49,7 @@ class SocialByAgeCell: UICollectionViewCell {
         poster.height(contentView.frame.height - count_space)
         
         users_icon.bottom(to: contentView, offset: -5)
-        users_icon.centerX(to: contentView)
+        users_icon.centerX(to: contentView, offset: -10)
         users_icon.width(icon_wh)
         users_icon.height(icon_wh)
         
