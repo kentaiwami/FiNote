@@ -140,6 +140,7 @@ class MovieByAge {
             data.title = obj["title"].stringValue
             data.poster = obj["poster"].stringValue
             data.overview = obj["overview"].stringValue
+            data.count = obj["count"].intValue
             tmp.append(data)
         }
         

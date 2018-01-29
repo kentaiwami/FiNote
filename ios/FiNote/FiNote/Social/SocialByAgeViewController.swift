@@ -165,7 +165,12 @@ class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UIC
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell : SocialByAgeCell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyCell", for: indexPath as IndexPath) as! SocialByAgeCell
-        cell.user_count?.text = String(indexPath.section)
+        let index = collectionView.tag - 1
+        cell.poster.af_setImage(
+            withURL: URL(string: API.poster_base.rawValue+movies[index][indexPath.row].poster)!,
+            placeholderImage: UIImage(named: "no_image")
+        )
+        cell.user_count?.text = String(movies[index][indexPath.row].count)
         
         return cell
     }
