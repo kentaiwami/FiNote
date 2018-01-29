@@ -89,16 +89,7 @@ class SocialRecentlyViewController: UIViewController, UICollectionViewDelegate, 
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        self.tabBarController?.navigationItem.title = "Social"
-        let menu = UIBarButtonItem(image: UIImage(named: "icon_menu"), style: .plain, target: self, action: #selector(TapMenuButton))
-        self.tabBarController?.navigationItem.setRightBarButton(menu, animated: true)
-        
         self.tabBarController?.delegate = self
-    }
-    
-    func TapMenuButton() {
-        //TODO: action sheet表示
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
