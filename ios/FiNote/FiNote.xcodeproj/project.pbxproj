@@ -14,6 +14,7 @@
 		374D67902011EAF300706D4F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 374D678E2011EAF300706D4F /* Main.storyboard */; };
 		374D67922011EAF300706D4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 374D67912011EAF300706D4F /* Assets.xcassets */; };
 		374D67952011EAF300706D4F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 374D67932011EAF300706D4F /* LaunchScreen.storyboard */; };
+		375085D9201E52C000C04703 /* SocialRecentlyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375085D8201E52C000C04703 /* SocialRecentlyViewController.swift */; };
 		3760316E2014809D00E69674 /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3760316D2014809C00E69674 /* Setting.swift */; };
 		376031702014816000E69674 /* Design.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3760316F2014816000E69674 /* Design.swift */; };
 		376031722014820800E69674 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376031712014820800E69674 /* Extensions.swift */; };
@@ -33,6 +34,10 @@
 		37EE9F83201CC15100E39E4A /* MovieAddSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EE9F82201CC15100E39E4A /* MovieAddSearchCell.swift */; };
 		37EE9F8A201CE53900E39E4A /* MovieAddSearchDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EE9F89201CE53900E39E4A /* MovieAddSearchDetailViewController.swift */; };
 		37EE9F8E201CF4A800E39E4A /* MovieCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EE9F8D201CF4A800E39E4A /* MovieCommon.swift */; };
+		37F2FF9D201ED63F0062B130 /* SocialByAgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F2FF9C201ED63F0062B130 /* SocialByAgeViewController.swift */; };
+		37F2FF9F201EDC7A0062B130 /* SocialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F2FF9E201EDC7A0062B130 /* SocialViewController.swift */; };
+		37F2FFA1201EE80E0062B130 /* SocialComparisonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F2FFA0201EE80E0062B130 /* SocialComparisonViewController.swift */; };
+		37F2FFA3201EE8240062B130 /* SocialContainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F2FFA2201EE8240062B130 /* SocialContainViewController.swift */; };
 		747DA20B1392E0EFCC94895C /* Pods_FiNote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F9B3ACA4F672A8807D425EC /* Pods_FiNote.framework */; };
 /* End PBXBuildFile section */
 
@@ -49,6 +54,7 @@
 		374D67912011EAF300706D4F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		374D67942011EAF300706D4F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		374D67962011EAF300706D4F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		375085D8201E52C000C04703 /* SocialRecentlyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialRecentlyViewController.swift; sourceTree = "<group>"; };
 		3760316D2014809C00E69674 /* Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
 		3760316F2014816000E69674 /* Design.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Design.swift; sourceTree = "<group>"; };
 		376031712014820800E69674 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -70,6 +76,10 @@
 		37EE9F82201CC15100E39E4A /* MovieAddSearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieAddSearchCell.swift; sourceTree = "<group>"; };
 		37EE9F89201CE53900E39E4A /* MovieAddSearchDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieAddSearchDetailViewController.swift; sourceTree = "<group>"; };
 		37EE9F8D201CF4A800E39E4A /* MovieCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCommon.swift; sourceTree = "<group>"; };
+		37F2FF9C201ED63F0062B130 /* SocialByAgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialByAgeViewController.swift; sourceTree = "<group>"; };
+		37F2FF9E201EDC7A0062B130 /* SocialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialViewController.swift; sourceTree = "<group>"; };
+		37F2FFA0201EE80E0062B130 /* SocialComparisonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialComparisonViewController.swift; sourceTree = "<group>"; };
+		37F2FFA2201EE8240062B130 /* SocialContainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialContainViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +165,11 @@
 		3760316C2014804D00E69674 /* Social */ = {
 			isa = PBXGroup;
 			children = (
+				375085D8201E52C000C04703 /* SocialRecentlyViewController.swift */,
+				37F2FF9C201ED63F0062B130 /* SocialByAgeViewController.swift */,
+				37F2FF9E201EDC7A0062B130 /* SocialViewController.swift */,
+				37F2FFA0201EE80E0062B130 /* SocialComparisonViewController.swift */,
+				37F2FFA2201EE8240062B130 /* SocialContainViewController.swift */,
 			);
 			path = Social;
 			sourceTree = "<group>";
@@ -371,24 +386,29 @@
 				376031722014820800E69674 /* Extensions.swift in Sources */,
 				37E152D7201DB73E00375656 /* UserViewController.swift in Sources */,
 				371D1F4B2018F39100977971 /* MoviesCell.swift in Sources */,
+				37F2FF9D201ED63F0062B130 /* SocialByAgeViewController.swift in Sources */,
 				37CF06E62019039600E99129 /* MoviesDetailViewController.swift in Sources */,
 				37E1A9EC201D9943007D6657 /* MovieAddSearchOriginTitlesViewController.swift in Sources */,
 				374D67892011EAF300706D4F /* AppDelegate.swift in Sources */,
 				379728B9201539B10045EB61 /* SignCommon.swift in Sources */,
+				375085D9201E52C000C04703 /* SocialRecentlyViewController.swift in Sources */,
 				37EE9F81201B918900E39E4A /* MovieAddSearchViewController.swift in Sources */,
 				37EE9F8E201CF4A800E39E4A /* MovieCommon.swift in Sources */,
 				37EE9F8A201CE53900E39E4A /* MovieAddSearchDetailViewController.swift in Sources */,
 				37349E2E20151EBA00A37D2D /* API.swift in Sources */,
 				3760316E2014809D00E69674 /* Setting.swift in Sources */,
+				37F2FF9F201EDC7A0062B130 /* SocialViewController.swift in Sources */,
 				37E152D9201DF18E00375656 /* UserDetailFormViewController.swift in Sources */,
 				377D38DC20148992008A36CC /* SignUpViewController.swift in Sources */,
 				37EE9F83201CC15100E39E4A /* MovieAddSearchCell.swift in Sources */,
 				376031702014816000E69674 /* Design.swift in Sources */,
 				3733676D201B0EB300AFE5E6 /* MoviesUserInfoViewController.swift in Sources */,
 				377D38DE201489A9008A36CC /* SignInViewController.swift in Sources */,
+				37F2FFA1201EE80E0062B130 /* SocialComparisonViewController.swift in Sources */,
 				377D38D9201484D6008A36CC /* Model.swift in Sources */,
 				37E1A9EA201CF7E3007D6657 /* MovieAddSearchUserInfoViewController.swift in Sources */,
 				379728BB201545030045EB61 /* MoviesViewController.swift in Sources */,
+				37F2FFA3201EE8240062B130 /* SocialContainViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

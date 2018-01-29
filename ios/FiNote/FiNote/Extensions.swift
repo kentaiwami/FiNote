@@ -42,6 +42,21 @@ extension UITableView {
     }
 }
 
+extension UICollectionView {
+    public enum ScrollDirection {
+        case top
+    }
+    
+    public func scroll(to direction: ScrollDirection, animated: Bool) {
+        let offset: CGPoint
+        switch direction {
+        case .top:
+            offset = CGPoint(x: contentOffset.x, y: -adjustedContentInset.top)
+        }
+        setContentOffset(offset, animated: animated)
+    }
+}
+
 extension String {
     func pregMatche(pattern: String, options: NSRegularExpression.Options = [], matches: inout [String]) -> Bool {
         guard let regex = try? NSRegularExpression(pattern: pattern, options: options) else {
@@ -69,3 +84,8 @@ extension Date {
     }
 }
 
+extension UIViewController {
+    func GetClassName() -> String {
+        return String(describing: type(of: self))
+    }
+}

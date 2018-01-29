@@ -227,8 +227,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if viewController.restorationIdentifier! == "Movies" && preViewName == "Movies" {
             myTableView.scroll(to: .top, animated: true)
         }
-        
-        preViewName = viewController.restorationIdentifier!
+        preViewName = "Movies"
     }
 
 }
