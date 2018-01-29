@@ -84,3 +84,8 @@ extension Date {
     }
 }
 
+extension UIViewController {
+    func GetClassName() -> String {
+        return String(describing: type(of: self))
+    }
+}

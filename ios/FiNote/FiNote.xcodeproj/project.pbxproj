@@ -36,6 +36,8 @@
 		37EE9F8E201CF4A800E39E4A /* MovieCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EE9F8D201CF4A800E39E4A /* MovieCommon.swift */; };
 		37F2FF9D201ED63F0062B130 /* SocialByAgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F2FF9C201ED63F0062B130 /* SocialByAgeViewController.swift */; };
 		37F2FF9F201EDC7A0062B130 /* SocialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F2FF9E201EDC7A0062B130 /* SocialViewController.swift */; };
+		37F2FFA1201EE80E0062B130 /* SocialComparisonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F2FFA0201EE80E0062B130 /* SocialComparisonViewController.swift */; };
+		37F2FFA3201EE8240062B130 /* SocialContainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F2FFA2201EE8240062B130 /* SocialContainViewController.swift */; };
 		747DA20B1392E0EFCC94895C /* Pods_FiNote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F9B3ACA4F672A8807D425EC /* Pods_FiNote.framework */; };
 /* End PBXBuildFile section */
 
@@ -76,6 +78,8 @@
 		37EE9F8D201CF4A800E39E4A /* MovieCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCommon.swift; sourceTree = "<group>"; };
 		37F2FF9C201ED63F0062B130 /* SocialByAgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialByAgeViewController.swift; sourceTree = "<group>"; };
 		37F2FF9E201EDC7A0062B130 /* SocialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialViewController.swift; sourceTree = "<group>"; };
+		37F2FFA0201EE80E0062B130 /* SocialComparisonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialComparisonViewController.swift; sourceTree = "<group>"; };
+		37F2FFA2201EE8240062B130 /* SocialContainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialContainViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,6 +168,8 @@
 				375085D8201E52C000C04703 /* SocialRecentlyViewController.swift */,
 				37F2FF9C201ED63F0062B130 /* SocialByAgeViewController.swift */,
 				37F2FF9E201EDC7A0062B130 /* SocialViewController.swift */,
+				37F2FFA0201EE80E0062B130 /* SocialComparisonViewController.swift */,
+				37F2FFA2201EE8240062B130 /* SocialContainViewController.swift */,
 			);
 			path = Social;
 			sourceTree = "<group>";
@@ -398,9 +404,11 @@
 				376031702014816000E69674 /* Design.swift in Sources */,
 				3733676D201B0EB300AFE5E6 /* MoviesUserInfoViewController.swift in Sources */,
 				377D38DE201489A9008A36CC /* SignInViewController.swift in Sources */,
+				37F2FFA1201EE80E0062B130 /* SocialComparisonViewController.swift in Sources */,
 				377D38D9201484D6008A36CC /* Model.swift in Sources */,
 				37E1A9EA201CF7E3007D6657 /* MovieAddSearchUserInfoViewController.swift in Sources */,
 				379728BB201545030045EB61 /* MoviesViewController.swift in Sources */,
+				37F2FFA3201EE8240062B130 /* SocialContainViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
