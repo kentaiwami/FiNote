@@ -30,7 +30,7 @@ class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UIC
             CreateCollectionView(tag: i)
         }
         
-        contentView.bottom(to: latestView, offset: 50)
+        contentView.bottom(to: latestView, offset: 20)
     }
     
     func InitScrollView() {
@@ -74,13 +74,13 @@ class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UIC
     func CreateCollectionView(tag: Int) {
         let w = 150 as CGFloat
         let h = w*1.5 as CGFloat
-        let margin = (self.view.frame.width - w*2) / 4
+        let margin = 16 as CGFloat
         
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: w, height: h)
         layout.minimumInteritemSpacing = margin
         layout.minimumLineSpacing = margin
-        layout.sectionInset = UIEdgeInsets(top: 16, left: 16, bottom: 32, right: 16)
+        layout.sectionInset = UIEdgeInsets(top: margin, left: margin, bottom: margin*2, right: margin)
         layout.scrollDirection = .horizontal
         
         let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
@@ -88,6 +88,7 @@ class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UIC
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.tag = tag
+        collectionView.backgroundColor = UIColor.clear
         contentView.addSubview(collectionView)
         
         collectionView.topToBottom(of: latestView, offset: 10)
