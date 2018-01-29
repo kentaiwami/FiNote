@@ -29,7 +29,7 @@ class SocialByAgeCell: UICollectionViewCell {
         users_icon.tintColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
         
         user_count = UILabel(frame: CGRect.zero)
-        user_count.font = UIFont.systemFont(ofSize: 14)
+        user_count.font = UIFont.systemFont(ofSize: 16)
         user_count.textColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
         
         contentView.addSubview(poster)
