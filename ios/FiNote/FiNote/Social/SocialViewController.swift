@@ -30,16 +30,16 @@ class SocialViewController: UIViewController {
     func TapMenuButton() {
         let cancel = CancelButton(title: "Cancel", action: nil)
         let recently = DefaultButton(title: "Recently") {
-            self.SetUpView(vc: SocialRecentlyViewController(), isRemove: true)
+            self.SetUpView(vc: SocialRecentlyViewController())
         }
         let byage = DefaultButton(title: "By Age") {
-            self.SetUpView(vc: SocialByAgeViewController(), isRemove: true)
+            self.SetUpView(vc: SocialByAgeViewController())
         }
         let contain = DefaultButton(title: "Contain") {
-            self.SetUpView(vc: SocialContainViewController(), isRemove: true)
+            self.SetUpView(vc: SocialContainViewController())
         }
         let comparison = DefaultButton(title: "Comparison") {
-            self.SetUpView(vc: SocialComparisonViewController(), isRemove: true)
+            self.SetUpView(vc: SocialComparisonViewController())
         }
         
         let popup = PopupDialog(title: "画面切り替え", message: "hogehoge")
@@ -60,7 +60,7 @@ class SocialViewController: UIViewController {
         self.present(popup, animated: true, completion: nil)
     }
     
-    func SetUpView(vc: UIViewController, isRemove: Bool) {
+    func SetUpView(vc: UIViewController, isRemove: Bool=true) {
         if isRemove {
             vc.willMove(toParentViewController: self)
             vc.view.removeFromSuperview()
