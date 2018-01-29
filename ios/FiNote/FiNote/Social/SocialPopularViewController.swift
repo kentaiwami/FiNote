@@ -15,7 +15,17 @@ class SocialPopularViewController: UIViewController, UICollectionViewDelegate, U
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height), collectionViewLayout: UICollectionViewFlowLayout())
+        let w = 150.0 as CGFloat
+        let h = w*1.5 as CGFloat
+        let margin = (self.view.frame.width - w*2) / 4
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: w, height: h)
+        layout.minimumInteritemSpacing = margin
+        layout.minimumLineSpacing = margin
+        layout.sectionInset = UIEdgeInsets(top: margin, left: margin, bottom: margin, right: margin)
+        
+        
+        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height), collectionViewLayout: layout)
         collectionView.backgroundColor = UIColor.white
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
         collectionView.delegate = self
@@ -38,21 +48,6 @@ class SocialPopularViewController: UIViewController, UICollectionViewDelegate, U
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 50
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let size = self.view.frame.width / 4
-        return CGSize(width: size, height: size)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        let inset =  (self.view.frame.width / 4) / 6
-        
-        return UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return (self.view.frame.width / 4) / 3
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
