@@ -68,6 +68,7 @@ class SocialViewController: UIViewController {
         }
         
         self.vc = vc
+        self.vc.view.frame = self.view.bounds
         self.addChildViewController(self.vc)
         self.view.addSubview(self.vc.view)
         vc.didMove(toParentViewController: self)
