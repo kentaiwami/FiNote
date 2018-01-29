@@ -155,7 +155,9 @@ class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UIC
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Num: \(indexPath.row)")
+        let index = collectionView.tag - 1
+        let title = "\(collectionView.tag*10)代 \(indexPath.row+1)位\n\(movies[index][indexPath.row].title)"
+        ShowStandardAlert(title: title, msg: movies[index][indexPath.row].overview, vc: self)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

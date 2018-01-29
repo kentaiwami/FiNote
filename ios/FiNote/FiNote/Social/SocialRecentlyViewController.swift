@@ -122,7 +122,7 @@ class SocialRecentlyViewController: UIViewController, UICollectionViewDelegate, 
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let title = "\(indexPath.row+1)位　\(movies[indexPath.row].title)"
+        let title = "\(indexPath.row+1)位\n\(movies[indexPath.row].title)"
         ShowStandardAlert(title: title, msg: movies[indexPath.row].overview, vc: self)
     }
     
