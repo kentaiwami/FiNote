@@ -51,7 +51,7 @@ endpoint：api/v1/user/signin/
 request：
 {
     "username": "hogehoge",
-    "password": "hogehoge",
+    "password": "hogehoge"
 }
 response：
 {
@@ -145,13 +145,6 @@ response：
             "title": "hoge2",
             "poster": "http://",
             "onomatopoeia": ["hoge","fuga","piyo"]
-        },
-        {
-            "add": "2018-01-12T00:01:54.697333",
-            "id": 1234,
-            "title": "hoge",
-            "poster": "http://",
-            "onomatopoeia": ["hoge","fuga","piyo"]
         }
     ]
 ```
@@ -165,7 +158,7 @@ response：
         {
             "add": "2018-01-12T00:02:37.612840",
             "title": "hoge2",
-            "poster": "http://",
+            "poster": "http://...",
             "onomatopoeia": ["hoge","fuga","piyo"],
             "dvd": true,
             "fav": false,
@@ -211,7 +204,7 @@ request：
 {
     "tmdb_id": 12,
     "username": "hogehoge",
-    "password": "hogehoge",
+    "password": "hogehoge"
 }
 response：
 {
@@ -231,11 +224,6 @@ response：
             "title": "title_hoge",
             "poster": "http://hogehoge.com/hoge.jpg",
             "overview": "overview_hoge"
-        },
-        {
-            "title": "title_fuga",
-            "poster": "http://fugafuga.com/fuga.jpg",
-            "overview": "overview_fuga"
         }
     ]
 }
@@ -255,7 +243,7 @@ response：
                 "poster": "https://hoge.com/top.png",
                 "title": "title"
             }
-        ],
+        ]
         "20": [
             {
                 "count": 75,
@@ -263,7 +251,7 @@ response：
                 "poster": "https://hoge.com/top.png",
                 "title": "title"
             }
-        ],
+        ]
         "30": [
             {
                 "count": 40,
@@ -271,7 +259,7 @@ response：
                 "poster": "https://hoge.com/top.png",
                 "title": "title"
             }
-        ],
+        ]
         "40": [
             {
                 "count": 8,
@@ -279,7 +267,7 @@ response：
                 "poster": "https://hoge.com/top.png",
                 "title": "title"
             }
-        ],
+        ]
         "50": [
             {
                 "count": 31,
@@ -305,20 +293,12 @@ response：
                 {
                     "count": 15,
                     "name": "hoge"
-                },
-                {
-                    "count": 10,
-                    "name": "fuga"
                 }
-            ],
+            ]
             "social": [
                 {
                     "count": 30,
                     "name": "piyo"
-                },
-                {
-                    "count": 56,
-                    "name": "hogehoge"
                 }
             ]
         }
@@ -336,11 +316,6 @@ response：
             "title": "title_hoge",
             "poster": "http://hogehoge.com/hoge.jpg",
             "overview": "overview_hoge"
-        },
-        {
-            "title": "title_fuga",
-            "poster": "http://fugafuga.com/fuga.jpg",
-            "overview": "overview_fuga"
         }
     ]
 }
