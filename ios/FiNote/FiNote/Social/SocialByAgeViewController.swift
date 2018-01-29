@@ -127,8 +127,9 @@ class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UIC
     }
     
     func CreateCollectionView(tag: Int) {
+        let count_space = 30 as CGFloat
         let w = 150 as CGFloat
-        let h = w*1.5 as CGFloat
+        let h = w*1.5 + count_space
         let margin = 16 as CGFloat
         
         let layout = UICollectionViewFlowLayout()

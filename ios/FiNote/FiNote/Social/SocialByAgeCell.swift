@@ -40,13 +40,14 @@ class SocialByAgeCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
+        let count_space = 30 as CGFloat
         let icon_wh = 20 as CGFloat
-        let ratio = 1.5 as CGFloat
+        let ratio = 1.0 as CGFloat
 
         poster.centerX(to: contentView)
         poster.top(to: contentView)
-        poster.width(contentView.frame.width/ratio)
-        poster.height(contentView.frame.height/ratio)
+        poster.width(contentView.frame.width)
+        poster.height(contentView.frame.height - count_space)
         
         users_icon.bottom(to: contentView, offset: -5)
         users_icon.centerX(to: contentView)
