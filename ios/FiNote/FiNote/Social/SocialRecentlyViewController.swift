@@ -10,6 +10,7 @@ import UIKit
 import NVActivityIndicatorView
 import Alamofire
 import SwiftyJSON
+import PopupDialog
 
 class SocialRecentlyViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITabBarControllerDelegate {
 
@@ -130,7 +131,8 @@ class SocialRecentlyViewController: UIViewController, UICollectionViewDelegate, 
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(indexPath.row)
+        let title = "\(indexPath.row+1)位　\(movies[indexPath.row].title)"
+        ShowStandardAlert(title: title, msg: movies[indexPath.row].overview, vc: self)
     }
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
