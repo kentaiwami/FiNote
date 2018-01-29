@@ -109,8 +109,7 @@ class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UIC
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell : SocialByAgeCell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyCell", for: indexPath as IndexPath) as! SocialByAgeCell
-        cell.textLabel?.text = String(indexPath.section)
-        cell.backgroundColor = UIColor.red
+        cell.user_count?.text = String(indexPath.section)
         
         return cell
     }
