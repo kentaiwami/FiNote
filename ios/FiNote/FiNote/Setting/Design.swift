@@ -12,3 +12,7 @@ enum Color: String {
     case red = "#E62F3D"
     case blue = "#0432FF"
 }
+
+enum Font: String {
+    case hiragino_w6 = "HiraginoSans-W6"
+}
