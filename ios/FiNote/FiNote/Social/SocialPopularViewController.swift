@@ -8,9 +8,11 @@
 
 import UIKit
 
-class SocialPopularViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class SocialPopularViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITabBarControllerDelegate {
 
     let cellId = "itemCell"
+    var preViewName = "Social"
+    var collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewLayout())
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +27,7 @@ class SocialPopularViewController: UIViewController, UICollectionViewDelegate, U
         layout.minimumLineSpacing = margin
         layout.sectionInset = UIEdgeInsets(top: margin, left: margin, bottom: margin, right: margin)
         
-        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height), collectionViewLayout: layout)
+        collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height), collectionViewLayout: layout)
         collectionView.backgroundColor = UIColor.white
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
         collectionView.delegate = self
@@ -40,6 +42,8 @@ class SocialPopularViewController: UIViewController, UICollectionViewDelegate, U
         self.tabBarController?.navigationItem.title = "Social"
         let menu = UIBarButtonItem(image: UIImage(named: "icon_menu"), style: .plain, target: self, action: #selector(TapMenuButton))
         self.tabBarController?.navigationItem.setRightBarButton(menu, animated: true)
+        
+        self.tabBarController?.delegate = self
     }
     
     func TapMenuButton() {
@@ -70,6 +74,13 @@ class SocialPopularViewController: UIViewController, UICollectionViewDelegate, U
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print(indexPath.row)
+    }
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if viewController.restorationIdentifier! == "Social" && preViewName == "Social" {
+            collectionView.scroll(to: .top, animated: true)
+        }
+        preViewName = "Social"
     }
 
     override func didReceiveMemoryWarning() {
