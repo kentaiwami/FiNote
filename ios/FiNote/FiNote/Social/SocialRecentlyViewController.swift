@@ -16,6 +16,7 @@ class SocialRecentlyViewController: UIViewController, UICollectionViewDelegate, 
     let cellId = "itemCell"
     var preViewName = "Social"
     var collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewLayout())
+    var refresh_controll = UIRefreshControl()
     var movies: [MovieRecentlly.Data] = []
     
     override func viewDidLoad() {
@@ -25,6 +26,9 @@ class SocialRecentlyViewController: UIViewController, UICollectionViewDelegate, 
     }
     
     func InitCollectionView() {
+        collectionView.removeFromSuperview()
+        refresh_controll = UIRefreshControl()
+        
         let w = 150.0 as CGFloat
         let h = w*1.5 as CGFloat
         let margin = (self.view.frame.width - w*2) / 4
@@ -41,7 +45,14 @@ class SocialRecentlyViewController: UIViewController, UICollectionViewDelegate, 
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.autoresizingMask = UIViewAutoresizing(rawValue: UIViewAutoresizing.RawValue(UInt8(UIViewAutoresizing.flexibleHeight.rawValue) | UInt8(UIViewAutoresizing.flexibleWidth.rawValue)))
+        collectionView.refreshControl = refresh_controll
+        refresh_controll.addTarget(self, action: #selector(self.refresh(sender:)), for: .valueChanged)
         self.view.addSubview(collectionView)
+    }
+    
+    func refresh(sender: UIRefreshControl) {
+        refresh_controll.beginRefreshing()
+        CallGetRecentlyAPI()
     }
     
     func CallGetRecentlyAPI() {
@@ -51,7 +62,7 @@ class SocialRecentlyViewController: UIViewController, UICollectionViewDelegate, 
         
         DispatchQueue(label: "get-movies").async {
             Alamofire.request(urlString, method: .get).responseJSON { (response) in
-                
+                self.refresh_controll.endRefreshing()
                 NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
                 
                 guard let res = response.result.value else{return}
