@@ -106,3 +106,20 @@ class MovieOriginTitleSearchResult {
         return data
     }
 }
+
+class MovieRecentlly {
+    struct Data {
+        var title = ""
+        var poster = ""
+        var overview = ""
+    }
+    
+    func GetData(json: JSON) -> Data {
+        var data = Data()
+        data.title = json["title"].stringValue
+        data.poster = json["poster"].stringValue
+        data.overview = json["overview"].stringValue
+        
+        return data
+    }
+}

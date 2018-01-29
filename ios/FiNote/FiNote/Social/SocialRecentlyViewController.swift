@@ -1,5 +1,5 @@
 //
-//  SocialPopularViewController.swift
+//  SocialRecentlyViewController.swift
 //  FiNote
 //
 //  Created by 岩見建汰 on 2018/01/29.
@@ -7,16 +7,24 @@
 //
 
 import UIKit
+import NVActivityIndicatorView
+import Alamofire
+import SwiftyJSON
 
-class SocialPopularViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITabBarControllerDelegate {
+class SocialRecentlyViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITabBarControllerDelegate {
 
     let cellId = "itemCell"
     var preViewName = "Social"
     var collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewLayout())
+    var movies: [MovieRecentlly.Data] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        CallGetRecentlyAPI()
+    }
+    
+    func InitCollectionView() {
         let w = 150.0 as CGFloat
         let h = w*1.5 as CGFloat
         let margin = (self.view.frame.width - w*2) / 4
@@ -36,6 +44,37 @@ class SocialPopularViewController: UIViewController, UICollectionViewDelegate, U
         self.view.addSubview(collectionView)
     }
     
+    func CallGetRecentlyAPI() {
+        let urlString = API.base.rawValue+API.v1.rawValue+API.movie.rawValue+API.recently.rawValue
+        let activityData = ActivityData(message: "Get Movies", type: .lineScaleParty)
+        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
+        
+        DispatchQueue(label: "get-movies").async {
+            Alamofire.request(urlString, method: .get).responseJSON { (response) in
+                
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                
+                guard let res = response.result.value else{return}
+                let obj = JSON(res)
+                print("***** API results *****")
+                print(obj)
+                print("***** API results *****")
+                
+                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                    self.movies.removeAll()
+                    
+                    for data in obj["results"].arrayValue {
+                        self.movies.append(MovieRecentlly().GetData(json: data))
+                    }
+                    
+                    self.InitCollectionView()
+                }else {
+                    ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
+                }
+            }
+        }
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -51,7 +90,7 @@ class SocialPopularViewController: UIViewController, UICollectionViewDelegate, U
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 50
+        return movies.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -62,12 +101,14 @@ class SocialPopularViewController: UIViewController, UICollectionViewDelegate, U
             subview.removeFromSuperview()
         }
         
-        let label = UILabel()
-        label.font = UIFont(name: "Arial", size: 24)
-        label.text = "Item \(indexPath.row)"
-        label.sizeToFit()
-        label.center = cell.contentView.center
-        cell.contentView.addSubview(label)
+        let urlRequest = URL(string: API.poster_base.rawValue+movies[indexPath.row].poster)!
+        let poster = UIImageView()
+        poster.af_setImage(
+            withURL: urlRequest,
+            placeholderImage: UIImage(named: "no_image")
+        )
+        poster.frame = CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: cell.contentView.frame.height)
+        cell.contentView.addSubview(poster)
         
         return cell
     }
