@@ -12,6 +12,7 @@ class SocialContainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = UIColor.darkGray
     }
 
     override func didReceiveMemoryWarning() {

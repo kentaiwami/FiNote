@@ -11,7 +11,6 @@ import PopupDialog
 
 class SocialViewController: UIViewController {
 
-    var vc_view: UIView!
     var vc: UIViewController!
     
     override func viewDidLoad() {
@@ -63,13 +62,15 @@ class SocialViewController: UIViewController {
     
     func SetUpView(vc: UIViewController, isRemove: Bool) {
         if isRemove {
-            self.vc_view.removeFromSuperview()
+            vc.willMove(toParentViewController: self)
+            vc.view.removeFromSuperview()
+            vc.removeFromParentViewController()
         }
         
         self.vc = vc
-        self.vc_view = self.vc.view
         self.addChildViewController(self.vc)
-        self.view.addSubview(self.vc_view)
+        self.view.addSubview(self.vc.view)
+        vc.didMove(toParentViewController: self)
     }
 
     override func didReceiveMemoryWarning() {
