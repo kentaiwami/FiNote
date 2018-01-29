@@ -62,16 +62,16 @@ class SocialViewController: UIViewController {
     
     func SetUpView(vc: UIViewController, isRemove: Bool=true) {
         if isRemove {
-            vc.willMove(toParentViewController: self)
-            vc.view.removeFromSuperview()
-            vc.removeFromParentViewController()
+            let lastVC = self.childViewControllers.last!
+            lastVC.view.removeFromSuperview()
+            lastVC.removeFromParentViewController()
         }
         
         self.vc = vc
         self.vc.view.frame = self.view.bounds
         self.addChildViewController(self.vc)
         self.view.addSubview(self.vc.view)
-        vc.didMove(toParentViewController: self)
+        vc.didMove(toParentViewController: self)        
     }
 
     override func didReceiveMemoryWarning() {

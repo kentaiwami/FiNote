@@ -10,57 +10,106 @@ import UIKit
 
 class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
+    var contentView: UIView!
+    var latestView: UIView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = UIColor.brown
+        self.view.backgroundColor = UIColor.clear
+        DrawViews()
     }
     
-    func InitCollectionView() {
-        let w = 50 as CGFloat
-        let h = w*1.0 as CGFloat
+    func DrawViews() {
+        InitScrollView()
+        CreateSection(text: "10代", isTop: true)
+        CreateCollectionView(tag: 1)
+        
+        for i in 2...5 {
+            CreateSection(text: "\(i)0代", isTop: false)
+            CreateCollectionView(tag: i)
+        }
+        
+        contentView.bottom(to: latestView, offset: 50)
+    }
+    
+    func InitScrollView() {
+        let scrollView = UIScrollView()
+        scrollView.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height)
+        self.view.addSubview(scrollView)
+        
+        scrollView.top(to: self.view)
+        scrollView.leading(to: self.view)
+        scrollView.trailing(to: self.view)
+        scrollView.bottom(to: self.view)
+        
+        contentView = UIView()
+        scrollView.addSubview(contentView)
+        contentView.top(to: scrollView)
+        contentView.leading(to: scrollView)
+        contentView.trailing(to: scrollView)
+        contentView.bottom(to: scrollView)
+        contentView.width(to: scrollView)
+        
+        latestView = contentView
+    }
+    
+    func CreateSection(text: String, isTop: Bool) {
+        let label = UILabel(frame: CGRect.zero)
+        label.text = text
+        label.font = UIFont.systemFont(ofSize: 22)
+        contentView.addSubview(label)
+        
+        label.leading(to: contentView, offset: 20)
+        
+        if isTop {
+            label.top(to: latestView, offset: 20)
+        }else {
+            label.topToBottom(of: latestView, offset: 20)
+        }
+        
+        latestView = label
+    }
+    
+    func CreateCollectionView(tag: Int) {
+        let w = 150 as CGFloat
+        let h = w*1.5 as CGFloat
         let margin = (self.view.frame.width - w*2) / 4
         
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: w, height: h)
         layout.minimumInteritemSpacing = margin
         layout.minimumLineSpacing = margin
-        layout.sectionInset = UIEdgeInsets(top: margin, left: margin, bottom: margin, right: margin)
-        layout.headerReferenceSize =  CGSize(width:100,height:50)
+        layout.sectionInset = UIEdgeInsets(top: 16, left: 16, bottom: 32, right: 16)
+        layout.scrollDirection = .horizontal
         
-        let collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
+        let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         collectionView.register(SocialByAgeCell.self, forCellWithReuseIdentifier: "MyCell")
-        collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "Section")
-        
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.tag = tag
+        contentView.addSubview(collectionView)
         
-        self.view.addSubview(collectionView)
-    }
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 5
+        collectionView.topToBottom(of: latestView, offset: 10)
+        collectionView.leading(to: contentView, offset: 20 - margin)
+        collectionView.width(to: contentView)
+        collectionView.height(h)
+        
+        latestView = collectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Num: \(indexPath.row)")
-        print("SectionNum:\(indexPath.section)")
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 15
     }
     
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "Section", for: indexPath)
-        
-        headerView.backgroundColor = UIColor.white
-        
-        return headerView
-    }
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell : SocialByAgeCell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyCell", for: indexPath as IndexPath) as! SocialByAgeCell
+        cell.textLabel?.text = String(indexPath.section)
+        cell.backgroundColor = UIColor.red
         
         return cell
     }
