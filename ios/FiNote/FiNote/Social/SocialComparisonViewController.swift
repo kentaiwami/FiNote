@@ -88,12 +88,16 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
     func InitTitleView() {
         titleView = UILabel()
         titleView.textAlignment = .center
+        titleView.lineBreakMode = .byWordWrapping
+        titleView.numberOfLines = 0
         titleView.font = UIFont.systemFont(ofSize: 22)
         titleView.text = movies.first!.title
         self.view.addSubview(titleView)
         
         titleView.topToBottom(of: collectionView, offset: 20)
         titleView.centerX(to: self.view)
+        titleView.leading(to: self.view, offset: 50)
+        titleView.trailing(to: self.view, offset: -50)
     }
     
     func InitCollectionView() {
