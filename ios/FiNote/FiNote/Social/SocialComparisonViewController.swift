@@ -117,20 +117,20 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         icon.tintColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
         self.view.addSubview(icon)
         
-        icon.topToBottom(of: titleView, offset: 20)
+        icon.topToBottom(of: titleView, offset: 10)
         icon.leading(to: self.view, offset: 20)
         icon.width(30)
         icon.height(30)
         
-        let w = self.view.frame.width / 5
-        let h = w
+        let w = self.view.frame.width / 6
+        let h = w / 2
         let margin = w / 8
         
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: w, height: h)
         layout.minimumInteritemSpacing = margin
         layout.minimumLineSpacing = margin
-        layout.sectionInset = UIEdgeInsets(top: margin, left: margin, bottom: margin, right: margin)
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         
         userCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         userCollectionView.backgroundColor = UIColor.white
@@ -140,21 +140,21 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         userCollectionView.tag = 2
         self.view.addSubview(userCollectionView)
         
-        userCollectionView.topToBottom(of: icon, offset: 10)
+        userCollectionView.topToBottom(of: icon, offset: 5)
         userCollectionView.leading(to: icon)
         userCollectionView.trailing(to: self.view, offset: -20)
         userCollectionView.height(h*2+margin*4)
     }
     
     func InitPosterCollectionView() {
-        let w = 150.0 as CGFloat
-        let h = w*1.5 as CGFloat
+        let w = 120.0 as CGFloat
+        let h = w * 1.5
         
         let layout = UPCarouselFlowLayout()
         layout.itemSize = CGSize(width: w, height: h)
         layout.scrollDirection = .horizontal
         
-        posterCollectionView = UICollectionView(frame: CGRect(x: 0, y: 50, width: self.view.frame.width, height: h), collectionViewLayout: layout)
+        posterCollectionView = UICollectionView(frame: CGRect(x: 0, y: 20, width: self.view.frame.width, height: h), collectionViewLayout: layout)
         posterCollectionView.backgroundColor = UIColor.white
         posterCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: posterCellId)
         posterCollectionView.delegate = self
@@ -208,9 +208,9 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
             
             let label = UILabel()
             label.text = users[indexPath.row]
-            label.center = cell.contentView.center
-            label.font = UIFont.systemFont(ofSize: 14)
+            label.font = UIFont.systemFont(ofSize: 16)
             label.sizeToFit()
+            label.center = cell.contentView.center
             cell.contentView.addSubview(label)
             
             return cell
