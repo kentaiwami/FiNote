@@ -12,13 +12,14 @@ import SwiftyJSON
 import Alamofire
 import AlamofireImage
 
-class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarControllerDelegate {
     
     var contentView: UIView!
     var latestView: UIView!
     var scrollView = UIScrollView()
     var refresh_controll = UIRefreshControl()
     var movies: [[MovieByAge.Data]] = [[]]
+    var preViewName = "Social"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +31,7 @@ class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UIC
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.navigationItem.title = "年代別ランキング"
+        self.tabBarController?.delegate = self
     }
     
     func refresh(sender: UIRefreshControl) {
@@ -39,7 +41,7 @@ class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UIC
     
     func CallGetByAgeAPI() {
         let urlString = API.base.rawValue+API.v1.rawValue+API.movie.rawValue+API.byage.rawValue
-        let activityData = ActivityData(message: "Get Movies", type: .lineScaleParty)
+        let activityData = ActivityData(message: "Get Data", type: .lineScaleParty)
         NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
         
         DispatchQueue(label: "get-byage").async {
@@ -181,6 +183,13 @@ class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UIC
         cell.user_count?.text = String(movies[index][indexPath.row].count)
         
         return cell
+    }
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if viewController.restorationIdentifier! == "Social" && preViewName == "Social" {
+            scrollView.scroll(to: .top, animated: true)
+        }
+        preViewName = "Social"
     }
 
     override func didReceiveMemoryWarning() {

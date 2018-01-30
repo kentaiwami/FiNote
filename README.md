@@ -285,6 +285,7 @@ response：
 method：GET
 endpoint：api/v1/movie/compare/?user_id=2&page=1
 response：
+"next": true,
 "results": [
         {
             "title": "hoge2",

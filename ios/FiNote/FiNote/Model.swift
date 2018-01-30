@@ -148,3 +148,43 @@ class MovieByAge {
     }
 }
 
+class MovieCompare {
+    struct Data {
+        var title = ""
+        var poster = ""
+        var user: [Onomatopoeia] = []
+        var social: [Onomatopoeia] = []
+    }
+    
+    struct Onomatopoeia {
+        var count = 0
+        var name = ""
+    }
+    
+    func GetData(json: JSON) -> Data {
+        var data = Data()
+        var user: [Onomatopoeia] = []
+        var social: [Onomatopoeia] = []
+        
+        for obj in json["user"].arrayValue {
+            var tmp = Onomatopoeia()
+            tmp.count = obj["count"].intValue
+            tmp.name = obj["name"].stringValue
+            user.append(tmp)
+        }
+        
+        for obj in json["social"].arrayValue {
+            var tmp = Onomatopoeia()
+            tmp.count = obj["count"].intValue
+            tmp.name = obj["name"].stringValue
+            social.append(tmp)
+        }
+        
+        data.title = json["title"].stringValue
+        data.poster = json["poster"].stringValue
+        data.user = user
+        data.social = social
+        
+        return data
+    }
+}

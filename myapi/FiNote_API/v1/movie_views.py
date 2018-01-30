@@ -348,14 +348,17 @@ class GetOnomatopoeiaComparisonViewSet(viewsets.ViewSet):
             raise serializers.ValidationError('該当データが見つかりませんでした')
 
         page = int(request.GET.get('page'))
-        end = page * 5
-        start = end - 5
+        count = 15
+        end = page * count
+        start = end - count
 
         # ユーザが追加した映画を取得
-        movie_users = Movie_User.objects.filter(user=user).order_by('-created_at')[start:end]
+        movie_users = Movie_User.objects.filter(user=user).order_by('-created_at')
+
+        # return Response({'test': len(movie_users)})
 
         res = []
-        for movie_user in movie_users:
+        for movie_user in movie_users[start:end]:
             # ユーザのMovie User Onomatopoeiaを取得
             movie_user_onomatopoeia_list = Movie_User_Onomatopoeia.objects.filter(movie_user=movie_user)
 
@@ -389,7 +392,18 @@ class GetOnomatopoeiaComparisonViewSet(viewsets.ViewSet):
                 'social': social
             })
 
-        return Response({'results': res})
+        # 次のページに値があるかを確認
+        end = (page+1) * count
+        start = end - count
+
+        next = False
+        if len(movie_users[start:end]) != 0:
+            next = True
+
+        return Response({
+            'results': res,
+            'next': next
+        })
 
 
 class GetMovieOnomatopoeiaContainViewSet(viewsets.ViewSet):

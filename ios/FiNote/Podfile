@@ -17,4 +17,5 @@ target 'FiNote' do
 	pod 'StatusProvider'
 	pod 'Floaty', '~> 3.0.0'
 	pod 'PromiseKit', '~> 4.4'
+	pod 'UPCarouselFlowLayout'
 end
