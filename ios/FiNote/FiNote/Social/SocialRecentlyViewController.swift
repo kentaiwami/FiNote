@@ -18,7 +18,7 @@ class SocialRecentlyViewController: UIViewController, UICollectionViewDelegate, 
     var preViewName = "Social"
     var collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewLayout())
     var refresh_controll = UIRefreshControl()
-    var movies: [MovieRecentlly.Data] = []
+    var movies: [MovieBasic.Data] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,7 +76,7 @@ class SocialRecentlyViewController: UIViewController, UICollectionViewDelegate, 
                     self.movies.removeAll()
                     
                     for data in obj["results"].arrayValue {
-                        self.movies.append(MovieRecentlly().GetData(json: data))
+                        self.movies.append(MovieBasic().GetData(json: data))
                     }
                     
                     self.InitCollectionView()
