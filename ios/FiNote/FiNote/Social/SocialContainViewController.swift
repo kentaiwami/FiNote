@@ -15,6 +15,7 @@ import SwiftyJSON
 class SocialContainViewController: UIViewController, UISearchBarDelegate, StatusController {
 
     let searchBar = UISearchBar()
+    var movies: [MovieBasic.Data] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +32,11 @@ class SocialContainViewController: UIViewController, UISearchBarDelegate, Status
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.navigationItem.titleView = searchBar
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.tabBarController?.navigationItem.titleView = nil
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -61,6 +67,9 @@ class SocialContainViewController: UIViewController, UISearchBarDelegate, Status
                 print("***** API results *****")
                 
                 if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                    for data in obj.arrayValue {
+                        self.movies.append(MovieBasic().GetData(json: data))
+                    }
                     self.DrawView()
                 }else {
                     ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
@@ -71,6 +80,11 @@ class SocialContainViewController: UIViewController, UISearchBarDelegate, Status
     
     func DrawView() {
         //TODO: Viewの描画
+        if movies.count == 0 {
+            let status = Status(title: "No Results", description: "指定したオノマトペを含む映画は見つかりませんでした", actionTitle: "", image: nil)
+            show(status: status)
+        }else {
+        }
     }
 
     override func didReceiveMemoryWarning() {

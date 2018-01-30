@@ -30,7 +30,6 @@ class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UIC
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.navigationItem.title = "年代別ランキング"
-        self.tabBarController?.navigationItem.titleView = nil
     }
     
     func refresh(sender: UIRefreshControl) {
