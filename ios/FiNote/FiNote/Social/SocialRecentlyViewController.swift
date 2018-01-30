@@ -89,6 +89,8 @@ class SocialRecentlyViewController: UIViewController, UICollectionViewDelegate, 
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.tabBarController?.navigationItem.title = "人気ランキング"
+        self.tabBarController?.navigationItem.titleView = nil
         self.tabBarController?.delegate = self
     }
     

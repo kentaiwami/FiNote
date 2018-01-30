@@ -28,24 +28,29 @@ class SocialViewController: UIViewController {
     }
     
     func TapMenuButton() {
+        let recently_title = "人気ランキング"
+        let byage_title = "年代別ランキング"
+        let contain_title = "オノマトペで検索"
+        let comparison_title = "オノマトペの比較"
+        
         let cancel = CancelButton(title: "Cancel", action: nil)
-        let recently = DefaultButton(title: "人気ランキング") {
+        let recently = DefaultButton(title: recently_title) {
             self.SetUpView(vc: SocialRecentlyViewController())
         }
-        let byage = DefaultButton(title: "年代別のランキング") {
+        let byage = DefaultButton(title: byage_title) {
             self.SetUpView(vc: SocialByAgeViewController())
         }
-        let contain = DefaultButton(title: "オノマトペで検索") {
+        let contain = DefaultButton(title: contain_title) {
             self.SetUpView(vc: SocialContainViewController())
         }
-        let comparison = DefaultButton(title: "オノマトペの比較") {
+        let comparison = DefaultButton(title: comparison_title) {
             self.SetUpView(vc: SocialComparisonViewController())
         }
         
-        let recently_msg = "「人気ランキング」では1週間で追加されたユーザ数が多い順に最近話題になっている映画を確認することができます。"
-        let byage_msg = "「年代別のランキング」では10代〜50代で人気のある映画をランキングで見ることができます。"
-        let contain_msg = "「オノマトペで検索」は検索ワードに入れたオノマトペを含む映画を見つけることができます。"
-        let comparison_msg = "「オノマトペの比較」ではあなたが登録した映画に付けたオノマトペと他の人がどのようなオノマトペを追加しているのかを見ることができます。"
+        let recently_msg = "「\(recently_title)」では1週間で追加されたユーザ数が多い順に最近話題になっている映画を確認することができます。"
+        let byage_msg = "「\(byage_title)」では10代〜50代で人気のある映画をランキングで見ることができます。"
+        let contain_msg = "「\(contain_title)」は検索ワードに入れたオノマトペを含む映画を見つけることができます。"
+        let comparison_msg = "「\(comparison_title)」ではあなたが登録した映画に付けたオノマトペと他の人がどのようなオノマトペを追加しているのかを見ることができます。"
         var dynamic_msg = ""
         var popup_buttons: [PopupDialogButton] = []
         
