@@ -102,6 +102,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		37222BDE2020FB1E00DC97E0 /* ByAge */ = {
+			isa = PBXGroup;
+			children = (
+				37F2FF9C201ED63F0062B130 /* SocialByAgeViewController.swift */,
+				37F2FFA4201F2AA30062B130 /* SocialByAgeCell.swift */,
+			);
+			path = ByAge;
+			sourceTree = "<group>";
+		};
 		3737E9762020F1CF0021900D /* Compare */ = {
 			isa = PBXGroup;
 			children = (
@@ -184,11 +193,10 @@
 		3760316C2014804D00E69674 /* Social */ = {
 			isa = PBXGroup;
 			children = (
+				37222BDE2020FB1E00DC97E0 /* ByAge */,
 				3737E9762020F1CF0021900D /* Compare */,
 				37F2FF9E201EDC7A0062B130 /* SocialViewController.swift */,
 				375085D8201E52C000C04703 /* SocialRecentlyViewController.swift */,
-				37F2FF9C201ED63F0062B130 /* SocialByAgeViewController.swift */,
-				37F2FFA4201F2AA30062B130 /* SocialByAgeCell.swift */,
 				37F2FFA2201EE8240062B130 /* SocialContainViewController.swift */,
 			);
 			path = Social;
