@@ -374,7 +374,7 @@ class GetOnomatopoeiaComparisonViewSet(viewsets.ViewSet):
             for movie_onomatopoeia in movie_onomatopoeia_list.filter(onomatopoeia__in=user_onomatopoeia_obj_list):
                 user_social.append({
                     'name': movie_onomatopoeia.onomatopoeia.name,
-                    'count': movie_onomatopoeia.count - 1
+                    'count': movie_onomatopoeia.count
                 })
 
             # 他ユーザが追加したオノマトペを抽出

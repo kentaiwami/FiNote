@@ -18,7 +18,10 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
     var posterCollectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewLayout())
     var userCollectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewLayout())
     var socialCollectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewLayout())
-
+    var cell_w = 0 as CGFloat
+    var cell_h = 0 as CGFloat
+    var cell_margin = 0 as CGFloat
+    
     var titleView: UILabel!
     
     let posterCellId = "PosterCell"
@@ -27,7 +30,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
     var user_id = 0
     var page_id = 1
     var movies: [MovieCompare.Data] = []
-    var users: [String] = []
+    var users: [MovieCompare.Onomatopoeia] = []
     var social: [MovieCompare.Onomatopoeia] = []
     var isNext = false
     var isUpdating = false
@@ -39,6 +42,10 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         let keychain = Keychain()
         user_id = Int((try! keychain.get("id"))!)!
         
+        cell_w = self.view.frame.width / 6
+        cell_h = cell_w / 2 + 30
+        cell_margin = cell_w / 8
+
         CallGetCompareAPI(isInit: true)
     }
     
@@ -73,7 +80,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
                     
                     // 初回だけviewを追加
                     if isInit {
-                        self.users = self.movies.first!.user.map({$0.name})
+                        self.users = self.movies.first!.user
                         self.social = self.movies.first!.social
                         self.InitViews()
                     }
@@ -88,7 +95,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
     
     func UpdateValues(movie: MovieCompare.Data) {
         titleView.text = movie.title
-        users = movie.user.map({$0.name})
+        users = movie.user
         social = movie.social
         userCollectionView.reloadData()
         socialCollectionView.reloadData()
@@ -144,44 +151,36 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         icon.width(30)
         icon.height(30)
         
-        let w = self.view.frame.width / 6
-        let h = w / 2
-        let margin = w / 8
-        
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: w, height: h)
-        layout.minimumInteritemSpacing = margin
-        layout.minimumLineSpacing = margin
+        layout.itemSize = CGSize(width: cell_w, height: cell_h)
+        layout.minimumInteritemSpacing = cell_margin
+        layout.minimumLineSpacing = cell_margin
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         
         userCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
-        userCollectionView.backgroundColor = UIColor.white
-        userCollectionView.register(SocialComparisonUserCell.self, forCellWithReuseIdentifier: userCellId)
+        userCollectionView.backgroundColor = UIColor.clear
+        userCollectionView.register(SocialComparisonCell.self, forCellWithReuseIdentifier: userCellId)
         userCollectionView.delegate = self
         userCollectionView.dataSource = self
         userCollectionView.tag = 2
         self.view.addSubview(userCollectionView)
         
-        userCollectionView.topToBottom(of: icon, offset: 5)
+        userCollectionView.topToBottom(of: icon, offset: -20)
         userCollectionView.leading(to: icon)
         userCollectionView.trailing(to: self.view, offset: -20)
-        userCollectionView.height(h)
+        userCollectionView.height(cell_h)
     }
     
     func InitSocialOnomatopoeiaCollectionView() {
-        let w = self.view.frame.width / 6
-        let h = w / 2 + 30
-        let margin = w / 8
-        
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: w, height: h)
-        layout.minimumInteritemSpacing = margin
-        layout.minimumLineSpacing = margin
-        layout.sectionInset = UIEdgeInsets(top: margin, left: 0, bottom: margin, right: 0)
+        layout.itemSize = CGSize(width: cell_w, height: cell_h)
+        layout.minimumInteritemSpacing = cell_margin
+        layout.minimumLineSpacing = cell_margin
+        layout.sectionInset = UIEdgeInsets(top: cell_margin, left: 0, bottom: cell_margin, right: 0)
         
         socialCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         socialCollectionView.backgroundColor = UIColor.white
-        socialCollectionView.register(SocialComparisonSocialCell.self, forCellWithReuseIdentifier: socialCellId)
+        socialCollectionView.register(SocialComparisonCell.self, forCellWithReuseIdentifier: socialCellId)
         socialCollectionView.delegate = self
         socialCollectionView.dataSource = self
         socialCollectionView.tag = 3
@@ -190,7 +189,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         socialCollectionView.topToBottom(of: userCollectionView, offset: 30)
         socialCollectionView.leading(to: userCollectionView)
         socialCollectionView.trailing(to: self.view, offset: -20)
-        socialCollectionView.height(h*2+margin*4)
+        socialCollectionView.height(cell_h*2+cell_margin*4)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -218,13 +217,14 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
             return cell
             
         case 2:
-            let cell : SocialComparisonUserCell = collectionView.dequeueReusableCell(withReuseIdentifier: userCellId, for: indexPath as IndexPath) as! SocialComparisonUserCell
-            cell.onomatopoeia.text = users[indexPath.row]
+            let cell : SocialComparisonCell = collectionView.dequeueReusableCell(withReuseIdentifier: userCellId, for: indexPath as IndexPath) as! SocialComparisonCell
+            cell.onomatopoeia.text = users[indexPath.row].name
+            cell.count.text = String(users[indexPath.row].count)
             
             return cell
             
         case 3:
-            let cell : SocialComparisonSocialCell = collectionView.dequeueReusableCell(withReuseIdentifier: socialCellId, for: indexPath as IndexPath) as! SocialComparisonSocialCell
+            let cell : SocialComparisonCell = collectionView.dequeueReusableCell(withReuseIdentifier: socialCellId, for: indexPath as IndexPath) as! SocialComparisonCell
             cell.onomatopoeia.text = social[indexPath.row].name
             cell.count.text = String(social[indexPath.row].count)
             
