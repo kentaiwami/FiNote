@@ -355,3 +355,18 @@ response：
 
 
 ![Yahoo Japan Movie](img/yahoo_movie_logo.png)
+
+
+## 使用ライブラリ
+[Eureka](https://github.com/xmartlabs/Eureka)  
+[SwiftyJSON](https://github.com/SwiftyJSON/SwiftyJSON)  
+[Alamofire](https://github.com/Alamofire/Alamofire)  
+[AlamofireImage](https://github.com/Alamofire/AlamofireImage)  
+[KeychainAccess](https://github.com/kishikawakatsumi/KeychainAccess)  
+[TinyConstraints](https://github.com/roberthein/TinyConstraints)  
+[PopupDialog](https://github.com/Orderella/PopupDialog)  
+[NVActivityIndicatorView](https://github.com/ninjaprox/NVActivityIndicatorView)  
+[StatusProvider](https://github.com/mariohahn/StatusProvider)  
+[Floaty](https://github.com/kciter/Floaty)  
+[PromiseKit](https://github.com/mxcl/PromiseKit)  
+[UPCarouselFlowLayout](https://github.com/ink-spot/UPCarouselFlowLayout)  
