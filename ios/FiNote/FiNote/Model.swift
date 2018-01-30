@@ -161,7 +161,7 @@ class MovieCompare {
         var name = ""
     }
     
-    func GetDataArray(json: JSON) -> Data {
+    func GetData(json: JSON) -> Data {
         var data = Data()
         var user: [Onomatopoeia] = []
         var social: [Onomatopoeia] = []

@@ -55,7 +55,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
                     self.movies.removeAll()
                     
                     for data in obj["results"].arrayValue {
-                        self.movies.append(MovieCompare().GetDataArray(json: data))
+                        self.movies.append(MovieCompare().GetData(json: data))
                     }
                     
                     self.InitCollectionView()
