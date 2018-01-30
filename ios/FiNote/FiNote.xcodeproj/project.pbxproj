@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		371D1F4B2018F39100977971 /* MoviesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371D1F4A2018F39100977971 /* MoviesCell.swift */; };
 		37222BDB2020F7DC00DC97E0 /* SocialComparisonPosterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37222BDA2020F7DC00DC97E0 /* SocialComparisonPosterCell.swift */; };
+		37222BDD2020F9B000DC97E0 /* SocialComparisonUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37222BDC2020F9B000DC97E0 /* SocialComparisonUserCell.swift */; };
 		3733676D201B0EB300AFE5E6 /* MoviesUserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3733676C201B0EB300AFE5E6 /* MoviesUserInfoViewController.swift */; };
 		37349E2E20151EBA00A37D2D /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37349E2D20151EBA00A37D2D /* API.swift */; };
 		3737E9782020F20F0021900D /* SocialComparisonSocialCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3737E9772020F20F0021900D /* SocialComparisonSocialCell.swift */; };
@@ -50,6 +51,7 @@
 		33A5E5BB6CFE9A0C87249A88 /* Pods-FiNote.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FiNote.release.xcconfig"; path = "Pods/Target Support Files/Pods-FiNote/Pods-FiNote.release.xcconfig"; sourceTree = "<group>"; };
 		371D1F4A2018F39100977971 /* MoviesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesCell.swift; sourceTree = "<group>"; };
 		37222BDA2020F7DC00DC97E0 /* SocialComparisonPosterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialComparisonPosterCell.swift; sourceTree = "<group>"; };
+		37222BDC2020F9B000DC97E0 /* SocialComparisonUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialComparisonUserCell.swift; sourceTree = "<group>"; };
 		3733676C201B0EB300AFE5E6 /* MoviesUserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesUserInfoViewController.swift; sourceTree = "<group>"; };
 		37349E2D20151EBA00A37D2D /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		3737E9772020F20F0021900D /* SocialComparisonSocialCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialComparisonSocialCell.swift; sourceTree = "<group>"; };
@@ -104,8 +106,9 @@
 			isa = PBXGroup;
 			children = (
 				37F2FFA0201EE80E0062B130 /* SocialComparisonViewController.swift */,
-				3737E9772020F20F0021900D /* SocialComparisonSocialCell.swift */,
 				37222BDA2020F7DC00DC97E0 /* SocialComparisonPosterCell.swift */,
+				37222BDC2020F9B000DC97E0 /* SocialComparisonUserCell.swift */,
+				3737E9772020F20F0021900D /* SocialComparisonSocialCell.swift */,
 			);
 			path = Compare;
 			sourceTree = "<group>";
@@ -404,6 +407,7 @@
 				376031742014824E00E69674 /* Utility.swift in Sources */,
 				376031722014820800E69674 /* Extensions.swift in Sources */,
 				37E152D7201DB73E00375656 /* UserViewController.swift in Sources */,
+				37222BDD2020F9B000DC97E0 /* SocialComparisonUserCell.swift in Sources */,
 				371D1F4B2018F39100977971 /* MoviesCell.swift in Sources */,
 				37F2FF9D201ED63F0062B130 /* SocialByAgeViewController.swift in Sources */,
 				37CF06E62019039600E99129 /* MoviesDetailViewController.swift in Sources */,

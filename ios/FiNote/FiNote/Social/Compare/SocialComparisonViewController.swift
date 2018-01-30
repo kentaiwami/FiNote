@@ -156,7 +156,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         
         userCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         userCollectionView.backgroundColor = UIColor.white
-        userCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: userCellId)
+        userCollectionView.register(SocialComparisonUserCell.self, forCellWithReuseIdentifier: userCellId)
         userCollectionView.delegate = self
         userCollectionView.dataSource = self
         userCollectionView.tag = 2
@@ -218,17 +218,8 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
             return cell
             
         case 2:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: userCellId, for: indexPath)
-            for subview in cell.contentView.subviews {
-                subview.removeFromSuperview()
-            }
-            
-            let onomatopoeia = UILabel()
-            onomatopoeia.text = users[indexPath.row]
-            onomatopoeia.font = UIFont.systemFont(ofSize: 16)
-            onomatopoeia.sizeToFit()
-            onomatopoeia.center = cell.contentView.center
-            cell.contentView.addSubview(onomatopoeia)
+            let cell : SocialComparisonUserCell = collectionView.dequeueReusableCell(withReuseIdentifier: userCellId, for: indexPath as IndexPath) as! SocialComparisonUserCell
+            cell.onomatopoeia.text = users[indexPath.row]
             
             return cell
             
