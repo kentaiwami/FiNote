@@ -49,7 +49,7 @@ class SocialContainViewController: UIViewController, UISearchBarDelegate, Status
         let activityData = ActivityData(message: "Searching", type: .lineScaleParty)
         NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
         
-        DispatchQueue(label: "update-movie-user-info").async {
+        DispatchQueue(label: "search-contain").async {
             Alamofire.request(encURL, method: .get, encoding: JSONEncoding.default).responseJSON { (response) in
                 
                 NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
