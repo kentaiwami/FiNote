@@ -156,7 +156,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         
         userCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         userCollectionView.backgroundColor = UIColor.white
-        userCollectionView.register(SocialComparisonSocialCell.self, forCellWithReuseIdentifier: userCellId)
+        userCollectionView.register(SocialComparisonCell.self, forCellWithReuseIdentifier: userCellId)
         userCollectionView.delegate = self
         userCollectionView.dataSource = self
         userCollectionView.tag = 2
@@ -181,7 +181,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         
         socialCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         socialCollectionView.backgroundColor = UIColor.white
-        socialCollectionView.register(SocialComparisonSocialCell.self, forCellWithReuseIdentifier: socialCellId)
+        socialCollectionView.register(SocialComparisonCell.self, forCellWithReuseIdentifier: socialCellId)
         socialCollectionView.delegate = self
         socialCollectionView.dataSource = self
         socialCollectionView.tag = 3
@@ -218,14 +218,14 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
             return cell
             
         case 2:
-            let cell : SocialComparisonSocialCell = collectionView.dequeueReusableCell(withReuseIdentifier: userCellId, for: indexPath as IndexPath) as! SocialComparisonSocialCell
+            let cell : SocialComparisonCell = collectionView.dequeueReusableCell(withReuseIdentifier: userCellId, for: indexPath as IndexPath) as! SocialComparisonCell
             cell.onomatopoeia.text = users[indexPath.row].name
             cell.count.text = String(users[indexPath.row].count)
             
             return cell
             
         case 3:
-            let cell : SocialComparisonSocialCell = collectionView.dequeueReusableCell(withReuseIdentifier: socialCellId, for: indexPath as IndexPath) as! SocialComparisonSocialCell
+            let cell : SocialComparisonCell = collectionView.dequeueReusableCell(withReuseIdentifier: socialCellId, for: indexPath as IndexPath) as! SocialComparisonCell
             cell.onomatopoeia.text = social[indexPath.row].name
             cell.count.text = String(social[indexPath.row].count)
             

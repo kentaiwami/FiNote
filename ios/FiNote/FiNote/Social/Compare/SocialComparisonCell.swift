@@ -1,5 +1,5 @@
 //
-//  SocialComparisonSocialCell.swift
+//  SocialComparisonCell.swift
 //  FiNote
 //
 //  Created by 岩見建汰 on 2018/01/31.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SocialComparisonSocialCell: UICollectionViewCell {
+class SocialComparisonCell: UICollectionViewCell {
     
     var onomatopoeia : UILabel!
     var icon: UIImageView!
