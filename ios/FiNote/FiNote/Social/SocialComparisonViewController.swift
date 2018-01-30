@@ -20,6 +20,8 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
     var user_id = 0
     var page_id = 1
     var movies: [MovieCompare.Data] = []
+    var isNext = false
+    var isUpdating = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +30,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         let keychain = Keychain()
         user_id = Int((try! keychain.get("id"))!)!
         
+        InitCollectionView()
         CallGetCompareAPI()
     }
     
@@ -52,13 +55,14 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
                 print("***** API results *****")
                 
                 if IsHTTPStatus(statusCode: response.response?.statusCode) {
-                    self.movies.removeAll()
+                    self.isNext = obj["next"].boolValue
+                    self.isUpdating = false
                     
                     for data in obj["results"].arrayValue {
                         self.movies.append(MovieCompare().GetData(json: data))
                     }
                     
-                    self.InitCollectionView()
+                    self.collectionView.reloadData()
                 }else {
                     ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
                 }
@@ -109,10 +113,17 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         
         return cell
     }
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //TODO: タップ時
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.x + scrollView.frame.size.width > scrollView.contentSize.width && scrollView.isDragging && !isUpdating {
+            if isNext {
+                page_id += 1
+                isUpdating = true
+                CallGetCompareAPI()
+            }
+        }
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
