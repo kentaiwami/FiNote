@@ -111,7 +111,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         
         posterCollectionView = UICollectionView(frame: CGRect(x: 0, y: 20, width: self.view.frame.width, height: h), collectionViewLayout: layout)
         posterCollectionView.backgroundColor = UIColor.white
-        posterCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: posterCellId)
+        posterCollectionView.register(SocialComparisonPosterCell.self, forCellWithReuseIdentifier: posterCellId)
         posterCollectionView.delegate = self
         posterCollectionView.dataSource = self
         posterCollectionView.tag = 1
@@ -209,23 +209,11 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch collectionView.tag {
         case 1:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: posterCellId, for: indexPath)
-            for subview in cell.contentView.subviews {
-                subview.removeFromSuperview()
-            }
-            
-            let poster = UIImageView()
-            poster.af_setImage(
+            let cell : SocialComparisonPosterCell = collectionView.dequeueReusableCell(withReuseIdentifier: posterCellId, for: indexPath as IndexPath) as! SocialComparisonPosterCell
+            cell.poster.af_setImage(
                 withURL: URL(string: API.poster_base.rawValue+movies[indexPath.row].poster)!,
                 placeholderImage: UIImage(named: "no_image")
             )
-            poster.frame = CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: cell.contentView.frame.height)
-            poster.layer.shadowOpacity = 0.5
-            poster.layer.shadowColor = UIColor.black.cgColor
-            poster.layer.shadowOffset = CGSize(width: 1, height: 1)
-            poster.layer.shadowRadius = 3
-            poster.layer.masksToBounds = false
-            cell.contentView.addSubview(poster)
             
             return cell
             
@@ -246,10 +234,11 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
             
         case 3:
             let cell : SocialComparisonSocialCell = collectionView.dequeueReusableCell(withReuseIdentifier: socialCellId, for: indexPath as IndexPath) as! SocialComparisonSocialCell
-            
             cell.onomatopoeia.text = social[indexPath.row].name
             cell.count.text = String(social[indexPath.row].count)
+            
             return cell
+            
         default:
             return UICollectionViewCell()
         }
