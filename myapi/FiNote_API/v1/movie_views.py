@@ -96,7 +96,6 @@ class GetMovieViewSet(viewsets.ViewSet):
         return Response(results)
 
 
-
 class GetOnomatopoeiaChoiceViewSet(viewsets.ViewSet):
     @staticmethod
     def list(request):
@@ -397,7 +396,7 @@ class GetMovieOnomatopoeiaContainViewSet(viewsets.ViewSet):
     @staticmethod
     def list(request):
         """
-        指定したオノマトペを含む映画を返す
+        指定したオノマトペが多く付与されている映画を返す
 
         :param request: URLクエリにonomatopoeia含む
         :return:        title, overview, poster
@@ -410,20 +409,26 @@ class GetMovieOnomatopoeiaContainViewSet(viewsets.ViewSet):
         onomatopoeia = request.GET.get('onomatopoeia')
         onomatopoeia_list = Onomatopoeia.objects.filter(name__contains=onomatopoeia)
 
-        # 上記で取得したオノマトペを含む映画を取得
-        movie_list = []
+        # 該当オノマトペが追加されているMovie_Onomatopoeia(映画、カウント、オノマトペ)オブジェクトを取得
+        qs = Movie_Onomatopoeia.objects.none()
         for onomatopoeia in onomatopoeia_list:
-            movies = Movie.objects.filter(onomatopoeia=onomatopoeia)
-            movie_list += list(movies)
+            movie_onomatopoeia_list = Movie_Onomatopoeia.objects.filter(onomatopoeia=onomatopoeia)
+            qs = qs | movie_onomatopoeia_list
 
-        # 映画の情報をdictとして生成
+        qs_ordered = qs.order_by('-count')
+        tmp_tmdb_ids = []
         res = []
-        for movie in movie_list:
-            res.append({
-                "title": movie.title,
-                "overview": movie.overview,
-                "poster": movie.poster
-            })
+        for movie_onomatopoeia_obj in qs_ordered:
+            if len([tmdb_id for tmdb_id in tmp_tmdb_ids if tmdb_id == movie_onomatopoeia_obj.movie.tmdb_id]) == 0:
+                tmp_tmdb_ids.append(movie_onomatopoeia_obj.movie.tmdb_id)
+                res.append({
+                    "title": movie_onomatopoeia_obj.movie.title,
+                    "overview": movie_onomatopoeia_obj.movie.overview,
+                    "poster": movie_onomatopoeia_obj.movie.poster
+                })
+
+            if len(tmp_tmdb_ids) >= 50:
+                break
 
         return Response({'results': res})
 
