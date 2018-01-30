@@ -181,7 +181,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         
         socialCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         socialCollectionView.backgroundColor = UIColor.white
-        socialCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: socialCellId)
+        socialCollectionView.register(SocialComparisonSocialCell.self, forCellWithReuseIdentifier: socialCellId)
         socialCollectionView.delegate = self
         socialCollectionView.dataSource = self
         socialCollectionView.tag = 3
@@ -245,37 +245,10 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
             return cell
             
         case 3:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: socialCellId, for: indexPath)
-            for subview in cell.contentView.subviews {
-                subview.removeFromSuperview()
-            }
-                        
-            let onomatopoeia = UILabel()
-            onomatopoeia.text = social[indexPath.row].name
-            onomatopoeia.font = UIFont.systemFont(ofSize: 16)
-            onomatopoeia.sizeToFit()
-            onomatopoeia.center = cell.contentView.center
-            cell.contentView.addSubview(onomatopoeia)
+            let cell : SocialComparisonSocialCell = collectionView.dequeueReusableCell(withReuseIdentifier: socialCellId, for: indexPath as IndexPath) as! SocialComparisonSocialCell
             
-            let icon = UIImageView(image: UIImage(named: "icon_users"))
-            icon.image = icon.image!.withRenderingMode(.alwaysTemplate)
-            icon.tintColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
-            cell.contentView.addSubview(icon)
-            
-            icon.topToBottom(of: onomatopoeia, offset: 5)
-            icon.centerX(to: onomatopoeia, offset: -10)
-            icon.width(20)
-            icon.height(20)
-            
-            let count = UILabel()
-            count.text = String(social[indexPath.row].count)
-            count.font = UIFont.systemFont(ofSize: 14)
-            count.textColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
-            cell.contentView.addSubview(count)
-            
-            count.centerY(to: icon, offset: 0)
-            count.leadingToTrailing(of: icon, offset: 5)
-            
+            cell.onomatopoeia.text = social[indexPath.row].name
+            cell.count.text = String(social[indexPath.row].count)
             return cell
         default:
             return UICollectionViewCell()

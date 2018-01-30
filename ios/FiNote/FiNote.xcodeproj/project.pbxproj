@@ -10,6 +10,7 @@
 		371D1F4B2018F39100977971 /* MoviesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371D1F4A2018F39100977971 /* MoviesCell.swift */; };
 		3733676D201B0EB300AFE5E6 /* MoviesUserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3733676C201B0EB300AFE5E6 /* MoviesUserInfoViewController.swift */; };
 		37349E2E20151EBA00A37D2D /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37349E2D20151EBA00A37D2D /* API.swift */; };
+		3737E9782020F20F0021900D /* SocialComparisonSocialCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3737E9772020F20F0021900D /* SocialComparisonSocialCell.swift */; };
 		374D67892011EAF300706D4F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374D67882011EAF300706D4F /* AppDelegate.swift */; };
 		374D67902011EAF300706D4F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 374D678E2011EAF300706D4F /* Main.storyboard */; };
 		374D67922011EAF300706D4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 374D67912011EAF300706D4F /* Assets.xcassets */; };
@@ -49,6 +50,7 @@
 		371D1F4A2018F39100977971 /* MoviesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesCell.swift; sourceTree = "<group>"; };
 		3733676C201B0EB300AFE5E6 /* MoviesUserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesUserInfoViewController.swift; sourceTree = "<group>"; };
 		37349E2D20151EBA00A37D2D /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		3737E9772020F20F0021900D /* SocialComparisonSocialCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialComparisonSocialCell.swift; sourceTree = "<group>"; };
 		374D67852011EAF300706D4F /* FiNote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FiNote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		374D67882011EAF300706D4F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		374D678F2011EAF300706D4F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -96,6 +98,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3737E9762020F1CF0021900D /* Compare */ = {
+			isa = PBXGroup;
+			children = (
+				37F2FFA0201EE80E0062B130 /* SocialComparisonViewController.swift */,
+				3737E9772020F20F0021900D /* SocialComparisonSocialCell.swift */,
+			);
+			path = Compare;
+			sourceTree = "<group>";
+		};
 		374D677C2011EAF300706D4F = {
 			isa = PBXGroup;
 			children = (
@@ -167,12 +178,12 @@
 		3760316C2014804D00E69674 /* Social */ = {
 			isa = PBXGroup;
 			children = (
+				3737E9762020F1CF0021900D /* Compare */,
 				37F2FF9E201EDC7A0062B130 /* SocialViewController.swift */,
 				375085D8201E52C000C04703 /* SocialRecentlyViewController.swift */,
 				37F2FF9C201ED63F0062B130 /* SocialByAgeViewController.swift */,
 				37F2FFA4201F2AA30062B130 /* SocialByAgeCell.swift */,
 				37F2FFA2201EE8240062B130 /* SocialContainViewController.swift */,
-				37F2FFA0201EE80E0062B130 /* SocialComparisonViewController.swift */,
 			);
 			path = Social;
 			sourceTree = "<group>";
@@ -398,6 +409,7 @@
 				374D67892011EAF300706D4F /* AppDelegate.swift in Sources */,
 				379728B9201539B10045EB61 /* SignCommon.swift in Sources */,
 				375085D9201E52C000C04703 /* SocialRecentlyViewController.swift in Sources */,
+				3737E9782020F20F0021900D /* SocialComparisonSocialCell.swift in Sources */,
 				37EE9F81201B918900E39E4A /* MovieAddSearchViewController.swift in Sources */,
 				37EE9F8E201CF4A800E39E4A /* MovieCommon.swift in Sources */,
 				37EE9F8A201CE53900E39E4A /* MovieAddSearchDetailViewController.swift in Sources */,
