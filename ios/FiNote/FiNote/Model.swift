@@ -182,6 +182,8 @@ class MovieCompare {
         
         data.title = json["title"].stringValue
         data.poster = json["poster"].stringValue
+        data.user = user
+        data.social = social
         
         return data
     }

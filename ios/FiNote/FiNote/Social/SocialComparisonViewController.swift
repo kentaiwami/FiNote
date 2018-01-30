@@ -15,13 +15,17 @@ import KeychainAccess
 
 class SocialComparisonViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
 
-    var collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewLayout())
+    var posterCollectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewLayout())
+    var userCollectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewLayout())
     var titleView: UILabel!
     
-    let cellId = "MyCell"
+    let posterCellId = "PosterCell"
+    let userCellId = "UserCell"
     var user_id = 0
     var page_id = 1
     var movies: [MovieCompare.Data] = []
+    var users: [String] = []
+    var social: [MovieCompare.Onomatopoeia] = []
     var isNext = false
     var isUpdating = false
     
@@ -52,7 +56,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
                 guard let res = response.result.value else{return}
                 let obj = JSON(res)
                 print("***** API results *****")
-                print(obj)
+//                print(obj)
                 print("***** API results *****")
                 
                 if IsHTTPStatus(statusCode: response.response?.statusCode) {
@@ -60,15 +64,18 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
                     self.isUpdating = false
                     
                     for data in obj["results"].arrayValue {
-                        self.movies.append(MovieCompare().GetData(json: data))
+                        let tmp_data = MovieCompare().GetData(json: data)
+                        self.movies.append(tmp_data)
                     }
                     
                     // 初回だけviewを追加
                     if isInit {
+                        self.users = self.movies.first!.user.map({$0.name})
+                        self.social = self.movies.first!.social
                         self.InitViews()
                     }
                     
-                    self.collectionView.reloadData()
+                    self.posterCollectionView.reloadData()
                 }else {
                     ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
                 }
@@ -78,12 +85,15 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
     
     func UpdateValues(movie: MovieCompare.Data) {
         titleView.text = movie.title
+        
+        users = movie.user.map({$0.name})
+        userCollectionView.reloadData()
     }
     
     func InitViews() {
-        InitCollectionView()
+        InitPosterCollectionView()
         InitTitleView()
-        InitUserOnomatopoeia()
+        InitUserOnomatopoeiaCollectionView()
     }
     
     func InitTitleView() {
@@ -95,13 +105,13 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         titleView.text = movies.first!.title
         self.view.addSubview(titleView)
         
-        titleView.topToBottom(of: collectionView, offset: 20)
+        titleView.topToBottom(of: posterCollectionView, offset: 20)
         titleView.centerX(to: self.view)
         titleView.leading(to: self.view, offset: 50)
         titleView.trailing(to: self.view, offset: -50)
     }
     
-    func InitUserOnomatopoeia() {
+    func InitUserOnomatopoeiaCollectionView() {
         let icon = UIImageView(image: UIImage(named: "tab_user"))
         icon.image = icon.image!.withRenderingMode(.alwaysTemplate)
         icon.tintColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
@@ -111,9 +121,32 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         icon.leading(to: self.view, offset: 20)
         icon.width(30)
         icon.height(30)
+        
+        let w = self.view.frame.width / 5
+        let h = w
+        let margin = w / 8
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: w, height: h)
+        layout.minimumInteritemSpacing = margin
+        layout.minimumLineSpacing = margin
+        layout.sectionInset = UIEdgeInsets(top: margin, left: margin, bottom: margin, right: margin)
+        
+        userCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+        userCollectionView.backgroundColor = UIColor.white
+        userCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: userCellId)
+        userCollectionView.delegate = self
+        userCollectionView.dataSource = self
+        userCollectionView.tag = 2
+        self.view.addSubview(userCollectionView)
+        
+        userCollectionView.topToBottom(of: icon, offset: 10)
+        userCollectionView.leading(to: icon)
+        userCollectionView.trailing(to: self.view, offset: -20)
+        userCollectionView.height(h*2+margin*4)
     }
     
-    func InitCollectionView() {
+    func InitPosterCollectionView() {
         let w = 150.0 as CGFloat
         let h = w*1.5 as CGFloat
         
@@ -121,40 +154,69 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         layout.itemSize = CGSize(width: w, height: h)
         layout.scrollDirection = .horizontal
         
-        collectionView = UICollectionView(frame: CGRect(x: 0, y: 50, width: self.view.frame.width, height: h), collectionViewLayout: layout)
-        collectionView.backgroundColor = UIColor.white
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        self.view.addSubview(collectionView)
+        posterCollectionView = UICollectionView(frame: CGRect(x: 0, y: 50, width: self.view.frame.width, height: h), collectionViewLayout: layout)
+        posterCollectionView.backgroundColor = UIColor.white
+        posterCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: posterCellId)
+        posterCollectionView.delegate = self
+        posterCollectionView.dataSource = self
+        posterCollectionView.tag = 1
+        self.view.addSubview(posterCollectionView)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return movies.count
+        switch collectionView.tag {
+        case 1:
+            return movies.count
+        case 2:
+            return users.count
+        case 3:
+            return social.count
+        default:
+            return 0
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
-        
-        for subview in cell.contentView.subviews {
-            subview.removeFromSuperview()
+        switch collectionView.tag {
+        case 1:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: posterCellId, for: indexPath)
+            for subview in cell.contentView.subviews {
+                subview.removeFromSuperview()
+            }
+            
+            let urlRequest = URL(string: API.poster_base.rawValue+movies[indexPath.row].poster)!
+            let poster = UIImageView()
+            poster.af_setImage(
+                withURL: urlRequest,
+                placeholderImage: UIImage(named: "no_image")
+            )
+            poster.frame = CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: cell.contentView.frame.height)
+            poster.layer.shadowOpacity = 0.5
+            poster.layer.shadowColor = UIColor.black.cgColor
+            poster.layer.shadowOffset = CGSize(width: 1, height: 1)
+            poster.layer.shadowRadius = 3
+            poster.layer.masksToBounds = false
+            cell.contentView.addSubview(poster)
+            
+            return cell
+            
+        case 2:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: userCellId, for: indexPath)
+            for subview in cell.contentView.subviews {
+                subview.removeFromSuperview()
+            }
+            
+            let label = UILabel()
+            label.text = users[indexPath.row]
+            label.center = cell.contentView.center
+            label.font = UIFont.systemFont(ofSize: 14)
+            label.sizeToFit()
+            cell.contentView.addSubview(label)
+            
+            return cell
+        default:
+            return UICollectionViewCell()
         }
-        
-        let urlRequest = URL(string: API.poster_base.rawValue+movies[indexPath.row].poster)!
-        let poster = UIImageView()
-        poster.af_setImage(
-            withURL: urlRequest,
-            placeholderImage: UIImage(named: "no_image")
-        )
-        poster.frame = CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: cell.contentView.frame.height)
-        poster.layer.shadowOpacity = 0.5
-        poster.layer.shadowColor = UIColor.black.cgColor
-        poster.layer.shadowOffset = CGSize(width: 1, height: 1)
-        poster.layer.shadowRadius = 3
-        poster.layer.masksToBounds = false
-        cell.contentView.addSubview(poster)
-        
-        return cell
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -167,8 +229,8 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         }
         
         // collectionviewの中央を取得して、viewの値を更新
-        let center = self.view.convert(collectionView.center, to: collectionView)
-        guard let index = collectionView.indexPathForItem(at: center) else { return }
+        let center = self.view.convert(posterCollectionView.center, to: posterCollectionView)
+        guard let index = posterCollectionView.indexPathForItem(at: center) else { return }
         UpdateValues(movie: movies[index.row])
     }
     
