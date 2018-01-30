@@ -102,6 +102,23 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         InitSocialOnomatopoeiaCollectionView()
     }
     
+    func InitPosterCollectionView() {
+        let w = 120.0 as CGFloat
+        let h = w * 1.5
+        
+        let layout = UPCarouselFlowLayout()
+        layout.itemSize = CGSize(width: w, height: h)
+        layout.scrollDirection = .horizontal
+        
+        posterCollectionView = UICollectionView(frame: CGRect(x: 0, y: 20, width: self.view.frame.width, height: h), collectionViewLayout: layout)
+        posterCollectionView.backgroundColor = UIColor.white
+        posterCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: posterCellId)
+        posterCollectionView.delegate = self
+        posterCollectionView.dataSource = self
+        posterCollectionView.tag = 1
+        self.view.addSubview(posterCollectionView)
+    }
+    
     func InitTitleView() {
         titleView = UILabel()
         titleView.textAlignment = .center
@@ -149,19 +166,19 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         userCollectionView.topToBottom(of: icon, offset: 5)
         userCollectionView.leading(to: icon)
         userCollectionView.trailing(to: self.view, offset: -20)
-        userCollectionView.height(h*2+margin*4)
+        userCollectionView.height(h)
     }
     
     func InitSocialOnomatopoeiaCollectionView() {
         let w = self.view.frame.width / 6
-        let h = w / 2
+        let h = w / 2 + 30
         let margin = w / 8
         
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: w, height: h)
         layout.minimumInteritemSpacing = margin
         layout.minimumLineSpacing = margin
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        layout.sectionInset = UIEdgeInsets(top: margin, left: 0, bottom: margin, right: 0)
         
         socialCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         socialCollectionView.backgroundColor = UIColor.white
@@ -171,27 +188,10 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         socialCollectionView.tag = 3
         self.view.addSubview(socialCollectionView)
         
-        socialCollectionView.topToBottom(of: userCollectionView, offset: 5)
+        socialCollectionView.topToBottom(of: userCollectionView, offset: 30)
         socialCollectionView.leading(to: userCollectionView)
         socialCollectionView.trailing(to: self.view, offset: -20)
         socialCollectionView.height(h*2+margin*4)
-    }
-    
-    func InitPosterCollectionView() {
-        let w = 120.0 as CGFloat
-        let h = w * 1.5
-        
-        let layout = UPCarouselFlowLayout()
-        layout.itemSize = CGSize(width: w, height: h)
-        layout.scrollDirection = .horizontal
-        
-        posterCollectionView = UICollectionView(frame: CGRect(x: 0, y: 20, width: self.view.frame.width, height: h), collectionViewLayout: layout)
-        posterCollectionView.backgroundColor = UIColor.white
-        posterCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: posterCellId)
-        posterCollectionView.delegate = self
-        posterCollectionView.dataSource = self
-        posterCollectionView.tag = 1
-        self.view.addSubview(posterCollectionView)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -251,7 +251,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
             for subview in cell.contentView.subviews {
                 subview.removeFromSuperview()
             }
-            
+                        
             let onomatopoeia = UILabel()
             onomatopoeia.text = social[indexPath.row].name
             onomatopoeia.font = UIFont.systemFont(ofSize: 16)
@@ -264,8 +264,8 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
             icon.tintColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
             cell.contentView.addSubview(icon)
             
-            icon.topToBottom(of: onomatopoeia, offset: 0)
-            icon.centerX(to: onomatopoeia, offset: 0)
+            icon.topToBottom(of: onomatopoeia, offset: 5)
+            icon.centerX(to: onomatopoeia, offset: -5)
             icon.width(20)
             icon.height(20)
             
