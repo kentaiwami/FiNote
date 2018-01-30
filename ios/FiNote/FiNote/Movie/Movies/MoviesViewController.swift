@@ -105,6 +105,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        // 起動直後以外でこの画面を表示した際に、データ数に応じて画面を再描画
         if !is_startup {
             if appdelegate.movies.count == 0 {
                 ShowNoDataView()
