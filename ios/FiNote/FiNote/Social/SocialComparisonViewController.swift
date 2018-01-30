@@ -16,6 +16,8 @@ import KeychainAccess
 class SocialComparisonViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
 
     var collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewLayout())
+    var titleView: UILabel!
+    
     let cellId = "MyCell"
     var user_id = 0
     var page_id = 1
@@ -30,8 +32,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         let keychain = Keychain()
         user_id = Int((try! keychain.get("id"))!)!
         
-        InitCollectionView()
-        CallGetCompareAPI()
+        CallGetCompareAPI(isInit: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -39,12 +40,12 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         self.tabBarController?.navigationItem.title = "オノマトペの比較"
     }
     
-    func CallGetCompareAPI() {
+    func CallGetCompareAPI(isInit: Bool=false) {
         let urlString = API.base.rawValue+API.v1.rawValue+API.movie.rawValue+API.compare.rawValue+"?user_id=\(user_id)&page=\(page_id)"
-        let activityData = ActivityData(message: "Get Movies", type: .lineScaleParty)
+        let activityData = ActivityData(message: "Get Data", type: .lineScaleParty)
         NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
         
-        DispatchQueue(label: "get-movies").async {
+        DispatchQueue(label: "get-compare").async {
             Alamofire.request(urlString, method: .get).responseJSON { (response) in
                 NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
                 
@@ -62,12 +63,37 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
                         self.movies.append(MovieCompare().GetData(json: data))
                     }
                     
+                    // 初回だけviewを追加
+                    if isInit {
+                        self.InitViews()
+                    }
+                    
                     self.collectionView.reloadData()
                 }else {
                     ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
                 }
             }
         }
+    }
+    
+    func UpdateValues(movie: MovieCompare.Data) {
+        titleView.text = movie.title
+    }
+    
+    func InitViews() {
+        InitCollectionView()
+        InitTitleView()
+    }
+    
+    func InitTitleView() {
+        titleView = UILabel()
+        titleView.textAlignment = .center
+        titleView.font = UIFont.systemFont(ofSize: 22)
+        titleView.text = movies.first!.title
+        self.view.addSubview(titleView)
+        
+        titleView.topToBottom(of: collectionView, offset: 20)
+        titleView.centerX(to: self.view)
     }
     
     func InitCollectionView() {
@@ -122,6 +148,11 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
                 CallGetCompareAPI()
             }
         }
+        
+        // collectionviewの中央を取得して、viewの値を更新
+        let center = self.view.convert(collectionView.center, to: collectionView)
+        guard let index = collectionView.indexPathForItem(at: center) else { return }
+        UpdateValues(movie: movies[index.row])
     }
     
     override func didReceiveMemoryWarning() {
