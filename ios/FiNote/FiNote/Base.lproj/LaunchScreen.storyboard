@@ -18,16 +18,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="glf-cS-F3l">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash" translatesAutoresizingMaskIntoConstraints="NO" id="glf-cS-F3l">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="glf-cS-F3l" secondAttribute="bottom" id="8Mk-j3-MoP"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="glf-cS-F3l" secondAttribute="trailing" id="Ndw-yO-xe5"/>
-                            <constraint firstItem="glf-cS-F3l" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="PmP-aW-mWO"/>
-                            <constraint firstItem="glf-cS-F3l" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Tsr-3m-wXv"/>
+                            <constraint firstItem="glf-cS-F3l" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="HHn-ys-F4h"/>
+                            <constraint firstItem="glf-cS-F3l" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="P1h-G2-0Wu"/>
+                            <constraint firstItem="glf-cS-F3l" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="kSB-FO-BSy"/>
+                            <constraint firstItem="glf-cS-F3l" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="pbG-jB-V5d"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -37,4 +37,7 @@
             <point key="canvasLocation" x="52" y="374.66266866566718"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="splash" width="500" height="800"/>
+    </resources>
 </document>
