@@ -8,17 +8,62 @@
 
 import UIKit
 import UPCarouselFlowLayout
+import SwiftyJSON
+import Alamofire
+import NVActivityIndicatorView
+import KeychainAccess
 
 class SocialComparisonViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
 
     var collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewLayout())
     let cellId = "MyCell"
+    var user_id = 0
+    var page_id = 1
+    var movies: [MovieCompare.Data] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
         
-        InitCollectionView()
+        let keychain = Keychain()
+        user_id = Int((try! keychain.get("id"))!)!
+        
+        CallGetCompareAPI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.navigationItem.title = "オノマトペの比較"
+    }
+    
+    func CallGetCompareAPI() {
+        let urlString = API.base.rawValue+API.v1.rawValue+API.movie.rawValue+API.compare.rawValue+"?user_id=\(user_id)&page=\(page_id)"
+        let activityData = ActivityData(message: "Get Movies", type: .lineScaleParty)
+        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
+        
+        DispatchQueue(label: "get-movies").async {
+            Alamofire.request(urlString, method: .get).responseJSON { (response) in
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                
+                guard let res = response.result.value else{return}
+                let obj = JSON(res)
+                print("***** API results *****")
+                print(obj)
+                print("***** API results *****")
+                
+                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                    self.movies.removeAll()
+                    
+                    for data in obj["results"].arrayValue {
+                        self.movies.append(MovieCompare().GetDataArray(json: data))
+                    }
+                    
+                    self.InitCollectionView()
+                }else {
+                    ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
+                }
+            }
+        }
     }
     
     func InitCollectionView() {
@@ -29,7 +74,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         layout.itemSize = CGSize(width: w, height: h)
         layout.scrollDirection = .horizontal
         
-        collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: h), collectionViewLayout: layout)
+        collectionView = UICollectionView(frame: CGRect(x: 0, y: 50, width: self.view.frame.width, height: h), collectionViewLayout: layout)
         collectionView.backgroundColor = UIColor.white
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
         collectionView.delegate = self
@@ -38,8 +83,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        //TODO: 個数
-        return 5
+        return movies.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -49,7 +93,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
             subview.removeFromSuperview()
         }
         
-        let urlRequest = URL(string: API.poster_base.rawValue+"/sdpYt0L8PAddzUDYeMcZHxZyf1L.jpg")!
+        let urlRequest = URL(string: API.poster_base.rawValue+movies[indexPath.row].poster)!
         let poster = UIImageView()
         poster.af_setImage(
             withURL: urlRequest,
