@@ -83,6 +83,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
     func InitViews() {
         InitCollectionView()
         InitTitleView()
+        InitUserOnomatopoeia()
     }
     
     func InitTitleView() {
@@ -98,6 +99,18 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         titleView.centerX(to: self.view)
         titleView.leading(to: self.view, offset: 50)
         titleView.trailing(to: self.view, offset: -50)
+    }
+    
+    func InitUserOnomatopoeia() {
+        let icon = UIImageView(image: UIImage(named: "tab_user"))
+        icon.image = icon.image!.withRenderingMode(.alwaysTemplate)
+        icon.tintColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
+        self.view.addSubview(icon)
+        
+        icon.topToBottom(of: titleView, offset: 20)
+        icon.leading(to: self.view, offset: 20)
+        icon.width(30)
+        icon.height(30)
     }
     
     func InitCollectionView() {
