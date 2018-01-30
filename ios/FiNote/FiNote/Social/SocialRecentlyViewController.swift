@@ -58,7 +58,7 @@ class SocialRecentlyViewController: UIViewController, UICollectionViewDelegate, 
     
     func CallGetRecentlyAPI() {
         let urlString = API.base.rawValue+API.v1.rawValue+API.movie.rawValue+API.recently.rawValue
-        let activityData = ActivityData(message: "Get Movies", type: .lineScaleParty)
+        let activityData = ActivityData(message: "Get Data", type: .lineScaleParty)
         NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
         
         DispatchQueue(label: "get-movies").async {
