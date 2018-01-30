@@ -17,10 +17,13 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
 
     var posterCollectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewLayout())
     var userCollectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewLayout())
+    var socialCollectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewLayout())
+
     var titleView: UILabel!
     
     let posterCellId = "PosterCell"
     let userCellId = "UserCell"
+    let socialCellId = "SocialCell"
     var user_id = 0
     var page_id = 1
     var movies: [MovieCompare.Data] = []
@@ -87,13 +90,16 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         titleView.text = movie.title
         
         users = movie.user.map({$0.name})
+        social = movie.social
         userCollectionView.reloadData()
+        socialCollectionView.reloadData()
     }
     
     func InitViews() {
         InitPosterCollectionView()
         InitTitleView()
         InitUserOnomatopoeiaCollectionView()
+        InitSocialOnomatopoeiaCollectionView()
     }
     
     func InitTitleView() {
@@ -144,6 +150,31 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         userCollectionView.leading(to: icon)
         userCollectionView.trailing(to: self.view, offset: -20)
         userCollectionView.height(h*2+margin*4)
+    }
+    
+    func InitSocialOnomatopoeiaCollectionView() {
+        let w = self.view.frame.width / 6
+        let h = w / 2
+        let margin = w / 8
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: w, height: h)
+        layout.minimumInteritemSpacing = margin
+        layout.minimumLineSpacing = margin
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        
+        socialCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+        socialCollectionView.backgroundColor = UIColor.white
+        socialCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: socialCellId)
+        socialCollectionView.delegate = self
+        socialCollectionView.dataSource = self
+        socialCollectionView.tag = 3
+        self.view.addSubview(socialCollectionView)
+        
+        socialCollectionView.topToBottom(of: userCollectionView, offset: 5)
+        socialCollectionView.leading(to: userCollectionView)
+        socialCollectionView.trailing(to: self.view, offset: -20)
+        socialCollectionView.height(h*2+margin*4)
     }
     
     func InitPosterCollectionView() {
@@ -206,12 +237,46 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
                 subview.removeFromSuperview()
             }
             
-            let label = UILabel()
-            label.text = users[indexPath.row]
-            label.font = UIFont.systemFont(ofSize: 16)
-            label.sizeToFit()
-            label.center = cell.contentView.center
-            cell.contentView.addSubview(label)
+            let onomatopoeia = UILabel()
+            onomatopoeia.text = users[indexPath.row]
+            onomatopoeia.font = UIFont.systemFont(ofSize: 16)
+            onomatopoeia.sizeToFit()
+            onomatopoeia.center = cell.contentView.center
+            cell.contentView.addSubview(onomatopoeia)
+            
+            return cell
+            
+        case 3:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: socialCellId, for: indexPath)
+            for subview in cell.contentView.subviews {
+                subview.removeFromSuperview()
+            }
+            
+            let onomatopoeia = UILabel()
+            onomatopoeia.text = social[indexPath.row].name
+            onomatopoeia.font = UIFont.systemFont(ofSize: 16)
+            onomatopoeia.sizeToFit()
+            onomatopoeia.center = cell.contentView.center
+            cell.contentView.addSubview(onomatopoeia)
+            
+            let icon = UIImageView(image: UIImage(named: "icon_users"))
+            icon.image = icon.image!.withRenderingMode(.alwaysTemplate)
+            icon.tintColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
+            cell.contentView.addSubview(icon)
+            
+            icon.topToBottom(of: onomatopoeia, offset: 0)
+            icon.centerX(to: onomatopoeia, offset: 0)
+            icon.width(20)
+            icon.height(20)
+            
+            let count = UILabel()
+            count.text = String(social[indexPath.row].count)
+            count.font = UIFont.systemFont(ofSize: 14)
+            count.textColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
+            cell.contentView.addSubview(count)
+            
+            count.centerY(to: icon, offset: 0)
+            count.leadingToTrailing(of: icon, offset: 5)
             
             return cell
         default:
