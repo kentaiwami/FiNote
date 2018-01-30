@@ -27,7 +27,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
     var user_id = 0
     var page_id = 1
     var movies: [MovieCompare.Data] = []
-    var users: [String] = []
+    var users: [MovieCompare.Onomatopoeia] = []
     var social: [MovieCompare.Onomatopoeia] = []
     var isNext = false
     var isUpdating = false
@@ -73,7 +73,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
                     
                     // 初回だけviewを追加
                     if isInit {
-                        self.users = self.movies.first!.user.map({$0.name})
+                        self.users = self.movies.first!.user
                         self.social = self.movies.first!.social
                         self.InitViews()
                     }
@@ -88,7 +88,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
     
     func UpdateValues(movie: MovieCompare.Data) {
         titleView.text = movie.title
-        users = movie.user.map({$0.name})
+        users = movie.user
         social = movie.social
         userCollectionView.reloadData()
         socialCollectionView.reloadData()
@@ -219,7 +219,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
             
         case 2:
             let cell : SocialComparisonUserCell = collectionView.dequeueReusableCell(withReuseIdentifier: userCellId, for: indexPath as IndexPath) as! SocialComparisonUserCell
-            cell.onomatopoeia.text = users[indexPath.row]
+            cell.onomatopoeia.text = users[indexPath.row].name
             
             return cell
             
