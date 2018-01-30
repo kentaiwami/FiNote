@@ -59,7 +59,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
                 guard let res = response.result.value else{return}
                 let obj = JSON(res)
                 print("***** API results *****")
-//                print(obj)
+                print(obj)
                 print("***** API results *****")
                 
                 if IsHTTPStatus(statusCode: response.response?.statusCode) {
@@ -88,7 +88,6 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
     
     func UpdateValues(movie: MovieCompare.Data) {
         titleView.text = movie.title
-        
         users = movie.user.map({$0.name})
         social = movie.social
         userCollectionView.reloadData()
@@ -215,10 +214,9 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
                 subview.removeFromSuperview()
             }
             
-            let urlRequest = URL(string: API.poster_base.rawValue+movies[indexPath.row].poster)!
             let poster = UIImageView()
             poster.af_setImage(
-                withURL: urlRequest,
+                withURL: URL(string: API.poster_base.rawValue+movies[indexPath.row].poster)!,
                 placeholderImage: UIImage(named: "no_image")
             )
             poster.frame = CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: cell.contentView.frame.height)
@@ -265,7 +263,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
             cell.contentView.addSubview(icon)
             
             icon.topToBottom(of: onomatopoeia, offset: 5)
-            icon.centerX(to: onomatopoeia, offset: -5)
+            icon.centerX(to: onomatopoeia, offset: -10)
             icon.width(20)
             icon.height(20)
             
