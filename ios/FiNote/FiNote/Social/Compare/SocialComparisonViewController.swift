@@ -158,14 +158,14 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         
         userCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
-        userCollectionView.backgroundColor = UIColor.white
+        userCollectionView.backgroundColor = UIColor.clear
         userCollectionView.register(SocialComparisonCell.self, forCellWithReuseIdentifier: userCellId)
         userCollectionView.delegate = self
         userCollectionView.dataSource = self
         userCollectionView.tag = 2
         self.view.addSubview(userCollectionView)
         
-        userCollectionView.topToBottom(of: icon, offset: 5)
+        userCollectionView.topToBottom(of: icon, offset: -20)
         userCollectionView.leading(to: icon)
         userCollectionView.trailing(to: self.view, offset: -20)
         userCollectionView.height(cell_h)
