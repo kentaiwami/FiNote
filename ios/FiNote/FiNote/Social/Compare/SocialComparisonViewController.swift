@@ -145,7 +145,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         icon.height(30)
         
         let w = self.view.frame.width / 6
-        let h = w / 2
+        let h = w / 2 + 30
         let margin = w / 8
         
         let layout = UICollectionViewFlowLayout()
@@ -156,7 +156,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         
         userCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         userCollectionView.backgroundColor = UIColor.white
-        userCollectionView.register(SocialComparisonUserCell.self, forCellWithReuseIdentifier: userCellId)
+        userCollectionView.register(SocialComparisonSocialCell.self, forCellWithReuseIdentifier: userCellId)
         userCollectionView.delegate = self
         userCollectionView.dataSource = self
         userCollectionView.tag = 2
@@ -218,8 +218,9 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
             return cell
             
         case 2:
-            let cell : SocialComparisonUserCell = collectionView.dequeueReusableCell(withReuseIdentifier: userCellId, for: indexPath as IndexPath) as! SocialComparisonUserCell
+            let cell : SocialComparisonSocialCell = collectionView.dequeueReusableCell(withReuseIdentifier: userCellId, for: indexPath as IndexPath) as! SocialComparisonSocialCell
             cell.onomatopoeia.text = users[indexPath.row].name
+            cell.count.text = String(users[indexPath.row].count)
             
             return cell
             
