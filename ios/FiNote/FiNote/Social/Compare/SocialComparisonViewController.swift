@@ -18,7 +18,10 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
     var posterCollectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewLayout())
     var userCollectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewLayout())
     var socialCollectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewLayout())
-
+    var cell_w = 0 as CGFloat
+    var cell_h = 0 as CGFloat
+    var cell_margin = 0 as CGFloat
+    
     var titleView: UILabel!
     
     let posterCellId = "PosterCell"
@@ -39,6 +42,10 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         let keychain = Keychain()
         user_id = Int((try! keychain.get("id"))!)!
         
+        cell_w = self.view.frame.width / 6
+        cell_h = cell_w / 2 + 30
+        cell_margin = cell_w / 8
+
         CallGetCompareAPI(isInit: true)
     }
     
@@ -144,14 +151,10 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         icon.width(30)
         icon.height(30)
         
-        let w = self.view.frame.width / 6
-        let h = w / 2 + 30
-        let margin = w / 8
-        
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: w, height: h)
-        layout.minimumInteritemSpacing = margin
-        layout.minimumLineSpacing = margin
+        layout.itemSize = CGSize(width: cell_w, height: cell_h)
+        layout.minimumInteritemSpacing = cell_margin
+        layout.minimumLineSpacing = cell_margin
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         
         userCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
@@ -165,19 +168,15 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         userCollectionView.topToBottom(of: icon, offset: 5)
         userCollectionView.leading(to: icon)
         userCollectionView.trailing(to: self.view, offset: -20)
-        userCollectionView.height(h)
+        userCollectionView.height(cell_h)
     }
     
     func InitSocialOnomatopoeiaCollectionView() {
-        let w = self.view.frame.width / 6
-        let h = w / 2 + 30
-        let margin = w / 8
-        
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: w, height: h)
-        layout.minimumInteritemSpacing = margin
-        layout.minimumLineSpacing = margin
-        layout.sectionInset = UIEdgeInsets(top: margin, left: 0, bottom: margin, right: 0)
+        layout.itemSize = CGSize(width: cell_w, height: cell_h)
+        layout.minimumInteritemSpacing = cell_margin
+        layout.minimumLineSpacing = cell_margin
+        layout.sectionInset = UIEdgeInsets(top: cell_margin, left: 0, bottom: cell_margin, right: 0)
         
         socialCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         socialCollectionView.backgroundColor = UIColor.white
@@ -190,7 +189,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         socialCollectionView.topToBottom(of: userCollectionView, offset: 30)
         socialCollectionView.leading(to: userCollectionView)
         socialCollectionView.trailing(to: self.view, offset: -20)
-        socialCollectionView.height(h*2+margin*4)
+        socialCollectionView.height(cell_h*2+cell_margin*4)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
