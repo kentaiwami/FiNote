@@ -171,8 +171,8 @@
 				375085D8201E52C000C04703 /* SocialRecentlyViewController.swift */,
 				37F2FF9C201ED63F0062B130 /* SocialByAgeViewController.swift */,
 				37F2FFA4201F2AA30062B130 /* SocialByAgeCell.swift */,
-				37F2FFA0201EE80E0062B130 /* SocialComparisonViewController.swift */,
 				37F2FFA2201EE8240062B130 /* SocialContainViewController.swift */,
+				37F2FFA0201EE80E0062B130 /* SocialComparisonViewController.swift */,
 			);
 			path = Social;
 			sourceTree = "<group>";

@@ -27,6 +27,11 @@ class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UIC
         CallGetByAgeAPI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.navigationItem.title = "年代別ランキング"
+    }
+    
     func refresh(sender: UIRefreshControl) {
         refresh_controll.beginRefreshing()
         CallGetByAgeAPI()

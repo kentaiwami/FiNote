@@ -107,7 +107,7 @@ class MovieOriginTitleSearchResult {
     }
 }
 
-class MovieRecentlly {
+class MovieBasic {
     struct Data {
         var title = ""
         var poster = ""
