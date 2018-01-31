@@ -130,7 +130,7 @@ class MoviesDetailViewController: UIViewController {
         titleView.textAlignment = .center
         titleView.lineBreakMode = .byWordWrapping
         titleView.numberOfLines = 0
-        titleView.font = UIFont.systemFont(ofSize: 22)
+        titleView.font = UIFont(name: Font.helveticaneue_B.rawValue, size: 22)
         titleView.text = movie.title
         contentView.addSubview(titleView)
         
@@ -148,8 +148,8 @@ class MoviesDetailViewController: UIViewController {
         overviewView.textAlignment = .center
         overviewView.lineBreakMode = .byWordWrapping
         overviewView.numberOfLines = 0
-        overviewView.font = UIFont.systemFont(ofSize: 16)
-        overviewView.text = movie.overview
+        overviewView.font = UIFont(name: Font.helveticaneue.rawValue, size: 16)
+        overviewView.attributedText = AddAttributedTextLineHeight(height: 22, text: NSMutableAttributedString(string: movie.overview))
         contentView.addSubview(overviewView)
 
         overviewView.topToBottom(of: latestView, offset: 10)
@@ -173,7 +173,7 @@ class MoviesDetailViewController: UIViewController {
         add_icon.height(icon_wh)
         
         let add_date = UILabel()
-        add_date.font = UIFont.systemFont(ofSize: 16)
+        add_date.font = UIFont(name: Font.helveticaneue.rawValue, size: 16)
         add_date.textColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
         add_date.text = movie.add
         contentView.addSubview(add_date)

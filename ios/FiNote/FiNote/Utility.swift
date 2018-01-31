@@ -69,6 +69,17 @@ func UIColorToUIImage(hex: String, alpha: CGFloat) -> UIImage? {
     return image
 }
 
+func AddAttributedTextLineHeight(height: Int, text: NSMutableAttributedString) -> NSMutableAttributedString {
+    let lineHeight = CGFloat(height)
+    let paragraphStyle = NSMutableParagraphStyle()
+    paragraphStyle.minimumLineHeight = lineHeight
+    paragraphStyle.maximumLineHeight = lineHeight
+    paragraphStyle.lineBreakMode = .byTruncatingTail
+    text.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, text.length))
+    
+    return text
+}
+
 class Indicator {
     let indicator = UIActivityIndicatorView()
     
