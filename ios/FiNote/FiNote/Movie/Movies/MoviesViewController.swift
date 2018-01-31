@@ -51,6 +51,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         myTableView = UITableView(frame: view.frame, style: .plain)
         myTableView.rowHeight = height
+        myTableView.estimatedRowHeight = height
         myTableView.delegate = self
         myTableView.dataSource = self
         myTableView.register(MoviesCell.self, forCellReuseIdentifier: NSStringFromClass(MoviesCell.self))
