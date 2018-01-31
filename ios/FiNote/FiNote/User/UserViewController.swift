@@ -9,7 +9,7 @@
 import UIKit
 import Eureka
 import KeychainAccess
-
+import PopupDialog
 
 class UserViewController: FormViewController {
 
@@ -75,7 +75,22 @@ class UserViewController: FormViewController {
                 $0.tag = "sign_out"
             }
             .onCellSelection {  cell, row in
+                let cancel = CancelButton(title: "Cancel", action: nil)
+                let ok = DestructiveButton(title: "OK", action: {
+                    let keychain = Keychain()
+                    try! keychain.removeAll()
+                    
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    let sign = storyboard.instantiateViewController(withIdentifier: "Sign")
+                    sign.modalTransitionStyle = .flipHorizontal
+                    self.present(sign, animated: true, completion: nil)
+                })
                 
+                let popup = PopupDialog(title: "Sign Out", message: "サインアウトしますがよろしいですか？")
+                popup.transitionStyle = .zoomIn
+                popup.addButtons([ok, cancel])
+                
+                self.present(popup, animated: true, completion: nil)
             }
 
         UIView.setAnimationsEnabled(true)
