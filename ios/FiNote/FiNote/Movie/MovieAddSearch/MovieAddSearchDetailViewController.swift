@@ -128,7 +128,7 @@ class MovieAddSearchDetailViewController: UIViewController {
         titleView.textAlignment = .center
         titleView.lineBreakMode = .byWordWrapping
         titleView.numberOfLines = 0
-        titleView.font = UIFont.systemFont(ofSize: 22)
+        titleView.font = UIFont(name: Font.helveticaneue_B.rawValue, size: 22)
         titleView.text = searched_movie.title
         contentView.addSubview(titleView)
         
@@ -146,8 +146,8 @@ class MovieAddSearchDetailViewController: UIViewController {
         overviewView.textAlignment = .center
         overviewView.lineBreakMode = .byWordWrapping
         overviewView.numberOfLines = 0
-        overviewView.font = UIFont.systemFont(ofSize: 16)
-        overviewView.text = searched_movie.overview
+        overviewView.font = UIFont(name: Font.helveticaneue.rawValue, size: 16)
+        overviewView.attributedText = AddAttributedTextLineHeight(height: 22, text: NSMutableAttributedString(string: searched_movie.overview))
         contentView.addSubview(overviewView)
         
         overviewView.topToBottom(of: latestView, offset: 10)
@@ -171,7 +171,7 @@ class MovieAddSearchDetailViewController: UIViewController {
         release_icon.height(icon_wh)
         
         let release_date = UILabel()
-        release_date.font = UIFont.systemFont(ofSize: 16)
+        release_date.font = UIFont(name: Font.helveticaneue.rawValue, size: 16)
         release_date.textColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
         release_date.text = searched_movie.release_date
         contentView.addSubview(release_date)
