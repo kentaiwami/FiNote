@@ -12,8 +12,9 @@ import SwiftyJSON
 import Alamofire
 import NVActivityIndicatorView
 import KeychainAccess
+import StatusProvider
 
-class SocialComparisonViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class SocialComparisonViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, StatusController {
 
     var posterCollectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewLayout())
     var userCollectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewLayout())
@@ -45,13 +46,26 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         cell_w = self.view.frame.width / 6
         cell_h = cell_w / 2 + 30
         cell_margin = cell_w / 8
-
-        CallGetCompareAPI(isInit: true)
+        
+        DrawView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.navigationItem.title = "オノマトペの比較"
+    }
+    
+    func DrawView() {
+        if GetAppDelegate().movies.count == 0 {
+            let status = Status(title: "No Data", description: "映画を追加して他の人がつけたオノマトペと比べて見ましょう", actionTitle: "Reload", image: nil) {
+                self.hideStatus()
+                self.DrawView()
+            }
+            
+            show(status: status)
+        }else {
+            CallGetCompareAPI(isInit: true)
+        }
     }
     
     func CallGetCompareAPI(isInit: Bool=false) {
@@ -78,7 +92,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
                         self.movies.append(tmp_data)
                     }
                     
-                    // 初回だけviewを追加
+                    // スクロール以外時の呼び出しだけviewを追加
                     if isInit {
                         self.users = self.movies.first!.user
                         self.social = self.movies.first!.social
