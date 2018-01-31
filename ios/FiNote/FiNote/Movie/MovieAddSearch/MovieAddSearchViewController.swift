@@ -97,7 +97,7 @@ class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, UITab
             show(status: status)
         }else {
             let main_width = UIScreen.main.bounds.width
-            let width = main_width * 0.2
+            let width = main_width * 0.3
             let height = width * 1.5
             
             myTableView = UITableView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height), style: .plain)
