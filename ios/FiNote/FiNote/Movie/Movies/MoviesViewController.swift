@@ -68,7 +68,6 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         myTableView.refreshControl = refresh_controll
         refresh_controll.addTarget(self, action: #selector(self.refresh(sender:)), for: .valueChanged)
         
-        self.tabBarController?.delegate = self
         self.view.addSubview(myTableView)
     }
     
@@ -97,6 +96,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         super.viewWillAppear(animated)
         
         self.tabBarController?.navigationItem.title = "Movies"
+        self.tabBarController?.delegate = self
         let add = UIBarButtonItem(image: UIImage(named: "icon_add"), style: .plain, target: self, action: #selector(TapAddButton))
         self.tabBarController?.navigationItem.setRightBarButton(add, animated: true)
     }
