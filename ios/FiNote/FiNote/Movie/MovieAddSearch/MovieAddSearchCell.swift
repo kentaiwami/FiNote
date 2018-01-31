@@ -24,18 +24,18 @@ class MovieAddSearchCell: UITableViewCell {
         title = UILabel(frame: CGRect.zero)
         title.textAlignment = .left
         title.lineBreakMode = .byTruncatingTail
-        title.font = UIFont.systemFont(ofSize: 18)
+        title.font = UIFont(name: Font.helveticaneue_B.rawValue, size: 18)
         
         overview = UILabel(frame: CGRect.zero)
         overview.textAlignment = .left
         overview.lineBreakMode = .byTruncatingTail
         overview.numberOfLines = 0
-        overview.font = UIFont.systemFont(ofSize: 14)
+        overview.font = UIFont(name: Font.helveticaneue.rawValue, size: 14)
         
         release_date = UILabel(frame: CGRect.zero)
         release_date.textAlignment = .left
         release_date.lineBreakMode = .byWordWrapping
-        release_date.font = UIFont.systemFont(ofSize: 14)
+        release_date.font = UIFont(name: Font.helveticaneue.rawValue, size: 14)
         release_date.textColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
         
         release_date_icon = UIImageView(frame: CGRect.zero)
@@ -52,7 +52,7 @@ class MovieAddSearchCell: UITableViewCell {
         added_msg.textAlignment = .left
         added_msg.text = "追加済み"
         added_msg.textColor = UIColor.hex(Color.main.rawValue, alpha: 0.8)
-        added_msg.font = UIFont.systemFont(ofSize: 14)
+        added_msg.font = UIFont(name: Font.helveticaneue.rawValue, size: 14)
         
         contentView.addSubview(title)
         contentView.addSubview(overview)
