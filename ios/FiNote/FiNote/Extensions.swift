@@ -27,7 +27,7 @@ extension UIColor {
     }
 }
 
-extension UITableView {
+extension UIScrollView {
     public enum ScrollDirection {
         case top
     }
@@ -69,3 +69,8 @@ extension Date {
     }
 }
 
+extension UIViewController {
+    func GetClassName() -> String {
+        return String(describing: type(of: self))
+    }
+}

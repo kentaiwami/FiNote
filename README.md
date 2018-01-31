@@ -37,6 +37,9 @@ request：
 }
 response：
 {
+    "username": "hogehoge",
+    "email": "hoge@hoge.com",
+    "birthday": 1900,
     "id": 1
 }
 ```
@@ -48,10 +51,13 @@ endpoint：api/v1/user/signin/
 request：
 {
     "username": "hogehoge",
-    "password": "hogehoge",
+    "password": "hogehoge"
 }
 response：
 {
+    "username": "hogehoge",
+    "email": "hoge@hoge.com",
+    "birthday": 1900,
     "id": 1
 }
 ```
@@ -88,6 +94,22 @@ response：
 }
 ```
 
+### Update Birth Year
+```
+method：POST
+endpoint：api/v1/user/update/birthyear/
+request：
+{
+    "username": "hogehoge",
+    "password": "hogehoge",
+    "birthyear": 1999
+}
+response：
+{
+    "user": "hogehoge"
+}
+```
+
 ### Add Movie
 ```
 method：POST
@@ -97,8 +119,8 @@ request：
     "tmdb_id": 12,
     "username": "hogehoge",
     "password": "hogehoge",
-    "dvd": 1,
-    "fav": 0,
+    "dvd": true,
+    "fav": false,
     "onomatopoeia": ["hoge","fuga", "piyo"],
     "title": "movie title",
     "genre": [28,12,16],
@@ -119,15 +141,8 @@ response：
 "results": [
         {
             "add": "2018-01-12T00:02:37.612840",
-            "id": "12345",
+            "id": 12345,
             "title": "hoge2",
-            "poster": "http://",
-            "onomatopoeia": ["hoge","fuga","piyo"]
-        },
-        {
-            "add": "2018-01-12T00:01:54.697333",
-            "id": "1234",
-            "title": "hoge",
             "poster": "http://",
             "onomatopoeia": ["hoge","fuga","piyo"]
         }
@@ -143,7 +158,7 @@ response：
         {
             "add": "2018-01-12T00:02:37.612840",
             "title": "hoge2",
-            "poster": "http://",
+            "poster": "http://...",
             "onomatopoeia": ["hoge","fuga","piyo"],
             "dvd": true,
             "fav": false,
@@ -189,7 +204,7 @@ request：
 {
     "tmdb_id": 12,
     "username": "hogehoge",
-    "password": "hogehoge",
+    "password": "hogehoge"
 }
 response：
 {
@@ -209,11 +224,6 @@ response：
             "title": "title_hoge",
             "poster": "http://hogehoge.com/hoge.jpg",
             "overview": "overview_hoge"
-        },
-        {
-            "title": "title_fuga",
-            "poster": "http://fugafuga.com/fuga.jpg",
-            "overview": "overview_fuga"
         }
     ]
 }
@@ -233,7 +243,7 @@ response：
                 "poster": "https://hoge.com/top.png",
                 "title": "title"
             }
-        ],
+        ]
         "20": [
             {
                 "count": 75,
@@ -241,7 +251,7 @@ response：
                 "poster": "https://hoge.com/top.png",
                 "title": "title"
             }
-        ],
+        ]
         "30": [
             {
                 "count": 40,
@@ -249,7 +259,7 @@ response：
                 "poster": "https://hoge.com/top.png",
                 "title": "title"
             }
-        ],
+        ]
         "40": [
             {
                 "count": 8,
@@ -257,7 +267,7 @@ response：
                 "poster": "https://hoge.com/top.png",
                 "title": "title"
             }
-        ],
+        ]
         "50": [
             {
                 "count": 31,
@@ -275,6 +285,7 @@ response：
 method：GET
 endpoint：api/v1/movie/compare/?user_id=2&page=1
 response：
+"next": true,
 "results": [
         {
             "title": "hoge2",
@@ -283,20 +294,12 @@ response：
                 {
                     "count": 15,
                     "name": "hoge"
-                },
-                {
-                    "count": 10,
-                    "name": "fuga"
                 }
-            ],
+            ]
             "social": [
                 {
                     "count": 30,
                     "name": "piyo"
-                },
-                {
-                    "count": 56,
-                    "name": "hogehoge"
                 }
             ]
         }
@@ -314,11 +317,6 @@ response：
             "title": "title_hoge",
             "poster": "http://hogehoge.com/hoge.jpg",
             "overview": "overview_hoge"
-        },
-        {
-            "title": "title_fuga",
-            "poster": "http://fugafuga.com/fuga.jpg",
-            "overview": "overview_fuga"
         }
     ]
 }
@@ -357,3 +355,18 @@ response：
 
 
 ![Yahoo Japan Movie](img/yahoo_movie_logo.png)
+
+
+## 使用ライブラリ
+[Eureka](https://github.com/xmartlabs/Eureka)  
+[SwiftyJSON](https://github.com/SwiftyJSON/SwiftyJSON)  
+[Alamofire](https://github.com/Alamofire/Alamofire)  
+[AlamofireImage](https://github.com/Alamofire/AlamofireImage)  
+[KeychainAccess](https://github.com/kishikawakatsumi/KeychainAccess)  
+[TinyConstraints](https://github.com/roberthein/TinyConstraints)  
+[PopupDialog](https://github.com/Orderella/PopupDialog)  
+[NVActivityIndicatorView](https://github.com/ninjaprox/NVActivityIndicatorView)  
+[StatusProvider](https://github.com/mariohahn/StatusProvider)  
+[Floaty](https://github.com/kciter/Floaty)  
+[PromiseKit](https://github.com/mxcl/PromiseKit)  
+[UPCarouselFlowLayout](https://github.com/ink-spot/UPCarouselFlowLayout)  

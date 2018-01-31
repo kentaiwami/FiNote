@@ -96,7 +96,6 @@ class GetMovieViewSet(viewsets.ViewSet):
         return Response(results)
 
 
-
 class GetOnomatopoeiaChoiceViewSet(viewsets.ViewSet):
     @staticmethod
     def list(request):
@@ -349,14 +348,17 @@ class GetOnomatopoeiaComparisonViewSet(viewsets.ViewSet):
             raise serializers.ValidationError('該当データが見つかりませんでした')
 
         page = int(request.GET.get('page'))
-        end = page * 5
-        start = end - 5
+        count = 15
+        end = page * count
+        start = end - count
 
         # ユーザが追加した映画を取得
-        movie_users = Movie_User.objects.filter(user=user).order_by('-created_at')[start:end]
+        movie_users = Movie_User.objects.filter(user=user).order_by('-created_at')
+
+        # return Response({'test': len(movie_users)})
 
         res = []
-        for movie_user in movie_users:
+        for movie_user in movie_users[start:end]:
             # ユーザのMovie User Onomatopoeiaを取得
             movie_user_onomatopoeia_list = Movie_User_Onomatopoeia.objects.filter(movie_user=movie_user)
 
@@ -372,7 +374,7 @@ class GetOnomatopoeiaComparisonViewSet(viewsets.ViewSet):
             for movie_onomatopoeia in movie_onomatopoeia_list.filter(onomatopoeia__in=user_onomatopoeia_obj_list):
                 user_social.append({
                     'name': movie_onomatopoeia.onomatopoeia.name,
-                    'count': movie_onomatopoeia.count - 1
+                    'count': movie_onomatopoeia.count
                 })
 
             # 他ユーザが追加したオノマトペを抽出
@@ -390,14 +392,25 @@ class GetOnomatopoeiaComparisonViewSet(viewsets.ViewSet):
                 'social': social
             })
 
-        return Response({'results': res})
+        # 次のページに値があるかを確認
+        end = (page+1) * count
+        start = end - count
+
+        next = False
+        if len(movie_users[start:end]) != 0:
+            next = True
+
+        return Response({
+            'results': res,
+            'next': next
+        })
 
 
 class GetMovieOnomatopoeiaContainViewSet(viewsets.ViewSet):
     @staticmethod
     def list(request):
         """
-        指定したオノマトペを含む映画を返す
+        指定したオノマトペが多く付与されている映画を返す
 
         :param request: URLクエリにonomatopoeia含む
         :return:        title, overview, poster
@@ -410,20 +423,26 @@ class GetMovieOnomatopoeiaContainViewSet(viewsets.ViewSet):
         onomatopoeia = request.GET.get('onomatopoeia')
         onomatopoeia_list = Onomatopoeia.objects.filter(name__contains=onomatopoeia)
 
-        # 上記で取得したオノマトペを含む映画を取得
-        movie_list = []
+        # 該当オノマトペが追加されているMovie_Onomatopoeia(映画、カウント、オノマトペ)オブジェクトを取得
+        qs = Movie_Onomatopoeia.objects.none()
         for onomatopoeia in onomatopoeia_list:
-            movies = Movie.objects.filter(onomatopoeia=onomatopoeia)
-            movie_list += list(movies)
+            movie_onomatopoeia_list = Movie_Onomatopoeia.objects.filter(onomatopoeia=onomatopoeia)
+            qs = qs | movie_onomatopoeia_list
 
-        # 映画の情報をdictとして生成
+        qs_ordered = qs.order_by('-count')
+        tmp_tmdb_ids = []
         res = []
-        for movie in movie_list:
-            res.append({
-                "title": movie.title,
-                "overview": movie.overview,
-                "poster": movie.poster
-            })
+        for movie_onomatopoeia_obj in qs_ordered:
+            if len([tmdb_id for tmdb_id in tmp_tmdb_ids if tmdb_id == movie_onomatopoeia_obj.movie.tmdb_id]) == 0:
+                tmp_tmdb_ids.append(movie_onomatopoeia_obj.movie.tmdb_id)
+                res.append({
+                    "title": movie_onomatopoeia_obj.movie.title,
+                    "overview": movie_onomatopoeia_obj.movie.overview,
+                    "poster": movie_onomatopoeia_obj.movie.poster
+                })
+
+            if len(tmp_tmdb_ids) >= 50:
+                break
 
         return Response({'results': res})
 
@@ -474,7 +493,7 @@ class GetSearchMovieTitleViewSet(viewsets.ViewSet):
         for li_tag in li_tag_list:
             title = li_tag.find('h3', class_='text-xsmall text-overflow').attrs['title']
             id = li_tag.attrs['data-cinema-id']
-            title_id_list.append({'title': title, 'id': id})
+            title_id_list.append({'title': title, 'id': int(id)})
 
         res.append({'total': total_resutls_count})
         res.append({'results': title_id_list})

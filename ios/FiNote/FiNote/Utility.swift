@@ -48,10 +48,36 @@ func IsHTTPStatus(statusCode: Int?) -> Bool {
 }
 
 func ShowStandardAlert(title: String, msg: String, vc: UIViewController) {
-    let popup = PopupDialog(title: title, message: msg)
     let button = DefaultButton(title: "OK", dismissOnTap: true) {}
+    let popup = PopupDialog(title: title, message: msg)
+    popup.transitionStyle = .zoomIn
     popup.addButtons([button])
     vc.present(popup, animated: true, completion: nil)
+}
+
+func UIColorToUIImage(hex: String, alpha: CGFloat) -> UIImage? {
+    let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
+    UIGraphicsBeginImageContext(rect.size)
+    
+    let context = UIGraphicsGetCurrentContext()
+    context!.setFillColor(UIColor.hex(hex, alpha: alpha).cgColor)
+    context!.fill(rect)
+    
+    let image = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    
+    return image
+}
+
+func AddAttributedTextLineHeight(height: Int, text: NSMutableAttributedString) -> NSMutableAttributedString {
+    let lineHeight = CGFloat(height)
+    let paragraphStyle = NSMutableParagraphStyle()
+    paragraphStyle.minimumLineHeight = lineHeight
+    paragraphStyle.maximumLineHeight = lineHeight
+    paragraphStyle.lineBreakMode = .byTruncatingTail
+    text.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, text.length))
+    
+    return text
 }
 
 class Indicator {

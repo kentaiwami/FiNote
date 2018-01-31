@@ -1,5 +1,5 @@
 //
-//  MovieDetailViewController.swift
+//  MoviesDetailViewController.swift
 //  FiNote
 //
 //  Created by 岩見建汰 on 2018/01/25.
@@ -16,9 +16,10 @@ import PopupDialog
 import TinyConstraints
 import Floaty
 
-class MovieDetailViewController: UIViewController {
 
-    var movie_id = ""
+class MoviesDetailViewController: UIViewController {
+
+    var movie_id = 0
     var user_id = ""
     var username = ""
     var password = ""
@@ -27,7 +28,6 @@ class MovieDetailViewController: UIViewController {
     var contentView = UIView()
     var tmp_poster = UIImageView()
     var latestView = UIView()
-    var is_done_api = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +43,7 @@ class MovieDetailViewController: UIViewController {
         CallMovieAPI()
     }
     
-    func SetMovieID(movie_id: String) {
+    func SetMovieID(movie_id: Int) {
         self.movie_id = movie_id
     }
     
@@ -91,6 +91,8 @@ class MovieDetailViewController: UIViewController {
         delete_item.icon = UIImage(named: "icon_trash")
         delete_item.handler = { (_) in
             let popup = PopupDialog(title: "Movie Delete", message: "本当に削除しますか？")
+            popup.transitionStyle = .zoomIn
+            
             let delete = DestructiveButton(title: "Delete", action: {
                 self.CallDeleteMovieAPI()
             })
@@ -101,8 +103,8 @@ class MovieDetailViewController: UIViewController {
         }
         
         let floaty = Floaty()
-        floaty.addItem("Edit Info", icon: UIImage(named: "icon_list")) { (hoge) in
-            let movie_info_VC = MovieUserInfoViewController()
+        floaty.addItem("Edit Info", icon: UIImage(named: "icon_list")) { (_) in
+            let movie_info_VC = MoviesUserInfoViewController()
             movie_info_VC.SetDVD(dvd: self.movie.dvd)
             movie_info_VC.SetFAV(fav: self.movie.fav)
             movie_info_VC.SetOnomatopoeia(onomatopoeia: self.movie.onomatopoeia)
@@ -128,7 +130,7 @@ class MovieDetailViewController: UIViewController {
         titleView.textAlignment = .center
         titleView.lineBreakMode = .byWordWrapping
         titleView.numberOfLines = 0
-        titleView.font = UIFont.systemFont(ofSize: 22)
+        titleView.font = UIFont(name: Font.helveticaneue_B.rawValue, size: 22)
         titleView.text = movie.title
         contentView.addSubview(titleView)
         
@@ -146,8 +148,8 @@ class MovieDetailViewController: UIViewController {
         overviewView.textAlignment = .center
         overviewView.lineBreakMode = .byWordWrapping
         overviewView.numberOfLines = 0
-        overviewView.font = UIFont.systemFont(ofSize: 16)
-        overviewView.text = movie.overview
+        overviewView.font = UIFont(name: Font.helveticaneue.rawValue, size: 16)
+        overviewView.attributedText = AddAttributedTextLineHeight(height: 22, text: NSMutableAttributedString(string: movie.overview))
         contentView.addSubview(overviewView)
 
         overviewView.topToBottom(of: latestView, offset: 10)
@@ -171,7 +173,7 @@ class MovieDetailViewController: UIViewController {
         add_icon.height(icon_wh)
         
         let add_date = UILabel()
-        add_date.font = UIFont.systemFont(ofSize: 16)
+        add_date.font = UIFont(name: Font.helveticaneue.rawValue, size: 16)
         add_date.textColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
         add_date.text = movie.add
         contentView.addSubview(add_date)
@@ -202,8 +204,6 @@ class MovieDetailViewController: UIViewController {
                 if IsHTTPStatus(statusCode: response.response?.statusCode) {
                     self.movie = Movie().GetData(json: obj)
                     self.tmp_poster.af_setImage(withURL: URL(string: API.poster_base.rawValue+self.movie.poster)!)
-                    
-                    self.is_done_api = true
                     self.DrawViews()
                 }else {
                     ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)

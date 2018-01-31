@@ -37,7 +37,12 @@ class SignUpUserViewSet(viewsets.ViewSet):
             birthyear=data['birthyear'],
         )
 
-        return Response({'id': user.pk})
+        return Response({
+            'username': user.username,
+            'id': user.pk,
+            'email': user.email,
+            'birthyear': user.birthyear
+        })
 
 
 class SignInUserViewSet(viewsets.ViewSet):
@@ -66,7 +71,12 @@ class SignInUserViewSet(viewsets.ViewSet):
         if not user.check_password(data['password'].encode('utf-8')):
             raise serializers.ValidationError('パスワードが間違っています')
 
-        return Response({'id': user.pk})
+        return Response({
+            'username': user.username,
+            'id': user.pk,
+            'email': user.email,
+            'birthyear': user.birthyear
+        })
 
 
 class UpdatePasswordViewSet(viewsets.ViewSet):
@@ -131,6 +141,39 @@ class UpdateEmailViewSet(viewsets.ViewSet):
             raise serializers.ValidationError('パスワードが違います')
 
         user.email = data['new_email']
+        user.save()
+
+        return Response({'username': str(user)})
+
+
+class UpdateBirthYearViewSet(viewsets.ViewSet):
+    queryset = AuthUser.objects.all()
+    serializer_class = UpdateBirthYearSerializer
+
+    @staticmethod
+    def create(request):
+        """
+        誕生年を変更する
+
+        :param request: username, password, birthyear
+        :return:        username
+        """
+
+        data = request.data
+        serializer = UpdateBirthYearSerializer(data=data)
+
+        if not (serializer.is_valid() and request.method == 'POST'):
+            raise serializers.ValidationError(serializer.errors)
+
+        try:
+            user = AuthUser.objects.get(username=data["username"])
+        except ObjectDoesNotExist:
+            raise serializers.ValidationError('ユーザが見つかりませんでした')
+
+        if not user.check_password(data['password'].encode('utf-8')):
+            raise serializers.ValidationError('パスワードが違います')
+
+        user.birthyear = data['birthyear']
         user.save()
 
         return Response({'username': str(user)})

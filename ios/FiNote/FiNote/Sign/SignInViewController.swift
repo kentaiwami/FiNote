@@ -7,7 +7,6 @@
 //
 
 import Eureka
-import PopupDialog
 
 
 class SignInViewController: FormViewController {
@@ -87,14 +86,10 @@ class SignInViewController: FormViewController {
                 $0.tag = "signin"
             }
             .onCellSelection {  cell, row in
-                let popup = PopupDialog(title: "Sign In Error", message: "必須項目を入力してください")
-                let button = DefaultButton(title: "OK", dismissOnTap: true) {}
-                popup.addButtons([button])
-                
                 if IsCheckFormValue(form: self.form) {
-                    CallSignAPI(msg: "Sign In Now", label: "sign-in", endpoint: API.signin.rawValue, values: self.form.values(), vc: self)
+                    SignCommon().CallSignAPI(msg: "Sign In Now", label: "sign-in", endpoint: API.signin.rawValue, values: self.form.values(), vc: self)
                 }else {
-                    self.present(popup, animated: true, completion: nil)
+                    ShowStandardAlert(title: "Sign In Error", msg: "必須項目を入力してください", vc: self)
                 }
             }
     }

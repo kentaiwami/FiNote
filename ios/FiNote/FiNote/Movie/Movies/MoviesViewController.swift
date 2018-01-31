@@ -13,8 +13,8 @@ import Alamofire
 import AlamofireImage
 import KeychainAccess
 import PopupDialog
-import TinyConstraints
 import StatusProvider
+
 
 class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITabBarControllerDelegate, UISearchResultsUpdating, StatusController {
     
@@ -25,17 +25,25 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var searchController = UISearchController()
     var refresh_controll = UIRefreshControl()
     var user_id = ""
+    var isAdded = false
+    var isStartup = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let keychain = Keychain()
         user_id = (try! keychain.getString("id"))!
+        
         self.CallMoviesAPI()
     }
     
+    func TapAddButton() {
+        let add_searchVC = MovieAddSearchViewController()
+        self.navigationController!.pushViewController(add_searchVC, animated: true)
+    }
+    
     func ShowLoadData() {
-        Init()
+        isAdded = true
         
         let main_width = UIScreen.main.bounds.width
         let width = main_width * 0.2
@@ -60,13 +68,10 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         myTableView.refreshControl = refresh_controll
         refresh_controll.addTarget(self, action: #selector(self.refresh(sender:)), for: .valueChanged)
         
-        self.tabBarController?.delegate = self
         self.view.addSubview(myTableView)
     }
     
     func ShowNoDataView() {
-        Init()
-        
         let status = Status(title: "No Data", description: "映画を登録するとデータが表示されます", actionTitle: "Reload", image: nil) {
             self.hideStatus()
             self.CallMoviesAPI()
@@ -91,7 +96,29 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         super.viewWillAppear(animated)
         
         self.tabBarController?.navigationItem.title = "Movies"
-        myTableView.reloadData()
+        self.tabBarController?.delegate = self
+        let add = UIBarButtonItem(image: UIImage(named: "icon_add"), style: .plain, target: self, action: #selector(TapAddButton))
+        self.tabBarController?.navigationItem.setRightBarButton(add, animated: true)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // 起動時はスルー
+        if !isStartup {
+            if appdelegate.movies.count == 0 {
+                Init()
+                ShowNoDataView()
+            }else {
+                if isAdded {
+                    myTableView.reloadData()
+                }else {
+                    ShowLoadData()
+                }
+            }
+        }
+        
+        isStartup = false
     }
 
     override func didReceiveMemoryWarning() {
@@ -142,7 +169,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             tmp_lists = appdelegate.movies
         }
         
-        let detailVC = MovieDetailViewController()
+        let detailVC = MoviesDetailViewController()
         detailVC.SetMovieID(movie_id: tmp_lists[indexPath.row].id)
         self.navigationController!.pushViewController(detailVC, animated: true)
     }
@@ -164,12 +191,13 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func CallMoviesAPI() {
+        let urlString = API.base.rawValue+API.v1.rawValue+API.movies.rawValue+"?user_id=\(self.user_id)"
         let activityData = ActivityData(message: "Get Movies", type: .lineScaleParty)
         NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
         
         DispatchQueue(label: "get-movies").async {
-            let urlString = API.base.rawValue+API.v1.rawValue+API.movies.rawValue+"?user_id=\(self.user_id)"
             Alamofire.request(urlString, method: .get).responseJSON { (response) in
+                
                 NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
                 self.refresh_controll.endRefreshing()
                 
@@ -181,6 +209,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 
                 if IsHTTPStatus(statusCode: response.response?.statusCode) {
                     self.appdelegate.movies.removeAll()
+                    self.Init()
                     
                     for movie in obj["results"].arrayValue {
                         self.appdelegate.movies.append(Movies().GetData(json: movie))
@@ -190,7 +219,6 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
                         self.ShowNoDataView()
                     }else {
                         self.ShowLoadData()
-                        self.myTableView.reloadData()
                     }
                 }else {
                     ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
@@ -203,8 +231,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if viewController.restorationIdentifier! == "Movies" && preViewName == "Movies" {
             myTableView.scroll(to: .top, animated: true)
         }
-        
-        preViewName = viewController.restorationIdentifier!
+        preViewName = "Movies"
     }
 
 }

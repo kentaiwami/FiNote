@@ -15,6 +15,7 @@ enum API: String {
     case update = "update/"
     case password = "password/"
     case email = "email/"
+    case birthyear = "birthyear/"
     case movie = "movie/"
     case detail = "detail/"
     case movies = "movies/"
@@ -29,4 +30,5 @@ enum API: String {
     case titles = "titles/"
     case origin = "origin/"
     case poster_base = "https://image.tmdb.org/t/p/w300_and_h450_bestv2"
+    case tmdb_search = "https://api.themoviedb.org/3/search/movie"
 }
