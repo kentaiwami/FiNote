@@ -22,13 +22,13 @@ class MoviesCell: UITableViewCell {
         title = UILabel(frame: CGRect.zero)
         title.textAlignment = .left
         title.lineBreakMode = .byTruncatingTail
-        title.font = UIFont.systemFont(ofSize: 20)
+        title.font = UIFont(name: Font.helveticaneue_B.rawValue, size: 16)
         
         onomatopoeia = UILabel(frame: CGRect.zero)
         onomatopoeia.textAlignment = .left
         onomatopoeia.lineBreakMode = .byWordWrapping
         onomatopoeia.numberOfLines = 0
-        onomatopoeia.font = UIFont.systemFont(ofSize: 18)
+        onomatopoeia.font = UIFont(name: Font.helveticaneue.rawValue, size: 16)
         
         added_list_icon = UIImageView(frame: CGRect.zero)
         added_list_icon.image = UIImage(named: "icon_add_list")
@@ -37,7 +37,7 @@ class MoviesCell: UITableViewCell {
         
         add_date = UILabel(frame: CGRect.zero)
         add_date.textAlignment = .left
-        add_date.font = UIFont.systemFont(ofSize: 14)
+        add_date.font = UIFont(name: Font.helveticaneue.rawValue, size: 14)
         add_date.textColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
         
         contentView.addSubview(title)

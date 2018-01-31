@@ -14,5 +14,6 @@ enum Color: String {
 }
 
 enum Font: String {
-    case hiragino_w6 = "HiraginoSans-W6"
+    case helveticaneue_B = "HelveticaNeue-Bold"
+    case helveticaneue = "HelveticaNeue"
 }

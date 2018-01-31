@@ -119,7 +119,7 @@ class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UIC
     func CreateSection(text: String, isTop: Bool) {
         let label = UILabel(frame: CGRect.zero)
         label.text = text
-        label.font = UIFont(name: Font.hiragino_w6.rawValue, size: 20)
+        label.font = UIFont(name: Font.helveticaneue_B.rawValue, size: 20)
         contentView.addSubview(label)
         
         label.leading(to: contentView, offset: 20)
