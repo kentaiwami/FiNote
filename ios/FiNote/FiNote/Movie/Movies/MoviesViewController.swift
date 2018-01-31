@@ -25,7 +25,8 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var searchController = UISearchController()
     var refresh_controll = UIRefreshControl()
     var user_id = ""
-    var is_startup = true
+    var isAdded = false
+    var isStartup = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +43,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func ShowLoadData() {
-        Init()
+        isAdded = true
         
         let main_width = UIScreen.main.bounds.width
         let width = main_width * 0.2
@@ -67,13 +68,10 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         myTableView.refreshControl = refresh_controll
         refresh_controll.addTarget(self, action: #selector(self.refresh(sender:)), for: .valueChanged)
         
-        self.tabBarController?.delegate = self
         self.view.addSubview(myTableView)
     }
     
     func ShowNoDataView() {
-        Init()
-        
         let status = Status(title: "No Data", description: "映画を登録するとデータが表示されます", actionTitle: "Reload", image: nil) {
             self.hideStatus()
             self.CallMoviesAPI()
@@ -98,6 +96,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         super.viewWillAppear(animated)
         
         self.tabBarController?.navigationItem.title = "Movies"
+        self.tabBarController?.delegate = self
         let add = UIBarButtonItem(image: UIImage(named: "icon_add"), style: .plain, target: self, action: #selector(TapAddButton))
         self.tabBarController?.navigationItem.setRightBarButton(add, animated: true)
     }
@@ -105,17 +104,21 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        // 起動直後以外でこの画面を表示した際に、データ数に応じて画面を再描画
-        if !is_startup {
+        // 起動時はスルー
+        if !isStartup {
             if appdelegate.movies.count == 0 {
+                Init()
                 ShowNoDataView()
             }else {
-                ShowLoadData()
-                myTableView.reloadData()
+                if isAdded {
+                    myTableView.reloadData()
+                }else {
+                    ShowLoadData()
+                }
             }
         }
         
-        is_startup = false
+        isStartup = false
     }
 
     override func didReceiveMemoryWarning() {
@@ -206,6 +209,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 
                 if IsHTTPStatus(statusCode: response.response?.statusCode) {
                     self.appdelegate.movies.removeAll()
+                    self.Init()
                     
                     for movie in obj["results"].arrayValue {
                         self.appdelegate.movies.append(Movies().GetData(json: movie))
@@ -215,7 +219,6 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
                         self.ShowNoDataView()
                     }else {
                         self.ShowLoadData()
-                        self.myTableView.reloadData()
                     }
                 }else {
                     ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
