@@ -67,6 +67,17 @@ class UserViewController: FormViewController {
                 $0.tag = "birthyear"
             }
         
+        form +++ Section()
+            <<< ButtonRow(){
+                $0.title = "Sign Out"
+                $0.baseCell.backgroundColor = UIColor.hex(Color.red.rawValue, alpha: 1.0)
+                $0.baseCell.tintColor = UIColor.white
+                $0.tag = "sign_out"
+            }
+            .onCellSelection {  cell, row in
+                
+            }
+
         UIView.setAnimationsEnabled(true)
     }
     
