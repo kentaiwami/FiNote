@@ -130,7 +130,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
         titleView.textAlignment = .center
         titleView.lineBreakMode = .byWordWrapping
         titleView.numberOfLines = 0
-        titleView.font = UIFont.systemFont(ofSize: 22)
+        titleView.font = UIFont(name: Font.helveticaneue_B.rawValue, size: 20)
         titleView.text = movies.first!.title
         self.view.addSubview(titleView)
         

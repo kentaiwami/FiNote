@@ -22,7 +22,7 @@ class SocialComparisonCell: UICollectionViewCell {
         super.init(frame: frame)
         
         onomatopoeia = UILabel()
-        onomatopoeia.font = UIFont.systemFont(ofSize: 16)
+        onomatopoeia.font = UIFont(name: Font.helveticaneue.rawValue, size: 16)
         
         icon = UIImageView(frame: CGRect.zero)
         icon.image = UIImage(named: "icon_users")
@@ -30,7 +30,7 @@ class SocialComparisonCell: UICollectionViewCell {
         icon.tintColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
         
         count = UILabel(frame: CGRect.zero)
-        count.font = UIFont.systemFont(ofSize: 14)
+        count.font = UIFont(name: Font.helveticaneue.rawValue, size: 14)
         count.textColor = UIColor.hex(Color.gray.rawValue, alpha: 1.0)
         
         contentView.addSubview(onomatopoeia)
