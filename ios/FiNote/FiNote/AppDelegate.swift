@@ -56,9 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if username == nil {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let signVC = storyboard.instantiateViewController(withIdentifier: "Sign")
-            let nav = UINavigationController()
-            nav.viewControllers = [signVC]
-            self.window!.rootViewController = nav
+            self.window!.rootViewController = signVC
             self.window?.makeKeyAndVisible()
         }
         return true
