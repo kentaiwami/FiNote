@@ -131,9 +131,9 @@ class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, UITab
         }
         
         if search_results[indexPath.row].overview.count == 0 {
-            cell.overview.text = "no data"
+            cell.overview.attributedText = NSMutableAttributedString(string: "no data")
         }else {
-            cell.overview.text = search_results[indexPath.row].overview
+            cell.overview.attributedText = AddAttributedTextLineHeight(height: 22, text: NSMutableAttributedString(string: search_results[indexPath.row].overview))
         }
         
         if GetAppDelegate().movies.filter({$0.id == search_results[indexPath.row].id}).count == 0 {
