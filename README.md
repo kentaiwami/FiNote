@@ -33,7 +33,7 @@ request：
     "username": "hogehoge",
     "password": "hogehoge",
     "email": "hoge@hoge.com",
-    "birthday": 1900
+    "birthyear": 1900   (option)
 }
 response：
 {
