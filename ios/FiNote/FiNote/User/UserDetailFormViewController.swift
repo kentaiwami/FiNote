@@ -24,7 +24,7 @@ class UserDetailFormViewController: FormViewController {
     var username = ""
     var password = ""
     var email = ""
-    var birthyear = 0
+    var birthyear: Int? = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +43,13 @@ class UserDetailFormViewController: FormViewController {
         username = (try! keychain.get("username"))!
         password = (try! keychain.get("password"))!
         email = (try! keychain.get("email"))!
-        birthyear = Int((try! keychain.get("birthyear"))!)!
+        
+        if (try! keychain.get("birthyear"))! == "" {
+            birthyear = nil
+        }else {
+            birthyear = Int((try! keychain.get("birthyear"))!)!
+        }
+        
         
         Create()
         
@@ -222,7 +228,7 @@ class UserDetailFormViewController: FormViewController {
         return row
     }
     
-    func CreatePickerInputRow(value: Int) -> PickerInputRow<Int> {
+    func CreatePickerInputRow(value: Int?) -> PickerInputRow<Int> {
         let row = PickerInputRow<Int>()
         row.title = "BirthYear"
         row.value = value
