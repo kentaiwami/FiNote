@@ -39,7 +39,7 @@ response：
 {
     "username": "hogehoge",
     "email": "hoge@hoge.com",
-    "birthday": 1900,
+    "birthyear": 1900,
     "id": 1
 }
 ```
@@ -57,7 +57,7 @@ response：
 {
     "username": "hogehoge",
     "email": "hoge@hoge.com",
-    "birthday": 1900,
+    "birthyear": 1900,
     "id": 1
 }
 ```
