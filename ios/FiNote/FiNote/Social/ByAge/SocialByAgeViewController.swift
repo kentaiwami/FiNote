@@ -11,8 +11,10 @@ import NVActivityIndicatorView
 import SwiftyJSON
 import Alamofire
 import AlamofireImage
+import StatusProvider
+import KeychainAccess
 
-class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarControllerDelegate {
+class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarControllerDelegate, StatusController {
     
     var contentView: UIView!
     var latestView: UIView!
@@ -25,7 +27,14 @@ class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UIC
         super.viewDidLoad()
         
         self.view.backgroundColor = UIColor.clear
-        CallGetByAgeAPI()
+        
+        let keychain = Keychain()
+        if (try! keychain.get("birthyear"))! == "" {
+            let status = Status(title: "No View", description: "誕生年を登録していないため閲覧することができません。\nユーザ情報画面にて誕生年を登録すると閲覧することができます。")
+            show(status: status)
+        }else {
+            CallGetByAgeAPI()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
