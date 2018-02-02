@@ -33,7 +33,7 @@ class SignUpViewController: FormViewController {
         let birthyears = GetBirthYears()
 
         
-        form +++ Section("ユーザ情報")
+        form +++ Section(header: "ユーザ情報", footer: "Birth Yearは必須ではありません。ただし年代別ランキングを閲覧することができなくなります。この設定は後から変更することができます。")
             <<< TextRow(){
                 $0.title = "UserName"
                 $0.value = ""
@@ -108,26 +108,9 @@ class SignUpViewController: FormViewController {
             
             <<< PickerInputRow<Int>(""){
                 $0.title = "BirthYear"
-                $0.value = birthyears[0]
+                $0.value = nil
                 $0.options = birthyears
-                $0.add(rule: RuleRequired(msg: "必須項目です"))
-                $0.validationOptions = .validatesOnChange
                 $0.tag = "birthyear"
-            }
-            .onRowValidationChanged {cell, row in
-                let rowIndex = row.indexPath!.row
-                while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
-                    row.section?.remove(at: rowIndex + 1)
-                }
-                if !row.isValid {
-                    for (index, err) in row.validationErrors.map({ $0.msg }).enumerated() {
-                        let labelRow = LabelRow() {
-                            $0.title = err
-                            $0.cell.height = { 30 }
-                        }
-                        row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
-                    }
-                }
             }
         
         
@@ -136,10 +119,20 @@ class SignUpViewController: FormViewController {
                 $0.title = "Sign Up"
                 $0.baseCell.backgroundColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
                 $0.baseCell.tintColor = UIColor.white
-                $0.tag = "signup"
             }
             .onCellSelection {  cell, row in
                 if IsCheckFormValue(form: self.form) {
+                    // birth yearがnilのまま(未選択状態)であればパラメータを付与しない
+                    var param = [
+                        "username": self.form.values()["username"] as! String,
+                        "password": self.form.values()["password"] as! String,
+                        "email": self.form.values()["email"] as! String,
+                        ] as [String : Any]
+                    
+                    if self.form.values()["birthyear"]! != nil {
+                        param["birthyear"] = self.form.values()["birthyear"] as! Int
+                    }
+                    
                     SignCommon().CallSignAPI(msg: "Sign Up Now", label: "sign-up", endpoint: API.signup.rawValue, values: self.form.values(), vc: self)
                 }else {
                     ShowStandardAlert(title: "Sign Up Error", msg: "必須項目を入力してください", vc: self)

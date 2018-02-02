@@ -14,7 +14,7 @@ class SignUpUserViewSet(viewsets.ViewSet):
     def create(request):
         """
         ユーザを作成する
-        :param request: username, password, email, birthyear
+        :param request: username, password, email, birthyear(option)
         :return         user's pk
         """
 
@@ -30,11 +30,16 @@ class SignUpUserViewSet(viewsets.ViewSet):
         if User.objects.filter(email=data['email']).exists():
             raise serializers.ValidationError('このメールアドレスは既に使われています')
 
+        if 'birthyear' in data:
+            birthyear = data['birthyear']
+        else:
+            birthyear = None
+
         user = User.objects.create_user(
             username=data['username'],
             email=data['email'],
             password=data['password'],
-            birthyear=data['birthyear'],
+            birthyear=birthyear
         )
 
         return Response({

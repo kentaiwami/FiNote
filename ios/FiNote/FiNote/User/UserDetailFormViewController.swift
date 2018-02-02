@@ -24,7 +24,7 @@ class UserDetailFormViewController: FormViewController {
     var username = ""
     var password = ""
     var email = ""
-    var birthyear = 0
+    var birthyear: Int? = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +43,13 @@ class UserDetailFormViewController: FormViewController {
         username = (try! keychain.get("username"))!
         password = (try! keychain.get("password"))!
         email = (try! keychain.get("email"))!
-        birthyear = Int((try! keychain.get("birthyear"))!)!
+        
+        if (try! keychain.get("birthyear"))! == "" {
+            birthyear = nil
+        }else {
+            birthyear = Int((try! keychain.get("birthyear"))!)!
+        }
+        
         
         Create()
         
@@ -81,10 +87,16 @@ class UserDetailFormViewController: FormViewController {
                 "new_email": form.values()["new_email"] as! String
             ], base+API.email.rawValue)
         case "birthyear":
+            // formに値が設定されている場合はIntへ変換して代入
+            var birthyear_tmp: Int? = nil
+            if form.values()["birthyear"]! != nil {
+                birthyear_tmp = (form.values()["birthyear"] as! Int)
+            }
+            
             return ([
                 "username": username,
                 "password": form.values()["now_pass"] as! String,
-                "birthyear": form.values()["birthyear"] as! Int
+                "birthyear": birthyear_tmp
             ], base+API.birthyear.rawValue)
         default:
             return ([:], "")
@@ -116,9 +128,17 @@ class UserDetailFormViewController: FormViewController {
                         try! self.keychain.set(self.form.values()["new_email"] as! String, key: "email")
                     }
                     
+                    /*
+                     formにbirthyearがあるかどうかをはじめにチェック
+                     その後、birthyearの値がnilかどうかをチェック
+                     */
                     if self.form.values()["birthyear"] != nil {
-                        let tmp = self.form.values()["birthyear"] as! Int
-                        try! self.keychain.set(String(tmp), key: "birthyear")
+                        if self.form.values()["birthyear"]! != nil {
+                            let tmp = self.form.values()["birthyear"] as! Int
+                            try! self.keychain.set(String(tmp), key: "birthyear")
+                        }else {
+                            try! self.keychain.set("", key: "birthyear")
+                        }
                     }
                     
                     // 成功時のポップアップ
@@ -154,6 +174,7 @@ class UserDetailFormViewController: FormViewController {
             section.append(CreateTextRow(title: "新しいアドレス", tag: "new_email", disabled: false))
         case "birthyear":
             screen_title = "Edit birthyear"
+            section.append(CreatePassWordRow(title: "パスワード", tag: "now_pass"))
             section.append(CreatePickerInputRow(value: birthyear))
         default:
             screen_title = ""
@@ -222,7 +243,7 @@ class UserDetailFormViewController: FormViewController {
         return row
     }
     
-    func CreatePickerInputRow(value: Int) -> PickerInputRow<Int> {
+    func CreatePickerInputRow(value: Int?) -> PickerInputRow<Int> {
         let row = PickerInputRow<Int>()
         row.title = "BirthYear"
         row.value = value
