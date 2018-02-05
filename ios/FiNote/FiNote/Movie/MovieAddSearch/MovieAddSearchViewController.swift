@@ -124,13 +124,13 @@ class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, UITab
             placeholderImage: UIImage(named: "no_image")
         )
         
-        if search_results[indexPath.row].release_date.count == 0 {
+        if search_results[indexPath.row].release_date.isEmpty {
             cell.release_date.text = "no data"
         }else {
             cell.release_date.text = search_results[indexPath.row].release_date
         }
         
-        if search_results[indexPath.row].overview.count == 0 {
+        if search_results[indexPath.row].overview.isEmpty {
             cell.overview.attributedText = NSMutableAttributedString(string: "no data")
         }else {
             cell.overview.attributedText = AddAttributedTextLineHeight(height: 22, text: NSMutableAttributedString(string: search_results[indexPath.row].overview))
