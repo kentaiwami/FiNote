@@ -28,4 +28,4 @@ class UpdateEmailSerializer(serializers.Serializer):
 class UpdateBirthYearSerializer(serializers.Serializer):
     username = serializers.CharField(allow_blank=False, allow_null=False, required=True)
     password = serializers.CharField(allow_blank=False, allow_null=False, required=True)
-    birthyear = serializers.IntegerField(allow_null=True, required=True)
+    birthyear = serializers.IntegerField(allow_null=True, required=False)

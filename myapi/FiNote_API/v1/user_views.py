@@ -160,7 +160,7 @@ class UpdateBirthYearViewSet(viewsets.ViewSet):
         """
         誕生年を変更する
 
-        :param request: username, password, birthyear
+        :param request: username, password, birthyear(option)
         :return:        username
         """
 
@@ -178,7 +178,12 @@ class UpdateBirthYearViewSet(viewsets.ViewSet):
         if not user.check_password(data['password'].encode('utf-8')):
             raise serializers.ValidationError('パスワードが違います')
 
-        user.birthyear = data['birthyear']
+        if 'birthyear' in data:
+            birthyear = data['birthyear']
+        else:
+            birthyear = None
+
+        user.birthyear = birthyear
         user.save()
 
         return Response({'username': str(user)})
