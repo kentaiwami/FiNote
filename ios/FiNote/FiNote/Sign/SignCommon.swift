@@ -14,7 +14,7 @@ import NVActivityIndicatorView
 
 
 class SignCommon {
-    func CallSignAPI(msg: String, label: String, endpoint: String, values: [String:Any?], vc: UIViewController) {
+    func CallSignAPI(msg: String, label: String, endpoint: String, values: [String:Any], vc: UIViewController) {
         let activityData = ActivityData(message: msg, type: .lineScaleParty)
         let urlString = API.base.rawValue+API.v1.rawValue+API.user.rawValue+endpoint
 

@@ -15,11 +15,17 @@ func GetAppDelegate() -> AppDelegate {
 }
 
 
-func GetBirthYears() -> [Int] {
+func GetBirthYears() -> [String] {
     let date = Date()
     let calendar = Calendar.current
     let year = calendar.component(.year, from: date)
-    return [Int](year-59...year).reversed()
+    
+    var array = ["誕生年を登録しない"]
+    for i in (year-59...year) {
+        array.append(String(i))
+    }
+    
+    return array
 }
 
 func IsCheckFormValue(form: Form) -> Bool {
