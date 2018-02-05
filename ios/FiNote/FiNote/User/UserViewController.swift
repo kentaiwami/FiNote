@@ -11,7 +11,7 @@ import Eureka
 import KeychainAccess
 import PopupDialog
 
-class UserViewController: FormViewController {
+class UserViewController: FormViewController, UITabBarControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +24,7 @@ class UserViewController: FormViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.tabBarController?.delegate = self
         self.tabBarController?.navigationItem.title = "User"
         self.tabBarController?.navigationItem.setRightBarButton(nil, animated: false)
     }
