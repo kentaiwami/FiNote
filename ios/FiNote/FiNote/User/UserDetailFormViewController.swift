@@ -24,7 +24,7 @@ class UserDetailFormViewController: FormViewController {
     var username = ""
     var password = ""
     var email = ""
-    var birthyear: Int? = 0
+    var birthyear = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,15 +43,9 @@ class UserDetailFormViewController: FormViewController {
         username = (try! keychain.get("username"))!
         password = (try! keychain.get("password"))!
         email = (try! keychain.get("email"))!
+        birthyear = (try! keychain.get("birthyear"))!
         
-        if (try! keychain.get("birthyear"))! == "" {
-            birthyear = nil
-        }else {
-            birthyear = Int((try! keychain.get("birthyear"))!)!
-        }
-        
-        
-        Create()
+        CreateForm()
         
         self.navigationItem.title = screen_title
         let check = UIBarButtonItem(image: UIImage(named: "icon_check"), style: .plain, target: self, action: #selector(TapCheckButton))
@@ -87,17 +81,17 @@ class UserDetailFormViewController: FormViewController {
                 "new_email": form.values()["new_email"] as! String
             ], base+API.email.rawValue)
         case "birthyear":
-            // formに値が設定されている場合はIntへ変換して代入
-            var birthyear_tmp: Int? = nil
-            if form.values()["birthyear"]! != nil {
-                birthyear_tmp = (form.values()["birthyear"] as! Int)
+            var param = [
+                "username": username,
+                "password": form.values()["now_pass"] as! String
+            ] as [String:Any]
+            
+            let birthyear_tmp = form.values()["birthyear"] as! String
+            if let birthyear = Int(birthyear_tmp) {
+                param["birthyear"] = birthyear
             }
             
-            return ([
-                "username": username,
-                "password": form.values()["now_pass"] as! String,
-                "birthyear": birthyear_tmp
-            ], base+API.birthyear.rawValue)
+            return (param, base+API.birthyear.rawValue)
         default:
             return ([:], "")
         }
@@ -128,14 +122,10 @@ class UserDetailFormViewController: FormViewController {
                         try! self.keychain.set(self.form.values()["new_email"] as! String, key: "email")
                     }
                     
-                    /*
-                     formにbirthyearがあるかどうかをはじめにチェック
-                     その後、birthyearの値がnilかどうかをチェック
-                     */
                     if self.form.values()["birthyear"] != nil {
-                        if self.form.values()["birthyear"]! != nil {
-                            let tmp = self.form.values()["birthyear"] as! Int
-                            try! self.keychain.set(String(tmp), key: "birthyear")
+                        let tmp_birthyear = self.form.values()["birthyear"] as! String
+                        if let _ = Int(tmp_birthyear) {
+                            try! self.keychain.set(tmp_birthyear, key: "birthyear")
                         }else {
                             try! self.keychain.set("", key: "birthyear")
                         }
@@ -156,7 +146,7 @@ class UserDetailFormViewController: FormViewController {
         }
     }
     
-    func Create() {
+    func CreateForm() {
         UIView.setAnimationsEnabled(false)
         form.removeAll()
         
@@ -243,11 +233,17 @@ class UserDetailFormViewController: FormViewController {
         return row
     }
     
-    func CreatePickerInputRow(value: Int?) -> PickerInputRow<Int> {
-        let row = PickerInputRow<Int>()
+    func CreatePickerInputRow(value: String) -> PickerInputRow<String> {
+        let options = GetBirthYears()
+        var birthyear = value
+        if value.isEmpty {
+            birthyear = options[0]
+        }
+        
+        let row = PickerInputRow<String>()
         row.title = "BirthYear"
-        row.value = value
-        row.options = GetBirthYears()
+        row.value = birthyear
+        row.options = options
         row.tag = "birthyear"
         return row
     }

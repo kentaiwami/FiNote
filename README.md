@@ -102,7 +102,7 @@ request：
 {
     "username": "hogehoge",
     "password": "hogehoge",
-    "birthyear": 1999
+    "birthyear": 1900   (option)
 }
 response：
 {

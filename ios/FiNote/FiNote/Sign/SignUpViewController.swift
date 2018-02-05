@@ -106,9 +106,9 @@ class SignUpViewController: FormViewController {
             }
             
             
-            <<< PickerInputRow<Int>(""){
+            <<< PickerInputRow<String>(""){
                 $0.title = "BirthYear"
-                $0.value = nil
+                $0.value = birthyears[0]
                 $0.options = birthyears
                 $0.tag = "birthyear"
             }
@@ -122,18 +122,18 @@ class SignUpViewController: FormViewController {
             }
             .onCellSelection {  cell, row in
                 if IsCheckFormValue(form: self.form) {
-                    // birth yearがnilのまま(未選択状態)であればパラメータを付与しない
                     var param = [
                         "username": self.form.values()["username"] as! String,
                         "password": self.form.values()["password"] as! String,
                         "email": self.form.values()["email"] as! String,
                         ] as [String : Any]
                     
-                    if self.form.values()["birthyear"]! != nil {
-                        param["birthyear"] = self.form.values()["birthyear"] as! Int
+                    let tmp_birthyear = self.form.values()["birthyear"] as! String
+                    if let birthyear = Int(tmp_birthyear) {
+                        param["birthyear"] = birthyear
                     }
                     
-                    SignCommon().CallSignAPI(msg: "Sign Up Now", label: "sign-up", endpoint: API.signup.rawValue, values: self.form.values(), vc: self)
+                    SignCommon().CallSignAPI(msg: "Sign Up Now", label: "sign-up", endpoint: API.signup.rawValue, values: param, vc: self)
                 }else {
                     ShowStandardAlert(title: "Sign Up Error", msg: "必須項目を入力してください", vc: self)
                 }
