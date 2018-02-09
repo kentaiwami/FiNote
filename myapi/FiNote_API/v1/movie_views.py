@@ -514,27 +514,27 @@ class GetOriginalTitleViewSet(viewsets.ViewSet):
         if not 'id' in request.GET:
             raise serializers.ValidationError('idが含まれていません')
 
-        original_title = ''
-
         context = ssl._create_unverified_context()
-        url, param = get_url_param(settings.IsTestSearchOriginTitle, 'origin', request.data)
+        url, param = get_url_param(test=settings.IsTestSearchOriginTitle, api='origin', id=request.GET.get('id'))
         html = urllib.request.urlopen(url + '?' + urllib.parse.urlencode(param), context=context)
         soup = BeautifulSoup(html, "html.parser")
 
         mvinf = soup.find(id='mvinf')
         tr_tag_list = mvinf.find_all('tr')
 
-        # 製作国が日本以外なら保存した原題を返す
+        title = ''
+        original_title = ''
+
         for tr_tag in tr_tag_list:
             th_tag = tr_tag.find('th')
 
-            if th_tag.string == '原題':
+            if th_tag.string == 'タイトル':
+                title = tr_tag.find('td').string
+
+            elif th_tag.string == '原題':
                 original_title = tr_tag.find('td').string
-                continue
 
-            if th_tag.string == '製作国':
-                if tr_tag.find('li').string != '日本':
-                    return Response({'title': original_title})
-                break
-
-        return Response({'title': ''})
+        if original_title == '':
+            return Response({'title': title})
+        else:
+            return Response({'title': original_title})
