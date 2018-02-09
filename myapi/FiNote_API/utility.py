@@ -100,7 +100,7 @@ def get_url_param(test, api, title='', page='', id=''):
         if test:
             url = settings.SearchOriginTitleURLTest
         else:
-            url = settings.SearchOriginTitleURLTest + id
+            url = settings.SearchOriginTitleURLProduction + id
         param = {}
     else:
         if test:
