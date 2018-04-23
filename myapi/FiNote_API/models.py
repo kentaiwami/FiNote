@@ -46,7 +46,7 @@ class AuthUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False, null=False)
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email', 'birthday']
+    REQUIRED_FIELDS = ['email', 'birthyear']
     objects = AuthUserManager()
 
     tracker = FieldTracker()
