@@ -7,7 +7,7 @@
 //
 
 enum API: String {
-    case base = "https://kentaiwami.jp/FiNote/django.cgi/api/"
+    case base = "https://kentaiwami.jp/finote/api/"
     case v1 = "v1/"
     case user = "user/"
     case signup = "signup/"

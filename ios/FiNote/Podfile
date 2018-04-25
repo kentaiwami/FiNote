@@ -6,7 +6,7 @@ target 'FiNote' do
   use_frameworks!
 
   # Pods for FiNote
-	pod 'Eureka', :git => 'https://github.com/xmartlabs/Eureka.git', :branch => 'feature/Xcode9-Swift3_2'
+	pod 'Eureka', :git => 'https://github.com/xmartlabs/Eureka.git', :branch => 'Swift-3.3'
 	pod 'SwiftyJSON'
 	pod 'Alamofire', '~> 4.5'
 	pod 'KeychainAccess'

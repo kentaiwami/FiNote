@@ -28,7 +28,7 @@ PODS:
 DEPENDENCIES:
   - Alamofire (~> 4.5)
   - AlamofireImage (~> 3.3)
-  - Eureka (from `https://github.com/xmartlabs/Eureka.git`, branch `feature/Xcode9-Swift3_2`)
+  - Eureka (from `https://github.com/xmartlabs/Eureka.git`, branch `Swift-3.3`)
   - Floaty (~> 3.0.0)
   - KeychainAccess
   - NVActivityIndicatorView (= 3.7.0)
@@ -41,7 +41,7 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   Eureka:
-    :branch: feature/Xcode9-Swift3_2
+    :branch: Swift-3.3
     :git: https://github.com/xmartlabs/Eureka.git
   TinyConstraints:
     :branch: Release_2.1.2
@@ -49,7 +49,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Eureka:
-    :commit: 05acfb04c24a480f1868e671d19b39e0f22fc265
+    :commit: 8fcc11477411b1ac96339d3d9d0973956ed05151
     :git: https://github.com/xmartlabs/Eureka.git
   TinyConstraints:
     :commit: c26d600fffa01bb408ab9d2349f832e6c43ef1cb
@@ -69,6 +69,6 @@ SPEC CHECKSUMS:
   TinyConstraints: 3a841eba583f2492c405f88552c5c274056f47e2
   UPCarouselFlowLayout: 02045c1505d63057fba3d9975be880a8d16bf17d
 
-PODFILE CHECKSUM: c04025a54c30d68dd88c4418458863acde2391fe
+PODFILE CHECKSUM: f3ba1d921ca84d14d90081b188e8ef1f87419d0d
 
 COCOAPODS: 1.4.0
