@@ -39,7 +39,8 @@ class Command(BaseCommand):
                         'overview': movie['overview'],
                         'poster': movie['poster'],
                         'dvd': params['dvd'],
-                        'fav': params['fav']
+                        'fav': params['fav'],
+                        'release_date': movie['release_date']
                         }
                 add_movie(movie['genre_ids'], params['onomatopoeia'], data)
 
@@ -141,7 +142,8 @@ class Command(BaseCommand):
                       "overview": movie['overview'],
                       "tmdb_id": movie['id'],
                       "poster": movie['poster_path'],
-                      "genre_ids": movie['genre_ids']}
+                      "genre_ids": movie['genre_ids'],
+                      "release_date": movie['release_date']}
 
         # 出力用に変数へ保存
         output_value['range_page'] = str(max_random+1)

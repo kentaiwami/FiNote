@@ -72,6 +72,7 @@ class Movie(models.Model):
     tmdb_id = models.IntegerField(unique=True)
     overview = models.TextField(max_length=1000, default='')
     poster = models.CharField(max_length=1000, default='')
+    release_date = models.DateField(null=True, default=None)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     genre = models.ManyToManyField(Genre)

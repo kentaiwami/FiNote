@@ -133,7 +133,8 @@ def add_movie(genre_ids, onomatopoeia_list, data):
         defaults={'title': data['title'],
                   'tmdb_id': data['tmdb_id'],
                   'overview': data['overview'],
-                  'poster': data['poster']}
+                  'poster': data['poster'],
+                  'release_date': data['release_date']}
     )
 
     # 追加した映画にジャンルがなければ新規追加
