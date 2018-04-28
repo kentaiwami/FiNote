@@ -1,3 +1,4 @@
+from time import sleep
 from FiNote_API.models import Movie
 from django.core.management.base import BaseCommand
 import re
@@ -28,6 +29,8 @@ class Command(BaseCommand):
             count = len(movies)
 
             for i, movie in enumerate(movies):
+                sleep(1)
+
                 if i+1 < start_pk:
                     continue
 
@@ -74,6 +77,8 @@ class Command(BaseCommand):
             count = len(movies)
 
             for i, movie in enumerate(movies):
+                sleep(1)
+
                 print(str(i + 1) + '/' + str(count))
 
                 overview_str = movie.overview
