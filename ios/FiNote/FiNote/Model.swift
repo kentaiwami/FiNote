@@ -112,6 +112,7 @@ class MovieBasic {
         var title = ""
         var poster = ""
         var overview = ""
+        var release_date = ""
     }
     
     func GetData(json: JSON) -> Data {
@@ -119,7 +120,7 @@ class MovieBasic {
         data.title = json["title"].stringValue
         data.poster = json["poster"].stringValue
         data.overview = json["overview"].stringValue
-        
+        data.release_date = json["release_date"].stringValue
         return data
     }
 }
