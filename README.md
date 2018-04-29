@@ -242,7 +242,8 @@ response：
                 "count": 64,
                 "overview": "overview",
                 "poster": "https://hoge.com/top.png",
-                "title": "title"
+                "title": "title",
+                "release_date": "2017-04-20"
             }
         ]
         "20": [
@@ -250,7 +251,8 @@ response：
                 "count": 75,
                 "overview": "overview",
                 "poster": "https://hoge.com/top.png",
-                "title": "title"
+                "title": "title",
+                "release_date": "2017-04-20"
             }
         ]
         "30": [
@@ -258,7 +260,8 @@ response：
                 "count": 40,
                 "overview": "overview",
                 "poster": "https://hoge.com/top.png",
-                "title": "title"
+                "title": "title",
+                "release_date": "2017-04-20"
             }
         ]
         "40": [
@@ -266,7 +269,8 @@ response：
                 "count": 8,
                 "overview": "overview",
                 "poster": "https://hoge.com/top.png",
-                "title": "title"
+                "title": "title",
+                "release_date": "2017-04-20"
             }
         ]
         "50": [
@@ -274,7 +278,8 @@ response：
                 "count": 31,
                 "overview": "overview",
                 "poster": "https://hoge.com/top.png",
-                "title": "title"
+                "title": "title",
+                "release_date": "2017-04-20"
             }
         ]
     }

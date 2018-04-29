@@ -315,7 +315,8 @@ class GetMovieByAgeViewSet(viewsets.ModelViewSet):
                     'count': count_obj['cnt'],
                     'overview': tmp_movie.overview,
                     'poster': tmp_movie.poster,
-                    'title': tmp_movie.title
+                    'title': tmp_movie.title,
+                    'release_date': tmp_movie.release_date
                 })
 
             results[str(i)] = movies
