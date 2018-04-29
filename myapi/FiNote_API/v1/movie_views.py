@@ -269,7 +269,8 @@ class GetRecentlyMovieViewSet(viewsets.ModelViewSet):
             results.append({
                 'title': movie_tmp.title,
                 'overview': movie_tmp.overview,
-                'poster': movie_tmp.poster
+                'poster': movie_tmp.poster,
+                'release_date': movie_tmp.release_date
             })
 
         return Response({'results': results})
@@ -314,7 +315,8 @@ class GetMovieByAgeViewSet(viewsets.ModelViewSet):
                     'count': count_obj['cnt'],
                     'overview': tmp_movie.overview,
                     'poster': tmp_movie.poster,
-                    'title': tmp_movie.title
+                    'title': tmp_movie.title,
+                    'release_date': tmp_movie.release_date
                 })
 
             results[str(i)] = movies
@@ -436,9 +438,10 @@ class GetMovieOnomatopoeiaContainViewSet(viewsets.ViewSet):
             if len([tmdb_id for tmdb_id in tmp_tmdb_ids if tmdb_id == movie_onomatopoeia_obj.movie.tmdb_id]) == 0:
                 tmp_tmdb_ids.append(movie_onomatopoeia_obj.movie.tmdb_id)
                 res.append({
-                    "title": movie_onomatopoeia_obj.movie.title,
-                    "overview": movie_onomatopoeia_obj.movie.overview,
-                    "poster": movie_onomatopoeia_obj.movie.poster
+                    'title': movie_onomatopoeia_obj.movie.title,
+                    'overview': movie_onomatopoeia_obj.movie.overview,
+                    'poster': movie_onomatopoeia_obj.movie.poster,
+                    'release_date': movie_onomatopoeia_obj.movie.release_date
                 })
 
             if len(tmp_tmdb_ids) >= 50:
@@ -469,7 +472,7 @@ class GetSearchMovieTitleViewSet(viewsets.ViewSet):
         context = ssl._create_unverified_context()
         url, param = get_url_param(test=settings.IsTestSearchTitle, api='search', title=request.GET.get('title'), page=request.GET.get('page'))
         html = urllib.request.urlopen(url + '?' + urllib.parse.urlencode(param), context=context)
-        soup = BeautifulSoup(html, "html.parser")
+        soup = BeautifulSoup(html, 'html.parser')
 
         # 検索結果の合計件数を抽出
         srchform_div = soup.find(id='srchform')
@@ -517,7 +520,7 @@ class GetOriginalTitleViewSet(viewsets.ViewSet):
         context = ssl._create_unverified_context()
         url, param = get_url_param(test=settings.IsTestSearchOriginTitle, api='origin', id=request.GET.get('id'))
         html = urllib.request.urlopen(url + '?' + urllib.parse.urlencode(param), context=context)
-        soup = BeautifulSoup(html, "html.parser")
+        soup = BeautifulSoup(html, 'html.parser')
 
         mvinf = soup.find(id='mvinf')
         tr_tag_list = mvinf.find_all('tr')

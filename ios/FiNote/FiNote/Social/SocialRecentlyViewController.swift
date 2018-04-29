@@ -124,7 +124,13 @@ class SocialRecentlyViewController: UIViewController, UICollectionViewDelegate, 
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let title = "\(indexPath.row+1)位\n\(movies[indexPath.row].title)"
-        ShowStandardAlert(title: title, msg: movies[indexPath.row].overview, vc: self)
+        var release_date = ""
+        
+        if movies[indexPath.row].release_date != "" {
+            release_date = "公開日：\(movies[indexPath.row].release_date)\n\n"
+        }
+        
+        ShowStandardAlert(title: title, msg: release_date + movies[indexPath.row].overview, vc: self)
     }
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {

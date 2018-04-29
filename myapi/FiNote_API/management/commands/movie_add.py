@@ -138,12 +138,12 @@ class Command(BaseCommand):
         if movie['poster_path'] is None:
             movie['poster_path'] = ''
 
-        json_movie = {"title": title,
-                      "overview": movie['overview'],
-                      "tmdb_id": movie['id'],
-                      "poster": movie['poster_path'],
-                      "genre_ids": movie['genre_ids'],
-                      "release_date": movie['release_date']}
+        json_movie = {'title': title,
+                      'overview': movie['overview'],
+                      'tmdb_id': movie['id'],
+                      'poster': movie['poster_path'],
+                      'genre_ids': movie['genre_ids'],
+                      'release_date': movie['release_date']}
 
         # 出力用に変数へ保存
         output_value['range_page'] = str(max_random+1)
@@ -164,11 +164,11 @@ class Command(BaseCommand):
         fav_status = random.randint(0, 1)
         movie = self.get_movie()
 
-        return {"user": user,
-                "onomatopoeia": onomatopoeia,
-                "dvd": dvd_status,
-                "fav": fav_status,
-                "movie": movie}
+        return {'user': user,
+                'onomatopoeia': onomatopoeia,
+                'dvd': dvd_status,
+                'fav': fav_status,
+                'movie': movie}
 
     def output_console(self, param):
         """

@@ -174,7 +174,13 @@ class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UIC
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let index = collectionView.tag - 1
         let title = "\(collectionView.tag*10)代 \(indexPath.row+1)位\n\(movies[index][indexPath.row].title)"
-        ShowStandardAlert(title: title, msg: movies[index][indexPath.row].overview, vc: self)
+        var release_date = ""
+        
+        if movies[index][indexPath.row].release_date != "" {
+            release_date = "公開日：\(movies[index][indexPath.row].release_date)\n\n"
+        }
+        
+        ShowStandardAlert(title: title, msg: release_date + movies[index][indexPath.row].overview, vc: self)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
