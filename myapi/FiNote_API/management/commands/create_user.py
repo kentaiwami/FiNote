@@ -72,10 +72,10 @@ class Command(BaseCommand):
 
 def get_oath_keys():
     oath_key_dict = {
-        "CK": CONSUMER_KEY,
-        "CS": CONSUMER_SECRET,
-        "AT": ACCESS_TOKEN,
-        "ATS": ACCESS_TOKEN_SECRET
+        'CK': CONSUMER_KEY,
+        'CS': CONSUMER_SECRET,
+        'AT': ACCESS_TOKEN,
+        'ATS': ACCESS_TOKEN_SECRET
     }
 
     return oath_key_dict
@@ -110,7 +110,7 @@ def twitter_request(params, url):
     oath = create_oath_session()
     responce = oath.get(url, params=params)
     if responce.status_code != 200:
-        print("Error code: %d" % responce.status_code)
+        print('Error code: %d' % responce.status_code)
         return None
     tweets = json.loads(responce.text)
     return tweets
@@ -132,13 +132,13 @@ def get_birth_year():
     # 確率配分のリストを作成
     rate_list = []
     age_rate_dict = {
-        "0": 0.0,
-        "10": 94.0,
-        "20": 84.5,
-        "30": 81.5,
-        "40": 74.5,
-        "50": 15.5,
-        "60": 11.5
+        '0': 0.0,
+        '10': 94.0,
+        '20': 84.5,
+        '30': 81.5,
+        '40': 74.5,
+        '50': 15.5,
+        '60': 11.5
     }
     for i in range(0, len(birth_year_list)):
         if i in range(0, 10):
@@ -175,9 +175,9 @@ def generate_password():
     :return: Random password.
     """
 
-    alphabet = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    alphabet = 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     pw_length = 8
-    mypw = ""
+    mypw = ''
 
     for i in range(pw_length):
         next_index = random.randrange(len(alphabet))
@@ -190,7 +190,7 @@ def generate_user_params():
     # トレンドを取得してタグ付きのトレンド名をリストにする
     url = 'https://api.twitter.com/1.1/trends/place.json'
     params = {
-        "id": 23424856
+        'id': 23424856
     }
     res_trends = twitter_request(params, url)
     trends_list = res_trends[0]['trends']
@@ -204,10 +204,10 @@ def generate_user_params():
     search_word = trends_name_list[random_index]
     count = 15
     params = {
-        "q": search_word,
-        "lang": "ja",
-        "result_type": "recent",
-        "count": str(count)
+        'q': search_word,
+        'lang': 'ja',
+        'result_type': 'recent',
+        'count': str(count)
     }
     res_tweet = twitter_request(params, url)
     tweet_list = res_tweet['statuses']
@@ -224,8 +224,8 @@ def generate_user_params():
     password = generate_password()
     birth_year = get_birth_year()
 
-    return {"username": username,
-            "email": email,
-            "password": password,
-            "birth_year": birth_year,
-            "is_dummy": True}
+    return {'username': username,
+            'email': email,
+            'password': password,
+            'birth_year': birth_year,
+            'is_dummy': True}

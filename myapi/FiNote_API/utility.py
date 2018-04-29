@@ -188,4 +188,4 @@ class ExecutionSpeedAnalyze(object):
 
     def stop(self):
         self.end = time.time() - self.start
-        return "elapsed_time:{0}".format(self.end) + "[sec]"
+        return 'elapsed_time:{0}'.format(self.end) + '[sec]'

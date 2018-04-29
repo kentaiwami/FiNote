@@ -138,7 +138,7 @@ class UpdateEmailViewSet(viewsets.ViewSet):
             raise serializers.ValidationError(serializer.errors)
 
         try:
-            user = AuthUser.objects.get(username=data["username"])
+            user = AuthUser.objects.get(username=data['username'])
         except ObjectDoesNotExist:
             raise serializers.ValidationError('ユーザが見つかりませんでした')
 
@@ -171,7 +171,7 @@ class UpdateBirthYearViewSet(viewsets.ViewSet):
             raise serializers.ValidationError(serializer.errors)
 
         try:
-            user = AuthUser.objects.get(username=data["username"])
+            user = AuthUser.objects.get(username=data['username'])
         except ObjectDoesNotExist:
             raise serializers.ValidationError('ユーザが見つかりませんでした')
 
