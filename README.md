@@ -223,7 +223,8 @@ response：
         {
             "title": "title_hoge",
             "poster": "http://hogehoge.com/hoge.jpg",
-            "overview": "overview_hoge"
+            "overview": "overview_hoge",
+            "release_date": "2017-04-20"
         }
     ]
 }

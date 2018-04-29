@@ -269,7 +269,8 @@ class GetRecentlyMovieViewSet(viewsets.ModelViewSet):
             results.append({
                 'title': movie_tmp.title,
                 'overview': movie_tmp.overview,
-                'poster': movie_tmp.poster
+                'poster': movie_tmp.poster,
+                'release_date': movie_tmp.release_date
             })
 
         return Response({'results': results})
