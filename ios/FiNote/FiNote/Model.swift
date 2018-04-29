@@ -130,6 +130,7 @@ class MovieByAge {
         var title = ""
         var poster = ""
         var overview = ""
+        var release_date = ""
         var count = 0
     }
     
@@ -141,6 +142,7 @@ class MovieByAge {
             data.title = obj["title"].stringValue
             data.poster = obj["poster"].stringValue
             data.overview = obj["overview"].stringValue
+            data.release_date = obj["release_date"].stringValue
             data.count = obj["count"].intValue
             tmp.append(data)
         }
