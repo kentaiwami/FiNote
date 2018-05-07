@@ -166,7 +166,8 @@ class MovieAddSearchUserInfoViewController: FormViewController {
             "genre": searched_movie.genre,
             "dvd": values["dvd"] as! Bool,
             "fav": values["fav"] as! Bool,
-            "onomatopoeia": MovieCommonFunc.GetChoosingOnomatopoeia(values: values)
+            "onomatopoeia": MovieCommonFunc.GetChoosingOnomatopoeia(values: values),
+            "release_date": searched_movie.release_date
             ] as [String : Any]
         
         NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)

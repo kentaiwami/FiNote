@@ -125,7 +125,8 @@ request：
     "title": "movie title",
     "genre": [28,12,16],
     "overview": "movie overview",
-    "poster": "http://hogehoge.com/hoge.jpg"
+    "poster": "http://hogehoge.com/hoge.jpg",
+    "release_date": 2017-04-25
 }
 response：
 {
