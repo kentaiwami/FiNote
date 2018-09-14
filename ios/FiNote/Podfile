@@ -6,16 +6,16 @@ target 'FiNote' do
   use_frameworks!
 
   # Pods for FiNote
-	pod 'Eureka', :git => 'https://github.com/xmartlabs/Eureka.git', :branch => 'Swift-3.3'
-	pod 'SwiftyJSON'
-	pod 'Alamofire', '~> 4.5'
-	pod 'KeychainAccess'
-	pod 'TinyConstraints', :git => 'https://github.com/roberthein/TinyConstraints.git', :branch => 'Release_2.1.2'
-	pod 'PopupDialog', '0.5.4'
-	pod 'NVActivityIndicatorView', '3.7.0'
-	pod 'AlamofireImage', '~> 3.3'
-	pod 'StatusProvider'
-	pod 'Floaty', '~> 3.0.0'
-	pod 'PromiseKit', '~> 4.4'
-	pod 'UPCarouselFlowLayout'
+pod 'Eureka', :git => 'https://github.com/xmartlabs/Eureka.git', :branch => 'Swift-3.3'
+pod 'SwiftyJSON'
+pod 'Alamofire', '~> 4.5'
+pod 'KeychainAccess'
+pod 'TinyConstraints', :git => 'https://github.com/roberthein/TinyConstraints.git', :branch => 'Release_2.1.2'
+pod 'PopupDialog', '0.5.4'
+pod 'NVActivityIndicatorView', '3.7.0'
+pod 'AlamofireImage', '~> 3.3'
+pod 'StatusProvider'
+pod 'Floaty', '~> 3.0.0'
+pod 'PromiseKit', '~> 4.4'
+pod 'UPCarouselFlowLayout'
 end
