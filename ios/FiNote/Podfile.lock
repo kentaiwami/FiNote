@@ -1,5 +1,5 @@
 PODS:
-  - Alamofire (4.6.0)
+  - Alamofire (4.7.0)
   - AlamofireImage (3.3.0):
     - Alamofire (~> 4.5)
   - Eureka (3.0.0)
@@ -9,18 +9,18 @@ PODS:
     - NVActivityIndicatorView/Presenter (= 3.7.0)
   - NVActivityIndicatorView/Presenter (3.7.0)
   - PopupDialog (0.5.4)
-  - PromiseKit (4.5.0):
-    - PromiseKit/Foundation (= 4.5.0)
-    - PromiseKit/QuartzCore (= 4.5.0)
-    - PromiseKit/UIKit (= 4.5.0)
-  - PromiseKit/CorePromise (4.5.0)
-  - PromiseKit/Foundation (4.5.0):
+  - PromiseKit (4.5.2):
+    - PromiseKit/Foundation (= 4.5.2)
+    - PromiseKit/QuartzCore (= 4.5.2)
+    - PromiseKit/UIKit (= 4.5.2)
+  - PromiseKit/CorePromise (4.5.2)
+  - PromiseKit/Foundation (4.5.2):
     - PromiseKit/CorePromise
-  - PromiseKit/QuartzCore (4.5.0):
+  - PromiseKit/QuartzCore (4.5.2):
     - PromiseKit/CorePromise
-  - PromiseKit/UIKit (4.5.0):
+  - PromiseKit/UIKit (4.5.2):
     - PromiseKit/CorePromise
-  - StatusProvider (1.2.6)
+  - StatusProvider (1.2.7)
   - SwiftyJSON (4.0.0)
   - TinyConstraints (2.1.2)
   - UPCarouselFlowLayout (1.1.1)
@@ -39,6 +39,19 @@ DEPENDENCIES:
   - TinyConstraints (from `https://github.com/roberthein/TinyConstraints.git`, branch `Release_2.1.2`)
   - UPCarouselFlowLayout
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - AlamofireImage
+    - Floaty
+    - KeychainAccess
+    - NVActivityIndicatorView
+    - PopupDialog
+    - PromiseKit
+    - StatusProvider
+    - SwiftyJSON
+    - UPCarouselFlowLayout
+
 EXTERNAL SOURCES:
   Eureka:
     :branch: Swift-3.3
@@ -56,19 +69,19 @@ CHECKOUT OPTIONS:
     :git: https://github.com/roberthein/TinyConstraints.git
 
 SPEC CHECKSUMS:
-  Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
+  Alamofire: 907e0a98eb68cdb7f9d1f541a563d6ac5dc77b25
   AlamofireImage: 2e784dc5d00f04903a52c1d169181469c805c3df
   Eureka: 5b9418d7bfdc21ca977d69d124a6409f3e9af2c7
   Floaty: bb7a353deee9ddcc14c584ca9c538efdc19669f2
   KeychainAccess: 94c5540b32eabf7bc32bfb976a268e8ea05fd6da
   NVActivityIndicatorView: d3738df7e2e476aca0ba6bf32a8c9fbcfc33d64b
   PopupDialog: 75cf955693590b0cb2fdde00223fb65d99c57247
-  PromiseKit: 9c1d9f6d7b65e3951a90bea7f407c56972be5d8e
-  StatusProvider: b2c794d71f7166516950098e811e91ddbcc8d030
+  PromiseKit: 743e497a5f505a470d3bbbf4ce0663c1268af0a4
+  StatusProvider: e75bc9f63b935f5eec6fe49447b8e9ebbc871a87
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
   TinyConstraints: 3a841eba583f2492c405f88552c5c274056f47e2
   UPCarouselFlowLayout: 02045c1505d63057fba3d9975be880a8d16bf17d
 
-PODFILE CHECKSUM: f3ba1d921ca84d14d90081b188e8ef1f87419d0d
+PODFILE CHECKSUM: 9c46b4ba06f50db66d8580a4a6dc02ee63663631
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.3
