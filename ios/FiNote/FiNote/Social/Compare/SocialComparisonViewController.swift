@@ -71,11 +71,11 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
     func CallGetCompareAPI(isInit: Bool=false) {
         let urlString = API.base.rawValue+API.v1.rawValue+API.movie.rawValue+API.compare.rawValue+"?user_id=\(user_id)&page=\(page_id)"
         let activityData = ActivityData(message: "Get Data", type: .lineScaleParty)
-        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
+        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData, nil)
         
         DispatchQueue(label: "get-compare").async {
             Alamofire.request(urlString, method: .get).responseJSON { (response) in
-                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
                 
                 guard let res = response.result.value else{return}
                 let obj = JSON(res)

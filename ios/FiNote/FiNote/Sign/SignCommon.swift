@@ -18,11 +18,11 @@ class SignCommon {
         let activityData = ActivityData(message: msg, type: .lineScaleParty)
         let urlString = API.base.rawValue+API.v1.rawValue+API.user.rawValue+endpoint
 
-        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
+        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData, nil)
         
         DispatchQueue(label: label).async {
             Alamofire.request(urlString, method: .post, parameters: values, encoding: JSONEncoding(options: [])).responseJSON { (response) in
-                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
                 
                 guard let res = response.result.value else{return}
                 let obj = JSON(res)

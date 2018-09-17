@@ -151,11 +151,11 @@ class MoviesUserInfoViewController: FormViewController {
             "onomatopoeia": choosing_onomatopoeia
             ] as [String : Any]
         
-        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
+        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData, nil)
         
         DispatchQueue(label: "update-movie-user-info").async {
             Alamofire.request(urlString, method: .post, parameters: params, encoding: JSONEncoding.default).responseJSON { (response) in
-                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
                 
                 guard let res = response.result.value else{return}
                 let obj = JSON(res)

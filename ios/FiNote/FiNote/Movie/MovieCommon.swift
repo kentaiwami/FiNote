@@ -46,11 +46,11 @@ class MovieCommon {
     func CallGetOnomatopoeiaAPI(act: @escaping (JSON) -> Void, vc: UIViewController) {
         let urlString = API.base.rawValue+API.v1.rawValue+API.onomatopoeia.rawValue+API.choice.rawValue
         let activityData = ActivityData(message: "Get Onomatopoeia", type: .lineScaleParty)
-        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
+        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData, nil)
         
         DispatchQueue(label: "get-onomatopoeia").async {
             Alamofire.request(urlString, method: .get).responseJSON { (response) in
-                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
                 
                 guard let res = response.result.value else{return}
                 let obj = JSON(res)
