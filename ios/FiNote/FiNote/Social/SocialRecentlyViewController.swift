@@ -51,7 +51,7 @@ class SocialRecentlyViewController: UIViewController, UICollectionViewDelegate, 
         self.view.addSubview(collectionView)
     }
     
-    func refresh(sender: UIRefreshControl) {
+    @objc func refresh(sender: UIRefreshControl) {
         refresh_controll.beginRefreshing()
         CallGetRecentlyAPI()
     }
@@ -59,12 +59,12 @@ class SocialRecentlyViewController: UIViewController, UICollectionViewDelegate, 
     func CallGetRecentlyAPI() {
         let urlString = API.base.rawValue+API.v1.rawValue+API.movie.rawValue+API.recently.rawValue
         let activityData = ActivityData(message: "Get Data", type: .lineScaleParty)
-        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
+        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData, nil)
         
         DispatchQueue(label: "get-movies").async {
             Alamofire.request(urlString, method: .get).responseJSON { (response) in
                 self.refresh_controll.endRefreshing()
-                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
                 
                 guard let res = response.result.value else{return}
                 let obj = JSON(res)

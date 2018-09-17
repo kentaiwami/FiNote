@@ -39,7 +39,7 @@ class MovieAddSearchOriginTitlesViewController: UIViewController, UITableViewDel
         CallOriginTitlesAPI()
     }
     
-    func TapCloseButton() {
+    @objc func TapCloseButton() {
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -48,12 +48,12 @@ class MovieAddSearchOriginTitlesViewController: UIViewController, UITableViewDel
         let encURL = (NSURL(string:urlString.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)!)?.absoluteString)!
         let activityData = ActivityData(message: "Get Titles", type: .lineScaleParty)
         
-        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
+        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData, nil)
         
         DispatchQueue(label: "get-titles").async {
             Alamofire.request(encURL, method: .get).responseJSON { (response) in
                 
-                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
                 
                 guard let res = response.result.value else{return}
                 let obj = JSON(res)
@@ -85,12 +85,12 @@ class MovieAddSearchOriginTitlesViewController: UIViewController, UITableViewDel
         let encURL = (NSURL(string:urlString.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)!)?.absoluteString)!
         let activityData = ActivityData(message: "Get Origin Title", type: .lineScaleParty)
         
-        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
+        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData, nil)
         
         DispatchQueue(label: "get-origin-title").async {
             Alamofire.request(encURL, method: .get).responseJSON { (response) in
                 
-                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
                 
                 guard let res = response.result.value else{return}
                 let obj = JSON(res)

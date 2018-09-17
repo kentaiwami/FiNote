@@ -27,7 +27,7 @@ class SocialViewController: UIViewController {
         self.tabBarController?.navigationItem.setRightBarButton(menu, animated: true)
     }
     
-    func TapMenuButton() {
+    @objc func TapMenuButton() {
         let recently_title = "人気ランキング"
         let byage_title = "年代別ランキング"
         let contain_title = "オノマトペで検索"

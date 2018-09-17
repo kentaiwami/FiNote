@@ -37,7 +37,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.CallMoviesAPI()
     }
     
-    func TapAddButton() {
+    @objc func TapAddButton() {
         let add_searchVC = MovieAddSearchViewController()
         self.navigationController!.pushViewController(add_searchVC, animated: true)
     }
@@ -88,7 +88,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         refresh_controll = UIRefreshControl()
     }
     
-    func refresh(sender: UIRefreshControl) {
+    @objc func refresh(sender: UIRefreshControl) {
         refresh_controll.beginRefreshing()
         CallMoviesAPI()
     }
@@ -194,12 +194,12 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func CallMoviesAPI() {
         let urlString = API.base.rawValue+API.v1.rawValue+API.movies.rawValue+"?user_id=\(self.user_id)"
         let activityData = ActivityData(message: "Get Movies", type: .lineScaleParty)
-        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
+        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData, nil)
         
         DispatchQueue(label: "get-movies").async {
             Alamofire.request(urlString, method: .get).responseJSON { (response) in
                 
-                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
                 self.refresh_controll.endRefreshing()
                 
                 guard let res = response.result.value else{return}

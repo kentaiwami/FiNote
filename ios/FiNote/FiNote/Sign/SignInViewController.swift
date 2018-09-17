@@ -87,7 +87,7 @@ class SignInViewController: FormViewController {
             }
             .onCellSelection {  cell, row in
                 if IsCheckFormValue(form: self.form) {
-                    SignCommon().CallSignAPI(msg: "Sign In Now", label: "sign-in", endpoint: API.signin.rawValue, values: self.form.values(), vc: self)
+                    SignCommon().CallSignAPI(msg: "Sign In Now", label: "sign-in", endpoint: API.signin.rawValue, values: self.form.values() as [String : Any], vc: self)
                 }else {
                     ShowStandardAlert(title: "Sign In Error", msg: "必須項目を入力してください", vc: self)
                 }

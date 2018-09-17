@@ -189,11 +189,11 @@ class MoviesDetailViewController: UIViewController {
     func CallMovieAPI() {
         let urlString = API.base.rawValue+API.v1.rawValue+API.movie.rawValue+API.detail.rawValue+"?user_id=\(self.user_id)&movie_id=\(self.movie_id)"
         let activityData = ActivityData(message: "Get Movie", type: .lineScaleParty)
-        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
+        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData, nil)
         
         DispatchQueue(label: "get-movie").async {
             Alamofire.request(urlString, method: .get).responseJSON { (response) in
-                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
                 
                 guard let res = response.result.value else{return}
                 let obj = JSON(res)
@@ -222,11 +222,11 @@ class MoviesDetailViewController: UIViewController {
             "tmdb_id": movie_id
             ] as [String : Any]
         
-        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
+        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData, nil)
         
         DispatchQueue(label: "delete-movie").async {
             Alamofire.request(urlString, method: .post, parameters: params).responseJSON { (response) in
-                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
                 
                 guard let res = response.result.value else{return}
                 let obj = JSON(res)

@@ -1,21 +1,23 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+platform :ios, '11.2'
 
 target 'FiNote' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
 
   # Pods for FiNote
-pod 'Eureka', :git => 'https://github.com/xmartlabs/Eureka.git', :branch => 'Swift-3.3'
-pod 'SwiftyJSON'
-pod 'Alamofire', '~> 4.5'
+
+pod 'UPCarouselFlowLayout'
 pod 'KeychainAccess'
-pod 'TinyConstraints', :git => 'https://github.com/roberthein/TinyConstraints.git', :branch => 'Release_2.1.2'
-pod 'PopupDialog', '0.5.4'
-pod 'NVActivityIndicatorView', '3.7.0'
+pod 'SwiftyJSON'
+pod 'Alamofire'
+pod 'Eureka'
+pod 'TinyConstraints', :git => 'https://github.com/roberthein/TinyConstraints.git', :branch => 'release/swift-4'
+pod 'PopupDialog', '~> 0.8'
+pod 'NVActivityIndicatorView'
 pod 'AlamofireImage', '~> 3.3'
 pod 'StatusProvider'
-pod 'Floaty', '~> 3.0.0'
-pod 'PromiseKit', '~> 4.4'
-pod 'UPCarouselFlowLayout'
+pod 'PromiseKit'
+pod 'Floaty', '~> 4.0.0'
+
 end

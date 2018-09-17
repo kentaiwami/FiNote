@@ -48,15 +48,15 @@ class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, UITab
         var ja_results: [MovieAddSearchResult.Data] = []
         var en_results: [MovieAddSearchResult.Data] = []
         let activityData = ActivityData(message: "Search Movie", type: .lineScaleParty)
-        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
+        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData, nil)
         
         CallMovieSearchAPI(text: text, language: "ja").then { results -> Promise<[MovieAddSearchResult.Data]> in
             ja_results = results
             return self.CallMovieSearchAPI(text: text, language: "en")
             
-            }.then { results -> Void in
+            }.done { results in
                 en_results = results
-                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
                 self.ShapeOverview(ja_results: ja_results, en_results: en_results)
                 self.DrawView()
             }.catch { err in
@@ -162,7 +162,7 @@ class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, UITab
     
     func CallMovieSearchAPI(text: String, language: String) -> Promise<[MovieAddSearchResult.Data]>{
         
-        let promise = Promise<[MovieAddSearchResult.Data]> { (resolve, reject) in
+        let promise = Promise<[MovieAddSearchResult.Data]> { seal in
             let urlString = API.tmdb_search.rawValue+"?query=\(text)&api_key=\(GetTMDBAPIKey())&language=\(language)&include_adult=\(String(false))"
             let encURL = (NSURL(string:urlString.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)!)?.absoluteString)!
             
@@ -180,9 +180,10 @@ class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, UITab
                         for data in obj["results"].arrayValue {
                             tmp_results.append(MovieAddSearchResult().GetData(json: data))
                         }
-                        resolve(tmp_results)
+                        
+                        seal.fulfill(tmp_results)
                     }else {
-                        reject(NSError(domain: obj["status_message"].stringValue, code: -1))
+                        seal.reject(NSError(domain: obj["status_message"].stringValue, code: -1))
                     }
                 }
             }

@@ -39,11 +39,11 @@ class MoviesUserInfoViewController: FormViewController {
         }, vc: self)
     }
     
-    func TapCloseButton() {
+    @objc func TapCloseButton() {
         self.dismiss(animated: true, completion: nil)
     }
     
-    func TapSaveButton() {
+    @objc func TapSaveButton() {
         let choosing = MovieCommonFunc.GetChoosingOnomatopoeia(values: form.values())
         
         if choosing.count == 0 {
@@ -151,11 +151,11 @@ class MoviesUserInfoViewController: FormViewController {
             "onomatopoeia": choosing_onomatopoeia
             ] as [String : Any]
         
-        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
+        NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData, nil)
         
         DispatchQueue(label: "update-movie-user-info").async {
             Alamofire.request(urlString, method: .post, parameters: params, encoding: JSONEncoding.default).responseJSON { (response) in
-                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating(nil)
                 
                 guard let res = response.result.value else{return}
                 let obj = JSON(res)

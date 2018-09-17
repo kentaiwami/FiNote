@@ -112,7 +112,7 @@ class MovieAddSearchDetailViewController: UIViewController {
         floaty.height(56)
     }
     
-    func TapFloatyButton() {
+    @objc func TapFloatyButton() {
         let movie_search_info_VC = MovieAddSearchUserInfoViewController()
         movie_search_info_VC.SetMovie(movie: self.searched_movie)
         movie_search_info_VC.SetPoster(poster: self.posterImageView.image!)
