@@ -81,7 +81,7 @@ func AddAttributedTextLineHeight(height: Int, text: NSMutableAttributedString) -
     paragraphStyle.minimumLineHeight = lineHeight
     paragraphStyle.maximumLineHeight = lineHeight
     paragraphStyle.lineBreakMode = .byTruncatingTail
-    text.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, text.length))
+    text.addAttribute(NSAttributedStringKey.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, text.length))
     
     return text
 }

@@ -40,11 +40,11 @@ class MovieAddSearchUserInfoViewController: FormViewController {
         }, vc: self)
     }
     
-    func TapCloseButton() {
+    @objc func TapCloseButton() {
         self.dismiss(animated: true, completion: nil)
     }
     
-    func TapSaveButton() {
+    @objc func TapSaveButton() {
         let choosing = MovieCommonFunc.GetChoosingOnomatopoeia(values: form.values())
         
         if choosing.count == 0 {

@@ -51,7 +51,7 @@ class SocialRecentlyViewController: UIViewController, UICollectionViewDelegate, 
         self.view.addSubview(collectionView)
     }
     
-    func refresh(sender: UIRefreshControl) {
+    @objc func refresh(sender: UIRefreshControl) {
         refresh_controll.beginRefreshing()
         CallGetRecentlyAPI()
     }

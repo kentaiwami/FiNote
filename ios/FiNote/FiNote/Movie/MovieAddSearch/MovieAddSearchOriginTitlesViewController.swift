@@ -39,7 +39,7 @@ class MovieAddSearchOriginTitlesViewController: UIViewController, UITableViewDel
         CallOriginTitlesAPI()
     }
     
-    func TapCloseButton() {
+    @objc func TapCloseButton() {
         self.dismiss(animated: true, completion: nil)
     }
     

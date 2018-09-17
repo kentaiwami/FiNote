@@ -43,7 +43,7 @@ class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UIC
         self.tabBarController?.delegate = self
     }
     
-    func refresh(sender: UIRefreshControl) {
+    @objc func refresh(sender: UIRefreshControl) {
         refresh_controll.beginRefreshing()
         CallGetByAgeAPI()
     }

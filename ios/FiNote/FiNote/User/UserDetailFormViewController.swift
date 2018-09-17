@@ -52,7 +52,7 @@ class UserDetailFormViewController: FormViewController {
         self.navigationItem.setRightBarButton(check, animated: true)
     }
     
-    func TapCheckButton() {
+    @objc func TapCheckButton() {
         var err = 0
         for row in form.allRows {
             err += row.validate().count

@@ -37,7 +37,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.CallMoviesAPI()
     }
     
-    func TapAddButton() {
+    @objc func TapAddButton() {
         let add_searchVC = MovieAddSearchViewController()
         self.navigationController!.pushViewController(add_searchVC, animated: true)
     }
@@ -88,7 +88,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         refresh_controll = UIRefreshControl()
     }
     
-    func refresh(sender: UIRefreshControl) {
+    @objc func refresh(sender: UIRefreshControl) {
         refresh_controll.beginRefreshing()
         CallMoviesAPI()
     }
