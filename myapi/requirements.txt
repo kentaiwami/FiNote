@@ -9,7 +9,7 @@ idna==2.7
 mysql-connector-python==8.0.13
 oauthlib==2.1.0
 protobuf==3.6.1
-PyJWT==1.6.4
+PyJWT==1.7.0
 pytz==2018.7
 requests==2.20.1
 requests-oauthlib==1.0.0
