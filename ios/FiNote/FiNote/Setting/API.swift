@@ -7,7 +7,7 @@
 //
 
 enum API: String {
-    case base = "https://finote.kentaiwami.jp/api/"
+    case base = "https://finote.kentaiwami.com/api/"
     case v1 = "v1/"
     case user = "user/"
     case signup = "signup/"
