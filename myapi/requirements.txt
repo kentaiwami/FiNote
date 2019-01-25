@@ -7,7 +7,7 @@ djangorestframework==3.9.1
 djangorestframework-jwt==1.11.0
 idna==2.8
 mysql-connector-python==8.0.14
-oauthlib==3.0.0
+oauthlib==3.0.1
 protobuf==3.6.1
 PyJWT==1.7.1
 pytz==2018.9
