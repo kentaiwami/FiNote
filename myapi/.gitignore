@@ -11,3 +11,4 @@ geckodriver.log
 ghostdriver.log
 media/
 myapi/__pycache__/
+.vscode
