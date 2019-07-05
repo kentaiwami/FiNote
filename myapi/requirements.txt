@@ -1,7 +1,7 @@
 beautifulsoup4==4.7.1
 certifi==2019.6.16
 chardet==3.0.4
-Django==2.2.2
+Django==2.2.3
 django-admin-ip-restrictor==1.0.0
 django-ipware==2.1.0
 django-model-utils==3.2.0
@@ -9,7 +9,7 @@ djangorestframework==3.9.4
 djangorestframework-jwt==1.11.0
 idna==2.8
 mysql-connector-python==8.0.16
-oauthlib==3.0.1
+oauthlib==3.0.2
 protobuf==3.8.0
 PyJWT==1.7.1
 pytz==2019.1
