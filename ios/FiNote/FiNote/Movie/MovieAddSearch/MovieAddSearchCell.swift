@@ -18,7 +18,7 @@ class MovieAddSearchCell: UITableViewCell {
     var added_icon: UIImageView!
     var added_msg: UILabel!
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         title = UILabel(frame: CGRect.zero)

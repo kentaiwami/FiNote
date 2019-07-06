@@ -16,7 +16,7 @@ class MoviesCell: UITableViewCell {
     var poster: UIImageView!
     var added_list_icon: UIImageView!
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         title = UILabel(frame: CGRect.zero)

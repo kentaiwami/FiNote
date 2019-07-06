@@ -81,7 +81,7 @@ func AddAttributedTextLineHeight(height: Int, text: NSMutableAttributedString) -
     paragraphStyle.minimumLineHeight = lineHeight
     paragraphStyle.maximumLineHeight = lineHeight
     paragraphStyle.lineBreakMode = .byTruncatingTail
-    text.addAttribute(NSAttributedStringKey.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, text.length))
+    text.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, text.length))
     
     return text
 }
@@ -90,12 +90,12 @@ class Indicator {
     let indicator = UIActivityIndicatorView()
     
     func showIndicator(view: UIView) {
-        indicator.activityIndicatorViewStyle = .whiteLarge
+        indicator.style = .whiteLarge
         indicator.center = view.center
         indicator.color = UIColor.gray
         indicator.hidesWhenStopped = true
         view.addSubview(indicator)
-        view.bringSubview(toFront: indicator)
+        view.bringSubviewToFront(indicator)
         indicator.startAnimating()
     }
     

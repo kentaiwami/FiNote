@@ -235,7 +235,7 @@ class MoviesDetailViewController: UIViewController {
                 print("***** API results *****")
                 
                 if IsHTTPStatus(statusCode: response.response?.statusCode) {
-                    let index = appdelegate.movies.index(where: {$0.id == self.movie_id})
+                    let index = appdelegate.movies.firstIndex(where: {$0.id == self.movie_id})
                     let index_int = index?.advanced(by: 0)
                     appdelegate.movies.remove(at: index_int!)
                     
