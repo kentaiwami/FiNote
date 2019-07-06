@@ -32,7 +32,7 @@ class MovieCommon {
         
         // 選択済みのオノマトペ名を選択肢配列から削除
         for name in GetChoosingOnomatopoeia(values: values) {
-            let index = new_choices.index(of: name)
+            let index = new_choices.firstIndex(of: name)
             
             // ignoreと同じ場合は候補から削除しない
             if index != nil && name != ignore {

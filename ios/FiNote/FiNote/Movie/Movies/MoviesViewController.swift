@@ -55,7 +55,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         myTableView.delegate = self
         myTableView.dataSource = self
         myTableView.register(MoviesCell.self, forCellReuseIdentifier: NSStringFromClass(MoviesCell.self))
-        myTableView.autoresizingMask = UIViewAutoresizing(rawValue: UIViewAutoresizing.RawValue(UInt8(UIViewAutoresizing.flexibleHeight.rawValue) | UInt8(UIViewAutoresizing.flexibleWidth.rawValue)))
+        myTableView.autoresizingMask = UIView.AutoresizingMask(rawValue: UIView.AutoresizingMask.RawValue(UInt8(UIView.AutoresizingMask.flexibleHeight.rawValue) | UInt8(UIView.AutoresizingMask.flexibleWidth.rawValue)))
         
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
