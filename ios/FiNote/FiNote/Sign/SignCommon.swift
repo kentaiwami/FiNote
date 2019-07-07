@@ -14,6 +14,9 @@ import NVActivityIndicatorView
 
 
 class SignCommon {
+    
+    fileprivate let utility = Utility()
+    
     func CallSignAPI(msg: String, label: String, endpoint: String, values: [String:Any], vc: UIViewController) {
         let activityData = ActivityData(message: msg, type: .lineScaleParty)
         let urlString = API.base.rawValue+API.v1.rawValue+API.user.rawValue+endpoint
@@ -30,7 +33,7 @@ class SignCommon {
                 print(obj)
                 print("***** API results *****")
                 
-                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                if self.utility.isHTTPStatus(statusCode: response.response?.statusCode) {
                     let keychain = Keychain()
                     try! keychain.set(values["username"] as! String, key: "username")
                     try! keychain.set(values["password"] as! String, key: "password")
@@ -42,7 +45,7 @@ class SignCommon {
                     let mainVC = storyboard.instantiateViewController(withIdentifier: "Main")
                     vc.present(mainVC, animated: true, completion: nil)
                 }else {
-                    ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: vc)
+                    self.utility.showStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: vc)
                 }
             }
         }

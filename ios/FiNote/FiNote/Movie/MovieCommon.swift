@@ -13,6 +13,9 @@ import SwiftyJSON
 
 
 class MovieCommon {
+    
+    fileprivate let utility = Utility()
+    
     func GetChoosingOnomatopoeia(values: [String:Any?]) -> [String] {
         // オノマトペとタグ番号の辞書を生成
         var choosing: [String:Int] = [:]
@@ -58,10 +61,10 @@ class MovieCommon {
                 print(obj)
                 print("***** API results *****")
                 
-                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                if self.utility.isHTTPStatus(statusCode: response.response?.statusCode) {
                     act(obj)
                 }else {
-                    ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: vc)
+                    self.utility.showStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: vc)
                 }
             }
         }

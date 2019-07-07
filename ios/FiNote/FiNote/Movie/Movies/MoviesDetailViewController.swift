@@ -29,6 +29,8 @@ class MoviesDetailViewController: UIViewController {
     var tmp_poster = UIImageView()
     var latestView = UIView()
     
+    fileprivate let utility = Utility()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -149,7 +151,7 @@ class MoviesDetailViewController: UIViewController {
         overviewView.lineBreakMode = .byWordWrapping
         overviewView.numberOfLines = 0
         overviewView.font = UIFont(name: Font.helveticaneue.rawValue, size: 16)
-        overviewView.attributedText = AddAttributedTextLineHeight(height: 22, text: NSMutableAttributedString(string: movie.overview))
+        overviewView.attributedText = utility.addAttributedTextLineHeight(height: 22, text: NSMutableAttributedString(string: movie.overview))
         contentView.addSubview(overviewView)
 
         overviewView.topToBottom(of: latestView, offset: 10)
@@ -201,12 +203,12 @@ class MoviesDetailViewController: UIViewController {
                 print(obj)
                 print("***** API results *****")
                 
-                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                if self.utility.isHTTPStatus(statusCode: response.response?.statusCode) {
                     self.movie = Movie().GetData(json: obj)
                     self.tmp_poster.af_setImage(withURL: URL(string: API.poster_base.rawValue+self.movie.poster)!)
                     self.DrawViews()
                 }else {
-                    ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
+                    self.utility.showStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
                 }
             }
         }
@@ -214,7 +216,7 @@ class MoviesDetailViewController: UIViewController {
     
     func CallDeleteMovieAPI() {
         let urlString = API.base.rawValue+API.v1.rawValue+API.movie.rawValue+API.delete.rawValue
-        let appdelegate = GetAppDelegate()
+        let appdelegate = utility.getAppDelegate()
         let activityData = ActivityData(message: "Delete Movie", type: .lineScaleParty)
         let params = [
             "username": username,
@@ -234,14 +236,14 @@ class MoviesDetailViewController: UIViewController {
                 print(obj)
                 print("***** API results *****")
                 
-                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                if self.utility.isHTTPStatus(statusCode: response.response?.statusCode) {
                     let index = appdelegate.movies.firstIndex(where: {$0.id == self.movie_id})
                     let index_int = index?.advanced(by: 0)
                     appdelegate.movies.remove(at: index_int!)
                     
                     self.navigationController?.popViewController(animated: true)
                 }else {
-                    ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
+                    self.utility.showStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
                 }
             }
         }

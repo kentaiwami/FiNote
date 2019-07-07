@@ -20,6 +20,8 @@ class SocialContainViewController: UIViewController, UISearchBarDelegate, Status
     var collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewLayout())
     var movies: [MovieBasic.Data] = []
     
+    fileprivate let utility = Utility()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -70,7 +72,7 @@ class SocialContainViewController: UIViewController, UISearchBarDelegate, Status
                 print(obj)
                 print("***** API results *****")
                 
-                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                if self.utility.isHTTPStatus(statusCode: response.response?.statusCode) {
                     self.movies.removeAll()
                     
                     for data in obj["results"].arrayValue {
@@ -79,7 +81,7 @@ class SocialContainViewController: UIViewController, UISearchBarDelegate, Status
                     
                     self.DrawView()
                 }else {
-                    ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
+                    self.utility.showStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
                 }
             }
         }
@@ -152,7 +154,7 @@ class SocialContainViewController: UIViewController, UISearchBarDelegate, Status
             release_date = "公開日：\(movies[indexPath.row].release_date)\n\n"
         }
         
-        ShowStandardAlert(title: title, msg: release_date + movies[indexPath.row].overview, vc: self)
+        utility.showStandardAlert(title: title, msg: release_date + movies[indexPath.row].overview, vc: self)
     }
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {

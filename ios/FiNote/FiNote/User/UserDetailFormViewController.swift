@@ -26,6 +26,8 @@ class UserDetailFormViewController: FormViewController {
     var email = ""
     var birthyear = ""
     
+    fileprivate let utility = Utility()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -61,7 +63,7 @@ class UserDetailFormViewController: FormViewController {
         if err == 0 {
             CallUpdateAPI()
         }else {
-            ShowStandardAlert(title: "Error", msg: "入力を再確認してください", vc: self)
+            utility.showStandardAlert(title: "Error", msg: "入力を再確認してください", vc: self)
         }
     }
     
@@ -112,7 +114,7 @@ class UserDetailFormViewController: FormViewController {
                 print(obj)
                 print("***** API results *****")
                 
-                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                if self.utility.isHTTPStatus(statusCode: response.response?.statusCode) {
                     // 対象となるキーが含まれている場合のみ値を更新
                     if self.form.values()["new_pass"] != nil {
                         try! self.keychain.set(self.form.values()["new_pass"] as! String, key: "password")
@@ -140,7 +142,7 @@ class UserDetailFormViewController: FormViewController {
                     popup.addButtons([ok])
                     self.present(popup, animated: true, completion: nil)
                 }else {
-                    ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
+                    self.utility.showStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
                 }
             }
         }
@@ -188,19 +190,7 @@ class UserDetailFormViewController: FormViewController {
         row.validationOptions = .validatesOnChange
         row.tag = tag
         row.onRowValidationChanged { cell, row in
-            let rowIndex = row.indexPath!.row
-            while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
-                row.section?.remove(at: rowIndex + 1)
-            }
-            if !row.isValid {
-                for (index, err) in row.validationErrors.map({ $0.msg }).enumerated() {
-                    let labelRow = LabelRow() {
-                        $0.title = err
-                        $0.cell.height = { 30 }
-                    }
-                    row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
-                }
-            }
+            self.utility.showRowError(row: row)
         }
         
         return row
@@ -215,26 +205,14 @@ class UserDetailFormViewController: FormViewController {
         row.validationOptions = .validatesOnChange
         row.tag = tag
         row.onRowValidationChanged { cell, row in
-            let rowIndex = row.indexPath!.row
-            while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
-                row.section?.remove(at: rowIndex + 1)
-            }
-            if !row.isValid {
-                for (index, err) in row.validationErrors.map({ $0.msg }).enumerated() {
-                    let labelRow = LabelRow() {
-                        $0.title = err
-                        $0.cell.height = { 30 }
-                    }
-                    row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
-                }
-            }
+            self.utility.showRowError(row: row)
         }
         
         return row
     }
     
     func CreatePickerInputRow(value: String) -> PickerInputRow<String> {
-        let options = GetBirthYears()
+        let options = utility.getBirthYears()
         var birthyear = value
         if value.isEmpty {
             birthyear = options[0]

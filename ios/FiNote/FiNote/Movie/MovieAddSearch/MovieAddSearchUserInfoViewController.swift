@@ -24,6 +24,8 @@ class MovieAddSearchUserInfoViewController: FormViewController {
     var count = 1
     var choices: [String] = []
     
+    fileprivate let utility = Utility()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -48,7 +50,7 @@ class MovieAddSearchUserInfoViewController: FormViewController {
         let choosing = MovieCommonFunc.GetChoosingOnomatopoeia(values: form.values())
         
         if choosing.count == 0 {
-            ShowStandardAlert(title: "Error", msg: "オノマトペは少なくとも1つ以上追加する必要があります", vc: self)
+            utility.showStandardAlert(title: "Error", msg: "オノマトペは少なくとも1つ以上追加する必要があります", vc: self)
         }else {
             var dvd_msg = "DVD未所持"
             var fav_msg = "お気に入り未登録"
@@ -153,7 +155,7 @@ class MovieAddSearchUserInfoViewController: FormViewController {
     func CallMovieAddAPI() {
         let urlString = API.base.rawValue+API.v1.rawValue+API.movie.rawValue
         let activityData = ActivityData(message: "Adding", type: .lineScaleParty)
-        let appdelegate = GetAppDelegate()
+        let appdelegate = utility.getAppDelegate()
         let keychain = Keychain()
         let values = form.values()
         let params = [
@@ -183,7 +185,7 @@ class MovieAddSearchUserInfoViewController: FormViewController {
                 print(obj)
                 print("***** API results *****")
                 
-                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                if self.utility.isHTTPStatus(statusCode: response.response?.statusCode) {
                     let formatter = DateFormatter()
                     formatter.dateFormat = "yyyy-MM-dd"
                     let add_date = formatter.string(from: Date())
@@ -200,7 +202,7 @@ class MovieAddSearchUserInfoViewController: FormViewController {
                     nav.popToRootViewController(animated: false)
                     self.dismiss(animated: true, completion: nil)
                 }else {
-                    ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
+                    self.utility.showStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
                 }
             }
         }

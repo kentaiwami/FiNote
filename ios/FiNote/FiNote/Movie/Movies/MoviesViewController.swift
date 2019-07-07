@@ -18,7 +18,9 @@ import StatusProvider
 
 class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITabBarControllerDelegate, UISearchResultsUpdating, StatusController {
     
-    var appdelegate = GetAppDelegate()
+    fileprivate let utility = Utility()
+    
+    lazy var appdelegate = utility.getAppDelegate()
     var searchResults:[Movies.Data] = []
     var preViewName = "Movies"
     var myTableView = UITableView()
@@ -27,6 +29,8 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var user_id = ""
     var isAdded = false
     var isStartup = true
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -208,7 +212,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 print(obj)
                 print("***** API results *****")
                 
-                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                if self.utility.isHTTPStatus(statusCode: response.response?.statusCode) {
                     self.appdelegate.movies.removeAll()
                     self.Init()
                     
@@ -222,7 +226,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
                         self.ShowLoadData()
                     }
                 }else {
-                    ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
+                    self.utility.showStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
                 }
             }
         }

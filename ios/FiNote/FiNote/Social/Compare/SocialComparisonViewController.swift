@@ -36,6 +36,8 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
     var isNext = false
     var isUpdating = false
     
+    fileprivate let utility = Utility()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
@@ -56,7 +58,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
     }
     
     func DrawView() {
-        if GetAppDelegate().movies.count == 0 {
+        if utility.getAppDelegate().movies.count == 0 {
             let status = Status(title: "No Data", description: "映画を追加して他の人がつけたオノマトペと比べて見ましょう", actionTitle: "Reload", image: nil) {
                 self.hideStatus()
                 self.DrawView()
@@ -83,7 +85,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
                 print(obj)
                 print("***** API results *****")
                 
-                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                if self.utility.isHTTPStatus(statusCode: response.response?.statusCode) {
                     self.isNext = obj["next"].boolValue
                     self.isUpdating = false
                     
@@ -101,7 +103,7 @@ class SocialComparisonViewController: UIViewController, UICollectionViewDelegate
                     
                     self.posterCollectionView.reloadData()
                 }else {
-                    ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
+                    self.utility.showStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
                 }
             }
         }

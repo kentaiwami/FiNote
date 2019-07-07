@@ -21,6 +21,8 @@ class MovieAddSearchOriginTitlesViewController: UIViewController, UITableViewDel
     var hasNext = false
     var tableview = UITableView()
     
+    fileprivate let utility = Utility()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -61,7 +63,7 @@ class MovieAddSearchOriginTitlesViewController: UIViewController, UITableViewDel
                 print(obj)
                 print("***** API results *****")
                 
-                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                if self.utility.isHTTPStatus(statusCode: response.response?.statusCode) {
                     self.isUpdating = false
                     for data in obj["results"].arrayValue {
                         self.results.append(MovieOriginTitleSearchResult().GetData(json: data))
@@ -74,7 +76,7 @@ class MovieAddSearchOriginTitlesViewController: UIViewController, UITableViewDel
                     }
                     self.tableview.reloadData()
                 }else {
-                    ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
+                    self.utility.showStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
                 }
             }
         }
@@ -98,14 +100,14 @@ class MovieAddSearchOriginTitlesViewController: UIViewController, UITableViewDel
                 print(obj)
                 print("***** API results *****")
                 
-                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                if self.utility.isHTTPStatus(statusCode: response.response?.statusCode) {
                     let nav = self.presentingViewController as! UINavigationController
                     let searchVC = nav.viewControllers.last! as! MovieAddSearchViewController
                     searchVC.searchBar.text = obj["title"].stringValue
                     searchVC.RunSearch(text: obj["title"].stringValue)
                     self.dismiss(animated: true, completion: nil)
                 }else {
-                    ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
+                    self.utility.showStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
                 }
             }
         }

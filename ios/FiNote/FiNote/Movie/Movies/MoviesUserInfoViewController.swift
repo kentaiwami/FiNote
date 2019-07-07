@@ -24,6 +24,8 @@ class MoviesUserInfoViewController: FormViewController {
     var count = 1
     var choices: [String] = []
     
+    fileprivate let utility = Utility()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = "Edit Info"
@@ -47,7 +49,7 @@ class MoviesUserInfoViewController: FormViewController {
         let choosing = MovieCommonFunc.GetChoosingOnomatopoeia(values: form.values())
         
         if choosing.count == 0 {
-            ShowStandardAlert(title: "Error", msg: "オノマトペは少なくとも1つ以上追加する必要があります", vc: self)
+            utility.showStandardAlert(title: "Error", msg: "オノマトペは少なくとも1つ以上追加する必要があります", vc: self)
         }else {
             CallUpdateMovieUserInfoAPI()
         }
@@ -139,7 +141,7 @@ class MoviesUserInfoViewController: FormViewController {
         let urlString = API.base.rawValue+API.v1.rawValue+API.movie.rawValue+API.update.rawValue
         let activityData = ActivityData(message: "Updating", type: .lineScaleParty)
         let keychain = Keychain()
-        let appdelegate = GetAppDelegate()
+        let appdelegate = utility.getAppDelegate()
         
         let choosing_onomatopoeia = NSOrderedSet(array: MovieCommonFunc.GetChoosingOnomatopoeia(values: form.values())).array as! [String]
         let params = [
@@ -163,7 +165,7 @@ class MoviesUserInfoViewController: FormViewController {
                 print(obj)
                 print("***** API results *****")
                 
-                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                if self.utility.isHTTPStatus(statusCode: response.response?.statusCode) {
                     let index = appdelegate.movies.firstIndex(where: {$0.id == self.movie_id})
                     let index_int = index?.advanced(by: 0)
                     appdelegate.movies[index_int!].onomatopoeia = choosing_onomatopoeia
@@ -173,7 +175,7 @@ class MoviesUserInfoViewController: FormViewController {
                     nav.popViewController(animated: true)
                     self.dismiss(animated: true, completion: nil)
                 }else {
-                    ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
+                    self.utility.showStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
                 }
             }
         }

@@ -22,6 +22,8 @@ class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, UITab
     var myTableView = UITableView()
     var search_results: [MovieAddSearchResult.Data] = []
     
+    fileprivate let utility = Utility()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -61,7 +63,7 @@ class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, UITab
                 self.DrawView()
             }.catch { err in
                 let tmp_err = err as NSError
-                ShowStandardAlert(title: "Error", msg: tmp_err.domain, vc: self)
+                self.utility.showStandardAlert(title: "Error", msg: tmp_err.domain, vc: self)
         }
     }
     
@@ -133,10 +135,10 @@ class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, UITab
         if search_results[indexPath.row].overview.isEmpty {
             cell.overview.attributedText = NSMutableAttributedString(string: "no data")
         }else {
-            cell.overview.attributedText = AddAttributedTextLineHeight(height: 22, text: NSMutableAttributedString(string: search_results[indexPath.row].overview))
+            cell.overview.attributedText = utility.addAttributedTextLineHeight(height: 22, text: NSMutableAttributedString(string: search_results[indexPath.row].overview))
         }
         
-        if GetAppDelegate().movies.filter({$0.id == search_results[indexPath.row].id}).count == 0 {
+        if utility.getAppDelegate().movies.filter({$0.id == search_results[indexPath.row].id}).count == 0 {
             cell.added_msg.isHidden = true
             cell.added_icon.isHidden = true
         }else {
@@ -150,13 +152,13 @@ class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, UITab
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        if GetAppDelegate().movies.filter({$0.id == search_results[indexPath.row].id}).count == 0 {
+        if utility.getAppDelegate().movies.filter({$0.id == search_results[indexPath.row].id}).count == 0 {
             let detailVC = MovieAddSearchDetailViewController()
             detailVC.SetMovieID(searched_movie: search_results[indexPath.row])
             self.navigationController!.pushViewController(detailVC, animated: true)
         }else {
             let msg = "この映画は追加済みです。\n追加済みの映画はTop画面から編集することができます。"
-            ShowStandardAlert(title: "", msg: msg, vc: self)
+            utility.showStandardAlert(title: "", msg: msg, vc: self)
         }
     }
     
@@ -175,7 +177,7 @@ class MovieAddSearchViewController: UIViewController, UISearchBarDelegate, UITab
                     print(obj)
                     print("***** API results *****")
     
-                    if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                    if self.utility.isHTTPStatus(statusCode: response.response?.statusCode) {
                         var tmp_results: [MovieAddSearchResult.Data] = []
                         for data in obj["results"].arrayValue {
                             tmp_results.append(MovieAddSearchResult().GetData(json: data))
