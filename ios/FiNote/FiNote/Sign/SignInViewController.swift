@@ -11,6 +11,8 @@ import Eureka
 
 class SignInViewController: FormViewController {
 
+    fileprivate let utility = Utility()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.CreateForm()
@@ -86,10 +88,10 @@ class SignInViewController: FormViewController {
                 $0.tag = "signin"
             }
             .onCellSelection {  cell, row in
-                if IsCheckFormValue(form: self.form) {
+                if self.utility.isCheckFormValue(form: self.form) {
                     SignCommon().CallSignAPI(msg: "Sign In Now", label: "sign-in", endpoint: API.signin.rawValue, values: self.form.values() as [String : Any], vc: self)
                 }else {
-                    ShowStandardAlert(title: "Sign In Error", msg: "必須項目を入力してください", vc: self)
+                    self.utility.showStandardAlert(title: "Sign In Error", msg: "必須項目を入力してください", vc: self)
                 }
             }
     }

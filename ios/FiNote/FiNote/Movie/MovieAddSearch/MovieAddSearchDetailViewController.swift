@@ -26,6 +26,8 @@ class MovieAddSearchDetailViewController: UIViewController {
     var latestView = UIView()
     var posterImageView = UIImageView()
     
+    fileprivate let utility = Utility()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -98,7 +100,7 @@ class MovieAddSearchDetailViewController: UIViewController {
         let floaty = UIButton(frame: CGRect.zero)
         floaty.backgroundColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
         floaty.tintColor = UIColor.white
-        floaty.setBackgroundImage(UIColorToUIImage(hex: "#FFFFFF", alpha: 0.2), for: .highlighted)
+        floaty.setBackgroundImage(utility.uiColorToUIImage(hex: "#FFFFFF", alpha: 0.2), for: .highlighted)
         floaty.setImage(UIImage(named: "icon_edit"), for: .normal)
         floaty.setImage(UIImage(named: "icon_edit"), for: .highlighted)
         floaty.layer.masksToBounds = true
@@ -147,7 +149,7 @@ class MovieAddSearchDetailViewController: UIViewController {
         overviewView.lineBreakMode = .byWordWrapping
         overviewView.numberOfLines = 0
         overviewView.font = UIFont(name: Font.helveticaneue.rawValue, size: 16)
-        overviewView.attributedText = AddAttributedTextLineHeight(height: 22, text: NSMutableAttributedString(string: searched_movie.overview))
+        overviewView.attributedText = utility.addAttributedTextLineHeight(height: 22, text: NSMutableAttributedString(string: searched_movie.overview))
         contentView.addSubview(overviewView)
         
         overviewView.topToBottom(of: latestView, offset: 10)

@@ -20,6 +20,8 @@ class SocialRecentlyViewController: UIViewController, UICollectionViewDelegate, 
     var refresh_controll = UIRefreshControl()
     var movies: [MovieBasic.Data] = []
     
+    fileprivate let utility = Utility()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -72,7 +74,7 @@ class SocialRecentlyViewController: UIViewController, UICollectionViewDelegate, 
                 print(obj)
                 print("***** API results *****")
                 
-                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                if self.utility.isHTTPStatus(statusCode: response.response?.statusCode) {
                     self.movies.removeAll()
                     
                     for data in obj["results"].arrayValue {
@@ -81,7 +83,7 @@ class SocialRecentlyViewController: UIViewController, UICollectionViewDelegate, 
                     
                     self.InitCollectionView()
                 }else {
-                    ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
+                    self.utility.showStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
                 }
             }
         }
@@ -130,7 +132,7 @@ class SocialRecentlyViewController: UIViewController, UICollectionViewDelegate, 
             release_date = "公開日：\(movies[indexPath.row].release_date)\n\n"
         }
         
-        ShowStandardAlert(title: title, msg: release_date + movies[indexPath.row].overview, vc: self)
+        utility.showStandardAlert(title: title, msg: release_date + movies[indexPath.row].overview, vc: self)
     }
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {

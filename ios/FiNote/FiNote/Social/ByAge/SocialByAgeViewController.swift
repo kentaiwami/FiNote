@@ -23,6 +23,8 @@ class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UIC
     var movies: [[MovieByAge.Data]] = [[]]
     var preViewName = "Social"
     
+    fileprivate let utility = Utility()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -66,7 +68,7 @@ class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UIC
                 
                 self.movies.removeAll()
                 
-                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                if self.utility.isHTTPStatus(statusCode: response.response?.statusCode) {
                     // 結果をパース
                     let dictionaryValue = obj["results"].dictionaryValue
                     for key in stride(from: 10, to: 60, by: 10) {
@@ -80,7 +82,7 @@ class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UIC
                     
                     self.DrawViews()
                 }else {
-                    ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
+                    self.utility.showStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
                 }
             }
         }
@@ -180,7 +182,7 @@ class SocialByAgeViewController: UIViewController, UICollectionViewDelegate, UIC
             release_date = "公開日：\(movies[index][indexPath.row].release_date)\n\n"
         }
         
-        ShowStandardAlert(title: title, msg: release_date + movies[index][indexPath.row].overview, vc: self)
+        utility.showStandardAlert(title: title, msg: release_date + movies[index][indexPath.row].overview, vc: self)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

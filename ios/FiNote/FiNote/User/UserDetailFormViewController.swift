@@ -26,6 +26,8 @@ class UserDetailFormViewController: FormViewController {
     var email = ""
     var birthyear = ""
     
+    fileprivate let utility = Utility()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -61,7 +63,7 @@ class UserDetailFormViewController: FormViewController {
         if err == 0 {
             CallUpdateAPI()
         }else {
-            ShowStandardAlert(title: "Error", msg: "入力を再確認してください", vc: self)
+            utility.showStandardAlert(title: "Error", msg: "入力を再確認してください", vc: self)
         }
     }
     
@@ -112,7 +114,7 @@ class UserDetailFormViewController: FormViewController {
                 print(obj)
                 print("***** API results *****")
                 
-                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                if self.utility.isHTTPStatus(statusCode: response.response?.statusCode) {
                     // 対象となるキーが含まれている場合のみ値を更新
                     if self.form.values()["new_pass"] != nil {
                         try! self.keychain.set(self.form.values()["new_pass"] as! String, key: "password")
@@ -140,7 +142,7 @@ class UserDetailFormViewController: FormViewController {
                     popup.addButtons([ok])
                     self.present(popup, animated: true, completion: nil)
                 }else {
-                    ShowStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
+                    self.utility.showStandardAlert(title: "Error", msg: obj.arrayValue[0].stringValue, vc: self)
                 }
             }
         }
@@ -234,7 +236,7 @@ class UserDetailFormViewController: FormViewController {
     }
     
     func CreatePickerInputRow(value: String) -> PickerInputRow<String> {
-        let options = GetBirthYears()
+        let options = utility.getBirthYears()
         var birthyear = value
         if value.isEmpty {
             birthyear = options[0]
