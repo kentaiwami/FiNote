@@ -11,6 +11,28 @@ import Eureka
 import PopupDialog
 
 class Utility {
+    func showRowError(row: BaseRow) {
+        let rowIndex = row.indexPath!.row
+        while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
+            row.section?.remove(at: rowIndex + 1)
+        }
+        
+        if !row.isValid {
+            for (index, err) in row.validationErrors.map({ $0.msg }).enumerated() {
+                let labelRow = LabelRow() {
+                    $0.title = err
+                    $0.cell.height = { 30 }
+                    $0.cell.contentView.backgroundColor = UIColor.red
+                    $0.cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 13)
+                    $0.cell.textLabel?.textAlignment = .right
+                    }.cellUpdate({ (cell, row) in
+                        cell.textLabel?.textColor = .white
+                    })
+                row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
+            }
+        }
+    }
+
     func getAppDelegate() -> AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
     }
