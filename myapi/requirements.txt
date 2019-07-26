@@ -8,7 +8,7 @@ django-model-utils==3.2.0
 djangorestframework==3.10.1
 djangorestframework-jwt==1.11.0
 idna==2.8
-mysql-connector-python==8.0.16
+mysql-connector-python==8.0.17
 oauthlib==3.0.2
 protobuf==3.9.0
 PyJWT==1.7.1
