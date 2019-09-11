@@ -1,11 +1,11 @@
 beautifulsoup4==4.8.0
 certifi==2019.6.16
 chardet==3.0.4
-Django==2.2.4
+Django==2.2.5
 django-admin-ip-restrictor==1.0.0
 django-ipware==2.1.0
 django-model-utils==3.2.0
-djangorestframework==3.10.2
+djangorestframework==3.10.3
 djangorestframework-jwt==1.11.0
 idna==2.8
 mysql-connector-python==8.0.17
