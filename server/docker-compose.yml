@@ -22,7 +22,6 @@ services:
       container_name: finote-db
       restart: always
       image: mysql:5.7
-      command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
       expose:
         - "3306"
       environment:
