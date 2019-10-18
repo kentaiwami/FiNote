@@ -1,0 +1,65 @@
+version: '3'
+services:
+  finote-web:
+      container_name: finote-web
+      restart: always
+      image: nginx:1.13
+      environment:
+        VIRTUAL_HOST: ${VIRTUAL_HOST}
+        LETSENCRYPT_HOST: ${LETSENCRYPT_HOST}
+        LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
+      volumes:
+        - ./nginx/conf:/etc/nginx/conf.d
+        - ./nginx/uwsgi_params:/etc/nginx/uwsgi_params
+        - ./src/static:/static
+      depends_on:
+        - finote-app
+      networks:
+        - proxy-network
+        - finote-app-network
+
+  finote-db:
+      container_name: finote-db
+      restart: always
+      image: mysql:5.7
+      command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+      expose:
+        - "3306"
+      environment:
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        TZ: 'Asia/Tokyo'
+      volumes:
+        - finote-db:/var/lib/mysql
+        - ./sql:/docker-entrypoint-initdb.d
+        - ./mysql/conf:/etc/mysql/conf.d/
+      networks:
+        - finote-db-network
+
+  finote-app:
+      container_name: finote-app
+      restart: always
+      build: ./django
+      command: uwsgi --socket :8001 --module myapi.wsgi --py-autoreload 1 --logto /tmp/mylog.log
+      volumes:
+        - ./src:/code
+        - ./src/static:/static
+      expose:
+        - "8001"
+      depends_on:
+        - finote-db
+      networks:
+        - finote-app-network
+        - finote-db-network
+networks:
+  finote-app-network:
+    external: true
+  proxy-network:
+    external: true
+  finote-db-network:
+    external: true
+volumes:
+  finote-db:
+    driver: local
