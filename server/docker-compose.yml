@@ -42,7 +42,7 @@ services:
       container_name: finote-app
       restart: always
       build: ./django
-      command: uwsgi --socket :8001 --module myapi.wsgi --py-autoreload 1 --logto /tmp/mylog.log
+      command: uwsgi --ini /code/uwsgi.ini
       volumes:
         - ./src:/code
         - ./src/static:/static
