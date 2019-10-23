@@ -31,6 +31,9 @@ services:
         MYSQL_DATABASE: ${MYSQL_DATABASE}
         MYSQL_USER: ${MYSQL_USER}
         MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        REPLICATION_USER: ${REPLICATION_USER}
+        REPLICATION_PASSWORD: ${REPLICATION_PASSWORD}
+        REPLICATION_HOST: ${REPLICATION_HOST}
         TZ: 'Asia/Tokyo'
       volumes:
         - finote-db:/var/lib/mysql
@@ -43,7 +46,21 @@ services:
       container_name: finote-app
       restart: always
       build: ./django
-      command: uwsgi --ini /code/uwsgi.ini
+      environment:
+        ADMIN_USER: ${ADMIN_USER}
+        ADMIN_EMAIL: ${ADMIN_EMAIL}
+        ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+        ADMIN_BIRTHYEAR: ${ADMIN_BIRTHYEAR}
+      command: >
+        bash -c
+        "python manage.py makemigrations
+        && python manage.py migrate
+        && python manage.py custom_createsuperuser
+        --username ${ADMIN_USER}
+        --email ${ADMIN_EMAIL}
+        --password ${ADMIN_PASSWORD}
+        --birthyear ${ADMIN_BIRTHYEAR}
+        && uwsgi --ini /code/uwsgi.ini"
       volumes:
         - ./src:/code
         - ./src/static:/static

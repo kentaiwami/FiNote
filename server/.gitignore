@@ -3,6 +3,7 @@ __init__.py
 *.py[cod]
 .sqlite3
 migrations/
+fixtures/
 
 src/static
 .vscode/
