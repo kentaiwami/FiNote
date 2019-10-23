@@ -7,3 +7,5 @@ migrations/
 src/static
 .vscode/
 .env
+
+nginx/conf/*.conf

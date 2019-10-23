@@ -8,10 +8,12 @@ services:
         VIRTUAL_HOST: ${VIRTUAL_HOST}
         LETSENCRYPT_HOST: ${LETSENCRYPT_HOST}
         LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
+        SETREALIPFROM: ${SETREALIPFROM}
       volumes:
         - ./nginx/conf:/etc/nginx/conf.d
         - ./nginx/uwsgi_params:/etc/nginx/uwsgi_params
         - ./src/static:/static
+      command: /bin/sh -c "envsubst '$$SETREALIPFROM' < /etc/nginx/conf.d/finote.conf.template > /etc/nginx/conf.d/finote.conf && nginx -g 'daemon off;'"
       depends_on:
         - finote-app
       networks:
