@@ -17,7 +17,9 @@ import environ
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 env = environ.Env()
-environ.Env.read_env()
+dir_path = os.path.dirname(__file__)
+env_path = os.path.join(dir_path, '.env')
+env.read_env(env_path)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -33,7 +35,7 @@ ACCESS_TOKEN_SECRET = env('ACCESS_TOKEN_SECRET')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(env('DEBUG'))
 
-ALLOWED_HOSTS = [env('ALLOWED_HOSTS')]
+ALLOWED_HOSTS = [env('VIRTUAL_HOST')]
 
 
 # Application definition
@@ -88,12 +90,12 @@ WSGI_APPLICATION = 'myapi.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': env('DB_ENGINE'),
-        'NAME': env('DB_NAME'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
-        'HOST': env('DB_HOST'),
-        'PORT': env('DB_PORT'),
+        'ENGINE': 'mysql.connector.django',
+        'NAME': env('MYSQL_DATABASE'),
+        'USER': env('MYSQL_USER'),
+        'PASSWORD': env('MYSQL_PASSWORD'),
+        'HOST': 'finote-db',
+        'PORT': 3306,
         'OPTIONS': {'use_pure': True}
     }
 }
