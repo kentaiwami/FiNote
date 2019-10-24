@@ -3,7 +3,8 @@ __init__.py
 *.py[cod]
 .sqlite3
 migrations/
-fixtures/
+src/finote_api/fixtures/init/*.sql
+src/finote_api/fixtures/*.json
 
 src/static
 .vscode/

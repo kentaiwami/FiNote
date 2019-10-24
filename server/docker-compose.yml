@@ -47,19 +47,26 @@ services:
       restart: always
       build: ./django
       environment:
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        MYSQL_HOST: ${MYSQL_HOST}
         ADMIN_USER: ${ADMIN_USER}
         ADMIN_EMAIL: ${ADMIN_EMAIL}
         ADMIN_PASSWORD: ${ADMIN_PASSWORD}
         ADMIN_BIRTHYEAR: ${ADMIN_BIRTHYEAR}
+        IS_INSERT_LARGE_DATA: ${IS_INSERT_LARGE_DATA}
       command: >
         bash -c
-        "python manage.py makemigrations
+        "./finote_api/fixtures/init/wait-for-it.sh finote-db:3306
+        && python manage.py makemigrations
         && python manage.py migrate
         && python manage.py custom_createsuperuser
         --username ${ADMIN_USER}
         --email ${ADMIN_EMAIL}
         --password ${ADMIN_PASSWORD}
         --birthyear ${ADMIN_BIRTHYEAR}
+        && python ./finote_api/fixtures/init/init_data.py
         && uwsgi --ini /code/uwsgi.ini"
       volumes:
         - ./src:/code
