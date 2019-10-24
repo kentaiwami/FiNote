@@ -18,7 +18,7 @@ def execute_scripts_from_file(filename):
             print('Command skipped: ' + command)
 
 def get_sql_files():
-    sql_files = glob.glob('./02*.sql')
+    sql_files = glob.glob('./*.sql')
     sql_files.sort()
     return sql_files
 
