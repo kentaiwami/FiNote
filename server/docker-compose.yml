@@ -51,10 +51,6 @@ services:
         MYSQL_USER: ${MYSQL_USER}
         MYSQL_PASSWORD: ${MYSQL_PASSWORD}
         MYSQL_HOST: ${MYSQL_HOST}
-        ADMIN_USER: ${ADMIN_USER}
-        ADMIN_EMAIL: ${ADMIN_EMAIL}
-        ADMIN_PASSWORD: ${ADMIN_PASSWORD}
-        ADMIN_BIRTHYEAR: ${ADMIN_BIRTHYEAR}
         IS_INSERT_LARGE_DATA: ${IS_INSERT_LARGE_DATA}
       command: >
         bash -c
@@ -71,6 +67,7 @@ services:
       volumes:
         - ./src:/code
         - ./src/static:/static
+        - ./.env:/code/myapi/.env
       expose:
         - "8001"
       depends_on:
