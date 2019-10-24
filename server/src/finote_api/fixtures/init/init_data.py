@@ -2,6 +2,8 @@ import mysql.connector
 import glob
 import os
 import re
+import environ
+
 os.chdir("./finote_api/fixtures/init")
 
 def execute_scripts_from_file(filename):
@@ -31,7 +33,10 @@ def main():
         cnx.close()
 
 if __name__ == "__main__":
-    if bool(os.environ['IS_INSERT_LARGE_DATA']) == True:
+    env = environ.Env()
+    env.read_env('../../../myapi/.env')
+
+    if bool(env('IS_INSERT_LARGE_DATA')) == True:
         config = {
             'user': os.environ['MYSQL_USER'],
             'password': os.environ['MYSQL_PASSWORD'],
