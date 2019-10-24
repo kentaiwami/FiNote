@@ -37,7 +37,7 @@ services:
         TZ: 'Asia/Tokyo'
       volumes:
         - finote-db:/var/lib/mysql
-        - ./sql:/docker-entrypoint-initdb.d
+        - ./mysql/sql:/docker-entrypoint-initdb.d
         - ./mysql/conf:/etc/mysql/conf.d/
       networks:
         - finote-db-network
