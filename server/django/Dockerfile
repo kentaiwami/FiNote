@@ -6,3 +6,5 @@ ADD requirements.txt /code/
 RUN pip install -U pip
 RUN pip install -r requirements.txt
 ADD . /code/
+RUN apt-get update
+RUN apt-get install -y cron

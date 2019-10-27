@@ -54,6 +54,7 @@ services:
         MYSQL_PASSWORD: ${MYSQL_PASSWORD}
         MYSQL_HOST: ${MYSQL_HOST}
         IS_INSERT_LARGE_DATA: ${IS_INSERT_LARGE_DATA}
+        TZ: 'Asia/Tokyo'
       command: >
         bash -c
         "./finote_api/fixtures/init/wait-for-it.sh finote-db:3306
@@ -65,6 +66,9 @@ services:
         --password ${ADMIN_PASSWORD}
         --birthyear ${ADMIN_BIRTHYEAR}
         && python ./finote_api/fixtures/init/init_data.py
+        && crontab /code/cron/conf/cron.txt
+        && ln -sf  /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+        && service cron start
         && uwsgi --ini /code/uwsgi.ini"
       volumes:
         - ./src:/code
