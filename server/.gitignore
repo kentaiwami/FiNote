@@ -1,13 +1,2 @@
-__pycache__/
-__init__.py
-*.py[cod]
-.sqlite3
-migrations/
-src/finote_api/fixtures/init/*.sql
-src/finote_api/fixtures/*.json
-
-src/static
 .vscode/
 .env
-
-nginx/conf/*.conf

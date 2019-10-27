@@ -1,0 +1,8 @@
+__pycache__/
+__init__.py
+*.py[cod]
+migrations/
+finote_api/fixtures/init/*.sql
+finote_api/fixtures/*.json
+static
+cron/log/
