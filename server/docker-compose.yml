@@ -1,0 +1,93 @@
+version: '3'
+services:
+  finote-web:
+      container_name: finote-web
+      restart: always
+      image: nginx:1.13
+      environment:
+        VIRTUAL_HOST: ${VIRTUAL_HOST}
+        LETSENCRYPT_HOST: ${LETSENCRYPT_HOST}
+        LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
+        SETREALIPFROM: ${SETREALIPFROM}
+      volumes:
+        - ./nginx/conf:/etc/nginx/conf.d
+        - ./nginx/uwsgi_params:/etc/nginx/uwsgi_params
+        - ./src/static:/static
+      command: /bin/sh -c "envsubst '$$SETREALIPFROM' < /etc/nginx/conf.d/finote.conf.template > /etc/nginx/conf.d/finote.conf && nginx -g 'daemon off;'"
+      depends_on:
+        - finote-app
+      networks:
+        - proxy-network
+        - finote-app-network
+
+  finote-db:
+      container_name: finote-db
+      restart: always
+      image: mysql:5.7
+      expose:
+        - "3306"
+      environment:
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        MYSQL_USER_HOST: ${MYSQL_USER_HOST}
+        REPLICATION_USER: ${REPLICATION_USER}
+        REPLICATION_PASSWORD: ${REPLICATION_PASSWORD}
+        REPLICATION_HOST: ${REPLICATION_HOST}
+        TZ: 'Asia/Tokyo'
+      volumes:
+        - finote-db:/var/lib/mysql
+        - ./mysql/sql:/docker-entrypoint-initdb.d
+        - ./mysql/conf:/etc/mysql/conf.d/
+      networks:
+        - finote-db-network
+
+  finote-app:
+      container_name: finote-app
+      restart: always
+      build: ./django
+      environment:
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        MYSQL_HOST: ${MYSQL_HOST}
+        IS_INSERT_LARGE_DATA: ${IS_INSERT_LARGE_DATA}
+        TZ: 'Asia/Tokyo'
+      command: >
+        bash -c
+        "./finote_api/fixtures/init/wait-for-it.sh finote-db:3306
+        && python manage.py makemigrations
+        && python manage.py migrate
+        && python manage.py custom_createsuperuser
+        --username ${ADMIN_USER}
+        --email ${ADMIN_EMAIL}
+        --password ${ADMIN_PASSWORD}
+        --birthyear ${ADMIN_BIRTHYEAR}
+        && python ./finote_api/fixtures/init/init_data.py
+        && crontab /code/cron/conf/cron.txt
+        && ln -sf  /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+        && service cron start
+        && uwsgi --ini /code/uwsgi.ini"
+      volumes:
+        - ./src:/code
+        - ./src/static:/static
+        - ./.env:/code/myapi/.env
+      expose:
+        - "8001"
+      depends_on:
+        - finote-db
+      networks:
+        - finote-app-network
+        - finote-db-network
+networks:
+  finote-app-network:
+    external: true
+  proxy-network:
+    external: true
+  finote-db-network:
+    external: true
+volumes:
+  finote-db:
+    driver: local
