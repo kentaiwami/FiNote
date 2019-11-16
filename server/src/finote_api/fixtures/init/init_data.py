@@ -8,14 +8,16 @@ os.chdir("./finote_api/fixtures/init")
 
 def execute_scripts_from_file(filename):
     fd = open(filename, 'r')
-    sqlFile = fd.read()
+    lines = fd.readlines()
     fd.close()
-    sqlCommands = re.split(';\n', sqlFile)
+    lines_strip = [line.strip() for line in lines]
+    sqlCommands = [line for line in lines_strip if 'INSERT' in line]
+
+    print(filename)
 
     for command in sqlCommands:
         try:
-            if command.strip() != '':
-                cursor.execute(command)
+            cursor.execute(command)
         except IOError:
             print('Command skipped: ' + command)
 
@@ -27,10 +29,7 @@ def get_sql_files():
 def main():
     for sql_file in get_sql_files():
         execute_scripts_from_file(sql_file)
-
         cnx.commit()
-        cursor.close()
-        cnx.close()
 
 if __name__ == "__main__":
     env = environ.Env()
@@ -45,4 +44,7 @@ if __name__ == "__main__":
         }
         cnx = mysql.connector.connect(**config)
         cursor = cnx.cursor()
+
         main()
+        cursor.close()
+        cnx.close()
