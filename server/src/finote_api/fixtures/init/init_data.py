@@ -1,4 +1,4 @@
-import mysql.connector
+import MySQLdb
 import glob
 import os
 import re
@@ -42,7 +42,7 @@ if __name__ == "__main__":
             'host': os.environ['MYSQL_HOST'],
             'database' : os.environ['MYSQL_DATABASE'],
         }
-        cnx = mysql.connector.connect(**config)
+        cnx = MySQLdb.connect(**config)
         cursor = cnx.cursor()
 
         main()

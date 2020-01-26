@@ -90,13 +90,13 @@ WSGI_APPLICATION = 'myapi.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'mysql.connector.django',
+        # 'ENGINE': 'mysql.connector.django',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': env('MYSQL_DATABASE'),
         'USER': env('MYSQL_USER'),
         'PASSWORD': env('MYSQL_PASSWORD'),
         'HOST': 'finote-db',
         'PORT': 3306,
-        'OPTIONS': {'use_pure': True}
     }
 }
 
