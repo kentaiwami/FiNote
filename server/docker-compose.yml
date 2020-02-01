@@ -3,7 +3,7 @@ services:
   finote-web:
       container_name: finote-web
       restart: always
-      image: nginx:1.13
+      image: nginx:1.16.1
       environment:
         VIRTUAL_HOST: ${VIRTUAL_HOST}
         LETSENCRYPT_HOST: ${LETSENCRYPT_HOST}
