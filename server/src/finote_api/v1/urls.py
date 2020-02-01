@@ -1,6 +1,7 @@
 from rest_framework import routers
 from finote_api.v1.user_views import *
 from finote_api.v1.movie_views import *
+from finote_api.v1.health_check_views import *
 
 router = routers.DefaultRouter()
 router.register(r'user/signup', SignUpUserViewSet, basename='sign-up-user')
@@ -27,3 +28,6 @@ router.register(r'movie/search/origin', GetOriginalTitleViewSet, 'get-movie-orig
 
 router.register(r'movies', GetMoviesViewSet, basename='get-movies')
 router.register(r'onomatopoeia/choice', GetOnomatopoeiaChoiceViewSet, basename='get-onomatopoeia-choice')
+
+
+router.register(r'health_check', HealthCheckViewSet, 'health-check-views')
